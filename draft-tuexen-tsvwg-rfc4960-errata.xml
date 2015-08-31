@@ -656,15 +656,39 @@ from the end of Appendix C to the end of Appendix B.</t>
 </section>
 </section>
 
+<!-- The following was correct in RFC 4460 -->
 <section title='partial_bytes_acked after T3-rtx Expiration'>
 <section title='Description of the Problem'>
-<t>TBD</t>
+<t>Section 7.2.3 of <xref target="RFC4960"/> explicitly states that partial_bytes_acked should be reset to 0 after packet loss detecting from SACK but the same is missed for T3-rtx timer expiration.</t>
 </section>
 <section title='Text Changes to the Document'>
-<t>TBD</t>
+<figure>
+<artwork>
+---------
+Old text: (Section 7.2.3)
+---------
+
+When the T3-rtx timer expires on an address, SCTP should perform slow
+start by:
+
+ssthresh = max(cwnd/2, 4*MTU)
+cwnd = 1*MTU
+
+---------
+New text: (Section 7.2.3)
+---------
+
+When the T3-rtx timer expires on an address, SCTP should perform slow
+start by:
+
+ssthresh = max(cwnd/2, 4*MTU)
+cwnd = 1*MTU
+partial_bytes_acked = 0
+</artwork>
+</figure>
 </section>
 <section title='Solution Description'>
-<t>TBD</t>
+<t>Specify that partial_bytes_acked should be reset to 0 after T3-rtx timer expiration.</t>
 </section>
 </section>
 
