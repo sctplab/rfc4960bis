@@ -656,6 +656,18 @@ from the end of Appendix C to the end of Appendix B.</t>
 </section>
 </section>
 
+<section title='partial_bytes_acked after T3-rtx Expiration'>
+<section title='Description of the Problem'>
+<t>TBD</t>
+</section>
+<section title='Text Changes to the Document'>
+<t>TBD</t>
+</section>
+<section title='Solution Description'>
+<t>TBD</t>
+</section>
+</section>
+
 </section>
 
 <section title='IANA Considerations'>
