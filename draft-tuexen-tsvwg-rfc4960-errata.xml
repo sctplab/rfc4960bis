@@ -695,6 +695,46 @@ expiration.</t>
 </section>
 </section>
 
+<section title='Order of Adjustments of partial_bytes_acked and cwnd'>
+<!-- The correction is in accordance with RFC 3465, Section 2.1 -->
+<section title='Description of the Problem'>
+<t>Section 7.2.2 of <xref target="RFC4960"/> is unclear about the order 
+of adjustments applied to partial_bytes_acked and cwnd in the Congestion
+Avoidance phase.</t>
+</section>
+<section title='Text Changes to the Document'>
+<figure>
+<artwork>
+---------
+Old text: (Section 7.2.2)
+---------
+
+o  When partial_bytes_acked is equal to or greater than cwnd and
+   before the arrival of the SACK the sender had cwnd or more bytes
+   of data outstanding (i.e., before arrival of the SACK, flightsize
+   was greater than or equal to cwnd), increase cwnd by MTU, and
+   reset partial_bytes_acked to (partial_bytes_acked - cwnd).
+
+---------
+New text: (Section 7.2.2)
+---------
+
+o  When partial_bytes_acked is equal to or greater than cwnd and
+   before the arrival of the SACK the sender had cwnd or more bytes
+   of data outstanding (i.e., before arrival of the SACK, flightsize
+   was greater than or equal to cwnd), partial_bytes_acked is reset
+   to (partial_bytes_acked - cwnd). Next, cwnd is increased by MTU
+   with the limitation that the cwnd shall not be increased by more
+   than one MTU per RTT.
+</artwork>
+</figure>
+</section>
+<section title='Solution Description'>
+<t>The NEW text defines the exact order of adjustments of
+partial_bytes_acked and cwnd in the Congestion Avoidance phase.</t>
+</section>
+</section>
+
 </section>
 
 <section title='IANA Considerations'>
