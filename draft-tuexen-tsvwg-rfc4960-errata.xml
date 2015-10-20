@@ -736,7 +736,7 @@ partial_bytes_acked and cwnd in the congestion avoidance phase.</t>
 <section title='HEARTBEAT ACK and the association error counter'>
 <section title='Description of the Problem'>
 <t>Section 8.1 and Section 8.3 of <xref target="RFC4960"/>
-prescribes that the receiver of a HEARTBEAT ACK must reset the
+prescribe that the receiver of a HEARTBEAT ACK must reset the
 association overall error counter. In some circumstances, e.g. when
 a router discards DATA chunks but not HEARTBEAT chunks due to the
 larger size of the DATA chunk, it is better to not clear the
@@ -762,9 +762,9 @@ The counter shall be reset each time a DATA chunk sent to that peer
 endpoint is acknowledged (by the reception of a SACK). When a
 HEARTBEAT ACK is received from the peer endpoint, the counter should
 also be reset. The receiver of the HEARTBEAT ACK may choose not to
-clear the counter while transmitting data on the association. Such
-choice may be motivated by different sizes of the DATA and HEARTBEAT
-chunks. 
+clear the counter if there is outstanding data on the association.
+This allows for handling the possible difference in reachability
+based on DATA chunks and HEARTBEAT chunks. 
 
 ---------
 Old text: (Section 8.3)
@@ -786,10 +786,7 @@ New text: (Section 8.3)
 Upon the receipt of the HEARTBEAT ACK, the sender of the HEARTBEAT
 should clear the error counter of the destination transport address
 to which the HEARTBEAT was sent, and mark the destination transport
-address as active if it is not so marked. The receiver of the
-HEARTBEAT ACK may choose not to clear the error counter of the
-destination transport address if there are valid reasons for it, e.g.
-outstanding data on the destination address. The endpoint may
+address as active if it is not so marked. The endpoint may
 optionally report to the upper layer when an inactive destination
 address is marked as active due to the reception of the latest
 HEARTBEAT ACK. The receiver of the HEARTBEAT ACK should also clear
@@ -800,9 +797,7 @@ the association overall error counter (as defined in Section 8.1).
 <section title='Solution Description'>
 <t>The new text provides a possibility to not reset the association
 overall error counter when a HEARTBEAT ACK is received if there are
-valid reasons for it. The new text also describes the reasons to not
-reset the destination error counter and the association overall
-error counter when a HEARTBEAT ACK is received.</t>
+valid reasons for it.</t>
 </section>
 </section>
 
