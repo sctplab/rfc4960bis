@@ -737,11 +737,12 @@ partial_bytes_acked and cwnd in the congestion avoidance phase.</t>
 <section title='Description of the Problem'>
 <t>Section 8.1 and Section 8.3 of <xref target="RFC4960"/>
 prescribe that the receiver of a HEARTBEAT ACK must reset the
-association overall error counter. In some circumstances, e.g. when
-a router discards DATA chunks but not HEARTBEAT chunks due to the
-larger size of the DATA chunk, it is better to not clear the
-association error counter by the HEARTBEAT ACK and reset it by the
-SACK only.</t>
+association overall error counter. In some circumstances, e.g.
+when a router discards DATA chunks but not HEARTBEAT chunks due to
+the larger size of the DATA chunk, it might be better to not clear
+the association error counter on reception of the HEARTBEAT ACK and
+reset it only on reception of the SACK to avoid stalling the 
+association.</t>
 </section>
 <section title='Text Changes to the Document'>
 <figure>
