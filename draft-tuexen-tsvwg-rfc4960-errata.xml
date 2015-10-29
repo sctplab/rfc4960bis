@@ -802,6 +802,49 @@ valid reasons for it.</t>
 </section>
 </section>
 
+<section title='Path for Fast Retransmission'>
+<!-- The following was mentioned in RFC 4460, Section 2.39 -->
+<section title='Description of the Problem'>
+<t><xref target="RFC4960"/> clearly describes where to retransmit
+data that is timed out when the peer is multi-homed but the same
+is not stated for fast retransmissions.</t>
+</section>
+<section title='Text Changes to the Document'>
+<figure>
+<artwork>
+---------
+Old text: (Section 6.4)
+---------
+
+Furthermore, when its peer is multi-homed, an endpoint SHOULD try to
+retransmit a chunk that timed out to an active destination transport
+address that is different from the last destination address to which
+the DATA chunk was sent.
+
+---------
+New text: (Section 6.4)
+---------
+
+
+Furthermore, when its peer is multi-homed, an endpoint SHOULD try to
+retransmit a chunk that timed out to an active destination transport
+address that is different from the last destination address to which
+the DATA chunk was sent.
+ 
+
+When its peer is multi-homed, an endpoint SHOULD send fast
+retransmissions to the same destination transport address where
+original data was sent to. If the primary path has been changed and
+original data was sent there before the fast retransmit, the
+implementation MAY send it to the new primary path.
+</artwork>
+</figure> 
+</section>
+<section title='Solution Description'>
+<t>The new text clarifies where to send fast retransmissions.</t>
+</section>
+</section>
+
 </section>
 
 <section title='IANA Considerations'>
