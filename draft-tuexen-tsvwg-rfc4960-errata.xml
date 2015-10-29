@@ -830,7 +830,6 @@ Furthermore, when its peer is multi-homed, an endpoint SHOULD try to
 retransmit a chunk that timed out to an active destination transport
 address that is different from the last destination address to which
 the DATA chunk was sent.
- 
 
 When its peer is multi-homed, an endpoint SHOULD send fast
 retransmissions to the same destination transport address where
