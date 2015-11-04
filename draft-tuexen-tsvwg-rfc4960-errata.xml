@@ -698,7 +698,7 @@ expiration.</t>
 <section title='Order of Adjustments of partial_bytes_acked and cwnd'>
 <!-- The correction is in accordance with RFC 3465, Section 2.1 -->
 <section title='Description of the Problem'>
-<t>Section 7.2.2 of <xref target="RFC4960"/> is unclear about the order 
+<t>Section 7.2.2 of <xref target="RFC4960"/> is unclear about the order
 of adjustments applied to partial_bytes_acked and cwnd in the congestion
 avoidance phase.</t>
 </section>
@@ -741,7 +741,7 @@ association overall error counter. In some circumstances, e.g.
 when a router discards DATA chunks but not HEARTBEAT chunks due to
 the larger size of the DATA chunk, it might be better to not clear
 the association error counter on reception of the HEARTBEAT ACK and
-reset it only on reception of the SACK to avoid stalling the 
+reset it only on reception of the SACK to avoid stalling the
 association.</t>
 </section>
 <section title='Text Changes to the Document'>
@@ -765,7 +765,7 @@ HEARTBEAT ACK is received from the peer endpoint, the counter should
 also be reset. The receiver of the HEARTBEAT ACK may choose not to
 clear the counter if there is outstanding data on the association.
 This allows for handling the possible difference in reachability
-based on DATA chunks and HEARTBEAT chunks. 
+based on DATA chunks and HEARTBEAT chunks.
 
 ---------
 Old text: (Section 8.3)
@@ -837,7 +837,7 @@ original data was sent to. If the primary path has been changed and
 original data was sent there before the fast retransmit, the
 implementation MAY send it to the new primary path.
 </artwork>
-</figure> 
+</figure>
 </section>
 <section title='Solution Description'>
 <t>The new text clarifies where to send fast retransmissions.</t>
@@ -880,12 +880,45 @@ New text: (Section 7.2.4)
     sender SHOULD ignore the value of cwnd and SHOULD NOT delay
     retransmission for this single packet.
 </artwork>
-</figure> 
+</figure>
 </section>
 <section title='Solution Description'>
 <t>The new text explicitly specifies to send only the first packet in
 the Fast Recovery phase disregarding cwnd limitations.
 </t>
+</section>
+</section>
+
+<section title='Initial Value of ssthresh'>
+<section title='Description of the Problem'>
+<t>The initial value of ssthresh should be set arbitrarily high. Using
+the advertised receiver window of the peer is inappropriate if the peer
+increases its window after the handshake.</t>
+</section>
+<section title='Text Changes to the Document'>
+<figure>
+<artwork>
+---------
+Old text: (Section 7.2.1)
+---------
+
+o  The initial value of ssthresh MAY be arbitrarily high (for
+   example, implementations MAY use the size of the receiver
+   advertised window).
+
+---------
+New text: (Section 7.2.1)
+---------
+
+o  The initial value of ssthresh MAY be arbitrarily high (for
+   example, implementations MAY use the size of the largest
+   possible advertised window).
+</artwork>
+</figure>
+</section>
+<section title='Solution Description'>
+<t>Use the same value as suggested in  <xref target="RFC5681"/>, Section 3.1,
+as an appropriate initial value.</t>
 </section>
 </section>
 
@@ -922,6 +955,7 @@ for their invaluable comments.</t>
 <references title='Informative References'>
 <?rfc include="reference.RFC.2960" ?>
 <?rfc include="reference.RFC.4460" ?>
+<?rfc include="reference.RFC.5681" ?>
 </references>
 </back>
 </rfc>
