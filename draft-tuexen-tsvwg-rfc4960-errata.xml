@@ -893,7 +893,9 @@ the Fast Recovery phase disregarding cwnd limitations.
 <section title='Description of the Problem'>
 <t>The initial value of ssthresh should be set arbitrarily high. Using
 the advertised receiver window of the peer is inappropriate if the peer
-increases its window after the handshake.</t>
+increases its window after the handshake.
+Furthermore, use a higher requirements level, since not following the advice
+may result in performance problems.</t>
 </section>
 <section title='Text Changes to the Document'>
 <figure>
@@ -910,15 +912,15 @@ o  The initial value of ssthresh MAY be arbitrarily high (for
 New text: (Section 7.2.1)
 ---------
 
-o  The initial value of ssthresh MAY be arbitrarily high (for
-   example, implementations MAY use the size of the largest
-   possible advertised window).
+o  The initial value of ssthresh SHOULD be arbitrarily high (e.g.,
+   to the size of the largest possible advertised window).
 </artwork>
 </figure>
 </section>
 <section title='Solution Description'>
 <t>Use the same value as suggested in  <xref target="RFC5681"/>, Section 3.1,
-as an appropriate initial value.</t>
+as an appropriate initial value.
+Furthermore use the same requirements level.</t>
 </section>
 </section>
 
