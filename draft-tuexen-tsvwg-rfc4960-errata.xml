@@ -918,9 +918,164 @@ o  The initial value of ssthresh SHOULD be arbitrarily high (e.g.,
 </figure>
 </section>
 <section title='Solution Description'>
-<t>Use the same value as suggested in  <xref target="RFC5681"/>, Section 3.1,
+<t>Use the same value as suggested in <xref target="RFC5681"/>, Section 3.1,
 as an appropriate initial value.
 Furthermore use the same requirements level.</t>
+</section>
+</section>
+
+<section title='Issues with Table 2'>
+<section title='Description of the Problem'>
+<t>There are two issues with Table 2 of Section 5.2.4 of <xref target="RFC4960"/>:</t>
+<t>
+1) Table 2 has value 0 of the Peer's Tag in the row with Action B while
+   value 0 is explained in Legend as 'No Tie-Tag in cookie (unknown)'.
+   More importantly is that the use case where the Peer's Tag in the cookie
+   is 0 is impossible as the receiver of the INIT chunk always fills the
+   Peer's Tag in the cookie from the received INIT. But it is possible
+   that the Peer's Tag in the TCB is unknown and this scenario is not
+   covered by Table 2.
+</t>
+<t>
+2) Action B of Table 2 assumes that when this initialization collision
+   use case happens the endpoint may already be in the ESTABLISHED state
+   while it is impossible that the endpoint is already in this state.
+</t>
+</section>
+<section title='Text Changes to the Document'>
+<figure>
+<artwork>
+---------
+Old text: (Section 5.2.4)
+---------
+
++-----------+------------+-------------+--------------+-------------+
+| Local Tag | Peer's Tag |Local-Tie-Tag|Peer's-Tie-Tag|   Action/   |
+|           |            |             |              | Description |
++-----------+------------+-------------+--------------+-------------+
+|     X     |     X      |     M       |      M       |     (A)     |
++-----------+------------+-------------+--------------+-------------+
+|     M     |     X      |     A       |      A       |     (B)     |
++-----------+------------+-------------+--------------+-------------+
+|     M     |     0      |     A       |      A       |     (B)     |
++-----------+------------+-------------+--------------+-------------+
+|     X     |     M      |     0       |      0       |     (C)     |
++-----------+------------+-------------+--------------+-------------+
+|     M     |     M      |     A       |      A       |     (D)     |
++===================================================================+
+|     Table 2: Handling of a COOKIE ECHO when a TCB Exists          |
++===================================================================+
+
+Legend:
+
+   X - Tag does not match the existing TCB.
+   M - Tag matches the existing TCB.
+   0 - No Tie-Tag in cookie (unknown).
+   A - All cases, i.e., M, X, or 0.
+
+Note: For any case not shown in Table 2, the cookie should be
+silently discarded.
+
+Action
+
+...
+
+B) In this case, both sides may be attempting to start an association
+   at about the same time, but the peer endpoint started its INIT
+   after responding to the local endpoint's INIT.  Thus, it may have
+   picked a new Verification Tag, not being aware of the previous tag
+   it had sent this endpoint.  The endpoint should stay in or enter
+   the ESTABLISHED state, but it MUST update its peer's Verification
+   Tag from the State Cookie, stop any init or cookie timers that may
+   be running, and send a COOKIE ACK.
+
+C) In this case, the local endpoint's cookie has arrived late.
+   Before it arrived, the local endpoint sent an INIT and received an
+   INIT ACK and finally sent a COOKIE ECHO with the peer's same tag
+   but a new tag of its own.  The cookie should be silently
+   discarded.  The endpoint SHOULD NOT change states and should leave
+   any timers running.
+
+D) When both local and remote tags match, the endpoint should enter
+   the ESTABLISHED state, if it is in the COOKIE-ECHOED state.  It
+   should stop any cookie timer that may be running and send a COOKIE
+   ACK.
+
+---------
+New text: (Section 5.2.4)
+---------
+
+
++-----------+------------+-------------+--------------+-------------+
+| Local Tag | Peer's Tag |Local-Tie-Tag|Peer's-Tie-Tag|   Action/   |
+|           |            |             |              | Description |
++-----------+------------+-------------+--------------+-------------+
+|     X     |     X      |     M       |      M       |     (A)     |
++-----------+------------+-------------+--------------+-------------+
+|     M     |     X      |     A       |      A       |     (B)     |
++-----------+------------+-------------+--------------+-------------+
+|     M     |     U      |     A       |      A       |     (C)     |
++-----------+------------+-------------+--------------+-------------+
+|     X     |     M      |     0       |      0       |     (D)     |
++-----------+------------+-------------+--------------+-------------+
+|     M     |     M      |     A       |      A       |     (E)     |
++===================================================================+
+|     Table 2: Handling of a COOKIE ECHO when a TCB Exists          |
++===================================================================+
+
+Legend:
+
+   X - Tag does not match the existing TCB.
+   M - Tag matches the existing TCB.
+   0 - No Tie-Tag in cookie (unknown).
+   U - Peer's Tag in the existing TCB is unknown
+   A - All cases, i.e., M, X, or 0.
+
+Note: For any case not shown in Table 2, the cookie should be
+silently discarded.
+
+Action
+
+...
+
+B) In this case, both sides may be attempting to start an association
+   at about the same time, but the peer endpoint started its INIT
+   after responding to the local endpoint's INIT. Thus, it may have
+   picked a new Verification Tag, not being aware of the previous tag
+   it had sent this endpoint. The endpoint should enter the
+   ESTABLISHED state and MUST update its peer's Verification Tag from
+   the State Cookie, stop any init or cookie timers that may be
+   running, and send a COOKIE ACK.
+
+C) In this case, both sides may be attempting to start an association
+   at about the same time and both sides received INIT in the
+   COOKIE-WAIT state, but the INIT from the peer is lost or received
+   later than the COOKIE ECHO. Thus, the peer's Verification Tag in
+   the TCB is unknown at COOKIE ECHO receiving. The endpoint should
+   enter the ESTABLISHED state and MUST update its peer's
+   Verification Tag from the State Cookie, stop any init or cookie
+   timers that may be running, and send a COOKIE ACK.
+
+D) In this case, the local endpoint's cookie has arrived late.
+   Before it arrived, the local endpoint sent an INIT and received an
+   INIT ACK and finally sent a COOKIE ECHO with the peer's same tag
+   but a new tag of its own.  The cookie should be silently
+   discarded. The endpoint SHOULD NOT change states and should leave
+   any timers running.
+
+E) When both local and remote tags match, the endpoint should enter
+   the ESTABLISHED state, if it is in the COOKIE-ECHOED state. It
+   should stop any cookie timer that may be running and send a COOKIE
+   ACK.
+</artwork>
+</figure>
+</section>
+<section title='Solution Description'>
+<t>Value 0 of the Peer's Tag in Table 2 is replaced by U which means
+that the peer's Verification Tag in the existing TCB is unknown. A new
+action describing the behavior for this case is added. The new text of
+Action B does not assume a situation when the endpoint is already in
+the ESTABLISHED state.</t>
 </section>
 </section>
 
