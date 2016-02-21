@@ -924,6 +924,195 @@ Furthermore use the same requirements level.</t>
 </section>
 </section>
 
+<section title='Inconsistency in Notifications to the ULP'>
+<section title='Description of the Problem'>
+<t><xref target="RFC4960"/> uses different normative and
+non-normative keywords when describing rules for sending
+notifications to the ULP. E.g. Section 8.2 says that when
+a destination address becomes inactive due to an unacknowledged
+DATA or HEARTBEAT, SCTP SHOULD send a notification to the upper
+layer while Section 8.3 says that when a destination address
+becomes inactive due to an unacknowledged HEARTBEAT, SCTP may
+send a notification to the upper layer. This makes the text
+inconsistent.</t>
+</section>
+<section title='Text Changes to the Document'>
+<figure>
+<artwork>
+---------
+Old text: (Section 8.1)
+---------
+
+An endpoint shall keep a counter on the total number of consecutive
+retransmissions to its peer (this includes retransmissions to all the
+destination transport addresses of the peer if it is multi-homed),
+including unacknowledged HEARTBEAT chunks.  If the value of this
+counter exceeds the limit indicated in the protocol parameter
+'Association.Max.Retrans', the endpoint shall consider the peer
+endpoint unreachable and shall stop transmitting any more data to it
+(and thus the association enters the CLOSED state).  In addition, the
+endpoint MAY report the failure to the upper layer and optionally
+report back all outstanding user data remaining in its outbound
+queue.  The association is automatically closed when the peer
+endpoint becomes unreachable.
+
+---------
+New text: (Section 8.1)
+---------
+
+An endpoint shall keep a counter on the total number of consecutive
+retransmissions to its peer (this includes data retransmissions
+to all the destination transport addresses of the peer if it is
+multi-homed), including the number of unacknowledged HEARTBEAT
+chunks observed on the path which currently is used for data
+transfer. Unacknowledged HEARTBEAT chunks observed on paths
+different from the path currently used for data transfer shall
+not increment the association error counter, as this could lead
+to association closure even if the path which currently is used for
+data transfer is available (but idle). If the value of this
+counter exceeds the limit indicated in the protocol parameter
+'Association.Max.Retrans', the endpoint shall consider the peer
+endpoint unreachable and shall stop transmitting any more data to it
+(and thus the association enters the CLOSED state).  In addition, the
+endpoint SHOULD report the failure to the upper layer and optionally
+report back all outstanding user data remaining in its outbound
+queue.  The association is automatically closed when the peer
+endpoint becomes unreachable.
+
+---------
+Old text: (Section 8.2)
+---------
+
+When an outstanding TSN is acknowledged or a HEARTBEAT sent to that
+address is acknowledged with a HEARTBEAT ACK, the endpoint shall
+clear the error counter of the destination transport address to which
+the DATA chunk was last sent (or HEARTBEAT was sent).  When the peer
+endpoint is multi-homed and the last chunk sent to it was a
+retransmission to an alternate address, there exists an ambiguity as
+to whether or not the acknowledgement should be credited to the
+address of the last chunk sent.  However, this ambiguity does not
+seem to bear any significant consequence to SCTP behavior.  If this
+ambiguity is undesirable, the transmitter may choose not to clear the
+error counter if the last chunk sent was a retransmission.
+
+---------
+New text: (Section 8.2)
+---------
+
+When an outstanding TSN is acknowledged or a HEARTBEAT sent to that
+address is acknowledged with a HEARTBEAT ACK, the endpoint shall
+clear the error counter of the destination transport address to which
+the DATA chunk was last sent (or HEARTBEAT was sent), and SHOULD
+also report to the upper layer when an inactive destination address
+is marked as active. When the peer endpoint is multi-homed and the
+last chunk sent to it was a retransmission to an alternate address,
+there exists an ambiguity as to whether or not the acknowledgement
+should be credited to the address of the last chunk sent. However,
+this ambiguity does not seem to bear any significant consequence to
+SCTP behavior. If this ambiguity is undesirable, the transmitter may
+choose not to clear the error counter if the last chunk sent was a
+retransmission.
+
+---------
+Old text: (Section 8.3)
+---------
+
+When the value of this counter reaches the protocol parameter
+'Path.Max.Retrans', the endpoint should mark the corresponding
+destination address as inactive if it is not so marked, and may also
+optionally report to the upper layer the change of reachability of
+this destination address.  After this, the endpoint should continue
+HEARTBEAT on this destination address but should stop increasing the
+counter.
+
+---------
+New text: (Section 8.3)
+---------
+
+When the value of this counter exceeds the protocol parameter
+'Path.Max.Retrans', the endpoint should mark the corresponding
+destination address as inactive if it is not so marked, and SHOULD
+also report to the upper layer the change of reachability of this
+destination address.  After this, the endpoint should continue
+HEARTBEAT on this destination address but should stop increasing the
+counter.
+
+---------
+Old text: (Section 8.3)
+---------
+
+Upon the receipt of the HEARTBEAT ACK, the sender of the HEARTBEAT
+should clear the error counter of the destination transport address
+to which the HEARTBEAT was sent, and mark the destination transport
+address as active if it is not so marked.  The endpoint may
+optionally report to the upper layer when an inactive destination
+address is marked as active due to the reception of the latest
+HEARTBEAT ACK.  The receiver of the HEARTBEAT ACK must also clear the
+association overall error count as well (as defined in Section 8.1).
+
+---------
+New text: (Section 8.3)
+---------
+
+Upon the receipt of the HEARTBEAT ACK, the sender of the HEARTBEAT
+should clear the error counter of the destination transport address
+to which the HEARTBEAT was sent, and mark the destination transport
+address as active if it is not so marked. The endpoint SHOULD
+report to the upper layer when an inactive destination address
+is marked as active due to the reception of the latest
+HEARTBEAT ACK. The receiver of the HEARTBEAT ACK should also clear
+the association overall error counter (as defined in Section 8.1).
+
+---------
+Old text: (Section 9.2)
+---------
+
+An endpoint should limit the number of retransmissions of the
+SHUTDOWN chunk to the protocol parameter 'Association.Max.Retrans'.
+If this threshold is exceeded, the endpoint should destroy the TCB
+and MUST report the peer endpoint unreachable to the upper layer (and
+thus the association enters the CLOSED state).
+
+---------
+New text: (Section 9.2)
+---------
+
+An endpoint should limit the number of retransmissions of the
+SHUTDOWN chunk to the protocol parameter 'Association.Max.Retrans'.
+If this threshold is exceeded, the endpoint should destroy the TCB
+and SHOULD report the peer endpoint unreachable to the upper layer
+(and thus the association enters the CLOSED state).
+
+---------
+Old text: (Section 9.2)
+---------
+
+The sender of the SHUTDOWN ACK should limit the number of
+retransmissions of the SHUTDOWN ACK chunk to the protocol parameter
+'Association.Max.Retrans'.  If this threshold is exceeded, the
+endpoint should destroy the TCB and may report the peer endpoint
+unreachable to the upper layer (and thus the association enters the
+CLOSED state).
+
+---------
+New text: (Section 9.2)
+---------
+
+The sender of the SHUTDOWN ACK should limit the number of
+retransmissions of the SHUTDOWN ACK chunk to the protocol parameter
+'Association.Max.Retrans'. If this threshold is exceeded, the
+endpoint should destroy the TCB and SHOULD report the peer endpoint
+unreachable to the upper layer (and thus the association enters the
+CLOSED state).
+</artwork>
+</figure>
+</section>
+<section title='Solution Description'>
+<t>The inconsistency is removed. 
+Note that the new text also includes updates from earlier described issues.</t>
+</section>
+</section>
+
 </section>
 
 <section title='IANA Considerations'>
