@@ -948,9 +948,9 @@ Old text: (Section 5.4)
 New text: (Section 5.4)
 ---------
 
-1)  Any address passed to the sender of the INIT by its upper layer
-   in the request to initialize an association is automatically
-   considered to be CONFIRMED.
+1)  Any addresses passed to the sender of the INIT by its upper
+   layer in the request to initialize an association is
+   automatically considered to be CONFIRMED.
 </artwork>
 </figure>
 </section>
