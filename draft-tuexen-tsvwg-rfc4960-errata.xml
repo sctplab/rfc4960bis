@@ -924,6 +924,42 @@ Furthermore use the same requirements level.</t>
 </section>
 </section>
 
+<section title='Only One Packet after Retransmission Timeout'>
+<section title='Description of the Problem'>
+<t><xref target="RFC4960"/> is not completely clear when it describes data
+transmission after T3-rtx timer expiration. Section 7.2.1 does not specify
+how many packets are allowed to be sent after T3-rtx timer expiration if
+more than one packet fits cwnd. At the same time, Section 7.2.3  has the text
+without capital words saying that SCTP should ensure that no more than one
+packet will be in flight after T3-rtx timer expiration until successful
+acknowledgment. It makes the text inconsistent.</t>
+</section>
+<section title='Text Changes to the Document'>
+<figure>
+<artwork>
+---------
+Old text: (Section 7.2.1)
+---------
+
+o  The initial cwnd after a retransmission timeout MUST be no more
+   than 1*MTU.
+
+---------
+New text: (Section 7.2.1)
+---------
+
+o  The initial cwnd after a retransmission timeout MUST be no more
+   than 1*MTU and only one packet is allowed to be sent in flight
+   until successful acknowledgement.
+</artwork>
+</figure>
+</section>
+<section title='Solution Description'>
+<t>The new text clearly specifies that only one packet is allowed to be
+sent after T3-rtx timer expiration until successful acknowledgement.</t>
+</section>
+</section>
+
 </section>
 
 <section title='IANA Considerations'>
