@@ -924,6 +924,43 @@ Furthermore use the same requirements level.</t>
 </section>
 </section>
 
+<section title='Automatically Confirmed Addresses'>
+<section title='Description of the Problem'>
+<t>The Path Verification procedure of <xref target="RFC4960"/>
+prescribes that any address passed to the sender of the INIT by its
+upper layer is automatically CONFIRMED. This however is unclear if
+only addresses in the request to initiate association establishment
+are considered or any addresses provided by the upper layer in any
+requests (e.g. in 'Set Primary').
+</t>
+</section>
+<section title='Text Changes to the Document'>
+<figure>
+<artwork>
+---------
+Old text: (Section 5.4)
+---------
+
+1)  Any address passed to the sender of the INIT by its upper layer
+   is automatically considered to be CONFIRMED.
+
+---------
+New text: (Section 5.4)
+---------
+
+1)  Any addresses passed to the sender of the INIT by its upper
+   layer in the request to initialize an association is
+   automatically considered to be CONFIRMED.
+</artwork>
+</figure>
+</section>
+<section title='Solution Description'>
+<t>The new text clarifies that only addresses provided by the upper
+layer in the request to initialize an association are automatically
+confirmed.</t>
+</section>
+</section>
+
 </section>
 
 <section title='IANA Considerations'>
