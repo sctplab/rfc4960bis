@@ -997,6 +997,60 @@ sent after T3-rtx timer expiration until successful acknowledgement.</t>
 </section>
 </section>
 
+<section title='INIT ACK Path for INIT in COOKIE-WAIT State'>
+<section title='Description of the Problem'>
+<t>In case of an INIT received in the COOKIE-WAIT state
+<xref target="RFC4960"/> prescribes to send an INIT ACK to the
+same destination address to which the original INIT has been sent.
+This text does not address the possibility of the upper layer to
+provide multiple remote IP addresses while requesting the association
+establishment. If the upper layer has provided multiple IP
+addresses and only a subset of these addresses are supported by the
+peer then the destination address of the original INIT may be
+absent in the incoming INIT and sending INIT ACK to that address
+is useless.</t>
+</section>
+<section title='Text Changes to the Document'>
+<figure>
+<artwork>
+---------
+Old text: (Section 5.2.1)
+---------
+
+Upon receipt of an INIT in the COOKIE-WAIT state, an endpoint MUST
+respond with an INIT ACK using the same parameters it sent in its
+original INIT chunk (including its Initiate Tag, unchanged).  When
+responding, the endpoint MUST send the INIT ACK back to the same
+address that the original INIT (sent by this endpoint) was sent.
+
+---------
+New text: (Section 5.2.1)
+---------
+
+Upon receipt of an INIT in the COOKIE-WAIT state, an endpoint MUST
+respond with an INIT ACK using the same parameters it sent in its
+original INIT chunk (including its Initiate Tag, unchanged). When
+responding, the following rules MUST be applied:
+
+1)  The INIT ACK MUST only be sent to an address passed by the upper
+    layer in the request to initialize the association.
+
+2)  The INIT ACK MUST only be sent to an address reported in the
+    incoming INIT.
+
+3)  The INIT ACK SHOULD be sent to the source address of the
+    received INIT.
+</artwork>
+</figure>
+</section>
+<section title='Solution Description'>
+<t>The new text requires sending INIT ACK to the destination address
+that is passed by the upper layer and reported in the incoming INIT.
+If the source address of the INIT fulfills it then sending the
+INIT ACK to the source address of the INIT is the preferred behavior.</t>
+</section>
+</section>
+
 </section>
 
 <section title='IANA Considerations'>
