@@ -1097,6 +1097,53 @@ do not acknowledge the probes.</t>
 </section>
 </section>
 
+<section title='Increase of partial_bytes_acked'>
+<section title='Description of the Problem'>
+<t>Two issues have been discovered with Section 7.2.2 where it describes
+when SCTP should increase partial_bytes_acked and these issues make cwnd
+increase deficient:</t>
+
+<t>o  If the Cumulative TSN Ack Point is not advanced but SACK acknowledges
+   new TSNs by means of Gap Ack Blocks these acknowledged TSNs are not
+   considered in partial_bytes_acked while TSNs from Gap Ack Blocks were
+   successfully received by the peer.</t>
+
+<t>o  Duplicated acknowledges are not considered in partial_bytes_acked while
+   they confirm that data was successfully received by the peer.</t>
+</section>
+<section title='Text Changes to the Document'>
+<figure>
+<artwork>
+---------
+Old text: (Section 7.2.2)
+---------
+
+o  Whenever cwnd is greater than ssthresh, upon each SACK arrival
+   that advances the Cumulative TSN Ack Point, increase
+   partial_bytes_acked by the total number of bytes of all new chunks
+   acknowledged in that SACK including chunks acknowledged by the new
+   Cumulative TSN Ack and by Gap Ack Blocks.
+
+---------
+New text: (Section 7.2.2)
+---------
+
+o  Whenever cwnd is greater than ssthresh, upon each SACK arrival,
+   increase partial_bytes_acked by the total number of bytes of all
+   new chunks acknowledged in that SACK including chunks acknowledged
+   by the new Cumulative TSN Ack, by Gap Ack Blocks and by the number
+   of bytes of duplicated chunks reported in Duplicate TSNs.
+</artwork>
+</figure>
+</section>
+<section title='Solution Description'>
+<t>Now partial_bytes_acked increase covers TSNs reported as duplicated
+as well as TSNs acknowledged by Gap Ack Blocks even if the Cumulative TSN Ack Point
+is not advanced.</t>
+</section>
+</section>
+
+
 </section>
 
 <section title='IANA Considerations'>
