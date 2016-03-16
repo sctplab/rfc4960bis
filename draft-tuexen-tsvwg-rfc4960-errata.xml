@@ -609,7 +609,7 @@ o  Receive Unacknowledged Message
 New text: (Section 10.1)
 ---------
 
-O  Receive Unacknowledged Message
+O) Receive Unacknowledged Message
 
    Format: RECEIVE_UNACKED(data retrieval id, buffer address, buffer
            size, [,stream id] [, stream sequence number] [,partial
