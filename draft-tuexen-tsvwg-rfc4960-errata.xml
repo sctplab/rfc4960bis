@@ -1097,11 +1097,11 @@ do not acknowledge the probes.</t>
 </section>
 </section>
 
-<section title='Key Words in Section 10'>
+<section title='Normative Language in Section 10'>
 <section title='Description of the Problem'>
-<t>Section 10 of <xref target="RFC4960"/> is informative and key words
-such as MUST cannot be used there. However, there are several places
-in Section 10 where MUST and MAY are used.</t>
+<t>Section 10 of <xref target="RFC4960"/> is informative and normative language
+such as MUST and MAY cannot be used there.
+However, there are several places in Section 10 where MUST and MAY are used.</t>
 </section>
 <section title='Text Changes to the Document'>
 <figure>
@@ -1259,7 +1259,7 @@ o  partial flag - if this returned flag is set to 1, then this
 </figure>
 </section>
 <section title='Solution Description'>
-<t>The key words MUST and MAY are removed from Section 10.</t>
+<t>The normative language is removed from Section 10.</t>
 </section>
 </section>
 
