@@ -1097,6 +1097,58 @@ do not acknowledge the probes.</t>
 </section>
 </section>
 
+<section title='Outstanding Data, Flightsize and Data In Flight Key Terms'>
+<section title='Description of the Problem'>
+<t><xref target="RFC4960"/> uses outstanding data, flightsize and data in
+flight key terms in formulas and statements but their definitions are not
+provided in Section 1.3.</t>
+</section>
+<section title='Text Changes to the Document'>
+<figure>
+<artwork>
+---------
+Old text: (Section 1.3)
+---------
+
+o  Congestion window (cwnd): An SCTP variable that limits the data,
+   in number of bytes, a sender can send to a particular destination
+   transport address before receiving an acknowledgement.
+
+...
+
+o  Outstanding TSN (at an SCTP endpoint): A TSN (and the associated
+   DATA chunk) that has been sent by the endpoint but for which it
+   has not yet received an acknowledgement.
+
+---------
+New text: (Section 1.3)
+---------
+
+o  Outstanding TSN (at an SCTP endpoint): A TSN (and the associated
+   DATA chunk) that has been sent by the endpoint but for which it
+   has not yet received an acknowledgement.
+
+o  Outstanding data (or Data in flight): The total amount of user 
+   data in all the DATA chunks associated with outstanding TSNs. 
+   A retransmitted DATA chunk is counted once in outstanding data. 
+   A DATA chunk which is classified is lost but which has not been
+   retransmitted yet is not in outstanding data.
+
+o  Flightsize: The amount of bytes of outstanding data to a 
+   particular destination transport address at any given time. 
+
+o  Congestion window (cwnd): An SCTP variable that limits outstanding
+   data, in number of bytes, a sender can send to a particular
+   destination transport address before receiving an acknowledgement.
+</artwork>
+</figure>
+</section>
+<section title='Solution Description'>
+<t>Now Section 1.3, Key Terms, includes explanation of outstanding data,
+data in flight and flightsize key terms.</t>
+</section>
+</section>
+
 </section>
 
 <section title='IANA Considerations'>
