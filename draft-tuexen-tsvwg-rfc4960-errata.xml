@@ -1321,8 +1321,8 @@ o  Whenever cwnd is greater than ssthresh, upon each SACK arrival,
 </figure>
 </section>
 <section title='Solution Description'>
-<t>Now partial_bytes_acked increase covers TSNs reported as duplicated
-as well as TSNs acknowledged by Gap Ack Blocks even if the
+<t>Now partial_bytes_acked is increased by TSNs reported as duplicated
+as well as TSNs newly acknowledged in Gap Ack Blocks even if the
 Cumulative TSN Ack Point is not advanced.</t>
 </section>
 </section>
