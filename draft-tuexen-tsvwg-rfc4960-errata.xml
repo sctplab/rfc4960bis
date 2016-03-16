@@ -1255,11 +1255,75 @@ o  partial flag - if this returned flag is set to 1, then this
    accompany this receive.  When this flag is set to 0, it indicates
    that no more deliveries will be received for this Stream Sequence
    Number.
+=======
+Old text: (Section 7.2.2)
+---------
+
+o  Whenever cwnd is greater than ssthresh, upon each SACK arrival
+   that advances the Cumulative TSN Ack Point, increase
+   partial_bytes_acked by the total number of bytes of all new chunks
+   acknowledged in that SACK including chunks acknowledged by the new
+   Cumulative TSN Ack and by Gap Ack Blocks.
+
+---------
+New text: (Section 7.2.2)
+---------
+
+o  Whenever cwnd is greater than ssthresh, upon each SACK arrival,
+   increase partial_bytes_acked by the total number of bytes of all
+   new chunks acknowledged in that SACK including chunks acknowledged
+   by the new Cumulative TSN Ack, by Gap Ack Blocks and by the number
+   of bytes of duplicated chunks reported in Duplicate TSNs.
 </artwork>
 </figure>
 </section>
 <section title='Solution Description'>
 <t>The normative language is removed from Section 10.</t>
+</section>
+</section>
+
+<section title='Increase of partial_bytes_acked in Congestion Avoidance'>
+<section title='Description of the Problem'>
+<t>Two issues have been discovered with the partial_bytes_acked handling
+described in Section 7.2.2 of <xref target="RFC4960"/>:
+<list style='symbols'>
+<t>If the Cumulative TSN Ack Point is not advanced but the SACK chunk
+acknowledges new TSNs in the Gap Ack Blocks, these newly acknowledged TSNs
+are not considered for partial_bytes_acked although these TSNs were
+successfully received by the peer.</t>
+<t>Duplicate TSNs are not considered in partial_bytes_acked although
+they confirm that the DATA chunks were successfully received by the peer.</t>
+</list></t>
+</section>
+<section title='Text Changes to the Document'>
+<figure>
+<artwork>
+---------
+Old text: (Section 7.2.2)
+---------
+
+o  Whenever cwnd is greater than ssthresh, upon each SACK arrival
+   that advances the Cumulative TSN Ack Point, increase
+   partial_bytes_acked by the total number of bytes of all new chunks
+   acknowledged in that SACK including chunks acknowledged by the new
+   Cumulative TSN Ack and by Gap Ack Blocks.
+
+---------
+New text: (Section 7.2.2)
+---------
+
+o  Whenever cwnd is greater than ssthresh, upon each SACK arrival,
+   increase partial_bytes_acked by the total number of bytes of all
+   new chunks acknowledged in that SACK including chunks acknowledged
+   by the new Cumulative TSN Ack, by Gap Ack Blocks and by the number
+   of bytes of duplicated chunks reported in Duplicate TSNs.
+</artwork>
+</figure>
+</section>
+<section title='Solution Description'>
+<t>Now partial_bytes_acked increase covers TSNs reported as duplicated
+as well as TSNs acknowledged by Gap Ack Blocks even if the
+Cumulative TSN Ack Point is not advanced.</t>
 </section>
 </section>
 
