@@ -1097,6 +1097,172 @@ do not acknowledge the probes.</t>
 </section>
 </section>
 
+<section title='Key Words in Section 10'>
+<section title='Description of the Problem'>
+<t>Section 10 of <xref target="RFC4960"/> is informative and key words
+such as MUST cannot be used there. However, there are several places
+in Section 10 where MUST and MAY are used.</t>
+</section>
+<section title='Text Changes to the Document'>
+<figure>
+<artwork>
+---------
+Old text: (Section 10.1)
+---------
+
+E) Send
+
+ Format: SEND(association id, buffer address, byte count [,context]
+         [,stream id] [,life time] [,destination transport address]
+         [,unordered flag] [,no-bundle flag] [,payload protocol-id] )
+ -> result
+
+...
+
+o  no-bundle flag - instructs SCTP not to bundle this user data with
+   other outbound DATA chunks.  SCTP MAY still bundle even when this
+   flag is present, when faced with network congestion.
+
+---------
+New text: (Section 10.1)
+---------
+
+E) Send
+
+ Format: SEND(association id, buffer address, byte count [,context]
+         [,stream id] [,life time] [,destination transport address]
+         [,unordered flag] [,no-bundle flag] [,payload protocol-id] )
+ -> result
+
+...
+
+o  no-bundle flag - instructs SCTP not to bundle this user data with
+   other outbound DATA chunks.  SCTP may still bundle even when this
+   flag is present, when faced with network congestion.
+
+---------
+Old text: (Section 10.1)
+---------
+
+G) Receive
+
+ Format: RECEIVE(association id, buffer address, buffer size
+         [,stream id])
+ -> byte count [,transport address] [,stream id] [,stream sequence
+    number] [,partial flag] [,delivery number] [,payload protocol-id]
+
+...
+
+o  partial flag - if this returned flag is set to 1, then this
+   Receive contains a partial delivery of the whole message.  When
+   this flag is set, the stream id and Stream Sequence Number MUST
+   accompany this receive.  When this flag is set to 0, it indicates
+   that no more deliveries will be received for this Stream Sequence
+   Number.
+
+---------
+New text: (Section 10.1)
+---------
+
+G) Receive
+
+ Format: RECEIVE(association id, buffer address, buffer size
+         [,stream id])
+ -> byte count [,transport address] [,stream id] [,stream sequence
+    number] [,partial flag] [,delivery number] [,payload protocol-id]
+
+...
+
+o  partial flag - if this returned flag is set to 1, then this
+   Receive contains a partial delivery of the whole message.  When
+   this flag is set, the stream id and Stream Sequence Number must
+   accompany this receive.  When this flag is set to 0, it indicates
+   that no more deliveries will be received for this Stream Sequence
+   Number.
+
+---------
+Old text: (Section 10.1)
+---------
+
+N) Receive Unsent Message
+
+   Format: RECEIVE_UNSENT(data retrieval id, buffer address, buffer
+           size [,stream id] [, stream sequence number] [,partial
+           flag] [,payload protocol-id])
+
+...
+
+o  partial flag - if this returned flag is set to 1, then this
+   message is a partial delivery of the whole message.  When this
+   flag is set, the stream id and Stream Sequence Number MUST
+   accompany this receive.  When this flag is set to 0, it indicates
+   that no more deliveries will be received for this Stream Sequence
+   Number.
+
+---------
+New text: (Section 10.1)
+---------
+
+N) Receive Unsent Message
+
+   Format: RECEIVE_UNSENT(data retrieval id, buffer address, buffer
+           size [,stream id] [, stream sequence number] [,partial
+           flag] [,payload protocol-id])
+
+...
+
+o  partial flag - if this returned flag is set to 1, then this
+   message is a partial delivery of the whole message.  When this
+   flag is set, the stream id and Stream Sequence Number must
+   accompany this receive.  When this flag is set to 0, it indicates
+   that no more deliveries will be received for this Stream Sequence
+   Number.
+
+---------
+Old text: (Section 10.1)
+---------
+
+O) Receive Unacknowledged Message
+
+   Format: RECEIVE_UNACKED(data retrieval id, buffer address, buffer
+           size, [,stream id] [, stream sequence number] [,partial
+           flag] [,payload protocol-id])
+
+...
+
+o  partial flag - if this returned flag is set to 1, then this
+   message is a partial delivery of the whole message.  When this
+   flag is set, the stream id and Stream Sequence Number MUST
+   accompany this receive.  When this flag is set to 0, it indicates
+   that no more deliveries will be received for this Stream Sequence
+   Number.
+
+---------
+New text: (Section 10.1)
+---------
+
+O) Receive Unacknowledged Message
+
+   Format: RECEIVE_UNACKED(data retrieval id, buffer address, buffer
+           size, [,stream id] [, stream sequence number] [,partial
+           flag] [,payload protocol-id])
+
+...
+
+o  partial flag - if this returned flag is set to 1, then this
+   message is a partial delivery of the whole message.  When this
+   flag is set, the stream id and Stream Sequence Number must
+   accompany this receive.  When this flag is set to 0, it indicates
+   that no more deliveries will be received for this Stream Sequence
+   Number.
+</artwork>
+</figure>
+</section>
+<section title='Solution Description'>
+<t>The key words MUST and MAY are removed from Section 10.</t>
+</section>
+</section>
+
 </section>
 
 <section title='IANA Considerations'>
