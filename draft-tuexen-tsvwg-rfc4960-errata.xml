@@ -1407,7 +1407,7 @@ queue.  The association is automatically closed when the peer
 endpoint becomes unreachable.
 </artwork>
 </figure>
-<t>The following cahnges are based on <xref target='RFC4960'/>.</t>
+<t>The following changes are based on <xref target='RFC4960'/>.</t>
 <figure>
 <artwork>
 ---------
