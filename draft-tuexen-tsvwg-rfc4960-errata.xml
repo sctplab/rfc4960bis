@@ -1128,8 +1128,8 @@ o  Outstanding TSN (at an SCTP endpoint): A TSN (and the associated
    DATA chunk) that has been sent by the endpoint but for which it
    has not yet received an acknowledgement.
 
-o  Outstanding data (or Data in flight): The total amount of user 
-   data in all the DATA chunks associated with outstanding TSNs. 
+o  Outstanding data (or Data outstanding or Data in flight): The
+   total amount of the DATA chunks associated with outstanding TSNs. 
    A retransmitted DATA chunk is counted once in outstanding data. 
    A DATA chunk which is classified is lost but which has not been
    retransmitted yet is not in outstanding data.
