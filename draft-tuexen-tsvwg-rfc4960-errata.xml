@@ -65,6 +65,20 @@ ToDo
 </address>
 </author>
 
+<!-- ************** MAKSIM PROSHIN *************** -->
+<author initials="M." surname="Proshin" fullname="Maksim Proshin">
+<organization>Ericsson</organization>
+<address>
+    <postal>
+        <street>Kistavaegen 25</street>
+        <city>Stockholm</city>
+        <code> 164 80</code>
+        <country>Sweden</country>
+    </postal>
+    <email>mproshin@tieto.mera.ru</email>
+</address>
+</author>
+
 <date  />
 
 <abstract>
@@ -1545,10 +1559,9 @@ in <xref target="RFC4960"/>.</t>
 Pontus Andersson,
 Eric W. Biederman,
 Jeff Morriss,
-Tom Petch,
-Julien Pourtet,
+Tom Petch
 and
-Maxim Proshin
+Julien Pourtet
 for their invaluable comments.</t>
 </section>
 
