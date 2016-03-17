@@ -944,9 +944,15 @@ Old text: (Section 8.1)
 ---------
 
 An endpoint shall keep a counter on the total number of consecutive
-retransmissions to its peer (this includes retransmissions to all the
-destination transport addresses of the peer if it is multi-homed),
-including unacknowledged HEARTBEAT chunks.  If the value of this
+retransmissions to its peer (this includes data retransmissions
+to all the destination transport addresses of the peer if it is
+multi-homed), including the number of unacknowledged HEARTBEAT
+chunks observed on the path which currently is used for data
+transfer. Unacknowledged HEARTBEAT chunks observed on paths
+different from the path currently used for data transfer shall
+not increment the association error counter, as this could lead
+to association closure even if the path which currently is used for
+data transfer is available (but idle). If the value of this
 counter exceeds the limit indicated in the protocol parameter
 'Association.Max.Retrans', the endpoint shall consider the peer
 endpoint unreachable and shall stop transmitting any more data to it
