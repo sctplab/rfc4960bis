@@ -51,20 +51,6 @@ ToDo
 </address>
 </author>
 
-<!-- ************** KAREN NIELSEN *************** -->
-<author initials="K. E. E." surname="Nielsen" fullname="Karen E. E. Nielsen">
-<organization>Ericsson</organization>
-<address>
-    <postal>
-        <street>Kistavaegen 25</street>
-        <city>Stockholm</city>
-        <code> 164 80</code>
-        <country>Sweden</country>
-    </postal>
-    <email>karen.nielsen@tieto.com</email>
-</address>
-</author>
-
 <!-- ************** MAKSIM PROSHIN *************** -->
 <author initials="M." surname="Proshin" fullname="Maksim Proshin">
 <organization>Ericsson</organization>
@@ -1559,6 +1545,7 @@ in <xref target="RFC4960"/>.</t>
 Pontus Andersson,
 Eric W. Biederman,
 Jeff Morriss,
+Karen E. E. Nielsen,
 Tom Petch
 and
 Julien Pourtet
