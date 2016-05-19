@@ -8,7 +8,7 @@
 
 <rfc category="info"
      ipr="trust200902"
-     docName="draft-tuexen-tsvwg-rfc4960-errata-03a.txt">
+     docName="draft-tuexen-tsvwg-rfc4960-errata-03.txt">
 <front>
 
 <!--
@@ -1536,6 +1536,8 @@ The timer value for this is a parameter and Section 6.2 of
 <xref target='RFC4960'/> specifies a default and maximum value for it.
 However, defining a name for this parameter and listing it in the table
 of protocol parameters in Section 15 of <xref target='RFC4960'/> is missing.</t>
+<t>This issue was reported as an Errata for <xref target="RFC4960"/> with
+Errata ID 4656.</t>
 </section>
 <section title='Text Changes to the Document'>
 <figure>
