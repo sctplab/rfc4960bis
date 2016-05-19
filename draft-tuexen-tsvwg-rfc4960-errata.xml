@@ -1529,6 +1529,81 @@ CLOSED state).
 </section>
 </section>
 
+<section title='SACK.Delay not listed as a Protocol Parameter'>
+<section title='Description of the Problem'>
+<t>SCTP as specified in <xref target='RFC4960'/> supports delaying SACKs.
+The timer value for this is a parameter and Section 6.2 of
+<xref target='RFC4960'/> specifies a default and maximum value for it.
+However, defining a name for this parameter and listing it in the table
+of protocol parameters in Section 15 of <xref target='RFC4960'/> is missing.</t>
+</section>
+<section title='Text Changes to the Document'>
+<figure>
+<artwork>
+---------
+Old text: (Section 6.2)
+---------
+
+An implementation MUST NOT allow the maximum delay to be configured
+to be more than 500 ms.  In other words, an implementation MAY lower
+this value below 500 ms but MUST NOT raise it above 500 ms.
+
+---------
+New text: (Section 6.2)
+---------
+
+An implementation MUST NOT allow the maximum delay (protocol
+parameter 'SACK.Delay') to be configured to be more than 500 ms.
+In other words, an implementation MAY lower the value of
+SACK.Delay below 500 ms but MUST NOT raise it above 500 ms.
+
+---------
+Old text: (Section 15)
+---------
+
+The following protocol parameters are RECOMMENDED:
+
+   RTO.Initial - 3 seconds
+   RTO.Min - 1 second
+   RTO.Max - 60 seconds
+   Max.Burst - 4
+   RTO.Alpha - 1/8
+   RTO.Beta - 1/4
+   Valid.Cookie.Life - 60 seconds
+   Association.Max.Retrans - 10 attempts
+   Path.Max.Retrans - 5 attempts (per destination address)
+   Max.Init.Retransmits - 8 attempts
+   HB.interval - 30 seconds
+   HB.Max.Burst - 1
+
+---------
+New text: (Section 15)
+---------
+
+The following protocol parameters are RECOMMENDED:
+
+   RTO.Initial - 3 seconds
+   RTO.Min - 1 second
+   RTO.Max - 60 seconds
+   Max.Burst - 4
+   RTO.Alpha - 1/8
+   RTO.Beta - 1/4
+   Valid.Cookie.Life - 60 seconds
+   Association.Max.Retrans - 10 attempts
+   Path.Max.Retrans - 5 attempts (per destination address)
+   Max.Init.Retransmits - 8 attempts
+   HB.interval - 30 seconds
+   HB.Max.Burst - 1
+   SACK.Delay - 200 milliseconds
+</artwork>
+</figure>
+</section>
+<section title='Solution Description'>
+<t>The parameter was given a name and added to the list of protocol
+parameters.</t>
+</section>
+</section>
+
 </section>
 
 <section title='IANA Considerations'>
@@ -1544,6 +1619,8 @@ in <xref target="RFC4960"/>.</t>
 <t>The authors wish to thank
 Pontus Andersson,
 Eric W. Biederman,
+Cedric Bonnet,
+Lionel Morand,
 Jeff Morriss,
 Karen E. E. Nielsen,
 Tom Petch
