@@ -1529,7 +1529,7 @@ CLOSED state).
 </section>
 </section>
 
-<section title='SACK.Delay not listed as a Protocol Parameter'>
+<section title='SACK.Delay Not Listed as a Protocol Parameter'>
 <section title='Description of the Problem'>
 <t>SCTP as specified in <xref target='RFC4960'/> supports delaying SACKs.
 The timer value for this is a parameter and Section 6.2 of
@@ -1603,6 +1603,73 @@ The following protocol parameters are RECOMMENDED:
 <section title='Solution Description'>
 <t>The parameter was given a name and added to the list of protocol
 parameters.</t>
+</section>
+</section>
+
+<section title='Path of DATA and Reply Chunks'>
+<section title='Description of the Problem'>
+<t>Section 6.4 of <xref target="RFC4960"/> describes the transmission policy
+for multi-homed SCTP endpoints. However, there are the following issues with
+it:
+<list style='symbols'>
+<t>It states that a SACK should be sent to the source address of an incoming
+DATA. However, it is known that other SACK policies (e.g. sending SACKs
+always to the primary path) may be more beneficial in some situations.</t> 
+<t>Initially it states that an endpoint should always transmit DATA chunks 
+to the primary path. Then it states that the rule for transmittal of reply
+chunks should also be followed if the endpoint is bundling DATA chunks
+together with the reply chunk which contradicts with the first statement
+to always transmit DATA chunks to the primary path. Some implementations
+were having problems with it and sent DATA chunks bundled with reply chunks
+to a different destination address than the primary path that caused many
+gaps.</t>   
+</list></t>
+</section>
+<section title='Text Changes to the Document'>
+<figure>
+<artwork>
+---------
+Old text: (Section 6.4)
+---------
+
+An endpoint SHOULD transmit reply chunks (e.g., SACK, HEARTBEAT ACK,
+etc.) to the same destination transport address from which it
+received the DATA or control chunk to which it is replying.  This
+rule should also be followed if the endpoint is bundling DATA chunks
+together with the reply chunk.
+
+However, when acknowledging multiple DATA chunks received in packets
+from different source addresses in a single SACK, the SACK chunk may
+be transmitted to one of the destination transport addresses from
+which the DATA or control chunks being acknowledged were received.
+
+---------
+New text: (Section 6.4)
+---------
+
+An endpoint SHOULD transmit reply chunks (e.g., INIT ACK, COOKIE ACK,
+HEARTBEAT ACK, etc.) in response to control chunks to the same
+destination transport address from which it received the control
+chunk to which it is replying. 
+
+Rules for SACK transmittal are an implementation decision. However,
+an endpoint SHOULD NOT vary the destination transport address of
+a SACK when it receives DATA chunks from the same source address.  
+
+When acknowledging multiple DATA chunks received in packets
+from different source addresses in a single SACK, the SACK chunk MAY
+be transmitted to one of the destination transport addresses from
+which the DATA or control chunks being acknowledged were received.
+</artwork>
+</figure>
+</section>
+<section title='Solution Description'>
+<t>The SACK transmission policy is left for implementation but it is
+also specified to not vary the destination address of a SACK unless
+there are reasons for it as it may negatively impact RTT measurement.</t>
+<t>A confusing statement that prescribes to follow the rule for
+transmittal of reply chunks when the endpoint is bundling DATA chunks
+together with the reply chunk is removed.</t>
 </section>
 </section>
 
