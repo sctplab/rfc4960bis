@@ -1606,6 +1606,46 @@ parameters.</t>
 </section>
 </section>
 
+<section title='Window Updates After Window Opens Up'>
+<section title='Description of the Problem'>
+<t>The transmittal of unsolicited window updates is only indirectly referenced
+in <xref target="RFC4960"/>, Section 6.2, where it is stated that an SCTP
+receiver must not generate more than one SACK for every incoming packet, other
+than to update the offered window. However, sending of unsolicited opening
+window updates when the window opens up may really help to avoid deadlock
+situations and to effectively resume traffic after closer of rwnd.   
+</t>
+</section>
+<section title='Text Changes to the Document'>
+<figure>
+<artwork>
+---------
+Old text: (Section 6.2)
+---------
+
+An SCTP receiver MUST NOT generate more than one SACK for every
+incoming packet, other than to update the offered window as the
+receiving application consumes new data.
+
+---------
+New text: (Section 6.2)
+---------
+
+An SCTP receiver MUST NOT generate more than one SACK for every
+incoming packet, other than to update the offered window as the
+receiving application consumes new data. When the window opens
+up, an SCTP receiver MAY periodically send additional SACK chunks
+to update the window unless new data is received.
+
+</artwork>
+</figure>
+</section>
+<section title='Solution Description'>
+<t>The new text makes clear that additional SACK chunks may be sent
+to update the window more effectively.</t>
+</section>
+</section>
+
 </section>
 
 <section title='IANA Considerations'>
