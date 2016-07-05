@@ -1510,7 +1510,7 @@ CLOSED state).
 </section>
 </section>
 
-<section title='SACK.Delay not listed as a Protocol Parameter'>
+<section title='SACK.Delay Not Listed as a Protocol Parameter'>
 <section title='Description of the Problem'>
 <t>SCTP as specified in <xref target='RFC4960'/> supports delaying SACKs.
 The timer value for this is a parameter and Section 6.2 of
