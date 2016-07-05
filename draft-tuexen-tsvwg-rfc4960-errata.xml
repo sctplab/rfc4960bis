@@ -919,7 +919,7 @@ o  The initial value of ssthresh SHOULD be arbitrarily high (e.g.,
 </figure>
 </section>
 <section title='Solution Description'>
-<t>Use the same value as suggested in  <xref target="RFC5681"/>, Section 3.1,
+<t>Use the same value as suggested in <xref target="RFC5681"/>, Section 3.1,
 as an appropriate initial value.
 Furthermore use the same requirements level.</t>
 </section>
@@ -1256,25 +1256,6 @@ o  partial flag - if this returned flag is set to 1, then this
    accompany this receive.  When this flag is set to 0, it indicates
    that no more deliveries will be received for this Stream Sequence
    Number.
-=======
-Old text: (Section 7.2.2)
----------
-
-o  Whenever cwnd is greater than ssthresh, upon each SACK arrival
-   that advances the Cumulative TSN Ack Point, increase
-   partial_bytes_acked by the total number of bytes of all new chunks
-   acknowledged in that SACK including chunks acknowledged by the new
-   Cumulative TSN Ack and by Gap Ack Blocks.
-
----------
-New text: (Section 7.2.2)
----------
-
-o  Whenever cwnd is greater than ssthresh, upon each SACK arrival,
-   increase partial_bytes_acked by the total number of bytes of all
-   new chunks acknowledged in that SACK including chunks acknowledged
-   by the new Cumulative TSN Ack, by Gap Ack Blocks and by the number
-   of bytes of duplicated chunks reported in Duplicate TSNs.
 </artwork>
 </figure>
 </section>
@@ -1603,6 +1584,91 @@ The following protocol parameters are RECOMMENDED:
 <section title='Solution Description'>
 <t>The parameter was given a name and added to the list of protocol
 parameters.</t>
+</section>
+</section>
+
+<section title='CWND increase in Congestion Avoidance phase'>
+<section title='Description of the Problem'>
+<t><xref target='RFC4960'/> in Section 7.2.2 prescribes to increase cwnd
+by 1*MTU per RTT if the sender has cwnd or more bytes of outstanding data
+to the corresponding address in the Congestion Avoidance phase. However,
+this is described without normative language. Moreover Section 7.2.2
+includes an algorithm how implementation can achieve it but this algorithm
+is underspecified and actually allows increasing cwnd more than 1*MTU per RTT.</t>
+</section>
+<section title='Text Changes to the Document'>
+<figure>
+<artwork>
+---------
+Old text: (Section 7.2.2)
+---------
+
+When cwnd is greater than ssthresh, cwnd should be incremented by
+1*MTU per RTT if the sender has cwnd or more bytes of data
+outstanding for the corresponding transport address.
+
+---------
+New text: (Section 7.2.2)
+---------
+
+When cwnd is greater than ssthresh, cwnd should be incremented by
+1*MTU per RTT if the sender has cwnd or more bytes of data
+outstanding for the corresponding transport address. The basic
+guidelines for incrementing cwnd during congestion avoidance are:
+
+o  SCTP MAY increment cwnd by 1*MTU.
+ 
+o  SCTP SHOULD increment cwnd by one 1*MTU once per RTT when
+   the sender has cwnd or more bytes of data outstanding for
+   the corresponding transport address.
+
+o  SCTP MUST NOT increment cwnd by more than 1*MTU per RTT.
+
+---------
+Old text: (Section 7.2.2)
+---------
+
+o  Whenever cwnd is greater than ssthresh, upon each SACK arrival
+   that advances the Cumulative TSN Ack Point, increase
+   partial_bytes_acked by the total number of bytes of all new chunks
+   acknowledged in that SACK including chunks acknowledged by the new
+   Cumulative TSN Ack and by Gap Ack Blocks.
+
+o  When partial_bytes_acked is equal to or greater than cwnd and
+   before the arrival of the SACK the sender had cwnd or more bytes
+   of data outstanding (i.e., before arrival of the SACK, flightsize
+   was greater than or equal to cwnd), increase cwnd by MTU, and
+   reset partial_bytes_acked to (partial_bytes_acked - cwnd).
+
+---------
+New text: (Section 7.2.2)
+---------
+
+o  Whenever cwnd is greater than ssthresh, upon each SACK arrival,
+   increase partial_bytes_acked by the total number of bytes of all
+   new chunks acknowledged in that SACK including chunks acknowledged
+   by the new Cumulative TSN Ack, by Gap Ack Blocks and by the number
+   of bytes of duplicated chunks reported in Duplicate TSNs.
+
+o  When partial_bytes_acked is greater than cwnd and before the
+   arrival of the SACK the sender had less bytes of data outstanding
+   than cwnd (i.e., before arrival of the SACK, flightsize was less
+   than cwnd), reset partial_bytes_acked to cwnd.
+
+o  When partial_bytes_acked is equal to or greater than cwnd and
+   before the arrival of the SACK the sender had cwnd or more bytes
+   of data outstanding (i.e., before arrival of the SACK, flightsize
+   was greater than or equal to cwnd), partial_bytes_acked is reset
+   to (partial_bytes_acked - cwnd). Next, cwnd is increased by MTU.
+</artwork>
+</figure>
+</section>
+<section title='Solution Description'>
+<t>The basic guidelines for incrementing cwnd during congestion avoidance
+phase are added into Section 7.2.2. The guidelines include the normative
+language and aligned with <xref target="RFC5681"/>.</t>
+<t>The algorithm from Section 7.2.2 is improved to not allow increasing cwnd
+more than 1*MTU per RTT.</t>
 </section>
 </section>
 
