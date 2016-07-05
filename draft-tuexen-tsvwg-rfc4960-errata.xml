@@ -590,7 +590,7 @@ New text: (Section 6.10)
 
 An endpoint bundles chunks by simply including multiple chunks in one
 outbound SCTP packet.  The total size of the resultant IP datagram,
-including the SCTP packet and IP headers, MUST be less that or equal
+including the SCTP packet and IP headers, MUST be less than or equal
 to the current Path MTU.
 </artwork>
 </figure>
