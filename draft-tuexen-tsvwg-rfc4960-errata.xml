@@ -1606,10 +1606,86 @@ parameters.</t>
 </section>
 </section>
 
+<section title='Discard the whole packet or its chunks'>
+<section title='Description of the Problem'>
+<t>There are a few places in <xref target='RFC4960'/> where the receiver of
+a packet must discard it while processing chunks of the packet. It is unclear if
+the receiver must discard the whole packet or only a chunk causing discard and
+all further chunks.</t>
+<t>The intention of <xref target='RFC4960'/> is to process an incoming packet
+chunk by chunk and do not perform any prescreening of chunks in the received
+packet so the receiver must only discard a chunk causing discard and all further
+chunks.</t>
+</section>
+<section title='Text Changes to the Document'>
+<figure>
+<artwork>
+---------
+Old text: (Section 3.2)
+---------
+
+00 -  Stop processing this SCTP packet and discard it, do not
+      process any further chunks within it.
+
+01 -  Stop processing this SCTP packet and discard it, do not
+      process any further chunks within it, and report the
+      unrecognized chunk in an 'Unrecognized Chunk Type'.
+
+---------
+New text: (Section 3.2)
+---------
+
+00 -  Stop processing this SCTP packet, discard the unrecognized
+      chunk and all further chunks.
+
+01 -  Stop processing this SCTP packet, discard the unrecognized
+      chunk and all further chunks, and report the unrecognized
+      chunk in an 'Unrecognized Chunk Type'.
+
+---------
+Old text: (Section 11.3)
+---------
+
+It is helpful for some firewalls if they can inspect just the first
+fragment of a fragmented SCTP packet and unambiguously determine
+whether it corresponds to an INIT chunk (for further information,
+please refer to [RFC1858]).  Accordingly, we stress the requirements,
+stated in Section 3.1, that (1) an INIT chunk MUST NOT be bundled
+with any other chunk in a packet, and (2) a packet containing an INIT
+chunk MUST have a zero Verification Tag.  Furthermore, we require
+that the receiver of an INIT chunk MUST enforce these rules by
+silently discarding an arriving packet  with an INIT chunk that is
+bundled with other chunks or has a non-zero verification tag and
+contains an INIT-chunk.
+
+---------
+New text: (Section 11.3)
+---------
+
+It is helpful for some firewalls if they can inspect just the first
+fragment of a fragmented SCTP packet and unambiguously determine
+whether it corresponds to an INIT chunk (for further information,
+please refer to [RFC1858]).  Accordingly, we stress the requirements,
+stated in Section 3.1, that (1) an INIT chunk MUST NOT be bundled
+with any other chunk in a packet, and (2) a packet containing an INIT
+chunk MUST have a zero Verification Tag.  Furthermore, we require
+that the receiver of an INIT chunk MUST enforce these rules by
+silently discarding the INIT chunk and all further chunks if the INIT
+chunk is bundled with other chunks or the packet has a non-zero
+verification tag.
+</artwork>
+</figure>
+</section>
+<section title='Solution Description'>
+<t>The text is improved to clearly state that a chunk causing discard
+and all further chunks must be discarded and not the whole packet.</t>
+</section>
+</section>
+
 </section>
 
 <section title='IANA Considerations'>
-<t>This documents does not require any actions from IANA.</t>
+<t>This document does not require any actions from IANA.</t>
 </section>
 
 <section title='Security Considerations'>
