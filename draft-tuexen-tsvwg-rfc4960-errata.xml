@@ -1587,12 +1587,12 @@ parameters.</t>
 </section>
 </section>
 
-<section title='Discard the whole packet or its chunks'>
+<section title='Processing of Chunks in an Incoming SCTP Packet'>
 <section title='Description of the Problem'>
 <t>There are a few places in <xref target='RFC4960'/> where the receiver of
-a packet must discard it while processing chunks of the packet. It is unclear if
-the receiver must discard the whole packet or only a chunk causing discard and
-all further chunks.</t>
+a packet must discard it while processing the chunks of the packet.
+It is unclear whether the receiver has to rollback state changes already
+performed while processing the packet or not.</t>
 <t>The intention of <xref target='RFC4960'/> is to process an incoming packet
 chunk by chunk and do not perform any prescreening of chunks in the received
 packet so the receiver must only discard a chunk causing discard and all further
@@ -1658,8 +1658,8 @@ verification tag.
 </figure>
 </section>
 <section title='Solution Description'>
-<t>The text is improved to clearly state that a chunk causing discard
-and all further chunks must be discarded and not the whole packet.</t>
+<t>The new text makes it clear that chunks can be processed from the beginning
+to the end and no rollback or pre-screening is required.</t>
 </section>
 </section>
 
