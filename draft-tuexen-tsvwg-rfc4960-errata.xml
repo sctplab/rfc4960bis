@@ -1749,6 +1749,67 @@ more than 1*MTU per RTT.</t>
 </section>
 </section>
 
+<section title='Refresh of cwnd and ssthresh after Idle Period'>
+<section title='Description of the Problem'>
+<t><xref target='RFC4960'/> prescribes to adjust cwnd per RTO if the endpoint
+does not transmit data on a given transport address. In addition to that, it
+prescribes to set cwnd to the initial value after a sufficiently long idle
+period. The latter is excessive. Moreover, it is unclear what is a sufficiently
+long idle period.</t>
+<t><xref target='RFC4960'/> doesn't specify the handling of ssthresh in the idle
+case.
+If ssthres is reduced due to a packet loss, ssthresh is never recovered.
+So traffic can end up in Congestion Avoidance all the time, resulting in a low
+sending rate and bad performance.
+The problem is even more serious for SCTP because in a multi-homed
+SCTP association traffic switch back to the previously failed primary path will
+also lead to the situation where traffic ends up in Congestion Avoidance.</t>
+</section>
+<section title='Text Changes to the Document'>
+<figure>
+<artwork>
+---------
+Old text: (Section 7.2.1)
+---------
+
+o  The initial cwnd before DATA transmission or after a sufficiently
+   long idle period MUST be set to min(4*MTU, max (2*MTU, 4380
+   bytes)).
+
+---------
+New text: (Section 7.2.1)
+---------
+
+o  The initial cwnd before DATA transmission MUST be set to
+   min(4*MTU, max (2*MTU, 4380 bytes)).
+
+---------
+Old text: (Section 7.2.1)
+---------
+
+o  When the endpoint does not transmit data on a given transport
+   address, the cwnd of the transport address should be adjusted to
+   max(cwnd/2, 4*MTU) per RTO.
+
+---------
+New text: (Section 7.2.1)
+---------
+o  When the endpoint does not transmit data on a given transport
+   address, the cwnd of the transport address should be adjusted to
+   max(cwnd/2, 4*MTU) per RTO. At the first cwnd adjustment, the
+   ssthresh of the transport address should be adjusted to the cwnd.
+</artwork>
+</figure>
+</section>
+<section title='Solution Description'>
+<t>A rule about cwnd adjustment after a sufficiently long idle period
+is removed.</t>
+<t>The text is updated to refresh ssthresh after the idle period. When
+the idle period is detected, the cwnd value is stored to the ssthresh value.</t>
+</section>
+</section>
+
+
 </section>
 
 <section title='IANA Considerations'>
