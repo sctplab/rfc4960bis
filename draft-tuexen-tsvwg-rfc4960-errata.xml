@@ -1809,6 +1809,46 @@ the idle period is detected, the cwnd value is stored to the ssthresh value.</t>
 </section>
 </section>
 
+<section title='Window Updates After Receiver Window Opens Up'>
+<section title='Description of the Problem'>
+<t>The sending of SACK chunks for window updates is only indirectly referenced
+in <xref target="RFC4960"/>, Section 6.2, where it is stated that an SCTP
+receiver must not generate more than one SACK for every incoming packet, other
+than to update the offered window.</t>
+<t>However, the sending of window updates when the receiver window opens up
+is necessary to avoid performance problems.</t>
+</section>
+<section title='Text Changes to the Document'>
+<figure>
+<artwork>
+---------
+Old text: (Section 6.2)
+---------
+
+An SCTP receiver MUST NOT generate more than one SACK for every
+incoming packet, other than to update the offered window as the
+receiving application consumes new data.
+
+---------
+New text: (Section 6.2)
+---------
+
+An SCTP receiver MUST NOT generate more than one SACK for every
+incoming packet, other than to update the offered window as the
+receiving application consumes new data. When the window opens
+up, an SCTP receiver SHOULD send additional SACK chunks to update
+the window even if no new data is received. The receiver MUST avoid
+sending large burst of window updates.
+
+
+</artwork>
+</figure>
+</section>
+<section title='Solution Description'>
+<t>The new text makes clear that additional SACK chunks for window updates
+may be sent as long as excessive bursts are avoided.</t>
+</section>
+</section>
 
 </section>
 
