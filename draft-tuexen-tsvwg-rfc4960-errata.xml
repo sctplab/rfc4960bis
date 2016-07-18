@@ -1846,7 +1846,7 @@ sending large burst of window updates.
 </section>
 <section title='Solution Description'>
 <t>The new text makes clear that additional SACK chunks for window updates
-may be sent as long as excessive bursts are avoided.</t>
+should be sent as long as excessive bursts are avoided.</t>
 </section>
 </section>
 
