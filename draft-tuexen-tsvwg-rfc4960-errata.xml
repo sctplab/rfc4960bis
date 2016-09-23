@@ -1101,7 +1101,11 @@ do not acknowledge the probes.</t>
 <section title='Description of the Problem'>
 <t><xref target="RFC4960"/> uses outstanding data, flightsize and data in
 flight key terms in formulas and statements but their definitions are not
-provided in Section 1.3.</t>
+provided in Section 1.3.
+Furthermore, outstanding data does not include DATA chunks which are
+classified as lost but which has not been retransmitted yet and there is
+a paragraph in Section 6.1 of <xref target="RFC4960"/> where this
+statement is broken.</t>
 </section>
 <section title='Text Changes to the Document'>
 <figure>
@@ -1131,7 +1135,7 @@ o  Outstanding TSN (at an SCTP endpoint): A TSN (and the associated
 o  Outstanding data (or Data outstanding or Data in flight): The
    total amount of the DATA chunks associated with outstanding TSNs. 
    A retransmitted DATA chunk is counted once in outstanding data. 
-   A DATA chunk which is classified is lost but which has not been
+   A DATA chunk which is classified as lost but which has not been
    retransmitted yet is not in outstanding data.
 
 o  Flightsize: The amount of bytes of outstanding data to a 
@@ -1140,12 +1144,30 @@ o  Flightsize: The amount of bytes of outstanding data to a
 o  Congestion window (cwnd): An SCTP variable that limits outstanding
    data, in number of bytes, a sender can send to a particular
    destination transport address before receiving an acknowledgement.
+
+---------
+Old text: (Section 6.1)
+---------
+
+C) When the time comes for the sender to transmit, before sending new
+   DATA chunks, the sender MUST first transmit any outstanding DATA
+   chunks that are marked for retransmission (limited by the current
+   cwnd).
+
+---------
+New text: (Section 6.1)
+---------
+
+C) When the time comes for the sender to transmit, before sending new
+   DATA chunks, the sender MUST first transmit any DATA chunks that
+   are marked for retransmission (limited by the current cwnd).
 </artwork>
 </figure>
 </section>
 <section title='Solution Description'>
 <t>Now Section 1.3, Key Terms, includes explanation of outstanding data,
-data in flight and flightsize key terms.</t>
+data in flight and flightsize key terms. Section 6.1 is corrected to
+properly use the outstanding data term.</t>
 </section>
 </section>
 
