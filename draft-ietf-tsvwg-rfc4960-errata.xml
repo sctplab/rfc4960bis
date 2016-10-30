@@ -636,6 +636,99 @@ ICMP2) An implementation MAY ignore all ICMPv6 messages where the
        Problem", or "Packet Too Big".
 </artwork>
 </figure>
+<!-- The following was already incorrect in RFC 2960 -->
+<figure>
+<artwork>
+---------
+Old text: (Section 5.4)
+---------
+2)  For the receiver of the COOKIE ECHO, the only CONFIRMED address
+   is the one to which the INIT-ACK was sent.
+
+---------
+New text: (Section 5.4)
+---------
+
+2)  For the receiver of the COOKIE ECHO, the only CONFIRMED address
+   is the one to which the INIT ACK was sent.
+</artwork>
+</figure>
+<!-- The following was already incorrect in RFC 2960 -->
+<figure>
+<artwork>
+---------
+Old text: (Section 5.1.6, Figure 4)
+---------
+COOKIE ECHO [Cookie_Z] ------\
+(Start T1-init timer)         \
+(Enter COOKIE-ECHOED state)    \---> (build TCB enter ESTABLISHED
+                                      state)
+                               /---- COOKIE-ACK
+                              /
+(Cancel T1-init timer, &lt;-----/
+ Enter ESTABLISHED state)
+
+---------
+New text: (Section 5.1.6, Figure 4)
+---------
+
+COOKIE ECHO [Cookie_Z] ------\
+(Start T1-cookie timer)       \
+(Enter COOKIE-ECHOED state)    \---> (build TCB enter ESTABLISHED
+                                      state)
+                               /---- COOKIE ACK
+                              /
+(Cancel T1-cookie timer, &lt;---/
+ Enter ESTABLISHED state)
+</artwork>
+</figure>
+<!-- The following was already incorrect in RFC 2960 -->
+<figure>
+<artwork>
+---------
+Old text: (Section 5.2.5)
+---------
+5.2.5.  Handle Duplicate COOKIE-ACK.
+
+---------
+New text: (Section 5.2.5)
+---------
+
+5.2.5.  Handle Duplicate COOKIE ACK.
+</artwork>
+</figure>
+<!-- The following was already incorrect in RFC 4460 -->
+<figure>
+<artwork>
+---------
+Old text: (Section 8.3)
+---------
+By default, an SCTP endpoint SHOULD monitor the reachability of the
+idle destination transport address(es) of its peer by sending a
+HEARTBEAT chunk periodically to the destination transport
+address(es).  HEARTBEAT sending MAY begin upon reaching the
+ESTABLISHED state and is discontinued after sending either SHUTDOWN
+or SHUTDOWN-ACK.  A receiver of a HEARTBEAT MUST respond to a
+HEARTBEAT with a HEARTBEAT-ACK after entering the COOKIE-ECHOED state
+(INIT sender) or the ESTABLISHED state (INIT receiver), up until
+reaching the SHUTDOWN-SENT state (SHUTDOWN sender) or the SHUTDOWN-
+ACK-SENT state (SHUTDOWN receiver).
+
+---------
+New text: (Section 8.3)
+---------
+By default, an SCTP endpoint SHOULD monitor the reachability of the
+idle destination transport address(es) of its peer by sending a
+HEARTBEAT chunk periodically to the destination transport
+address(es).  HEARTBEAT sending MAY begin upon reaching the
+ESTABLISHED state and is discontinued after sending either SHUTDOWN
+or SHUTDOWN ACK.  A receiver of a HEARTBEAT MUST respond to a
+HEARTBEAT with a HEARTBEAT ACK after entering the COOKIE-ECHOED state
+(INIT sender) or the ESTABLISHED state (INIT receiver), up until
+reaching the SHUTDOWN-SENT state (SHUTDOWN sender) or the SHUTDOWN-
+ACK-SENT state (SHUTDOWN receiver).
+</artwork>
+</figure>
 </section>
 <section title='Solution Description'>
 <t>Typos fixed.</t>
