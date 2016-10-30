@@ -1994,6 +1994,59 @@ Section 6.1 is corrected to properly use the outstanding data term.</t>
 </section>
 </section>
 
+<section title='CWND Degradation due to Max.Burst'>
+<section title='Description of the Problem'>
+<t>Some implementations were experiencing a degradation of cwnd because of
+the Max.Burst limit. This was due to misinterpretation of the suggestion
+in <xref target="RFC4960"/>, Section 6.1, on how to use the Max.Burst
+parameter when calculating the number of packets to transmit.</t>
+</section>
+<section title='Text Changes to the Document'>
+<figure>
+<artwork>
+---------
+Old text: (Section 6.1)
+---------
+
+D) When the time comes for the sender to transmit new DATA chunks,
+   the protocol parameter Max.Burst SHOULD be used to limit the
+   number of packets sent.  The limit MAY be applied by adjusting
+   cwnd as follows:
+
+   if((flightsize + Max.Burst*MTU) &lt; cwnd) cwnd = flightsize +
+   Max.Burst*MTU
+
+   Or it MAY be applied by strictly limiting the number of packets
+   emitted by the output routine.
+
+---------
+New text: (Section 6.1)
+---------
+
+D) When the time comes for the sender to transmit new DATA chunks,
+   the protocol parameter Max.Burst SHOULD be used to limit the
+   number of packets sent.  The limit MAY be applied by adjusting
+   cwnd as follows:
+
+   if((flightsize + Max.Burst*MTU) &lt; cwnd) 
+       cwnd = flightsize + Max.Burst*MTU
+
+   Or it MAY be applied by strictly limiting the number of packets
+   emitted by the output routine. When calculating the number of
+   packets to transmit and particularly using the formula above,
+   cwnd SHOULD NOT be changed.
+</artwork>
+</figure>
+</section>
+<section title='Solution Description'>
+<t>The new text clarifies that cwnd should not be changed when appling
+the Max.Burst limit. This mitigates packet bursts related to the reception of
+SACK chunks, but not bursts related to an application sending a burst
+of user messages.</t>
+</section>
+</section>
+
+
 </section>
 
 <section title='IANA Considerations'>
