@@ -123,7 +123,11 @@ document are to be interpreted as described in <xref target="RFC2119"/>.</t>
 <t>FIXME</t>
 </section>
 <section title='Text Changes to the Document'>
-<t>FIXME</t>
+<figure>
+<artwork>
+FIXME
+</artwork>
+</figure>
 </section>
 <section title='Solution Description'>
 <t>FIXME</t>
@@ -2240,6 +2244,46 @@ chunk has been removed.</t>
 </section>
 </section>
 
+<section title='Undefined Parameter Returned by RECEIVE Primitive'>
+<section title='Description of the Problem'>
+<t><xref target="RFC4960"/> provides a description of an abstract API. In the
+definition of the RECEIVE primitive an optional parameter with name
+"delivery number" is mentioned. However, no definition of this parameter
+is given in <xref target="RFC4960"/> and the parameter is unnecessary.</t>
+</section>
+<section title='Text Changes to the Document'>
+<figure>
+<artwork>
+---------
+Old text: (Section 10.1)
+---------
+
+G) Receive
+
+Format: RECEIVE(association id, buffer address, buffer size
+        [,stream id])
+-> byte count [,transport address] [,stream id] [,stream sequence
+   number] [,partial flag] [,delivery number] [,payload protocol-id]
+
+---------
+New text: (Section 10.1)
+---------
+
+G) Receive
+
+Format: RECEIVE(association id, buffer address, buffer size
+        [,stream id])
+-> byte count [,transport address] [,stream id] [,stream sequence
+   number] [,partial flag] [,payload protocol-id]
+
+</artwork>
+</figure>
+</section>
+<section title='Solution Description'>
+<t>The undefined parameter has been removed.</t>
+</section>
+</section>
+
 </section>
 
 <section title='IANA Considerations'>
@@ -2259,9 +2303,10 @@ Cedric Bonnet,
 Lionel Morand,
 Jeff Morriss,
 Karen E. E. Nielsen,
-Tom Petch
+Tom Petch,
+Julien Pourtet,
 and
-Julien Pourtet
+Michael Welzl
 for their invaluable comments.</t>
 </section>
 
