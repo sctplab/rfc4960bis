@@ -1787,7 +1787,7 @@ outstanding for the corresponding transport address. The basic
 guidelines for incrementing cwnd during congestion avoidance are:
 
 o  SCTP MAY increment cwnd by 1*MTU.
- 
+
 o  SCTP SHOULD increment cwnd by one 1*MTU once per RTT when
    the sender has cwnd or more bytes of data outstanding for
    the corresponding transport address.
@@ -2054,8 +2054,8 @@ o  Outstanding data (or Data outstanding or Data in flight): The
    A DATA chunk which is classified as lost but which has not been
    retransmitted yet is not in outstanding data.
 
-o  Flightsize: The amount of bytes of outstanding data to a 
-   particular destination transport address at any given time. 
+o  Flightsize: The amount of bytes of outstanding data to a
+   particular destination transport address at any given time.
 
 o  Congestion window (cwnd): An SCTP variable that limits outstanding
    data, in number of bytes, a sender can send to a particular
@@ -2121,7 +2121,7 @@ D) When the time comes for the sender to transmit new DATA chunks,
    number of packets sent.  The limit MAY be applied by adjusting
    cwnd as follows:
 
-   if((flightsize + Max.Burst*MTU) &lt; cwnd) 
+   if((flightsize + Max.Burst*MTU) &lt; cwnd)
        cwnd = flightsize + Max.Burst*MTU
 
    Or it MAY be applied by strictly limiting the number of packets
@@ -2139,6 +2139,62 @@ of user messages.</t>
 </section>
 </section>
 
+<section title='Reduction of RTO.Initial'>
+<section title='Description of the Problem'>
+<t><xref target="RFC4960"/> uses 3 seconds as the default value for RTO.Initial
+in accordance with Section 4.3.2.1 of <xref target="RFC1122"/>.
+<xref target="RFC6298"/> updates <xref target="RFC1122"/> and lowers the initial
+value of the retransmission timer from 3 seconds to 1 second.</t>
+</section>
+<section title='Text Changes to the Document'>
+<figure>
+<artwork>
+---------
+Old text: (Section 15)
+---------
+The following protocol parameters are RECOMMENDED:
+
+   RTO.Initial - 3 seconds
+   RTO.Min - 1 second
+   RTO.Max - 60 seconds
+   Max.Burst - 4
+   RTO.Alpha - 1/8
+   RTO.Beta - 1/4
+   Valid.Cookie.Life - 60 seconds
+   Association.Max.Retrans - 10 attempts
+   Path.Max.Retrans - 5 attempts (per destination address)
+   Max.Init.Retransmits - 8 attempts
+   HB.interval - 30 seconds
+   HB.Max.Burst - 1
+   SACK.Delay - 200 milliseconds
+
+---------
+New text: (Section 15)
+---------
+
+The following protocol parameters are RECOMMENDED:
+
+   RTO.Initial - 1 second
+   RTO.Min - 1 second
+   RTO.Max - 60 seconds
+   Max.Burst - 4
+   RTO.Alpha - 1/8
+   RTO.Beta - 1/4
+   Valid.Cookie.Life - 60 seconds
+   Association.Max.Retrans - 10 attempts
+   Path.Max.Retrans - 5 attempts (per destination address)
+   Max.Init.Retransmits - 8 attempts
+   HB.interval - 30 seconds
+   HB.Max.Burst - 1
+   SACK.Delay - 200 milliseconds
+</artwork>
+</figure>
+</section>
+<section title='Solution Description'>
+<t>The value RTO.Initial has been lowered to 1 second to be in tune with
+<xref target="RFC6298"/>.</t>
+</section>
+</section>
 
 </section>
 
@@ -2173,9 +2229,11 @@ for their invaluable comments.</t>
 <?rfc include="reference.RFC.4960" ?>
 </references>
 <references title='Informative References'>
+<?rfc include="reference.RFC.1122" ?>
 <?rfc include="reference.RFC.2960" ?>
 <?rfc include="reference.RFC.4460" ?>
 <?rfc include="reference.RFC.5681" ?>
+<?rfc include="reference.RFC.6298" ?>
 </references>
 </back>
 </rfc>
