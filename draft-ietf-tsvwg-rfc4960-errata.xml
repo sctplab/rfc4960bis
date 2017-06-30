@@ -2196,6 +2196,50 @@ The following protocol parameters are RECOMMENDED:
 </section>
 </section>
 
+<section title='Ordering of Bundled SACK and ERROR Chunks'>
+<section title='Description of the Problem'>
+<t>When an SCTP endpoint receives a DATA chunk with an invalid stream identifier
+it shall acknowledge it by sending a SACK chunk and indicate that the stream
+identifier was invalid by sending an ERROR chunk. These two chunks may be bundled.
+However, <xref target="RFC4960"/> requires in case of bundling that the ERROR
+chunk follows the SACK chunk. This restriction of the ordering is not necessary
+and might only limit interoperability.</t>
+</section>
+<section title='Text Changes to the Document'>
+<figure>
+<artwork>
+---------
+Old text: (Section 6.5)
+---------
+
+Every DATA chunk MUST carry a valid stream identifier.  If an
+endpoint receives a DATA chunk with an invalid stream identifier, it
+shall acknowledge the reception of the DATA chunk following the
+normal procedure, immediately send an ERROR chunk with cause set to
+"Invalid Stream Identifier" (see Section 3.3.10), and discard the
+DATA chunk.  The endpoint may bundle the ERROR chunk in the same
+packet as the SACK as long as the ERROR follows the SACK.
+
+---------
+New text: (Section 6.5)
+---------
+
+Every DATA chunk MUST carry a valid stream identifier.  If an
+endpoint receives a DATA chunk with an invalid stream identifier, it
+shall acknowledge the reception of the DATA chunk following the
+normal procedure, immediately send an ERROR chunk with cause set to
+"Invalid Stream Identifier" (see Section 3.3.10), and discard the
+DATA chunk.  The endpoint may bundle the ERROR chunk and the SACK Chunk
+in the same packet.
+</artwork>
+</figure>
+</section>
+<section title='Solution Description'>
+<t>The unnecessary restriction regarding the ordering of the SACK and ERROR
+chunk has been removed.</t>
+</section>
+</section>
+
 </section>
 
 <section title='IANA Considerations'>
