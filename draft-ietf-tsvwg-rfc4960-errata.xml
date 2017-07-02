@@ -2284,6 +2284,80 @@ Format: RECEIVE(association id, buffer address, buffer size
 </section>
 </section>
 
+<section title='DSCP Changes'>
+<section title='Description of the Problem'>
+<t>The upper layer can change the Differentiated Services Code Point (DSCP) used
+for packets being sent.
+A change of the DSCP can result in packets hitting different queues on the path
+and therefore the congestion control should be initialized when the DSCP is
+changed by the upper layer.
+This is not described in <xref target="RFC4960"/>.</t>
+</section>
+<section title='Text Changes to the Document'>
+<figure>
+<artwork>
+---------
+New text: (Section 7.2.5)
+---------
+
+SCTP implementations MAY allow an application to configure the
+Differentiated Services Code Point (DSCP) used for sending packets.
+If a DSCP change might result in outgoing packets being queued in different
+queues, the congestion control parameters for all affected destination
+addresses MUST be reset to their initial values.
+
+---------
+Old text: (Section 10.1)
+---------
+
+M) Set Protocol Parameters
+
+   Format: SETPROTOCOLPARAMETERS(association id,
+           [,destination transport address,]
+           protocol parameter list)
+   -> result
+
+This primitive allows the local SCTP to customize the protocol
+parameters.
+
+Mandatory attributes:
+
+o  association id - local handle to the SCTP association.
+
+o  protocol parameter list - the specific names and values of the
+   protocol parameters (e.g., Association.Max.Retrans; see Section
+   15) that the SCTP user wishes to customize.
+
+---------
+Old text: (Section 10.1)
+---------
+
+M) Set Protocol Parameters
+
+   Format: SETPROTOCOLPARAMETERS(association id,
+           [,destination transport address,]
+           protocol parameter list)
+   -> result
+
+This primitive allows the local SCTP to customize the protocol
+parameters.
+
+Mandatory attributes:
+
+o  association id - local handle to the SCTP association.
+
+o  protocol parameter list - the specific names and values of the
+   protocol parameters (e.g., Association.Max.Retrans; see Section
+   15, or other parameters like the DSCP) that the SCTP user wishes
+   to customize.
+</artwork>
+</figure>
+</section>
+<section title='Solution Description'>
+<t>Text describing the required action on DSCP changes has been added.</t>
+</section>
+</section>
+
 </section>
 
 <section title='IANA Considerations'>
