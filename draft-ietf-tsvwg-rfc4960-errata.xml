@@ -2516,6 +2516,58 @@ of soft errors.</t>
 </section>
 </section>
 
+<section title='Honoring CWND'>
+<section title='Description of the Problem'>
+<t>When using the slow start algorithm, SCTP increases the congestion window
+only when it is being fully utilized. Since SCTP uses DATA chunks and does not
+use the congestion window to fragment user messages, this requires that some
+overbooking of the congestion window is allowed.</t>
+</section>
+<section title='Text Changes to the Document'>
+<figure>
+<artwork>
+---------
+Old text: (Section 6.1)
+---------
+
+B) At any given time, the sender MUST NOT transmit new data to a
+   given transport address if it has cwnd or more bytes of data
+   outstanding to that transport address.
+
+---------
+New text: (Section 6.1)
+---------
+
+B) At any given time, the sender MUST NOT transmit new data to a
+   given transport address if it has cwnd + (PMTU - 1) or more bytes of data
+   outstanding to that transport address.  If data is available the
+   sender SHOULD exceed cwnd by up to (PMTU-1) bytes on a new data
+   transmission if the flightsize does not currently reach cwnd.
+   The breach of cwnd MUST constitute one packet only.
+
+---------
+Old text: (Section 7.2.1)
+---------
+
+o  Whenever cwnd is greater than zero, the endpoint is allowed to
+   have cwnd bytes of data outstanding on that transport address.
+
+---------
+New text: (Section 7.2.1)
+---------
+o  Whenever cwnd is greater than zero, the endpoint is allowed to
+   have cwnd bytes of data outstanding on that transport address.
+   A limited overbooking as described in B) of Section 6.1 should
+   be supported.
+
+</artwork>
+</figure>
+</section>
+<section title='Solution Description'>
+<t>Text was added that to clarify how the CWND limit should be handled.</t>
+</section>
+</section>
+
 </section>
 
 <section title='IANA Considerations'>
