@@ -416,6 +416,7 @@ Errata ID 4071.</t>
 ---------
 Old text: (Section 6.1 A))
 ---------
+
 The sender MUST also have an algorithm for sending new DATA chunks
 to avoid silly window syndrome (SWS) as described in [RFC0813].
 The algorithm can be similar to the one described in Section
@@ -582,6 +583,7 @@ DATA [TSN=8,Strm=0,Seq=4] ---------------> (gap detected,
 ---------
 Old text: (Section 6.10)
 ---------
+
 An endpoint bundles chunks by simply including multiple chunks in one
 outbound SCTP packet.  The total size of the resultant IP datagram,
 
@@ -604,6 +606,7 @@ to the current Path MTU.
 ---------
 Old text: (Section 10.1)
 ---------
+
 o  Receive Unacknowledged Message
 
    Format: RECEIVE_UNACKED(data retrieval id, buffer address, buffer
@@ -627,6 +630,7 @@ O) Receive Unacknowledged Message
 ---------
 Old text: (Appendix C)
 ---------
+
 ICMP2) An implementation MAY ignore all ICMPv6 messages where the
        type field is not "Destination Unreachable", "Parameter
        Problem",, or "Packet Too Big".
@@ -646,6 +650,7 @@ ICMP2) An implementation MAY ignore all ICMPv6 messages where the
 ---------
 Old text: (Section 5.4)
 ---------
+
 2)  For the receiver of the COOKIE ECHO, the only CONFIRMED address
    is the one to which the INIT-ACK was sent.
 
@@ -663,6 +668,7 @@ New text: (Section 5.4)
 ---------
 Old text: (Section 5.1.6, Figure 4)
 ---------
+
 COOKIE ECHO [Cookie_Z] ------\
 (Start T1-init timer)         \
 (Enter COOKIE-ECHOED state)    \---> (build TCB enter ESTABLISHED
@@ -692,6 +698,7 @@ COOKIE ECHO [Cookie_Z] ------\
 ---------
 Old text: (Section 5.2.5)
 ---------
+
 5.2.5.  Handle Duplicate COOKIE-ACK.
 
 ---------
@@ -707,6 +714,7 @@ New text: (Section 5.2.5)
 ---------
 Old text: (Section 8.3)
 ---------
+
 By default, an SCTP endpoint SHOULD monitor the reachability of the
 idle destination transport address(es) of its peer by sending a
 HEARTBEAT chunk periodically to the destination transport
@@ -2156,6 +2164,7 @@ value of the retransmission timer from 3 seconds to 1 second.</t>
 ---------
 Old text: (Section 15)
 ---------
+
 The following protocol parameters are RECOMMENDED:
 
    RTO.Initial - 3 seconds
@@ -2469,6 +2478,41 @@ ICMP8) If the ICMP code is "Destination Unreachable", the
 <t>The text has been changed to not limit the processing of ICMPv4 packets
 with type "Destination Unreachable" by removing the third rule. Furthermore,
 remove in the ninth rule the limitation to ICMPv6.</t>
+</section>
+</section>
+
+<section title='Handling of Soft Errors'>
+<section title='Description of the Problem'>
+<t><xref target="RFC1122"/> defines the handling of soft errors and hard errors
+for TCP. Appendix C of <xref target="RFC4960"/> only deals with hard errors.</t>
+</section>
+<section title='Text Changes to the Document'>
+<figure>
+<artwork>
+---------
+Old text: (Appendix C)
+---------
+
+ICMP8) If the ICMP code is "Destination Unreachable", the
+       implementation MAY mark the destination into the unreachable
+       state or alternatively increment the path error counter.
+
+---------
+New text: (Appendix C)
+---------
+
+ICMP8) If the ICMP code is "Destination Unreachable", the
+       implementation MAY mark the destination into the unreachable
+       state or alternatively increment the path error counter.
+       SCTP MAY provide information to the upper layer indicating the reception
+       of ICMP messages when reporting a network status change.
+
+</artwork>
+</figure>
+</section>
+<section title='Solution Description'>
+<t>Text has been added allowing the SCTP to notify the application in case
+of soft errors.</t>
 </section>
 </section>
 
