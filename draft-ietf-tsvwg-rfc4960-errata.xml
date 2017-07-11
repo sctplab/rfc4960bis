@@ -644,6 +644,25 @@ ICMP2) An implementation MAY ignore all ICMPv6 messages where the
        Problem", or "Packet Too Big".
 </artwork>
 </figure>
+<figure>
+<artwork>
+---------
+Old text: (Appendix C)
+---------
+
+ICMP7) If the ICMP message is either a v6 "Packet Too Big" or a v4
+       "Fragmentation Needed", an implementation MAY process this
+       information as defined for PATH MTU discovery.
+
+---------
+New text: (Appendix C)
+---------
+
+ICMP7) If the ICMP message is either a v6 "Packet Too Big" or a v4
+       "Fragmentation Needed", an implementation MAY process this
+       information as defined for path MTU discovery.
+</artwork>
+</figure>
 <!-- The following was already incorrect in RFC 2960 -->
 <figure>
 <artwork>
@@ -2284,7 +2303,6 @@ Format: RECEIVE(association id, buffer address, buffer size
         [,stream id])
 -> byte count [,transport address] [,stream id] [,stream sequence
    number] [,partial flag] [,payload protocol-id]
-
 </artwork>
 </figure>
 </section>
@@ -2381,102 +2399,38 @@ corresponding ICMPv4 packets.</t>
 Old text: (Appendix C)
 ---------
 
-ICMP1) An implementation MAY ignore all ICMPv4 messages where the
-       type field is not set to "Destination Unreachable".
-
-ICMP2) An implementation MAY ignore all ICMPv6 messages where the
-       type field is not "Destination Unreachable", "Parameter
-       Problem",, or "Packet Too Big".
-
 ICMP3) An implementation MAY ignore any ICMPv4 messages where the
        code does not indicate "Protocol Unreachable" or
        "Fragmentation Needed".
 
-ICMP4) An implementation MAY ignore all ICMPv6 messages of type
-       "Parameter Problem" if the code is not "Unrecognized Next
-       Header Type Encountered".
+---------
+New text:
+---------
 
-ICMP5) An implementation MUST use the payload of the ICMP message (v4
-       or v6) to locate the association that sent the message to
-       which ICMP is responding.  If the association cannot be found,
-       an implementation SHOULD ignore the ICMP message.
+ICMP3) An implementation SHOULD ignore any ICMPv4 messages where the
+       code indicates "Port Unreachable".
 
-ICMP6) An implementation MUST validate that the Verification Tag
-       contained in the ICMP message matches the Verification Tag of
-       the peer.  If the Verification Tag is not 0 and does NOT
-       match, discard the ICMP message.  If it is 0 and the ICMP
-       message contains enough bytes to verify that the chunk type is
-       an INIT chunk and that the Initiate Tag matches the tag of the
-       peer, continue with ICMP7.  If the ICMP message is too short
-       or the chunk type or the Initiate Tag does not match, silently
-       discard the packet.
-
-ICMP7) If the ICMP message is either a v6 "Packet Too Big" or a v4
-       "Fragmentation Needed", an implementation MAY process this
-       information as defined for PATH MTU discovery.
-
-ICMP8) If the ICMP code is an "Unrecognized Next Header Type
-       Encountered" or a "Protocol Unreachable", an implementation
-       MUST treat this message as an abort with the T bit set if it
-       does not contain an INIT chunk.  If it does contain an INIT
-       chunk and the association is in the COOKIE-WAIT state, handle
-       the ICMP message like an ABORT.
+---------
+Old text: (Appendix C)
+---------
 
 ICMP9) If the ICMPv6 code is "Destination Unreachable", the
        implementation MAY mark the destination into the unreachable
        state or alternatively increment the path error counter.
 
 ---------
-New text: (Appendix C)
+New text:
 ---------
 
-ICMP1) An implementation MAY ignore all ICMPv4 messages where the
-       type field is not set to "Destination Unreachable".
-
-ICMP2) An implementation MAY ignore all ICMPv6 messages where the
-       type field is not "Destination Unreachable", "Parameter
-       Problem",, or "Packet Too Big".
-
-ICMP3) An implementation MAY ignore all ICMPv6 messages of type
-       "Parameter Problem" if the code is not "Unrecognized Next
-       Header Type Encountered".
-
-ICMP4) An implementation MUST use the payload of the ICMP message (v4
-       or v6) to locate the association that sent the message to
-       which ICMP is responding.  If the association cannot be found,
-       an implementation SHOULD ignore the ICMP message.
-
-ICMP5) An implementation MUST validate that the Verification Tag
-       contained in the ICMP message matches the Verification Tag of
-       the peer.  If the Verification Tag is not 0 and does NOT
-       match, discard the ICMP message.  If it is 0 and the ICMP
-       message contains enough bytes to verify that the chunk type is
-       an INIT chunk and that the Initiate Tag matches the tag of the
-       peer, continue with ICMP7.  If the ICMP message is too short
-       or the chunk type or the Initiate Tag does not match, silently
-       discard the packet.
-
-ICMP6) If the ICMP message is either a v6 "Packet Too Big" or a v4
-       "Fragmentation Needed", an implementation MAY process this
-       information as defined for PATH MTU discovery.
-
-ICMP7) If the ICMP code is an "Unrecognized Next Header Type
-       Encountered" or a "Protocol Unreachable", an implementation
-       MUST treat this message as an abort with the T bit set if it
-       does not contain an INIT chunk.  If it does contain an INIT
-       chunk and the association is in the COOKIE-WAIT state, handle
-       the ICMP message like an ABORT.
-
-ICMP8) If the ICMP code is "Destination Unreachable", the
+ICMP9) If the ICMP type is "Destination Unreachable", the
        implementation MAY mark the destination into the unreachable
        state or alternatively increment the path error counter.
-
 </artwork>
 </figure>
 </section>
 <section title='Solution Description'>
 <t>The text has been changed to not limit the processing of ICMPv4 packets
-with type "Destination Unreachable" by removing the third rule. Furthermore,
+with type "Destination Unreachable" by rewording the third rule. Furthermore,
 remove in the ninth rule the limitation to ICMPv6.</t>
 </section>
 </section>
@@ -2493,7 +2447,7 @@ for TCP. Appendix C of <xref target="RFC4960"/> only deals with hard errors.</t>
 Old text: (Appendix C)
 ---------
 
-ICMP8) If the ICMP code is "Destination Unreachable", the
+ICMP8) If the ICMP type is "Destination Unreachable", the
        implementation MAY mark the destination into the unreachable
        state or alternatively increment the path error counter.
 
@@ -2501,12 +2455,11 @@ ICMP8) If the ICMP code is "Destination Unreachable", the
 New text: (Appendix C)
 ---------
 
-ICMP8) If the ICMP code is "Destination Unreachable", the
+ICMP8) If the ICMP type is "Destination Unreachable", the
        implementation MAY mark the destination into the unreachable
        state or alternatively increment the path error counter.
        SCTP MAY provide information to the upper layer indicating the reception
        of ICMP messages when reporting a network status change.
-
 </artwork>
 </figure>
 </section>
@@ -2559,7 +2512,6 @@ o  Whenever cwnd is greater than zero, the endpoint is allowed to
    have cwnd bytes of data outstanding on that transport address.
    A limited overbooking as described in B) of Section 6.1 should
    be supported.
-
 </artwork>
 </figure>
 </section>
@@ -2618,7 +2570,6 @@ A) At any given time, the data sender MUST NOT transmit new data to
    only be sent when all outstanding DATA chunks have been
    cumulatively acknowledged and no DATA chunks are in flight.  Zero
    window probing MUST be supported.
-
 </artwork>
 </figure>
 </section>
