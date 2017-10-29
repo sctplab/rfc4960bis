@@ -4,11 +4,11 @@ unsigned long
 generate_crc32c(unsigned char *buffer, unsigned int length)
 {
   unsigned int i;
-  unsigned long crc32 = ~0L;
-  unsigned long result;
-  unsigned char byte0,byte1,byte2,byte3;
+  uint32_t crc32 = ~0L;
+  uint32_t result;
+  uint8_t byte0, byte1, byte2, byte3;
 
-  for (i = 0; i < length; i++){
+  for (i = 0; i < length; i++) {
       CRC32C(crc32, buffer[i]);
   }
 
@@ -36,14 +36,14 @@ generate_crc32c(unsigned char *buffer, unsigned int length)
            (byte1 << 16) |
            (byte2 << 8)  |
            byte3);
-  return ( crc32 );
+  return (crc32);
 }
 
 int
 insert_crc32(unsigned char *buffer, unsigned int length)
 {
   SCTP_message *message;
-  unsigned long crc32;
+  uint32_t crc32;
   message = (SCTP_message *) buffer;
   message->common_header.checksum = 0L;
   crc32 = generate_crc32c(buffer,length);
@@ -57,13 +57,13 @@ validate_crc32(unsigned char *buffer, unsigned int length)
 {
   SCTP_message *message;
   unsigned int i;
-  unsigned long original_crc32;
-  unsigned long crc32 = ~0L;
+  uint32_t original_crc32;
+  uint32_t crc32 = ~0L;
 
   /* save and zero checksum */
-  message = (SCTP_message *) buffer;
+  message = (SCTP_message *)buffer;
   original_crc32 = ntohl(message->common_header.checksum);
   message->common_header.checksum = 0L;
-  crc32 = generate_crc32c(buffer,length);
+  crc32 = generate_crc32c(buffer, length);
   return ((original_crc32 == crc32)? 1 : -1);
 }

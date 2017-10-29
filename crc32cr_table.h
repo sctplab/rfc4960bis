@@ -1,7 +1,7 @@
 #ifndef __crc32cr_table_h__
 #define __crc32cr_table_h__
 
-#define CRC32C_POLY 0x1EDC6F41
+#define CRC32C_POLY 0x1EDC6F41UL
 #define CRC32C(c,d) (c=(c>>8)^crc_c[(c^(d))&0xFF])
 
 unsigned long  crc_c[256] =
