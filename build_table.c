@@ -35,7 +35,8 @@ build_crc_table (int index)
   return (reflect_32 (rb));
 }
 
-main ()
+int
+main (void)
 {
   int i;
 
@@ -53,14 +54,16 @@ main ()
   "#define CRC32C(c,d) (c=(c>>8)^crc_c[(c^(d))&0xFF])\n");
   fprintf (tf, "\nunsigned long  crc_c[256] =\n{\n");
   for (i = 0; i < 256; i++){
-      fprintf (tf, "0x%08lXL, ", build_crc_table (i));
+      fprintf (tf, "0x%08lXL,", build_crc_table (i));
       if ((i & 3) == 3)
         fprintf (tf, "\n");
+      else
+        fprintf (tf, " ");
   }
   fprintf (tf, "};\n\n#endif\n");
 
   if (fclose (tf) != 0)
-    printf ("Unable to close <%s>." OUTPUT_FILE);
+    printf ("Unable to close <%s>.", OUTPUT_FILE);
   else
     printf ("\nThe CRC-32c table has been written to <%s>.\n",
       OUTPUT_FILE);
