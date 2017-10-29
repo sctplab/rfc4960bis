@@ -12,7 +12,7 @@ reflect_32 (uint32_t b)
   int i;
   uint32_t rw = 0UL;
 
-  for (i = 0; i < 32; i++){
+  for (i = 0; i < 32; i++) {
       if (b & 1)
         rw |= 1 << (31 - i);
       b >>= 1;
@@ -26,9 +26,9 @@ build_crc_table (int index)
   int i;
   uint32_t rb;
 
-  rb = reflect_32 (index);
+  rb = reflect_32(index);
 
-  for (i = 0; i < 8; i++){
+  for (i = 0; i < 8; i++) {
       if (rb & 0x80000000UL)
        rb = (rb << 1) ^ (uint32_t)CRC32C_POLY;
       else
@@ -56,11 +56,11 @@ main (void)
     "#define CRC32C(c,d) (c=(c>>8)^crc_c[(c^(d))&0xFF])\n");
   fprintf(tf, "\nuint32_t crc_c[256] =\n{\n");
   for (i = 0; i < 256; i++) {
-      fprintf (tf, "0x%08XUL,", build_crc_table (i));
+      fprintf(tf, "0x%08XUL,", build_crc_table (i));
       if ((i & 3) == 3)
-        fprintf (tf, "\n");
+        fprintf(tf, "\n");
       else
-        fprintf (tf, " ");
+        fprintf(tf, " ");
   }
   fprintf(tf, "};\n\n#endif\n");
 
