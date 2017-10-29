@@ -4,7 +4,7 @@ unsigned long
 generate_crc32c(unsigned char *buffer, unsigned int length)
 {
   unsigned int i;
-  uint32_t crc32 = ~0L;
+  uint32_t crc32 = 0xffffffffUL;
   uint32_t result;
   uint8_t byte0, byte1, byte2, byte3;
 
@@ -45,7 +45,7 @@ insert_crc32(unsigned char *buffer, unsigned int length)
   SCTP_message *message;
   uint32_t crc32;
   message = (SCTP_message *) buffer;
-  message->common_header.checksum = 0L;
+  message->common_header.checksum = 0UL;
   crc32 = generate_crc32c(buffer,length);
   /* and insert it into the message */
   message->common_header.checksum = htonl(crc32);
@@ -58,7 +58,7 @@ validate_crc32(unsigned char *buffer, unsigned int length)
   SCTP_message *message;
   unsigned int i;
   uint32_t original_crc32;
-  uint32_t crc32 = ~0L;
+  uint32_t crc32;
 
   /* save and zero checksum */
   message = (SCTP_message *)buffer;
