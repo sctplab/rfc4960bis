@@ -2578,6 +2578,100 @@ A) At any given time, the data sender MUST NOT transmit new data to
 </section>
 </section>
 
+<section title='Updating References Regarding ECN'>
+<section title='Description of the Problem'>
+<t><xref target="RFC4960"/> refers for ECN only to <xref target="RFC3168"/>, which will
+be updated by <xref target="I-D.ietf-tsvwg-ecn-experimentation"/>.
+This needs to be reflected when referring to ECN.</t>
+</section>
+<section title='Text Changes to the Document'>
+<figure>
+<artwork>
+---------
+Old text: (Appendix A)
+---------
+
+ECN [RFC3168] describes a proposed extension to IP that details a
+method to become aware of congestion outside of datagram loss.
+
+---------
+New text: (Appendix A)
+---------
+
+ECN as specified in [RFC3168] updated by
+[I-D.ietf-tsvwg-ecn-experimentation] describes a proposed extension
+to IP that details a method to become aware of congestion outside
+of datagram loss.
+
+---------
+Old text: (Appendix A)
+---------
+
+In general, [RFC3168] should be followed with the following
+exceptions.
+
+---------
+New text: (Appendix A)
+---------
+
+In general, [RFC3168] updated by [I-D.ietf-tsvwg-ecn-experimentation]
+should be followed with the following exceptions.
+
+---------
+Old text: (Appendix A)
+---------
+
+[RFC3168] details negotiation of ECN during the SYN and SYN-ACK
+stages of a TCP connection.
+
+---------
+New text: (Appendix A)
+---------
+
+[RFC3168] updated by [I-D.ietf-tsvwg-ecn-experimentation] details
+negotiation of ECN during the SYN and SYN-ACK stages of a TCP
+connection.
+
+---------
+Old text: (Appendix A)
+---------
+
+[RFC3168] details a specific bit for a receiver to send back in its
+TCP acknowledgements to notify the sender of the Congestion
+Experienced (CE) bit having arrived from the network.
+
+---------
+New text: (Appendix A)
+---------
+
+[RFC3168] updated by [I-D.ietf-tsvwg-ecn-experimentation]
+details a specific bit for a receiver to send back in its
+TCP acknowledgements to notify the sender of the Congestion
+Experienced (CE) bit having arrived from the network.
+
+---------
+Old text: (Appendix A)
+---------
+
+[RFC3168] details a specific bit for a sender to send in the header
+of its next outbound TCP segment to indicate to its peer that it has
+reduced its congestion window.
+---------
+New text: (Appendix A)
+---------
+
+[RFC3168] updated by [I-D.ietf-tsvwg-ecn-experimentation]
+details a specific bit for a sender to send in the header
+of its next outbound TCP segment to indicate to its peer that it has
+reduced its congestion window.
+</artwork>
+</figure>
+</section>
+<section title='Solution Description'>
+<t>References to <xref target="I-D.ietf-tsvwg-ecn-experimentation"/> have been added.</t>
+</section>
+</section>
+
 </section>
 
 <section title='IANA Considerations'>
@@ -2614,9 +2708,11 @@ for their invaluable comments.</t>
 <references title='Informative References'>
 <?rfc include="reference.RFC.1122" ?>
 <?rfc include="reference.RFC.2960" ?>
+<?rfc include="reference.RFC.3168" ?>
 <?rfc include="reference.RFC.4460" ?>
 <?rfc include="reference.RFC.5681" ?>
 <?rfc include="reference.RFC.6298" ?>
+<?rfc include="reference.I-D.ietf-tsvwg-ecn-experimentation" ?>
 </references>
 </back>
 </rfc>
