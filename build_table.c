@@ -7,7 +7,7 @@
 static FILE *tf;
 
 static uint32_t
-reflect_32 (uint32_t b)
+reflect_32(uint32_t b)
 {
   int i;
   uint32_t rw = 0UL;
@@ -21,7 +21,7 @@ reflect_32 (uint32_t b)
 }
 
 static uint32_t
-build_crc_table (int index)
+build_crc_table(int index)
 {
   int i;
   uint32_t rb;
@@ -48,8 +48,8 @@ main (void)
       printf ("Unable to open %s\n", OUTPUT_FILE);
       exit (1);
   }
-  fprintf(tf, "#ifndef __crc32cr_table_h__\n");
-  fprintf(tf, "#define __crc32cr_table_h__\n\n");
+  fprintf(tf, "#ifndef __crc32cr_h__\n");
+  fprintf(tf, "#define __crc32cr_h__\n\n");
   fprintf(tf, "#define CRC32C_POLY 0x%08XUL\n",
     (uint32_t)CRC32C_POLY);
   fprintf(tf,
