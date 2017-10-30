@@ -8,7 +8,7 @@
 
 <rfc category="info"
      ipr="trust200902"
-     docName="draft-ietf-tsvwg-rfc4960-errata-03-to-be.txt">
+     docName="draft-ietf-tsvwg-rfc4960-errata-03.txt">
 <front>
 
 <!--
@@ -3705,7 +3705,7 @@ validate_crc32(unsigned char *buffer, unsigned int length)
 </figure>
 </section>
 <section title='Solution Description'>
-<t>The code was changed to use platform indepent tyoes.</t>
+<t>The code was changed to use platform independent types.</t>
 </section>
 </section>
 
