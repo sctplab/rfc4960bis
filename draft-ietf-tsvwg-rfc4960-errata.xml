@@ -2809,9 +2809,9 @@ New text: (Section 5.1.2)
 ---------
 
 B) If there is a Host Name parameter present in the received INIT or
-   INIT ACK chunk, the endpoint the endpoint MUST immediately send an
-   ABORT an MAY include an Error Cause indicating an Unresolvable
-   Address to its peer.  The ABORT shall be sent to the source IP address
+   INIT ACK chunk, the endpoint MUST immediately send an ABORT and
+   MAY include an Error Cause indicating an Unresolvable Address to
+   its peer.  The ABORT shall be sent to the source IP address
    from which the last peer packet was received.
 
 ---------
