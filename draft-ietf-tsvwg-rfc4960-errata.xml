@@ -1756,7 +1756,7 @@ stated in Section 3.1, that (1) an INIT chunk MUST NOT be bundled
 with any other chunk in a packet, and (2) a packet containing an INIT
 chunk MUST have a zero Verification Tag.  Furthermore, we require
 that the receiver of an INIT chunk MUST enforce these rules by
-silently discarding an arriving packet  with an INIT chunk that is
+silently discarding an arriving packet with an INIT chunk that is
 bundled with other chunks or has a non-zero verification tag and
 contains an INIT-chunk.
 
@@ -2017,10 +2017,10 @@ HEARTBEAT ACK, etc.) in response to control chunks to the same
 destination transport address from which it received the control
 chunk to which it is replying.
 
-The selection of the destination transport address for packets containing
-SACK chunks is implementation dependent. However, an endpoint SHOULD NOT vary
-the destination transport address of a SACK when it receives DATA chunks
-from the same source address.
+The selection of the destination transport address for packets
+containing SACK chunks is implementation dependent. However, an endpoint
+SHOULD NOT vary the destination transport address of a SACK when it
+receives DATA chunks from the same source address.
 
 When acknowledging multiple DATA chunks received in packets
 from different source addresses in a single SACK, the SACK chunk MAY
@@ -2326,9 +2326,9 @@ New text: (Section 7.2.5)
 
 SCTP implementations MAY allow an application to configure the
 Differentiated Services Code Point (DSCP) used for sending packets.
-If a DSCP change might result in outgoing packets being queued in different
-queues, the congestion control parameters for all affected destination
-addresses MUST be reset to their initial values.
+If a DSCP change might result in outgoing packets being queued in
+different queues, the congestion control parameters for all affected
+destination addresses MUST be reset to their initial values.
 
 ---------
 Old text: (Section 10.1)
@@ -2455,8 +2455,9 @@ New text: (Appendix C)
 ICMP8) If the ICMP type is "Destination Unreachable", the
        implementation MAY mark the destination into the unreachable
        state or alternatively increment the path error counter.
-       SCTP MAY provide information to the upper layer indicating the reception
-       of ICMP messages when reporting a network status change.
+       SCTP MAY provide information to the upper layer indicating
+       the reception of ICMP messages when reporting a network status
+       change.
 </artwork>
 </figure>
 </section>
@@ -2489,11 +2490,11 @@ New text: (Section 6.1)
 ---------
 
 B) At any given time, the sender MUST NOT transmit new data to a
-   given transport address if it has cwnd + (PMTU - 1) or more bytes of data
-   outstanding to that transport address.  If data is available the
-   sender SHOULD exceed cwnd by up to (PMTU-1) bytes on a new data
-   transmission if the flightsize does not currently reach cwnd.
-   The breach of cwnd MUST constitute one packet only.
+   given transport address if it has cwnd + (PMTU - 1) or more bytes
+   of data outstanding to that transport address.  If data is
+   available the sender SHOULD exceed cwnd by up to (PMTU-1) bytes on
+   a new data transmission if the flightsize does not currently reach
+   cwnd. The breach of cwnd MUST constitute one packet only.
 
 ---------
 Old text: (Section 7.2.1)
@@ -2701,10 +2702,10 @@ Address parameter is present in the received INIT chunk.
 New text: (Section 3.3.2)
 ---------
 
-Note 3: An INIT chunk MUST NOT contain the Host Name Address parameter.
-The receiver of an INIT chunk containing an Host Name Address parameter
-MUST send an ABORT and MAY include an Error Cause indicating an
-Unresolvable Address.
+Note 3: An INIT chunk MUST NOT contain the Host Name Address
+parameter.  The receiver of an INIT chunk containing an Host Name
+Address parameter MUST send an ABORT and MAY include an Error Cause
+indicating an Unresolvable Address.
 
 ---------
 Old text: (Section 3.3.2.1)
@@ -2754,10 +2755,10 @@ types if the Host Name Address parameter is present.
 New text: (Section 3.3.3)
 ---------
 
-Note 3: An INIT ACK chunk MUST NOT contain the Host Name Address parameter.
-The receiver of INIT ACK chunks containing an Host Name Address parameter
-MUST send an ABORT and MAY include an Error Cause indicating an
-Unresolvable Address.
+Note 3: An INIT ACK chunk MUST NOT contain the Host Name Address
+parameter.  The receiver of INIT ACK chunks containing an Host Name
+Address parameter MUST send an ABORT and MAY include an Error Cause
+indicating an Unresolvable Address.
 
 ---------
 Old text: (Section 5.1.2)
