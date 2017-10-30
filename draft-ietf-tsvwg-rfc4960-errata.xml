@@ -2850,6 +2850,46 @@ an MAY include an Error Cause indicating an Unresolvable Address.
 </section>
 </section>
 
+<section title='Conflicting Text Regarding the Supported Address Types Parameter'>
+<section title='Description of the Problem'>
+<t>When receiving an SCTP packet containing an INIT chunk sent from an
+address for which the corresponding address type is not listed in the
+Supported Address Types, there is conflicting text in Section 5.1.2 of
+<xref target="RFC4960"/>. It is stated that the association MUST be aborted
+and also that the association SHOULD be established and there SHOULD NOT be
+any error indication.</t>
+</section>
+<section title='Text Changes to the Document'>
+<figure>
+<artwork>
+---------
+Old text: (Section 5.1.2)
+---------
+
+The sender of INIT may include a 'Supported Address Types' parameter
+in the INIT to indicate what types of address are acceptable.  When
+this parameter is present, the receiver of INIT (initiate) MUST
+either use one of the address types indicated in the Supported
+Address Types parameter when responding to the INIT, or abort the
+association with an "Unresolvable Address" error cause if it is
+unwilling or incapable of using any of the address types indicated by
+its peer.
+
+---------
+New text: (Section 5.1.2)
+---------
+
+The sender of INIT may include a 'Supported Address Types' parameter
+in the INIT to indicate what types of address are acceptable. 
+
+</artwork>
+</figure>
+</section>
+<section title='Solution Description'>
+<t>The conflicting text has been removed.</t>
+</section>
+</section>
+
 </section>
 
 <section title='IANA Considerations'>
