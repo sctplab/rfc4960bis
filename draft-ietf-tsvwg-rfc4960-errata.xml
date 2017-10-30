@@ -2983,6 +2983,102 @@ New text: (Section 14.2)
 </section>
 </section>
 
+<section title='Integration of RFC 6335'>
+<section title='Description of the Problem'>
+<t><xref target="RFC6335"/> updates <xref target="RFC4960"/> by updating Procedures
+for the Port Numbers Registry.
+This should be integrated into the base specification.
+While there, update the reference to the RFC giving guidelines
+for writing IANA sections to <xref target="RFC8126"/>.</t>
+</section>
+<section title='Text Changes to the Document'>
+<figure>
+<artwork>
+---------
+Old text: (Section 14.5)
+---------
+
+SCTP services may use contact port numbers to provide service to
+unknown callers, as in TCP and UDP.  IANA is therefore requested to
+open the existing Port Numbers registry for SCTP using the following
+rules, which we intend to mesh well with existing Port Numbers
+registration procedures.  An IESG-appointed Expert Reviewer supports
+IANA in evaluating SCTP port allocation requests, according to the
+procedure defined in [RFC2434].
+
+Port numbers are divided into three ranges.  The Well Known Ports are
+those from 0 through 1023, the Registered Ports are those from 1024
+through 49151, and the Dynamic and/or Private Ports are those from
+49152 through 65535.  Well Known and Registered Ports are intended
+for use by server applications that desire a default contact point on
+a system.  On most systems, Well Known Ports can only be used by
+system (or root) processes or by programs executed by privileged
+users, while Registered Ports can be used by ordinary user processes
+or programs executed by ordinary users.  Dynamic and/or Private Ports
+are intended for temporary use, including client-side ports, out-of-
+band negotiated ports, and application testing prior to registration
+of a dedicated port; they MUST NOT be registered.
+
+The Port Numbers registry should accept registrations for SCTP ports
+in the Well Known Ports and Registered Ports ranges.  Well Known and
+Registered Ports SHOULD NOT be used without registration.  Although
+in some cases -- such as porting an application from TCP to SCTP --
+it may seem natural to use an SCTP port before registration
+completes, we emphasize that IANA will not guarantee registration of
+particular Well Known and Registered Ports.  Registrations should be
+requested as early as possible.
+
+Each port registration SHALL include the following information:
+
+o  A short port name, consisting entirely of letters (A-Z and a-z),
+   digits (0-9), and punctuation characters from "-_+./*" (not
+   including the quotes).
+
+o  The port number that is requested for registration.
+
+o  A short English phrase describing the port's purpose.
+
+o  Name and contact information for the person or entity performing
+   the registration, and possibly a reference to a document defining
+   the port's use.  Registrations coming from IETF working groups
+   need only name the working group, but indicating a contact person
+   is recommended.
+
+Registrants are encouraged to follow these guidelines when submitting
+a registration.
+
+o  A port name SHOULD NOT be registered for more than one SCTP port
+   number.
+
+o  A port name registered for TCP MAY be registered for SCTP as well.
+   Any such registration SHOULD use the same port number as the
+   existing TCP registration.
+
+o  Concrete intent to use a port SHOULD precede port registration.
+   For example, existing TCP ports SHOULD NOT be registered in
+   advance of any intent to use those ports for SCTP.
+
+---------
+New text: (Section 14.5)
+---------
+
+SCTP services may use contact port numbers to provide service to
+unknown callers, as in TCP and UDP.  IANA is therefore requested to
+open the existing Port Numbers registry for SCTP using the following
+rules, which we intend to mesh well with existing Port Numbers
+registration procedures.  An IESG-appointed Expert Reviewer supports
+IANA in evaluating SCTP port allocation requests, according to the
+procedure defined in [RFC8126].  The details of this process are
+defined in [RFC6335].
+</artwork>
+</figure>
+</section>
+<section title='Solution Description'>
+<t><xref target="RFC6335"/> was integrated and the reference was updated to
+<xref target="RFC8126"/>.</t>
+</section>
+</section>
+
 </section>
 
 <section title='IANA Considerations'>
@@ -3025,6 +3121,8 @@ for their invaluable comments.</t>
 <?rfc include="reference.RFC.5681" ?>
 <?rfc include="reference.RFC.6096" ?>
 <?rfc include="reference.RFC.6298" ?>
+<?rfc include="reference.RFC.6335" ?>
+<?rfc include="reference.RFC.8126" ?>
 <?rfc include="reference.I-D.ietf-tsvwg-ecn-experimentation" ?>
 </references>
 </back>
