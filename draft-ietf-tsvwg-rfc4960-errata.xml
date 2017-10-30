@@ -14,9 +14,6 @@
 <!--
 ToDo
   * Limit SSN in flight to 2^16 - 1
-  * Cleanup CRC32c code
-  * Remove Hostname Parameter
-  * Consider implications for the Supported Address Types Parameter
 -->
 
 <title>RFC 4960 Errata and Issues</title>
