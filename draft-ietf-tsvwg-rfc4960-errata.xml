@@ -2890,6 +2890,99 @@ in the INIT to indicate what types of address are acceptable.
 </section>
 </section>
 
+<section title='Integration of RFC 6096'>
+<section title='Description of the Problem'>
+<t><xref target="RFC6096"/> updates <xref target="RFC4960"/> by adding a
+Chunk Flags Registry.
+This should be integrated into the base specification.</t>
+</section>
+<section title='Text Changes to the Document'>
+<figure>
+<artwork>
+---------
+Old text: (Section 14.1)
+---------
+
+14.1.  IETF-Defined Chunk Extension
+
+   The assignment of new chunk parameter type codes is done through an
+   IETF Consensus action, as defined in [RFC2434].  Documentation of the
+   chunk parameter MUST contain the following information:
+
+   a) A long and short name for the new chunk type.
+
+   b) A detailed description of the structure of the chunk, which MUST
+      conform to the basic structure defined in Section 3.2.
+
+   c) A detailed definition and description of intended use of each
+      field within the chunk, including the chunk flags if any.
+
+   d) A detailed procedural description of the use of the new chunk type
+      within the operation of the protocol.
+
+   The last chunk type (255) is reserved for future extension if
+   necessary.
+
+---------
+New text: (Section 14.1)
+---------
+
+14.1.  IETF-Defined Chunk Extension
+
+   The assignment of new chunk type codes is done through an IETF Review
+   action, as defined in [RFC5226].  Documentation of a new chunk MUST
+   contain the following information:
+
+   a)  A long and short name for the new chunk type;
+
+   b)  A detailed description of the structure of the chunk, which MUST
+       conform to the basic structure defined in Section 3.2 of
+       [RFC4960];
+
+   c)  A detailed definition and description of intended use of each
+       field within the chunk, including the chunk flags if any.
+       Defined chunk flags will be used as initial entries in the chunk
+       flags table for the new chunk type;
+
+   d)  A detailed procedural description of the use of the new chunk
+       type within the operation of the protocol.
+
+   The last chunk type (255) is reserved for future extension if
+   necessary.
+
+   For each new chunk type, IANA creates a registration table for the
+   chunk flags of that type.  The procedure for registering particular
+   chunk flags is described in the following Section 14.2.
+
+---------
+New text: (Section 14.2)
+---------
+
+14.2.  New IETF Chunk Flags Registration
+
+   The assignment of new chunk flags is done through an RFC required
+   action, as defined in [RFC5226].  Documentation of the chunk flags
+   MUST contain the following information:
+
+   a)  A name for the new chunk flag;
+
+   b)  A detailed procedural description of the use of the new chunk
+       flag within the operation of the protocol.  It MUST be considered
+       that implementations not supporting the flag will send '0' on
+       transmit and just ignore it on receipt.
+
+   IANA selects a chunk flags value.  This must be one of 0x01, 0x02,
+   0x04, 0x08, 0x10, 0x20, 0x40, or 0x80, which MUST be unique within
+   the chunk flag values for the specific chunk type.
+</artwork>
+</figure>
+<t>Please note that Sections 14.2, 14.3, 14.4, and 14.5 need to be renumbered.</t>
+</section>
+<section title='Solution Description'>
+<t><xref target="RFC6096"/> was integrated.</t>
+</section>
+</section>
+
 </section>
 
 <section title='IANA Considerations'>
@@ -2928,7 +3021,9 @@ for their invaluable comments.</t>
 <?rfc include="reference.RFC.2960" ?>
 <?rfc include="reference.RFC.3168" ?>
 <?rfc include="reference.RFC.4460" ?>
+<?rfc include="reference.RFC.5226" ?>
 <?rfc include="reference.RFC.5681" ?>
+<?rfc include="reference.RFC.6096" ?>
 <?rfc include="reference.RFC.6298" ?>
 <?rfc include="reference.I-D.ietf-tsvwg-ecn-experimentation" ?>
 </references>
