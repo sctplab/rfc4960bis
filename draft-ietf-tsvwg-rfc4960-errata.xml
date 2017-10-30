@@ -3079,6 +3079,152 @@ defined in [RFC6335].
 </section>
 </section>
 
+<section title='Integration of RFC 7053'>
+<section title='Description of the Problem'>
+<t><xref target="RFC7053"/> updates <xref target="RFC4960"/> by adding the I bit
+to the DATA chunk.
+This should be integrated into the base specification.</t>
+</section>
+<section title='Text Changes to the Document'>
+<figure>
+<artwork>
+---------
+Old text: (Section 3.3.1)
+---------
+
+The following format MUST be used for the DATA chunk:
+
+     0                   1                   2                   3
+     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |   Type = 0    | Reserved|U|B|E|    Length                     |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |                              TSN                              |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |      Stream Identifier S      |   Stream Sequence Number n    |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |                  Payload Protocol Identifier                  |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    \                                                               \
+    /                 User Data (seq n of Stream S)                 /
+    \                                                               \
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+Reserved: 5 bits
+
+   Should be set to all '0's and ignored by the receiver.
+
+---------
+New text: (Section 3.3.1)
+---------
+
+     0                   1                   2                   3
+     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |   Type = 0    |  Res  |I|U|B|E|    Length                     |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |                              TSN                              |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |      Stream Identifier S      |   Stream Sequence Number n    |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |                  Payload Protocol Identifier                  |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    \                                                               \
+    /                 User Data (seq n of Stream S)                 /
+    \                                                               \
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+Res: 4 bits
+
+   Should be set to all '0's and ignored by the receiver.
+
+I bit: 1 bit
+
+   The (I)mmediate Bit MAY be set by the sender, whenever the sender of
+   a DATA chunk can benefit from the corresponding SACK chunk being sent
+   back without delay. See [RFC7053] for a discussion about 
+   
+---------
+New text: (Append to Section 6.1)
+---------
+
+Whenever the sender of a DATA chunk can benefit from the
+corresponding SACK chunk being sent back without delay, the sender
+MAY set the I bit in the DATA chunk header.  Please note that why the
+sender has set the I bit is irrelevant to the receiver.
+
+Reasons for setting the I bit include, but are not limited to (see
+Section 4 of [RFC7053] for the benefits):
+
+o  The application requests to set the I bit of the last DATA chunk
+   of a user message when providing the user message to the SCTP
+   implementation (see Section 7).
+
+o  The sender is in the SHUTDOWN-PENDING state.
+
+o  The sending of a DATA chunk fills the congestion or receiver
+   window.
+
+
+---------
+Old text: (Section 6.2)
+---------
+
+Note: The SHUTDOWN chunk does not contain Gap Ack Block fields.
+Therefore, the endpoint should use a SACK instead of the SHUTDOWN
+chunk to acknowledge DATA chunks received out of order.
+
+---------
+New text: (Section 6.2)
+---------
+
+Note: The SHUTDOWN chunk does not contain Gap Ack Block fields.
+Therefore, the endpoint should use a SACK instead of the SHUTDOWN
+chunk to acknowledge DATA chunks received out of order.
+
+Upon receipt of an SCTP packet containing a DATA chunk with the I bit
+set, the receiver SHOULD NOT delay the sending of the corresponding
+SACK chunk, i.e., the receiver SHOULD immediately respond with the
+corresponding SACK chunk.
+
+---------
+Old text: (Section 10.1)
+---------
+
+E) Send
+
+ Format: SEND(association id, buffer address, byte count [,context]
+         [,stream id] [,life time] [,destination transport address]
+         [,unordered flag] [,no-bundle flag] [,payload protocol-id] )
+ -> result
+
+---------
+New text: (Section 10.1)
+---------
+
+E) Send
+
+ Format: SEND(association id, buffer address, byte count [,context]
+         [,stream id] [,life time] [,destination transport address]
+         [,unordered flag] [,no-bundle flag] [,payload protocol-id]
+         [,sack immediately] )
+ -> result
+
+---------
+New text: (Append optional parameter in Subsection E of Section 10.1)
+---------
+
+o  sack immediately - set the I bit on the last DATA chunk used for
+   sending buffer.
+</artwork>
+</figure>
+<t>Please note that the change in Section 6.2 is only about adding a paragraph.</t>
+</section>
+<section title='Solution Description'>
+<t><xref target="RFC7053"/> was integrated.</t>
+</section>
+</section>
+
 </section>
 
 <section title='IANA Considerations'>
@@ -3122,6 +3268,7 @@ for their invaluable comments.</t>
 <?rfc include="reference.RFC.6096" ?>
 <?rfc include="reference.RFC.6298" ?>
 <?rfc include="reference.RFC.6335" ?>
+<?rfc include="reference.RFC.7053" ?>
 <?rfc include="reference.RFC.8126" ?>
 <?rfc include="reference.I-D.ietf-tsvwg-ecn-experimentation" ?>
 </references>
