@@ -103,8 +103,10 @@ list.</t>
 
 <section anchor='conventions' title='Conventions'>
 <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
-"SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
-document are to be interpreted as described in <xref target="RFC2119"/>.</t>
+"SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL"
+in this document are to be interpreted as described in
+BCP&nbsp;14 <xref target="RFC2119"/> <xref target="RFC8174"/> when,
+and only when, they appear in all capitals, as shown here.</t>
 </section>
 
 <section title='Corrections to RFC 4960'>
@@ -3810,6 +3812,40 @@ within the current send window.</t>
 </section>
 </section>
 
+<section title='Update RFC 2119 Boilerplate'>
+<section title='Description of the Problem'>
+<t>The text to be used to refer to the <xref target="RFC2119"/> terms has been
+updated by <xref target="RFC8174"/>.</t>
+</section>
+<section title='Text Changes to the Document'>
+<figure>
+<artwork>
+---------
+Old text: (Section 2)
+---------
+
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+"SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+document are to be interpreted as described in RFC 2119 [RFC2119].
+
+---------
+New text: (Section 2)
+---------
+
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+"SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+"OPTIONAL" in this document are to be interpreted as described in
+BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
+capitals, as shown here.
+</artwork>
+</figure>
+</section>
+<section title='Solution Description'>
+<t>The text has been updated to the one specified in
+<xref target="RFC8174"/>.</t>
+</section>
+</section>
+
 </section>
 
 <section title='IANA Considerations'>
@@ -3855,6 +3891,7 @@ for their invaluable comments.</t>
 <?rfc include="reference.RFC.6335" ?>
 <?rfc include="reference.RFC.7053" ?>
 <?rfc include="reference.RFC.8126" ?>
+<?rfc include="reference.RFC.8174" ?>
 <?rfc include="reference.I-D.ietf-tsvwg-ecn-experimentation" ?>
 </references>
 </back>
