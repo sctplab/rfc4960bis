@@ -11,11 +11,6 @@
      docName="draft-ietf-tsvwg-rfc4960-errata-04-to-be.txt">
 <front>
 
-<!--
-ToDo
-  * Limit SSN in flight to 2^16 - 1
--->
-
 <title>RFC 4960 Errata and Issues</title>
 
 <!-- *************** RANDALL STEWART *************** -->
