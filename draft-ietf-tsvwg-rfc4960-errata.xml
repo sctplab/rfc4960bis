@@ -3779,6 +3779,42 @@ added.</t>
 </section>
 </section>
 
+<section title='Handling of SSN Wrap Arounds'>
+<section title='Description of the Problem'>
+<t>The Stream Sequence Numbers (SSN) is used for perserving the ordering of user
+messages within each SCTP stream. The SSN is limited to 16 bits.
+Therefore, multiple wrap arounds of the SSN might happen within the current send
+window.
+To allow the receiver to deliver ordered user messages in the correct sequence,
+the sender should limit the number of user messages per stream.</t>
+</section>
+<section title='Text Changes to the Document'>
+<figure>
+<artwork>
+---------
+Old text: (Section 6.1)
+---------
+
+Note: The data sender SHOULD NOT use a TSN that is more than 2**31 -
+1 above the beginning TSN of the current send window.
+
+---------
+New text: (Section 6.1)
+---------
+
+Note: The data sender SHOULD NOT use a TSN that is more than 2**31 -
+1 above the beginning TSN of the current send window.
+Note: For each stream, the data sender SHOULD NOT have more than 2**16-1
+ordered user messages in the current send window.
+</artwork>
+</figure>
+</section>
+<section title='Solution Description'>
+<t>The data sender is required to limit the number of ordered user messages
+within the current send window.</t>
+</section>
+</section>
+
 </section>
 
 <section title='IANA Considerations'>
