@@ -3710,6 +3710,75 @@ validate_crc32(unsigned char *buffer, unsigned int length)
 </section>
 </section>
 
+<section title='Clarification of Gap Ack Blocks in SACK Chunks'>
+<section title='Description of the Problem'>
+<t>The Gap Ack Blocks in the SACK chunk are intended to be isolated.
+However, this is not mentioned with normative text.</t>
+</section>
+<section title='Text Changes to the Document'>
+<figure>
+<artwork>
+---------
+Old text: (Section 3.3.4)
+---------
+
+The SACK also contains zero or more Gap Ack Blocks.  Each Gap Ack
+Block acknowledges a subsequence of TSNs received following a break
+in the sequence of received TSNs.  By definition, all TSNs
+acknowledged by Gap Ack Blocks are greater than the value of the
+Cumulative TSN Ack.
+
+---------
+New text: (Section 3.3.4)
+---------
+
+The SACK also contains zero or more Gap Ack Blocks.  Each Gap Ack
+Block acknowledges a subsequence of TSNs received following a break
+in the sequence of received TSNs. The Gap Ack Blocks SHOULD be isolated.
+This means that the TSN just before each Gap Ack Block and the TSN just after
+each Gap Ack Block has not been received.  By definition, all TSNs
+acknowledged by Gap Ack Blocks are greater than the value of the
+Cumulative TSN Ack.
+
+---------
+Old text: (Section 3.3.4)
+---------
+
+Gap Ack Blocks:
+
+   These fields contain the Gap Ack Blocks.  They are repeated for
+   each Gap Ack Block up to the number of Gap Ack Blocks defined in
+   the Number of Gap Ack Blocks field.  All DATA chunks with TSNs
+   greater than or equal to (Cumulative TSN Ack + Gap Ack Block
+   Start) and less than or equal to (Cumulative TSN Ack + Gap Ack
+   Block End) of each Gap Ack Block are assumed to have been received
+   correctly.
+
+---------
+New text: (Section 3.3.4)
+---------
+
+Gap Ack Blocks:
+
+   These fields contain the Gap Ack Blocks.  They are repeated for
+   each Gap Ack Block up to the number of Gap Ack Blocks defined in
+   the Number of Gap Ack Blocks field.  All DATA chunks with TSNs
+   greater than or equal to (Cumulative TSN Ack + Gap Ack Block
+   Start) and less than or equal to (Cumulative TSN Ack + Gap Ack
+   Block End) of each Gap Ack Block are assumed to have been received
+   correctly. Gap Ack Blocks SHOULD be isolated.  That means that
+   the DATA chunks with TSN equal to (Cumulative TSN Ack + Gap Ack
+   Block Start - 1) and (Cumulative TSN Ack + Gap Ack Block End + 1)
+   have not been received.
+</artwork>
+</figure>
+</section>
+<section title='Solution Description'>
+<t>Normative text describing the intended usage of Gap Ack Blocks has been
+added.</t>
+</section>
+</section>
+
 </section>
 
 <section title='IANA Considerations'>
