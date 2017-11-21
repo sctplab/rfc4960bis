@@ -380,11 +380,11 @@ An endpoint shall keep a counter on the total number of consecutive
 retransmissions to its peer (this includes data retransmissions
 to all the destination transport addresses of the peer if it is
 multi-homed), including the number of unacknowledged HEARTBEAT
-chunks observed on the path which currently is used for data
+chunks observed on the path which is currently used for data
 transfer. Unacknowledged HEARTBEAT chunks observed on paths
 different from the path currently used for data transfer shall
 not increment the association error counter, as this could lead
-to association closure even if the path which currently is used for
+to association closure even if the path which is currently used for
 data transfer is available (but idle).
 </artwork>
 </figure>
@@ -489,7 +489,7 @@ T1-init timer.</t>
 
 <section title='Miscellaneous Typos'>
 <section title='Description of the Problem'>
-<t>While processing <xref target="RFC4960"/> some typos were not catched.</t>
+<t>While processing <xref target="RFC4960"/> some typos were not caught.</t>
 </section>
 <section title='Text Changes to the Document'>
 <!-- The following was already incorrect in RFC 2960 -->
@@ -951,8 +951,8 @@ address that is different from the last destination address to which
 the DATA chunk was sent.
 
 When its peer is multi-homed, an endpoint SHOULD send fast
-retransmissions to the same destination transport address where
-original data was sent to. If the primary path has been changed and
+retransmissions to the same destination transport address where the
+original data was sent to. If the primary path has been changed and the
 original data was sent there before the fast retransmit, the
 implementation MAY send it to the new primary path.
 </artwork>
@@ -1032,14 +1032,14 @@ New text: (Section 7.2.1)
 ---------
 
 o  The initial value of ssthresh SHOULD be arbitrarily high (e.g.,
-   to the size of the largest possible advertised window).
+   the size of the largest possible advertised window).
 </artwork>
 </figure>
 </section>
 <section title='Solution Description'>
 <t>Use the same value as suggested in <xref target="RFC5681"/>, Section 3.1,
 as an appropriate initial value.
-Furthermore use the same requirements level.</t>
+Furthermore, use the same requirements level.</t>
 </section>
 </section>
 
@@ -1047,7 +1047,7 @@ Furthermore use the same requirements level.</t>
 <section title='Description of the Problem'>
 <t>The Path Verification procedure of <xref target="RFC4960"/>
 prescribes that any address passed to the sender of the INIT by its
-upper layer is automatically CONFIRMED. This however is unclear if
+upper layer is automatically CONFIRMED. This, however, is unclear if
 only addresses in the request to initiate association establishment
 are considered or any addresses provided by the upper layer in any
 requests (e.g. in 'Set Primary').</t>
@@ -1067,7 +1067,7 @@ New text: (Section 5.4)
 ---------
 
 1)  Any addresses passed to the sender of the INIT by its upper
-   layer in the request to initialize an association is
+   layer in the request to initialize an association are
    automatically considered to be CONFIRMED.
 </artwork>
 </figure>
@@ -1163,9 +1163,9 @@ responding, the following rules MUST be applied:
 </figure>
 </section>
 <section title='Solution Description'>
-<t>The new text requires sending INIT ACK to the destination address
+<t>The new text requires sending INIT ACK to a destination address
 that is passed by the upper layer and reported in the incoming INIT.
-If the source address of the INIT fulfills it then sending the
+If the source address of the INIT meets these conditions, sending the
 INIT ACK to the source address of the INIT is the preferred behavior.</t>
 </section>
 </section>
@@ -1176,7 +1176,7 @@ INIT ACK to the source address of the INIT is the preferred behavior.</t>
 zero window probes, SCTP should neither increment the association
 counter nor increment the destination address error counter if it continues
 to receive new packets from the peer. But receiving new packets
-from the peer does not guarantee peer's accessibility and, if the
+from the peer does not guarantee the peer's accessibility and, if the
 destination address becomes unreachable during zero window probing,
 SCTP cannot get a changed rwnd until it switches the destination
 address for probes.</t>
@@ -1218,8 +1218,8 @@ do not acknowledge the probes.</t>
 
 <section title='Normative Language in Section 10'>
 <section title='Description of the Problem'>
-<t>Section 10 of <xref target="RFC4960"/> is informative and normative language
-such as MUST and MAY cannot be used there.
+<t>Section 10 of <xref target="RFC4960"/> is informative and, therefore,
+normative language such as MUST and MAY cannot be used there.
 However, there are several places in Section 10 where MUST and MAY are used.</t>
 </section>
 <section title='Text Changes to the Document'>
@@ -1441,7 +1441,7 @@ upper layer.</t>
 <t>This makes the text inconsistent.</t>
 </section>
 <section title='Text Changes to the Document'>
-<t>The following cahnge is based on the change described in
+<t>The following change is based on the change described in
 <xref target='endpoint_failure_detection'/>.</t>
 <figure>
 <artwork>
@@ -1712,8 +1712,8 @@ a packet must discard it while processing the chunks of the packet.
 It is unclear whether the receiver has to rollback state changes already
 performed while processing the packet or not.</t>
 <t>The intention of <xref target='RFC4960'/> is to process an incoming packet
-chunk by chunk and do not perform any prescreening of chunks in the received
-packet so the receiver must only discard a chunk causing discard and all further
+chunk by chunk and not to perform any prescreening of chunks in the received
+packet. Thus, by discarding one chunk the receiver also causes discarding of all further
 chunks.</t>
 </section>
 <section title='Text Changes to the Document'>
@@ -1784,11 +1784,11 @@ to the end and no rollback or pre-screening is required.</t>
 <section title='CWND Increase in Congestion Avoidance Phase'>
 <section title='Description of the Problem'>
 <t><xref target='RFC4960'/> in Section 7.2.2 prescribes to increase cwnd
-by 1*MTU per RTT if the sender has cwnd or more bytes of outstanding data
+by 1*MTU per RTT if the sender has cwnd or more bytes of data outstanding
 to the corresponding address in the Congestion Avoidance phase. However,
 this is described without normative language.
 Moreover, Section 7.2.2 includes an algorithm how an implementation can achieve
-it but this algorithm is underspecified and actually allows increasing cwnd by
+this but this algorithm is underspecified and actually allows increasing cwnd by
 more than 1*MTU per RTT.</t>
 </section>
 <section title='Text Changes to the Document'>
@@ -1846,20 +1846,20 @@ o  Whenever cwnd is greater than ssthresh, upon each SACK arrival,
    of bytes of duplicated chunks reported in Duplicate TSNs.
 
 o  When partial_bytes_acked is greater than cwnd and before the
-   arrival of the SACK the sender had less bytes of data outstanding
-   than cwnd (i.e., before arrival of the SACK, flightsize was less
+   arrival of the SACK the sender had less than cwnd bytes of data outstanding
+   (i.e., before arrival of the SACK, flightsize was less
    than cwnd), reset partial_bytes_acked to cwnd.
 
 o  When partial_bytes_acked is equal to or greater than cwnd and
    before the arrival of the SACK the sender had cwnd or more bytes
    of data outstanding (i.e., before arrival of the SACK, flightsize
    was greater than or equal to cwnd), partial_bytes_acked is reset
-   to (partial_bytes_acked - cwnd). Next, cwnd is increased by MTU.
+   to (partial_bytes_acked - cwnd). Next, cwnd is increased by 1*MTU.
 </artwork>
 </figure>
 </section>
 <section title='Solution Description'>
-<t>The basic guidelines for incrementing cwnd during congestion avoidance
+<t>The basic guidelines for incrementing cwnd during the congestion avoidance
 phase are added into Section 7.2.2. The guidelines include the normative
 language and are aligned with <xref target="RFC5681"/>.</t>
 <t>The algorithm from Section 7.2.2 is improved to not allow increasing cwnd by
@@ -1876,11 +1876,11 @@ period. The latter is excessive. Moreover, it is unclear what is a sufficiently
 long idle period.</t>
 <t><xref target='RFC4960'/> doesn't specify the handling of ssthresh in the idle
 case.
-If ssthres is reduced due to a packet loss, ssthresh is never recovered.
+If ssthresh is reduced due to a packet loss, ssthresh is never recovered.
 So traffic can end up in Congestion Avoidance all the time, resulting in a low
 sending rate and bad performance.
 The problem is even more serious for SCTP because in a multi-homed
-SCTP association traffic switch back to the previously failed primary path will
+SCTP association traffic that switches back to the previously failed primary path will
 also lead to the situation where traffic ends up in Congestion Avoidance.</t>
 </section>
 <section title='Text Changes to the Document'>
@@ -1956,7 +1956,7 @@ incoming packet, other than to update the offered window as the
 receiving application consumes new data. When the window opens
 up, an SCTP receiver SHOULD send additional SACK chunks to update
 the window even if no new data is received. The receiver MUST avoid
-sending large burst of window updates.
+sending large bursts of window updates.
 
 
 </artwork>
@@ -2017,7 +2017,7 @@ chunk to which it is replying.
 The selection of the destination transport address for packets
 containing SACK chunks is implementation dependent. However, an endpoint
 SHOULD NOT vary the destination transport address of a SACK when it
-receives DATA chunks from the same source address.
+receives DATA chunks coming from the same source address.
 
 When acknowledging multiple DATA chunks received in packets
 from different source addresses in a single SACK, the SACK chunk MAY
@@ -2044,7 +2044,7 @@ together with the reply chunk is removed.</t>
 flight key terms in formulas and statements but their definitions are not
 provided in Section 1.3.
 Furthermore, outstanding data does not include DATA chunks which are
-classified as lost but which has not been retransmitted yet and there is
+classified as lost but which have not been retransmitted yet and there is
 a paragraph in Section 6.1 of <xref target="RFC4960"/> where this
 statement is broken.</t>
 </section>
@@ -2152,12 +2152,12 @@ D) When the time comes for the sender to transmit new DATA chunks,
    Or it MAY be applied by strictly limiting the number of packets
    emitted by the output routine. When calculating the number of
    packets to transmit and particularly using the formula above,
-   cwnd SHOULD NOT be changed.
+   cwnd SHOULD NOT be changed permanently.
 </artwork>
 </figure>
 </section>
 <section title='Solution Description'>
-<t>The new text clarifies that cwnd should not be changed when appling
+<t>The new text clarifies that cwnd should not be changed when applying
 the Max.Burst limit. This mitigates packet bursts related to the reception of
 SACK chunks, but not bursts related to an application sending a burst
 of user messages.</t>
@@ -2310,7 +2310,7 @@ Format: RECEIVE(association id, buffer address, buffer size
 <t>The upper layer can change the Differentiated Services Code Point (DSCP) used
 for packets being sent.
 A change of the DSCP can result in packets hitting different queues on the path
-and therefore the congestion control should be initialized when the DSCP is
+and, therefore, the congestion control should be initialized when the DSCP is
 changed by the upper layer.
 This is not described in <xref target="RFC4960"/>.</t>
 </section>
@@ -2425,7 +2425,7 @@ ICMP9) If the ICMP type is "Destination Unreachable", the
 <section title='Solution Description'>
 <t>The text has been changed to not limit the processing of ICMPv4 packets
 with type "Destination Unreachable" by rewording the third rule. Furthermore,
-remove in the ninth rule the limitation to ICMPv6.</t>
+remove the limitation to ICMPv6 in the ninth rule.</t>
 </section>
 </section>
 
@@ -2459,7 +2459,7 @@ ICMP8) If the ICMP type is "Destination Unreachable", the
 </figure>
 </section>
 <section title='Solution Description'>
-<t>Text has been added allowing the SCTP to notify the application in case
+<t>Text has been added allowing SCTP to notify the application in case
 of soft errors.</t>
 </section>
 </section>
@@ -2511,7 +2511,7 @@ o  Whenever cwnd is greater than zero, the endpoint is allowed to
 </figure>
 </section>
 <section title='Solution Description'>
-<t>Text was added that to clarify how the CWND limit should be handled.</t>
+<t>Text was added to clarify how the cwnd limit should be handled.</t>
 </section>
 </section>
 
@@ -2700,7 +2700,7 @@ New text: (Section 3.3.2)
 ---------
 
 Note 3: An INIT chunk MUST NOT contain the Host Name Address
-parameter.  The receiver of an INIT chunk containing an Host Name
+parameter.  The receiver of an INIT chunk containing a Host Name
 Address parameter MUST send an ABORT and MAY include an Error Cause
 indicating an Unresolvable Address.
 
@@ -2753,7 +2753,7 @@ New text: (Section 3.3.3)
 ---------
 
 Note 3: An INIT ACK chunk MUST NOT contain the Host Name Address
-parameter.  The receiver of INIT ACK chunks containing an Host Name
+parameter.  The receiver of INIT ACK chunks containing a Host Name
 Address parameter MUST send an ABORT and MAY include an Error Cause
 indicating an Unresolvable Address.
 
@@ -2835,7 +2835,7 @@ New text: (Section 11.2.4.1)
 The support of the Host Name Address parameter has been removed from
 the protocol. Endpoints receiving INIT or INIT ACK chunks containing
 the Host Name Address parameter MUST send an ABORT chunk in response
-an MAY include an Error Cause indicating an Unresolvable Address.
+and MAY include an Error Cause indicating an Unresolvable Address.
 
 </artwork>
 </figure>
@@ -2875,7 +2875,7 @@ New text: (Section 5.1.2)
 ---------
 
 The sender of INIT may include a 'Supported Address Types' parameter
-in the INIT to indicate what types of address are acceptable. 
+in the INIT to indicate what types of addresses are acceptable.
 
 </artwork>
 </figure>
@@ -2909,7 +2909,7 @@ Old text: (Section 14.1)
    b) A detailed description of the structure of the chunk, which MUST
       conform to the basic structure defined in Section 3.2.
 
-   c) A detailed definition and description of intended use of each
+   c) A detailed definition and description of the intended use of each
       field within the chunk, including the chunk flags if any.
 
    d) A detailed procedural description of the use of the new chunk type
@@ -2934,7 +2934,7 @@ New text: (Section 14.1)
        conform to the basic structure defined in Section 3.2 of
        [RFC4960];
 
-   c)  A detailed definition and description of intended use of each
+   c)  A detailed definition and description of the intended use of each
        field within the chunk, including the chunk flags if any.
        Defined chunk flags will be used as initial entries in the chunk
        flags table for the new chunk type;
@@ -3224,7 +3224,7 @@ o  sack immediately - set the I bit on the last DATA chunk used for
 <section title='Description of the Problem'>
 <t>The code given for the CRC32c computations uses types like long which
 may have different length on different operating systems or processors.
-Therefore the code is changed to use specific types like uint32_t.</t>
+Therefore, the code is changed to use specific types like uint32_t.</t>
 <t>While there, fix also some syntax errors.</t>
 </section>
 <section title='Text Changes to the Document'>
@@ -3510,7 +3510,7 @@ build_crc_table(int index)
       else
        rb <<= 1;
   }
-  return (reflect_32 (rb));
+  return (reflect_32(rb));
 }
 
 int
@@ -3520,7 +3520,7 @@ main (void)
 
   printf("\nGenerating CRC-32c table file <%s>\n",
   OUTPUT_FILE);
-  if ((tf = fopen (OUTPUT_FILE, "w")) == NULL) {
+  if ((tf = fopen(OUTPUT_FILE, "w")) == NULL) {
       printf ("Unable to open %s\n", OUTPUT_FILE);
       exit (1);
   }
@@ -3631,7 +3631,7 @@ New text: (Appendix B)
 
 #include "crc32cr.h"
 
-unsigned long
+uint32_t
 generate_crc32c(unsigned char *buffer, unsigned int length)
 {
   unsigned int i;
@@ -3778,7 +3778,7 @@ added.</t>
 
 <section title='Handling of SSN Wrap Arounds'>
 <section title='Description of the Problem'>
-<t>The Stream Sequence Numbers (SSN) is used for perserving the ordering of user
+<t>The Stream Sequence Number (SSN) is used for preserving the ordering of user
 messages within each SCTP stream. The SSN is limited to 16 bits.
 Therefore, multiple wrap arounds of the SSN might happen within the current send
 window.
