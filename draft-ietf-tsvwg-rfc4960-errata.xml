@@ -216,9 +216,9 @@ subsequent SHUTDOWN chunks.
 New text: (Section 9.2)
 ---------
 
-Once an endpoint has reached the SHUTDOWN-RECEIVED state, it MUST NOT
-send a SHUTDOWN in response to a ULP request, and should discard
-subsequent ULP shutdown requests.
+Once an endpoint has reached the SHUTDOWN-RECEIVED state, it MUST
+ignore subsequent ULP shutdown requests, but MUST continue responding
+to SHUTDOWN chunks from its peer.
 </artwork>
 </figure>
 </section>
@@ -614,10 +614,35 @@ New text: (Section 10.1)
 O) Receive Unacknowledged Message
 
    Format: RECEIVE_UNACKED(data retrieval id, buffer address, buffer
-           size, [,stream id] [, stream sequence number] [,partial
+           size [,stream id] [, stream sequence number] [,partial
            flag] [,payload protocol-id])
 </artwork>
 </figure>
+<!-- The following was already incorrect in RFC 2960 -->
+<figure>
+<artwork>
+---------
+Old text: (Section 10.1)
+---------
+
+M) Set Protocol Parameters
+
+   Format: SETPROTOCOLPARAMETERS(association id,
+           [,destination transport address,]
+           protocol parameter list)
+
+---------
+New text: (Section 10.1)
+---------
+
+M) Set Protocol Parameters
+
+   Format: SETPROTOCOLPARAMETERS(association id,
+           [destination transport address,]
+           protocol parameter list)
+</artwork>
+</figure>
+
 <!-- The following was correct in RFC 4460 -->
 <figure>
 <artwork>
@@ -1344,7 +1369,7 @@ Old text: (Section 10.1)
 O) Receive Unacknowledged Message
 
    Format: RECEIVE_UNACKED(data retrieval id, buffer address, buffer
-           size, [,stream id] [, stream sequence number] [,partial
+           size [,stream id] [, stream sequence number] [,partial
            flag] [,payload protocol-id])
 
 ...
@@ -1363,7 +1388,7 @@ New text: (Section 10.1)
 O) Receive Unacknowledged Message
 
    Format: RECEIVE_UNACKED(data retrieval id, buffer address, buffer
-           size, [,stream id] [, stream sequence number] [,partial
+           size [,stream id] [, stream sequence number] [,partial
            flag] [,payload protocol-id])
 
 ...
@@ -3867,8 +3892,9 @@ Jeff Morriss,
 Karen E. E. Nielsen,
 Tom Petch,
 Julien Pourtet,
+Michael Welzl,
 and
-Michael Welzl
+Qiaobing Xie
 for their invaluable comments.</t>
 </section>
 
