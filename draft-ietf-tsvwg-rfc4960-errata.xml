@@ -565,7 +565,7 @@ DATA [TSN=7,Strm=0,Seq=3] --------> X (lost)
 DATA [TSN=8,Strm=0,Seq=4] ---------------> (gap detected,
                                             immediately send ack)
                                 /----- SACK [TSN Ack=6,Block=1,
-                               /             Strt=2,End=2]
+                               /             Start=2,End=2]
                         &lt;-----/
 (remove 6 from out-queue,
  and mark 7 as "1" missing report)
@@ -804,7 +804,7 @@ from the end of Appendix C to the end of Appendix B.</t>
 <!-- The following was correct in RFC 4460 -->
 <section title='Description of the Problem'>
 <t>Section 7.2.3 of <xref target="RFC4960"/> explicitly states that
-partial_bytes_acked should be reset to 0 after packet loss detecting from SACK
+partial_bytes_acked should be reset to 0 after packet loss detection from SACK
 but the same is missed for T3-rtx timer expiration.</t>
 </section>
 <section title='Text Changes to the Document'>
@@ -867,7 +867,7 @@ o  When partial_bytes_acked is equal to or greater than cwnd and
    before the arrival of the SACK the sender had cwnd or more bytes
    of data outstanding (i.e., before arrival of the SACK, flightsize
    was greater than or equal to cwnd), partial_bytes_acked is reset
-   to (partial_bytes_acked - cwnd). Next, cwnd is increased by MTU.
+   to (partial_bytes_acked - cwnd). Next, cwnd is increased by 1*MTU.
 </artwork>
 </figure>
 </section>
@@ -1201,9 +1201,9 @@ INIT ACK to the source address of the INIT is the preferred behavior.</t>
 zero window probes, SCTP should neither increment the association
 counter nor increment the destination address error counter if it continues
 to receive new packets from the peer. But receiving new packets
-from the peer does not guarantee the peer's accessibility and, if the
+from the peer does not guarantee the peer's reachability and, if the
 destination address becomes unreachable during zero window probing,
-SCTP cannot get a changed rwnd until it switches the destination
+SCTP cannot get an updated rwnd until it switches the destination
 address for probes.</t>
 </section>
 <section title='Text Changes to the Document'>
@@ -3887,11 +3887,13 @@ in <xref target="RFC4960"/>.</t>
 Pontus Andersson,
 Eric W. Biederman,
 Cedric Bonnet,
+Peter Lei,
 Lionel Morand,
 Jeff Morriss,
 Karen E. E. Nielsen,
 Tom Petch,
 Julien Pourtet,
+Irene Ruengeler,
 Michael Welzl,
 and
 Qiaobing Xie
