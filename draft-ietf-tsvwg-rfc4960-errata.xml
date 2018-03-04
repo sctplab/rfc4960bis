@@ -216,7 +216,7 @@ New text: (Section 9.2)
 ---------
 
 Once an endpoint has reached the SHUTDOWN-RECEIVED state, it MUST
-ignore subsequent ULP shutdown requests, but MUST continue responding
+ignore ULP shutdown requests, but MUST continue responding
 to SHUTDOWN chunks from its peer.
 </artwork>
 </figure>
