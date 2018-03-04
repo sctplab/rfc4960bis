@@ -2168,9 +2168,9 @@ New text: (Section 6.1)
 D) When the time comes for the sender to transmit new DATA chunks,
    the protocol parameter Max.Burst SHOULD be used to limit the
    number of packets sent.  The limit MAY be applied by adjusting
-   cwnd as follows:
+   cwnd temporarily as follows:
 
-   if((flightsize + Max.Burst*MTU) &lt; cwnd)
+   if ((flightsize + Max.Burst*MTU) &lt; cwnd)
        cwnd = flightsize + Max.Burst*MTU
 
    Or it MAY be applied by strictly limiting the number of packets
@@ -3887,6 +3887,7 @@ Lionel Morand,
 Jeff Morriss,
 Karen E. E. Nielsen,
 Tom Petch,
+Kacheong Poon,
 Julien Pourtet,
 Irene Ruengeler,
 Michael Welzl,
