@@ -613,7 +613,7 @@ New text: (Section 10.1)
 O) Receive Unacknowledged Message
 
    Format: RECEIVE_UNACKED(data retrieval id, buffer address, buffer
-           size [,stream id] [, stream sequence number] [,partial
+           size [,stream id] [,stream sequence number] [,partial
            flag] [,payload protocol-id])
 </artwork>
 </figure>
@@ -1368,7 +1368,7 @@ Old text: (Section 10.1)
 O) Receive Unacknowledged Message
 
    Format: RECEIVE_UNACKED(data retrieval id, buffer address, buffer
-           size [,stream id] [, stream sequence number] [,partial
+           size [,stream id] [,stream sequence number] [,partial
            flag] [,payload protocol-id])
 
 ...
@@ -1387,7 +1387,7 @@ New text: (Section 10.1)
 O) Receive Unacknowledged Message
 
    Format: RECEIVE_UNACKED(data retrieval id, buffer address, buffer
-           size [,stream id] [, stream sequence number] [,partial
+           size [,stream id] [,stream sequence number] [,partial
            flag] [,payload protocol-id])
 
 ...
