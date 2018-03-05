@@ -62,7 +62,7 @@
 <t>This document is a compilation of issues found since the publication of
 RFC4960 in September 2007 based on experience with
 implementing, testing, and using SCTP along with the suggested fixes.
-This document provides deltas to RFC4960 and is organized in a time based way.
+This document provides deltas to RFC4960 and is organized in a time ordered way.
 The issues are listed in the order they were brought up.
 Because some text is changed several times the last delta in the text is the
 one which should be applied.
@@ -76,7 +76,7 @@ solution are also provided.</t>
 
 <section anchor='intro' title='Introduction'>
 <t>This document contains a compilation of all defects found up until
-the publishing of this document for <xref target="RFC4960"/> specifying the
+the publication of this document for <xref target="RFC4960"/> specifying the
 Stream Control Transmission Protocol (SCTP).
 These defects may be of an editorial or technical nature.
 This document may be thought of as a companion document to be used in
@@ -176,11 +176,11 @@ New text: (Section 8.3)
 ---------
 
 When the value of this counter exceeds the protocol parameter
-'Path.Max.Retrans', the endpoint should mark the corresponding
-destination address as inactive if it is not so marked, and may also
+'Path.Max.Retrans', the endpoint SHOULD mark the corresponding
+destination address as inactive if it is not so marked, and MAY also
 optionally report to the upper layer the change of reachability of
-this destination address.  After this, the endpoint should continue
-HEARTBEAT on this destination address but should stop increasing the
+this destination address.  After this, the endpoint SHOULD continue
+HEARTBEAT on this destination address but SHOULD stop increasing the
 counter.
 </artwork>
 </figure>
@@ -224,7 +224,7 @@ to SHUTDOWN chunks from its peer.
 <section title='Solution Description'>
 <t>The text never intended the SCTP endpoint to ignore SHUTDOWN chunks from its
 peer.
-If it did the endpoints could never gracefully terminate associations in some
+If it did, the endpoints could never gracefully terminate associations in some
 cases.</t>
 </section>
 </section>
@@ -254,7 +254,7 @@ New text: (Section 14.1)
 ---------
 
 The assignment of new chunk type codes is done through an
-IETF Consensus action, as defined in [RFC2434].  Documentation of the
+IETF Consensus action, as defined in [RFC5226].  Documentation of the
 chunk type MUST contain the following information:
 </artwork>
 </figure>
@@ -375,14 +375,14 @@ including unacknowledged HEARTBEAT chunks.
 New text: (Section 8.1)
 ---------
 
-An endpoint shall keep a counter on the total number of consecutive
+An endpoint SHOULD keep a counter on the total number of consecutive
 retransmissions to its peer (this includes data retransmissions
 to all the destination transport addresses of the peer if it is
 multi-homed), including the number of unacknowledged HEARTBEAT
 chunks observed on the path which is currently used for data
 transfer. Unacknowledged HEARTBEAT chunks observed on paths
-different from the path currently used for data transfer shall
-not increment the association error counter, as this could lead
+different from the path currently used for data transfer SHOULD
+NOT increment the association error counter, as this could lead
 to association closure even if the path which is currently used for
 data transfer is available (but idle).
 </artwork>
@@ -590,7 +590,7 @@ New text: (Section 6.10)
 An endpoint bundles chunks by simply including multiple chunks in one
 outbound SCTP packet.  The total size of the resultant IP datagram,
 including the SCTP packet and IP headers, MUST be less than or equal
-to the current Path MTU.
+to the current PMTU.
 </artwork>
 </figure>
 <!-- The following was correct in RFC 2960 -->
@@ -678,7 +678,7 @@ New text: (Appendix C)
 
 ICMP7) If the ICMP message is either a v6 "Packet Too Big" or a v4
        "Fragmentation Needed", an implementation MAY process this
-       information as defined for path MTU discovery.
+       information as defined for PMTU discovery.
 </artwork>
 </figure>
 <!-- The following was already incorrect in RFC 2960 -->
@@ -823,7 +823,7 @@ cwnd = 1*MTU
 New text: (Section 7.2.3)
 ---------
 
-When the T3-rtx timer expires on an address, SCTP should perform slow
+When the T3-rtx timer expires on an address, SCTP SHOULD perform slow
 start by:
 
 ssthresh = max(cwnd/2, 4*MTU)
@@ -902,10 +902,10 @@ ACK is received from the peer endpoint.
 New text: (Section 8.1)
 ---------
 
-The counter shall be reset each time a DATA chunk sent to that peer
+The counter SHOULD be reset each time a DATA chunk sent to that peer
 endpoint is acknowledged (by the reception of a SACK). When a
-HEARTBEAT ACK is received from the peer endpoint, the counter should
-also be reset. The receiver of the HEARTBEAT ACK may choose not to
+HEARTBEAT ACK is received from the peer endpoint, the counter SHOULD
+also be reset. The receiver of the HEARTBEAT ACK MAY choose not to
 clear the counter if there is outstanding data on the association.
 This allows for handling the possible difference in reachability
 based on DATA chunks and HEARTBEAT chunks.
@@ -928,12 +928,12 @@ New text: (Section 8.3)
 ---------
 
 Upon the receipt of the HEARTBEAT ACK, the sender of the HEARTBEAT
-should clear the error counter of the destination transport address
+SHOULD clear the error counter of the destination transport address
 to which the HEARTBEAT was sent, and mark the destination transport
-address as active if it is not so marked. The endpoint may
+address as active if it is not so marked. The endpoint MAY
 optionally report to the upper layer when an inactive destination
 address is marked as active due to the reception of the latest
-HEARTBEAT ACK. The receiver of the HEARTBEAT ACK should also clear
+HEARTBEAT ACK. The receiver of the HEARTBEAT ACK SHOULD also clear
 the association overall error counter (as defined in Section 8.1).
 </artwork>
 </figure>
@@ -1016,7 +1016,7 @@ New text: (Section 7.2.4)
 
 3)  If not in Fast Recovery, determine how many of the earliest
     (i.e., lowest TSN) DATA chunks marked for retransmission will fit
-    into a single packet, subject to constraint of the path MTU of
+    into a single packet, subject to constraint of the PMTU of
     the destination transport address to which the packet is being
     sent. Call this value K. Retransmit those K DATA chunks in a
     single packet. When a Fast Retransmit is being performed, the
@@ -1199,7 +1199,7 @@ INIT ACK to the source address of the INIT is the preferred behavior.</t>
 <t>Section 6.1 of <xref target="RFC4960"/> states that when sending
 zero window probes, SCTP should neither increment the association
 counter nor increment the destination address error counter if it continues
-to receive new packets from the peer. But receiving new packets
+to receive new packets from the peer. However, the reception of new packets
 from the peer does not guarantee the peer's reachability and, if the
 destination address becomes unreachable during zero window probing,
 SCTP cannot get an updated rwnd until it switches the destination
@@ -1225,10 +1225,10 @@ New text: (Section 6.1)
 
 If the sender continues to receive SACKs from the peer
 while doing zero window probing, the unacknowledged window probes
-should not increment the error counter for the association or any
-destination transport address.  This is because the receiver MAY
-keep its window closed for an indefinite time.  Refer to Section
-6.2 on the receiver behavior when it advertises a zero window.
+SHOULD NOT increment the error counter for the association or any
+destination transport address.  This is because the receiver could
+keep its window closed for an indefinite time.  Section 6.2 describes
+the receiver behavior when it advertises a zero window.
 </artwork>
 </figure>
 </section>
@@ -1496,19 +1496,19 @@ endpoint becomes unreachable.
 New text: (Section 8.1)
 ---------
 
-An endpoint shall keep a counter on the total number of consecutive
+An endpoint SHOULD keep a counter on the total number of consecutive
 retransmissions to its peer (this includes data retransmissions
 to all the destination transport addresses of the peer if it is
 multi-homed), including the number of unacknowledged HEARTBEAT
 chunks observed on the path which currently is used for data
 transfer. Unacknowledged HEARTBEAT chunks observed on paths
-different from the path currently used for data transfer shall
-not increment the association error counter, as this could lead
+different from the path currently used for data transfer SHOULD
+NOT increment the association error counter, as this could lead
 to association closure even if the path which currently is used for
 data transfer is available (but idle). If the value of this
 counter exceeds the limit indicated in the protocol parameter
-'Association.Max.Retrans', the endpoint shall consider the peer
-endpoint unreachable and shall stop transmitting any more data to it
+'Association.Max.Retrans', the endpoint SHOULD consider the peer
+endpoint unreachable and SHALL stop transmitting any more data to it
 (and thus the association enters the CLOSED state).  In addition, the
 endpoint SHOULD report the failure to the upper layer and optionally
 report back all outstanding user data remaining in its outbound
@@ -1540,16 +1540,16 @@ New text: (Section 8.2)
 ---------
 
 When an outstanding TSN is acknowledged or a HEARTBEAT sent to that
-address is acknowledged with a HEARTBEAT ACK, the endpoint shall
+address is acknowledged with a HEARTBEAT ACK, the endpoint SHOULD
 clear the error counter of the destination transport address to which
 the DATA chunk was last sent (or HEARTBEAT was sent), and SHOULD
 also report to the upper layer when an inactive destination address
 is marked as active. When the peer endpoint is multi-homed and the
 last chunk sent to it was a retransmission to an alternate address,
 there exists an ambiguity as to whether or not the acknowledgement
-should be credited to the address of the last chunk sent. However,
+could be credited to the address of the last chunk sent. However,
 this ambiguity does not seem to bear any significant consequence to
-SCTP behavior. If this ambiguity is undesirable, the transmitter may
+SCTP behavior. If this ambiguity is undesirable, the transmitter MAY
 choose not to clear the error counter if the last chunk sent was a
 retransmission.
 
@@ -1570,11 +1570,11 @@ New text: (Section 8.3)
 ---------
 
 When the value of this counter exceeds the protocol parameter
-'Path.Max.Retrans', the endpoint should mark the corresponding
+'Path.Max.Retrans', the endpoint SHOULD mark the corresponding
 destination address as inactive if it is not so marked, and SHOULD
 also report to the upper layer the change of reachability of this
-destination address.  After this, the endpoint should continue
-HEARTBEAT on this destination address but should stop increasing the
+destination address.  After this, the endpoint SHOULD continue
+HEARTBEAT on this destination address but SHOULD stop increasing the
 counter.
 
 ---------
@@ -1595,12 +1595,12 @@ New text: (Section 8.3)
 ---------
 
 Upon the receipt of the HEARTBEAT ACK, the sender of the HEARTBEAT
-should clear the error counter of the destination transport address
+SHOULD clear the error counter of the destination transport address
 to which the HEARTBEAT was sent, and mark the destination transport
 address as active if it is not so marked. The endpoint SHOULD
 report to the upper layer when an inactive destination address
 is marked as active due to the reception of the latest
-HEARTBEAT ACK. The receiver of the HEARTBEAT ACK should also clear
+HEARTBEAT ACK. The receiver of the HEARTBEAT ACK SHOULD also clear
 the association overall error counter (as defined in Section 8.1).
 
 ---------
@@ -1617,9 +1617,9 @@ thus the association enters the CLOSED state).
 New text: (Section 9.2)
 ---------
 
-An endpoint should limit the number of retransmissions of the
+An endpoint SHOULD limit the number of retransmissions of the
 SHUTDOWN chunk to the protocol parameter 'Association.Max.Retrans'.
-If this threshold is exceeded, the endpoint should destroy the TCB
+If this threshold is exceeded, the endpoint SHOULD destroy the TCB
 and SHOULD report the peer endpoint unreachable to the upper layer
 (and thus the association enters the CLOSED state).
 
@@ -1638,10 +1638,10 @@ CLOSED state).
 New text: (Section 9.2)
 ---------
 
-The sender of the SHUTDOWN ACK should limit the number of
+The sender of the SHUTDOWN ACK SHOULD limit the number of
 retransmissions of the SHUTDOWN ACK chunk to the protocol parameter
 'Association.Max.Retrans'. If this threshold is exceeded, the
-endpoint should destroy the TCB and SHOULD report the peer endpoint
+endpoint SHOULD destroy the TCB and SHOULD report the peer endpoint
 unreachable to the upper layer (and thus the association enters the
 CLOSED state).
 </artwork>
@@ -1791,11 +1791,10 @@ whether it corresponds to an INIT chunk (for further information,
 please refer to [RFC1858]).  Accordingly, we stress the requirements,
 stated in Section 3.1, that (1) an INIT chunk MUST NOT be bundled
 with any other chunk in a packet, and (2) a packet containing an INIT
-chunk MUST have a zero Verification Tag.  Furthermore, we require
-that the receiver of an INIT chunk MUST enforce these rules by
-silently discarding the INIT chunk and all further chunks if the INIT
-chunk is bundled with other chunks or the packet has a non-zero
-verification tag.
+chunk MUST have a zero Verification Tag.
+The receiver of an INIT chunk MUST silently discard the INIT chunk and all
+further chunks if the INIT chunk is bundled with other chunks or the packet
+has a non-zero verification tag.
 </artwork>
 </figure>
 </section>
@@ -1830,7 +1829,7 @@ outstanding for the corresponding transport address.
 New text: (Section 7.2.2)
 ---------
 
-When cwnd is greater than ssthresh, cwnd should be incremented by
+When cwnd is greater than ssthresh, cwnd SHOULD be incremented by
 1*MTU per RTT if the sender has cwnd or more bytes of data
 outstanding for the corresponding transport address. The basic
 guidelines for incrementing cwnd during congestion avoidance are:
@@ -1937,9 +1936,9 @@ o  When the endpoint does not transmit data on a given transport
 New text: (Section 7.2.1)
 ---------
 o  When the endpoint does not transmit data on a given transport
-   address, the cwnd of the transport address should be adjusted to
+   address, the cwnd of the transport address SHOULD be adjusted to
    max(cwnd/2, 4*MTU) per RTO. At the first cwnd adjustment, the
-   ssthresh of the transport address should be adjusted to the cwnd.
+   ssthresh of the transport address SHOULD be adjusted to the cwnd.
 </artwork>
 </figure>
 </section>
@@ -2276,10 +2275,10 @@ New text: (Section 6.5)
 
 Every DATA chunk MUST carry a valid stream identifier.  If an
 endpoint receives a DATA chunk with an invalid stream identifier, it
-shall acknowledge the reception of the DATA chunk following the
+SHOULD acknowledge the reception of the DATA chunk following the
 normal procedure, immediately send an ERROR chunk with cause set to
 "Invalid Stream Identifier" (see Section 3.3.10), and discard the
-DATA chunk.  The endpoint may bundle the ERROR chunk and the SACK Chunk
+DATA chunk.  The endpoint MAY bundle the ERROR chunk and the SACK Chunk
 in the same packet.
 </artwork>
 </figure>
@@ -2529,7 +2528,7 @@ New text: (Section 7.2.1)
 ---------
 o  Whenever cwnd is greater than zero, the endpoint is allowed to
    have cwnd bytes of data outstanding on that transport address.
-   A limited overbooking as described in B) of Section 6.1 should
+   A limited overbooking as described in B) of Section 6.1 SHOULD
    be supported.
 </artwork>
 </figure>
@@ -2632,7 +2631,7 @@ exceptions.
 New text: (Appendix A)
 ---------
 
-In general, [RFC3168] updated by [RFC8311] should be followed with the
+In general, [RFC3168] updated by [RFC8311] SHOULD be followed with the
 following exceptions.
 
 ---------
@@ -2826,7 +2825,7 @@ New text: (Section 5.1.2)
 B) If there is a Host Name parameter present in the received INIT or
    INIT ACK chunk, the endpoint MUST immediately send an ABORT and
    MAY include an Error Cause indicating an Unresolvable Address to
-   its peer.  The ABORT shall be sent to the source IP address
+   its peer.  The ABORT SHALL be sent to the source IP address
    from which the last peer packet was received.
 
 ---------
@@ -2894,7 +2893,7 @@ its peer.
 New text: (Section 5.1.2)
 ---------
 
-The sender of INIT may include a 'Supported Address Types' parameter
+The sender of INIT chunks MAY include a 'Supported Address Types' parameter
 in the INIT to indicate what types of addresses are acceptable.
 
 </artwork>
@@ -2986,7 +2985,7 @@ New text: (Section 14.2)
        that implementations not supporting the flag will send '0' on
        transmit and just ignore it on receipt.
 
-   IANA selects a chunk flags value.  This must be one of 0x01, 0x02,
+   IANA selects a chunk flags value.  This MUST be one of 0x01, 0x02,
    0x04, 0x08, 0x10, 0x20, 0x40, or 0x80, which MUST be unique within
    the chunk flag values for the specific chunk type.
 </artwork>
@@ -2998,7 +2997,8 @@ New text: (Section 14.2)
 </section>
 </section>
 
-<section title='Integration of RFC 6335'>
+<section title='Integration of RFC 6335'
+         anchor='Integration_RFC_6335'>
 <section title='Description of the Problem'>
 <t><xref target="RFC6335"/> updates <xref target="RFC4960"/> by updating Procedures
 for the Port Numbers Registry.
@@ -3077,7 +3077,7 @@ o  Concrete intent to use a port SHOULD precede port registration.
 New text: (Section 14.5)
 ---------
 
-SCTP services may use contact port numbers to provide service to
+SCTP services can use contact port numbers to provide service to
 unknown callers, as in TCP and UDP.  IANA is therefore requested to
 open the existing Port Numbers registry for SCTP using the following
 rules, which we intend to mesh well with existing Port Numbers
@@ -3151,7 +3151,7 @@ New text: (Section 3.3.1)
 
 Res: 4 bits
 
-   Should be set to all '0's and ignored by the receiver.
+   SHOULD be set to all '0's and ignored by the receiver.
 
 I bit: 1 bit
 
@@ -3194,7 +3194,7 @@ New text: (Section 6.2)
 ---------
 
 Note: The SHUTDOWN chunk does not contain Gap Ack Block fields.
-Therefore, the endpoint should use a SACK instead of the SHUTDOWN
+Therefore, the endpoint SHOULD use a SACK instead of the SHUTDOWN
 chunk to acknowledge DATA chunks received out of order.
 
 Upon receipt of an SCTP packet containing a DATA chunk with the I bit
@@ -3869,7 +3869,9 @@ capitals, as shown here.
 </section>
 
 <section title='IANA Considerations'>
-<t>This document does not require any actions from IANA.</t>
+<t><xref target="Integration_RFC_6335"/> of this document updates the port
+number registry for SCTP to be consistent with <xref target="RFC6335"/>.
+IANA is requested to view <xref target="Integration_RFC_6335"/>.</t>
 </section>
 
 <section title='Security Considerations'>
@@ -3882,6 +3884,7 @@ in <xref target="RFC4960"/>.</t>
 Pontus Andersson,
 Eric W. Biederman,
 Cedric Bonnet,
+Gorry Fairhurst,
 Peter Lei,
 Lionel Morand,
 Jeff Morriss,
