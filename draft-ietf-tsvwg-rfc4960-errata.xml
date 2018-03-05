@@ -3871,7 +3871,7 @@ capitals, as shown here.
 <section title='IANA Considerations'>
 <t><xref target="Integration_RFC_6335"/> of this document updates the port
 number registry for SCTP to be consistent with <xref target="RFC6335"/>.
-IANA is requested to view <xref target="Integration_RFC_6335"/>.</t>
+IANA is requested to review <xref target="Integration_RFC_6335"/>.</t>
 </section>
 
 <section title='Security Considerations'>
