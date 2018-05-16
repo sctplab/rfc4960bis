@@ -148,7 +148,7 @@ http://www.rfc-editor.org/errata_search.php?rfc=4960
 
 <section title='Description of the Problem'>
 <t>The handling of the 'Path.Max.Retrans' parameter is described in
-Section 8.2 and Section 8.3 of <xref target="RFC4960"/> in an Inconsistent
+Section 8.2 and Section 8.3 of <xref target="RFC4960"/> in an inconsistent
 way. Whereas Section 8.2 describes that a path is marked inactive when
 the path error counter exceeds the threshold, Section 8.3 says the path
 is marked inactive when the path error counter reaches the threshold.</t>
