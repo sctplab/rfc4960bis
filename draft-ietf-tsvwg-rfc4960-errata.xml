@@ -902,7 +902,7 @@ ACK is received from the peer endpoint.
 New text: (Section 8.1)
 ---------
 
-The counter SHOULD be reset each time a DATA chunk sent to that peer
+The counter MUST be reset each time a DATA chunk sent to that peer
 endpoint is acknowledged (by the reception of a SACK). When a
 HEARTBEAT ACK is received from the peer endpoint, the counter SHOULD
 also be reset. The receiver of the HEARTBEAT ACK MAY choose not to
