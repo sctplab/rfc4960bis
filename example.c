@@ -22,7 +22,7 @@ generate_crc32c(unsigned char *buffer, unsigned int length)
    *  bit-reversal.
    *  Note that a 32-bit bit-reversal is identical to four inplace
    *  8-bit reversals followed by an end-for-end byteswap.
-   *  In other words, the bytes of each bit are in the right order,
+   *  In other words, the bits of each byte are in the right order,
    *  but the bytes have been byteswapped.  So we now do an explicit
    *  byteswap.  On a little-endian machine, this byteswap and
    *  the final ntohl cancel out and could be elided.
