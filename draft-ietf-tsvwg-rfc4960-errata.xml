@@ -791,8 +791,16 @@ However, the corresponding sample code and its explanation appears at the end
 of Appendix C, which deals with ICMP handling.</t>
 </section>
 <section title='Text Changes to the Document'>
-<t>Move the sample code related to CRC32c computation and its explanation
-from the end of Appendix C to the end of Appendix B.</t>
+<t>Move all of Appendix C starting with the following sentence to the end
+of Appendix B.</t>
+<figure>
+<artwork>
+The following non-normative sample code is taken from an open-source
+CRC generator [WILLIAMS93], using the "mirroring" technique and
+yielding a lookup table for SCTP CRC32c with 256 entries, each 32
+bits wide.
+</artwork>
+</figure>
 </section>
 <section title='Solution Description'>
 <t>Text moved to the appropriate location.</t>
