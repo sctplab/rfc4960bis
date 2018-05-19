@@ -3245,7 +3245,7 @@ o  sack immediately - set the I bit on the last DATA chunk used for
 <t>The code given for the CRC32c computations uses types like long which
 may have different length on different operating systems or processors.
 Therefore, the code is changed to use specific types like uint32_t.</t>
-<t>While there, fix also some syntax errors.</t>
+<t>While there, fix also some syntax errors and a comment.</t>
 </section>
 <section title='Text Changes to the Document'>
 <figure>
@@ -3673,7 +3673,7 @@ generate_crc32c(unsigned char *buffer, unsigned int length)
    *  bit-reversal.
    *  Note that a 32-bit bit-reversal is identical to four inplace
    *  8-bit reversals followed by an end-for-end byteswap.
-   *  In other words, the bytes of each bit are in the right order,
+   *  In other words, the bits of each byte are in the right order,
    *  but the bytes have been byteswapped.  So we now do an explicit
    *  byteswap.  On a little-endian machine, this byteswap and
    *  the final ntohl cancel out and could be elided.
