@@ -3922,6 +3922,39 @@ capitals, as shown here.
 </section>
 </section>
 
+<section title='Missed Text Removal'>
+<section title='Description of the Problem'>
+<t>When integrating the changes to Section 7.2.4 of <xref target="RFC2960"/>
+as described in Section 2.8.2 of <xref target="RFC4460"/> some text was
+not removed and is therefore still in <xref target="RFC4960"/>.</t>
+</section>
+<section title='Text Changes to the Document'>
+<figure>
+<artwork>
+---------
+Old text: (Section 7.2.4)
+---------
+
+A straightforward implementation of the above keeps a counter for
+each TSN hole reported by a SACK.  The counter increments for each
+consecutive SACK reporting the TSN hole.  After reaching 3 and
+starting the Fast-Retransmit procedure, the counter resets to 0.
+Because cwnd in SCTP indirectly bounds the number of outstanding
+TSN's, the effect of TCP Fast Recovery is achieved automatically with
+no adjustment to the congestion control window size.
+
+---------
+New text: (Section 7.2.4)
+---------
+
+</artwork>
+</figure>
+</section>
+<section title='Solution Description'>
+<t>The text has finally been removed.</t>
+</section>
+</section>
+
 </section>
 
 <section title='IANA Considerations'>
@@ -3943,6 +3976,7 @@ Cedric Bonnet,
 Spencer Dawkins,
 Gorry Fairhurst,
 Peter Lei,
+Gyula Marosi,
 Lionel Morand,
 Jeff Morriss,
 Karen E. E. Nielsen,
