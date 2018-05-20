@@ -1800,9 +1800,9 @@ please refer to [RFC1858]).  Accordingly, we stress the requirements,
 stated in Section 3.1, that (1) an INIT chunk MUST NOT be bundled
 with any other chunk in a packet, and (2) a packet containing an INIT
 chunk MUST have a zero Verification Tag.
-The receiver of an INIT chunk MUST silently discard the INIT chunk and all
-further chunks if the INIT chunk is bundled with other chunks or the packet
-has a non-zero verification tag.
+The receiver of an INIT chunk MUST silently discard the INIT chunk and
+all further chunks if the INIT chunk is bundled with other chunks or
+the packet has a non-zero verification tag.
 </artwork>
 </figure>
 </section>
@@ -1877,8 +1877,8 @@ o  Whenever cwnd is greater than ssthresh, upon each SACK arrival,
    of bytes of duplicated chunks reported in Duplicate TSNs.
 
 o  When partial_bytes_acked is greater than cwnd and before the
-   arrival of the SACK the sender had less than cwnd bytes of data outstanding
-   (i.e., before arrival of the SACK, flightsize was less
+   arrival of the SACK the sender had less than cwnd bytes of data
+   outstanding (i.e., before arrival of the SACK, flightsize was less
    than cwnd), reset partial_bytes_acked to cwnd.
 
 o  When partial_bytes_acked is equal to or greater than cwnd and
@@ -2901,8 +2901,9 @@ its peer.
 New text: (Section 5.1.2)
 ---------
 
-The sender of INIT chunks MAY include a 'Supported Address Types' parameter
-in the INIT to indicate what types of addresses are acceptable.
+The sender of INIT chunks MAY include a 'Supported Address Types'
+parameter in the INIT to indicate what types of addresses are
+acceptable.
 
 </artwork>
 </figure>
@@ -3778,8 +3779,8 @@ New text: (Section 3.3.4)
 The SACK also contains zero or more Gap Ack Blocks.  Each Gap Ack
 Block acknowledges a subsequence of TSNs received following a break
 in the sequence of received TSNs. The Gap Ack Blocks SHOULD be isolated.
-This means that the TSN just before each Gap Ack Block and the TSN just after
-each Gap Ack Block has not been received.  By definition, all TSNs
+This means that the TSN just before each Gap Ack Block and the TSN just
+after each Gap Ack Block has not been received.  By definition, all TSNs
 acknowledged by Gap Ack Blocks are greater than the value of the
 Cumulative TSN Ack.
 
