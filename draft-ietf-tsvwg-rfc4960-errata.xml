@@ -945,7 +945,7 @@ New text: (Section 8.3)
 ---------
 
 Upon the receipt of the HEARTBEAT ACK, the sender of the HEARTBEAT
-SHOULD clear the error counter of the destination transport address
+MUST clear the error counter of the destination transport address
 to which the HEARTBEAT was sent, and mark the destination transport
 address as active if it is not so marked. The endpoint MAY
 optionally report to the upper layer when an inactive destination
