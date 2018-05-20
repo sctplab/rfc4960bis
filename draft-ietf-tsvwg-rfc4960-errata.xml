@@ -1314,6 +1314,9 @@ G) Receive
 
 ...
 
+o  Stream Sequence Number - the Stream Sequence Number assigned by
+   the sending SCTP peer.
+
 o  partial flag - if this returned flag is set to 1, then this
    Receive contains a partial delivery of the whole message.  When
    this flag is set, the stream id and Stream Sequence Number MUST
@@ -1334,12 +1337,15 @@ G) Receive
 
 ...
 
+o  stream sequence number - the Stream Sequence Number assigned by
+   the sending SCTP peer.
+
 o  partial flag - if this returned flag is set to 1, then this
-   Receive contains a partial delivery of the whole message.  When
-   this flag is set, the stream id and Stream Sequence Number must
-   accompany this receive.  When this flag is set to 0, it indicates
-   that no more deliveries will be received for this Stream Sequence
-   Number.
+   primitive contains a partial delivery of the whole message.  When
+   this flag is set, the stream id and stream sequence number must
+   accompany this primitive.  When this flag is set to 0, it indicates
+   that no more deliveries will be received for this stream sequence
+   number.
 
 ---------
 Old text: (Section 10.1)
@@ -1352,6 +1358,9 @@ N) Receive Unsent Message
            flag] [,payload protocol-id])
 
 ...
+
+o  Stream Sequence Number - this value is returned indicating the
+   Stream Sequence Number that was associated with the message.
 
 o  partial flag - if this returned flag is set to 1, then this
    message is a partial delivery of the whole message.  When this
@@ -1372,12 +1381,15 @@ N) Receive Unsent Message
 
 ...
 
+o  stream sequence number - this value is returned indicating the
+   Stream Sequence Number that was associated with the message.
+
 o  partial flag - if this returned flag is set to 1, then this
    message is a partial delivery of the whole message.  When this
-   flag is set, the stream id and Stream Sequence Number must
-   accompany this receive.  When this flag is set to 0, it indicates
-   that no more deliveries will be received for this Stream Sequence
-   Number.
+   flag is set, the stream id and stream sequence number must
+   accompany this primitive.  When this flag is set to 0, it indicates
+   that no more deliveries will be received for this stream sequence
+   number.
 
 ---------
 Old text: (Section 10.1)
@@ -1390,6 +1402,9 @@ O) Receive Unacknowledged Message
            flag] [,payload protocol-id])
 
 ...
+
+o  Stream Sequence Number - this value is returned indicating the
+   Stream Sequence Number that was associated with the message.
 
 o  partial flag - if this returned flag is set to 1, then this
    message is a partial delivery of the whole message.  When this
@@ -1410,17 +1425,21 @@ O) Receive Unacknowledged Message
 
 ...
 
+o  stream sequence number - this value is returned indicating the
+   Stream Sequence Number that was associated with the message.
+
 o  partial flag - if this returned flag is set to 1, then this
    message is a partial delivery of the whole message.  When this
-   flag is set, the stream id and Stream Sequence Number must
-   accompany this receive.  When this flag is set to 0, it indicates
-   that no more deliveries will be received for this Stream Sequence
-   Number.
+   flag is set, the stream id and stream sequence number must
+   accompany this primitive.  When this flag is set to 0, it indicates
+   that no more deliveries will be received for this stream sequence
+   number.
 </artwork>
 </figure>
 </section>
 <section title='Solution Description'>
-<t>The normative language is removed from Section 10.</t>
+<t>The normative language is removed from Section 10.
+In addition, the consistency of the text has been improved.</t>
 </section>
 </section>
 
