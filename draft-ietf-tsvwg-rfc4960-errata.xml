@@ -143,6 +143,15 @@ http://www.rfc-editor.org/errata_search.php?rfc=4960
 * http://www.rfc-editor.org/errata_search.php?eid=4250 Reported (Should be rejected)
 -->
 
+<t>[NOTE to RFC-Editor:
+<list>
+<t>References to obsoleted RFCs are in OLD TEXT sections and have the
+corresponding references to the obsoleting RFCs in the NEW TEXT sections.
+In addition to this, there are some references to the obsoleted
+<xref target="RFC2960"/>, which are intended.</t>
+</list>
+]</t>
+
 <section title='Path Error Counter Threshold Handling'>
 <!-- http://www.rfc-editor.org/errata_search.php?eid=1440 -->
 
