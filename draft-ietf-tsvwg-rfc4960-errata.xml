@@ -3262,6 +3262,14 @@ Therefore, the code is changed to use specific types like uint32_t.</t>
 ---------
 Old text: (Appendix B)
 ---------
+/*************************************************************/
+/* Note Definition for Ross Williams table generator would   */
+/* be: TB_WIDTH=4, TB_POLLY=0x1EDC6F41, TB_REVER=TRUE        */
+/* For Mr. Williams direct calculation code use the settings */
+/* cm_width=32, cm_poly=0x1EDC6F41, cm_init=0xFFFFFFFF,      */
+/* cm_refin=TRUE, cm_refot=TRUE, cm_xorort=0x00000000        */
+/*************************************************************/
+
 /* Example of the crc table file */
 #ifndef __crc32cr_table_h__
 #define __crc32cr_table_h__
@@ -3344,6 +3352,15 @@ unsigned long  crc_c[256] =
 ---------
 New text: (Appendix B)
 ---------
+
+<CODE BEGINS>
+/*************************************************************/
+/* Note Definition for Ross Williams table generator would   */
+/* be: TB_WIDTH=4, TB_POLLY=0x1EDC6F41, TB_REVER=TRUE        */
+/* For Mr. Williams direct calculation code use the settings */
+/* cm_width=32, cm_poly=0x1EDC6F41, cm_init=0xFFFFFFFF,      */
+/* cm_refin=TRUE, cm_refot=TRUE, cm_xorort=0x00000000        */
+/*************************************************************/
 
 /* Example of the crc table file */
 #ifndef __crc32cr_h__
@@ -3726,6 +3743,7 @@ validate_crc32(unsigned char *buffer, unsigned int length)
   crc32 = generate_crc32c(buffer, length);
   return ((original_crc32 == crc32)? 1 : -1);
 }
+<CODE ENDS>
 ]]>
 </artwork>
 </figure>
