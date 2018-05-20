@@ -254,13 +254,14 @@ New text: (Section 14.1)
 ---------
 
 The assignment of new chunk type codes is done through an
-IETF Consensus action, as defined in [RFC5226].  Documentation of the
+IETF Consensus action, as defined in [RFC8126].  Documentation of the
 chunk type MUST contain the following information:
 </artwork>
 </figure>
 </section>
 <section title='Solution Description'>
-<t>Refer to chunk types as intended.</t>
+<t>Refer to chunk types as intended and change reference to
+<xref target="RFC8126"/>.</t>
 </section>
 </section>
 
@@ -427,7 +428,7 @@ New text: (Section 6.1 A))
 ---------
 
 The sender MUST also have an algorithm for sending new DATA chunks
-to avoid silly window syndrome (SWS) as described in [RFC0813].
+to avoid silly window syndrome (SWS) as described in [RFC1122].
 The algorithm can be similar to the one described in Section
 4.2.3.4 of [RFC1122].
 </artwork>
@@ -2953,7 +2954,7 @@ New text: (Section 14.1)
 14.1.  IETF-Defined Chunk Extension
 
    The assignment of new chunk type codes is done through an IETF Review
-   action, as defined in [RFC5226].  Documentation of a new chunk MUST
+   action, as defined in [RFC8126].  Documentation of a new chunk MUST
    contain the following information:
 
    a)  A long and short name for the new chunk type;
@@ -2984,7 +2985,7 @@ New text: (Section 14.2)
 14.2.  New IETF Chunk Flags Registration
 
    The assignment of new chunk flags is done through an RFC required
-   action, as defined in [RFC5226].  Documentation of the chunk flags
+   action, as defined in [RFC8126].  Documentation of the chunk flags
    MUST contain the following information:
 
    a)  A name for the new chunk flag;
@@ -3002,7 +3003,8 @@ New text: (Section 14.2)
 <t>Please note that Sections 14.2, 14.3, 14.4, and 14.5 need to be renumbered.</t>
 </section>
 <section title='Solution Description'>
-<t><xref target="RFC6096"/> was integrated.</t>
+<t><xref target="RFC6096"/> was integrated and the reference updated to
+<xref target="RFC8126"/>.</t>
 </section>
 </section>
 
@@ -3935,10 +3937,10 @@ for their invaluable comments.</t>
 </references>
 <references title='Informative References'>
 <?rfc include="reference.RFC.1122" ?>
+<?rfc include="reference.RFC.1858" ?>
 <?rfc include="reference.RFC.2960" ?>
 <?rfc include="reference.RFC.3168" ?>
 <?rfc include="reference.RFC.4460" ?>
-<?rfc include="reference.RFC.5226" ?>
 <?rfc include="reference.RFC.5681" ?>
 <?rfc include="reference.RFC.6096" ?>
 <?rfc include="reference.RFC.6298" ?>
