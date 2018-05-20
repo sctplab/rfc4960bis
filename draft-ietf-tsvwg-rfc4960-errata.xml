@@ -94,10 +94,9 @@ to <xref target="RFC4460"/>.</t>
 </list></t>
 <t>Note that when reading this document one must use care to assure that a field
 or item is not updated further on within the document.
-Each section should be applied in sequence to the original <xref target="RFC4960"/>
-since this document is a historical record of the sequential changes that have
+Since this document is a historical record of the sequential changes that have
 been found necessary at various inter-op events and through discussion on the
-list.</t>
+list, the last delta in the text is the one which should be applied.</t>
 </section>
 
 <section anchor='conventions' title='Conventions'>
