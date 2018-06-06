@@ -131,15 +131,20 @@ FIXME
 Current Erratas listed at
 http://www.rfc-editor.org/errata_search.php?rfc=4960
 
-* http://www.rfc-editor.org/errata_search.php?eid=1440 Verified
-* http://www.rfc-editor.org/errata_search.php?eid=1574 Verified
-* http://www.rfc-editor.org/errata_search.php?eid=2592 Verified
-* http://www.rfc-editor.org/errata_search.php?eid=3291 Held for Document Update
-* http://www.rfc-editor.org/errata_search.php?eid=3423 Verified
-* http://www.rfc-editor.org/errata_search.php?eid=3788 Verified
-* http://www.rfc-editor.org/errata_search.php?eid=3804 Reported (Duplicate of 3291)
-* http://www.rfc-editor.org/errata_search.php?eid=4071 Reported (Should be accepted)
-* http://www.rfc-editor.org/errata_search.php?eid=4250 Reported (Should be rejected)
+* http://www.rfc-editor.org/errata_search.php?eid=1440 Verified (Section 3.1)
+* http://www.rfc-editor.org/errata_search.php?eid=1574 Verified (Section 3.2)
+* http://www.rfc-editor.org/errata_search.php?eid=2592 Verified (Section 3.3)
+* http://www.rfc-editor.org/errata_search.php?eid=3291 Held for Document Update (Section 3.4)
+* http://www.rfc-editor.org/errata_search.php?eid=3423 Verified (Section 3.5)
+* http://www.rfc-editor.org/errata_search.php?eid=3788 Verified (Section 3.6)
+* http://www.rfc-editor.org/errata_search.php?eid=3804 Reported (Duplicate of 3291) (Section 3.4)
+* http://www.rfc-editor.org/errata_search.php?eid=4071 Held for Document Update (Section 3.7)
+* http://www.rfc-editor.org/errata_search.php?eid=4250 Rejected
+* http://www.rfc-editor.org/errata_search.php?eid=4400 Verified (Section 3.8)
+* http://www.rfc-editor.org/errata_search.php?eid=4656 Reported
+* http://www.rfc-editor.org/errata_search.php?eid=4876 Reported
+* http://www.rfc-editor.org/errata_search.php?eid=5003 Reported (Should be accepted) (Section 3.9)
+* http://www.rfc-editor.org/errata_search.php?eid=5202 Reported (Isolation OK, Monotonic not) (Section 3.47)
 -->
 
 <t>[NOTE to RFC-Editor:
@@ -498,6 +503,8 @@ T1-init timer.</t>
 <section title='Miscellaneous Typos'>
 <section title='Description of the Problem'>
 <t>While processing <xref target="RFC4960"/> some typos were not caught.</t>
+<t>One typo was reported as an Errata for <xref target="RFC4960"/> with
+Errata ID 5003.</t>
 </section>
 <section title='Text Changes to the Document'>
 <!-- The following was already incorrect in RFC 2960 -->
