@@ -2409,7 +2409,7 @@ o  protocol parameter list - the specific names and values of the
    15) that the SCTP user wishes to customize.
 
 ---------
-Old text: (Section 10.1)
+New text: (Section 10.1)
 ---------
 
 M) Set Protocol Parameters
@@ -2457,7 +2457,7 @@ ICMP3) An implementation MAY ignore any ICMPv4 messages where the
        "Fragmentation Needed".
 
 ---------
-New text:
+New text: (Appendix C)
 ---------
 
 ICMP3) An implementation SHOULD ignore any ICMPv4 messages where the
@@ -2472,7 +2472,7 @@ ICMP9) If the ICMPv6 code is "Destination Unreachable", the
        state or alternatively increment the path error counter.
 
 ---------
-New text:
+New text: (Appendix C)
 ---------
 
 ICMP9) If the ICMP type is "Destination Unreachable", the
