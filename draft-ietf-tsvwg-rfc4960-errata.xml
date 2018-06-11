@@ -866,7 +866,7 @@ expiration.</t>
 <!-- The correction is in accordance with RFC 3465, Section 2.1 -->
 <section title='Description of the Problem'>
 <t>Section 7.2.2 of <xref target="RFC4960"/> likely implies the wrong order of
-of adjustments applied to partial_bytes_acked and cwnd in the congestion
+adjustments applied to partial_bytes_acked and cwnd in the congestion
 avoidance phase.</t>
 </section>
 <section title='Text Changes to the Document'>
