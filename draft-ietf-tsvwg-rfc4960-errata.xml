@@ -3795,6 +3795,8 @@ validate_crc32(unsigned char *buffer, unsigned int length)
 <section title='Description of the Problem'>
 <t>The Gap Ack Blocks in the SACK chunk are intended to be isolated.
 However, this is not mentioned with normative text.</t>
+<t>This issue was reported as part of an Errata for <xref target="RFC4960"/> with
+Errata ID 5202.</t>
 </section>
 <section title='Text Changes to the Document'>
 <figure>
