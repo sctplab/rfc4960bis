@@ -1980,16 +1980,16 @@ New text: (Section 7.2.1)
 ---------
 o  When the endpoint does not transmit data on a given transport
    address, the cwnd of the transport address SHOULD be adjusted to
-   max(cwnd/2, 4*MTU) per RTO. At the first cwnd adjustment, the
-   ssthresh of the transport address SHOULD be adjusted to the cwnd.
+   max(cwnd/2, 4*MTU) per RTO. Before the first cwnd adjustment, the
+   ssthresh of the transport address SHOULD be set to the cwnd.
 </artwork>
 </figure>
 </section>
 <section title='Solution Description'>
 <t>A rule about cwnd adjustment after a sufficiently long idle period
 is removed.</t>
-<t>The text is updated to refresh ssthresh after the idle period. When
-the idle period is detected, the cwnd value is stored to the ssthresh value.</t>
+<t>The text is updated to describe the ssthresh handling.
+When the idle period is detected, the cwnd value is stored to the ssthresh value.</t>
 </section>
 </section>
 
@@ -2386,12 +2386,13 @@ This is not described in <xref target="RFC4960"/>.</t>
 ---------
 New text: (Section 7.2.5)
 ---------
+7.2.5.  Change of Differentiated Services Code Points
 
-SCTP implementations MAY allow an application to configure the
-Differentiated Services Code Point (DSCP) used for sending packets.
-If a DSCP change might result in outgoing packets being queued in
-different queues, the congestion control parameters for all affected
-destination addresses MUST be reset to their initial values.
+   SCTP implementations MAY allow an application to configure the
+   Differentiated Services Code Point (DSCP) used for sending packets.
+   If a DSCP change might result in outgoing packets being queued in
+   different queues, the congestion control parameters for all affected
+   destination addresses MUST be reset to their initial values.
 
 ---------
 Old text: (Section 10.1)
@@ -3986,6 +3987,7 @@ Eric W. Biederman,
 Cedric Bonnet,
 Spencer Dawkins,
 Gorry Fairhurst,
+Mirja Kuehlewind,
 Peter Lei,
 Gyula Marosi,
 Lionel Morand,
