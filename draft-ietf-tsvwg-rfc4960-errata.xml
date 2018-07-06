@@ -1001,8 +1001,8 @@ the DATA chunk was sent.
 When its peer is multi-homed, an endpoint SHOULD send fast
 retransmissions to the same destination transport address where the
 original data was sent to. If the primary path has been changed and the
-original data was sent there before the fast retransmit, the
-implementation MAY send it to the new primary path.
+original data was sent to the old primary path before the fast retransmit,
+the implementation MAY send it to the new primary path.
 </artwork>
 </figure>
 </section>
@@ -2449,7 +2449,11 @@ o  protocol parameter list - the specific names and values of the
 <section title='Inconsistent Handling of ICMPv4 and ICMPv6 Messages'>
 <section title='Description of the Problem'>
 <t>Appendix C of <xref target="RFC4960"/> describes the handling of ICMPv4 and
-ICMPv6 messages. The text explicitly describes the handling of ICMPv6 packets
+ICMPv6 messages.
+The handling of ICMP messages indicating that the port
+number is unreachable described in the enumeration is not consistent with
+the description given in <xref target="RFC4960"/> after the enumeration.
+Furthermore, the text explicitly describes the handling of ICMPv6 packets
 indicating reachability problems, but does not do the same for the
 corresponding ICMPv4 packets.</t>
 </section>
@@ -2468,7 +2472,7 @@ ICMP3) An implementation MAY ignore any ICMPv4 messages where the
 New text: (Appendix C)
 ---------
 
-ICMP3) An implementation SHOULD ignore any ICMPv4 messages where the
+ICMP3) An implementation SHOULD ignore any ICMP messages where the
        code indicates "Port Unreachable".
 
 ---------
@@ -2490,9 +2494,9 @@ ICMP9) If the ICMP type is "Destination Unreachable", the
 </figure>
 </section>
 <section title='Solution Description'>
-<t>The text has been changed to not limit the processing of ICMPv4 packets
-with type "Destination Unreachable" by rewording the third rule. Furthermore,
-remove the limitation to ICMPv6 in the ninth rule.</t>
+<t>The text has been changed to describe the intended handling of ICMP
+messages indicating that the port number is unreachable by replacing the third rule.
+Furthermore, remove the limitation to ICMPv6 in the ninth rule.</t>
 </section>
 </section>
 
@@ -2508,7 +2512,7 @@ for TCP. Appendix C of <xref target="RFC4960"/> only deals with hard errors.</t>
 Old text: (Appendix C)
 ---------
 
-ICMP8) If the ICMP type is "Destination Unreachable", the
+ICMP9) If the ICMP type is "Destination Unreachable", the
        implementation MAY mark the destination into the unreachable
        state or alternatively increment the path error counter.
 
@@ -2516,7 +2520,7 @@ ICMP8) If the ICMP type is "Destination Unreachable", the
 New text: (Appendix C)
 ---------
 
-ICMP8) If the ICMP type is "Destination Unreachable", the
+ICMP9) If the ICMP type is "Destination Unreachable", the
        implementation MAY mark the destination into the unreachable
        state or alternatively increment the path error counter.
        SCTP MAY provide information to the upper layer indicating
@@ -2660,7 +2664,7 @@ method to become aware of congestion outside of datagram loss.
 New text: (Appendix A)
 ---------
 
-ECN as specified in [RFC3168] updated by [RFC8311] describes a proposed
+ECN as specified in [RFC3168] updated by [RFC8311] describes an
 extension to IP that details a method to become aware of congestion
 outside of datagram loss.
 
@@ -2726,7 +2730,8 @@ its peer that it has reduced its congestion window.
 </figure>
 </section>
 <section title='Solution Description'>
-<t>References to <xref target="RFC8311"/> have been added.</t>
+<t>References to <xref target="RFC8311"/> have been added.
+While there, some wordsmithing has been performed.</t>
 </section>
 </section>
 
@@ -3989,6 +3994,7 @@ Eric W. Biederman,
 Cedric Bonnet,
 Spencer Dawkins,
 Gorry Fairhurst,
+Benjamin Kaduk,
 Mirja Kuehlewind,
 Peter Lei,
 Gyula Marosi,
