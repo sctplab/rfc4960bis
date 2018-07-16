@@ -1978,10 +1978,10 @@ o  When the endpoint does not transmit data on a given transport
 ---------
 New text: (Section 7.2.1)
 ---------
-o  When the endpoint does not transmit data on a given transport
+o  While the endpoint does not transmit data on a given transport
    address, the cwnd of the transport address SHOULD be adjusted to
-   max(cwnd/2, 4*MTU) per RTO. Before the first cwnd adjustment, the
-   ssthresh of the transport address SHOULD be set to the cwnd.
+   max(cwnd/2, 4*MTU) once per RTO. Before the first cwnd adjustment,
+   the ssthresh of the transport address SHOULD be set to the cwnd.
 </artwork>
 </figure>
 </section>
@@ -2021,10 +2021,12 @@ An SCTP receiver MUST NOT generate more than one SACK for every
 incoming packet, other than to update the offered window as the
 receiving application consumes new data. When the window opens
 up, an SCTP receiver SHOULD send additional SACK chunks to update
-the window even if no new data is received. The receiver MUST avoid
-sending large bursts of window updates.
-
-
+the window even if no new data is received.
+The receiver MUST avoid sending a large number of window updates,
+in particular large bursts of them.
+One way to achieve this is to send a window update only if the
+window can be increased by at least a quarter of the receive
+buffer size.
 </artwork>
 </figure>
 </section>
