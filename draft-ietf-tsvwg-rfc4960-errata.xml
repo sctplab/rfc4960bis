@@ -1001,8 +1001,8 @@ the DATA chunk was sent.
 When its peer is multi-homed, an endpoint SHOULD send fast
 retransmissions to the same destination transport address where the
 original data was sent to. If the primary path has been changed and the
-original data was sent to the old primary path before the fast retransmit,
-the implementation MAY send it to the new primary path.
+original data was sent to the old primary path before the fast
+retransmit, the implementation MAY send it to the new primary path.
 </artwork>
 </figure>
 </section>
