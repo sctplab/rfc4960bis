@@ -933,7 +933,10 @@ also be reset. The receiver of the HEARTBEAT ACK MAY choose not to
 clear the counter if there is outstanding data on the association.
 This allows for handling the possible difference in reachability
 based on DATA chunks and HEARTBEAT chunks.
-
+</artwork>
+</figure>
+<figure>
+<artwork>
 ---------
 Old text: (Section 8.3)
 ---------
@@ -1306,7 +1309,10 @@ E) Send
 o  no-bundle flag - instructs SCTP not to bundle this user data with
    other outbound DATA chunks.  SCTP may still bundle even when this
    flag is present, when faced with network congestion.
-
+</artwork>
+</figure>
+<figure>
+<artwork>
 ---------
 Old text: (Section 10.1)
 ---------
@@ -1352,7 +1358,10 @@ o  partial flag - if this returned flag is set to 1, then this
    accompany this primitive.  When this flag is set to 0, it indicates
    that no more deliveries will be received for this stream sequence
    number.
-
+</artwork>
+</figure>
+<figure>
+<artwork>
 ---------
 Old text: (Section 10.1)
 ---------
@@ -1396,7 +1405,10 @@ o  partial flag - if this returned flag is set to 1, then this
    accompany this primitive.  When this flag is set to 0, it indicates
    that no more deliveries will be received for this stream sequence
    number.
-
+</artwork>
+</figure>
+<figure>
+<artwork>
 ---------
 Old text: (Section 10.1)
 ---------
@@ -1595,7 +1607,10 @@ this ambiguity does not seem to bear any significant consequence to
 SCTP behavior. If this ambiguity is undesirable, the transmitter MAY
 choose not to clear the error counter if the last chunk sent was a
 retransmission.
-
+</artwork>
+</figure>
+<figure>
+<artwork>
 ---------
 Old text: (Section 8.3)
 ---------
@@ -1619,7 +1634,10 @@ also report to the upper layer the change of reachability of this
 destination address.  After this, the endpoint SHOULD continue
 HEARTBEAT on this destination address but SHOULD stop increasing the
 counter.
-
+</artwork>
+</figure>
+<figure>
+<artwork>
 ---------
 Old text: (Section 8.3)
 ---------
@@ -1645,7 +1663,10 @@ report to the upper layer when an inactive destination address
 is marked as active due to the reception of the latest
 HEARTBEAT ACK. The receiver of the HEARTBEAT ACK SHOULD also clear
 the association overall error counter (as defined in Section 8.1).
-
+</artwork>
+</figure>
+<figure>
+<artwork>
 ---------
 Old text: (Section 9.2)
 ---------
@@ -1665,7 +1686,10 @@ SHUTDOWN chunk to the protocol parameter 'Association.Max.Retrans'.
 If this threshold is exceeded, the endpoint SHOULD destroy the TCB
 and SHOULD report the peer endpoint unreachable to the upper layer
 (and thus the association enters the CLOSED state).
-
+</artwork>
+</figure>
+<figure>
+<artwork>
 ---------
 Old text: (Section 9.2)
 ---------
@@ -1724,7 +1748,10 @@ An implementation MUST NOT allow the maximum delay (protocol
 parameter 'SACK.Delay') to be configured to be more than 500 ms.
 In other words, an implementation MAY lower the value of
 SACK.Delay below 500 ms but MUST NOT raise it above 500 ms.
-
+</artwork>
+</figure>
+<figure>
+<artwork>
 ---------
 Old text: (Section 15)
 ---------
@@ -1807,7 +1834,10 @@ New text: (Section 3.2)
 01 -  Stop processing this SCTP packet, discard the unrecognized
       chunk and all further chunks, and report the unrecognized
       chunk in an 'Unrecognized Chunk Type'.
-
+</artwork>
+</figure>
+<figure>
+<artwork>
 ---------
 Old text: (Section 11.3)
 ---------
@@ -1884,7 +1914,10 @@ o  SCTP SHOULD increment cwnd by one 1*MTU once per RTT when
    the corresponding transport address.
 
 o  SCTP MUST NOT increment cwnd by more than 1*MTU per RTT.
-
+</artwork>
+</figure>
+<figure>
+<artwork>
 ---------
 Old text: (Section 7.2.2)
 ---------
@@ -1966,7 +1999,10 @@ New text: (Section 7.2.1)
 
 o  The initial cwnd before DATA transmission MUST be set to
    min(4*MTU, max (2*MTU, 4380 bytes)).
-
+</artwork>
+</figure>
+<figure>
+<artwork>
 ---------
 Old text: (Section 7.2.1)
 ---------
@@ -2153,7 +2189,10 @@ o  Flightsize: The amount of bytes of outstanding data to a
 o  Congestion window (cwnd): An SCTP variable that limits outstanding
    data, in number of bytes, a sender can send to a particular
    destination transport address before receiving an acknowledgement.
-
+</artwork>
+</figure>
+<figure>
+<artwork>
 ---------
 Old text: (Section 6.1)
 ---------
@@ -2395,7 +2434,10 @@ New text: (Section 7.2.5)
    If a DSCP change might result in outgoing packets being queued in
    different queues, the congestion control parameters for all affected
    destination addresses MUST be reset to their initial values.
-
+</artwork>
+</figure>
+<figure>
+<artwork>
 ---------
 Old text: (Section 10.1)
 ---------
@@ -2476,7 +2518,10 @@ New text: (Appendix C)
 
 ICMP3) An implementation SHOULD ignore any ICMP messages where the
        code indicates "Port Unreachable".
-
+</artwork>
+</figure>
+<figure>
+<artwork>
 ---------
 Old text: (Appendix C)
 ---------
@@ -2565,7 +2610,10 @@ B) At any given time, the sender MUST NOT transmit new data to a
    available the sender SHOULD exceed cwnd by up to (PMTU-1) bytes on
    a new data transmission if the flightsize does not currently reach
    cwnd. The breach of cwnd MUST constitute one packet only.
-
+</artwork>
+</figure>
+<figure>
+<artwork>
 ---------
 Old text: (Section 7.2.1)
 ---------
@@ -2648,8 +2696,8 @@ A) At any given time, the data sender MUST NOT transmit new data to
 
 <section title='Updating References Regarding ECN'>
 <section title='Description of the Problem'>
-<t><xref target="RFC4960"/> refers for ECN only to <xref target="RFC3168"/>, which will
-be updated by <xref target="RFC8311"/>.
+<t><xref target="RFC4960"/> refers for ECN only to <xref target="RFC3168"/>,
+which will be updated by <xref target="RFC8311"/>.
 This needs to be reflected when referring to ECN.</t>
 </section>
 <section title='Text Changes to the Document'>
@@ -2669,7 +2717,10 @@ New text: (Appendix A)
 ECN as specified in [RFC3168] updated by [RFC8311] describes an
 extension to IP that details a method to become aware of congestion
 outside of datagram loss.
-
+</artwork>
+</figure>
+<figure>
+<artwork>
 ---------
 Old text: (Appendix A)
 ---------
@@ -2683,7 +2734,10 @@ New text: (Appendix A)
 
 In general, [RFC3168] updated by [RFC8311] SHOULD be followed with the
 following exceptions.
-
+</artwork>
+</figure>
+<figure>
+<artwork>
 ---------
 Old text: (Appendix A)
 ---------
@@ -2697,7 +2751,10 @@ New text: (Appendix A)
 
 [RFC3168] updated by [RFC8311] details negotiation of ECN during the
 SYN and SYN-ACK stages of a TCP connection.
-
+</artwork>
+</figure>
+<figure>
+<artwork>
 ---------
 Old text: (Appendix A)
 ---------
@@ -2713,7 +2770,10 @@ New text: (Appendix A)
 [RFC3168] updated by [RFC8311] details a specific bit for a receiver
 to send back in its TCP acknowledgements to notify the sender of the
 Congestion Experienced (CE) bit having arrived from the network.
-
+</artwork>
+</figure>
+<figure>
+<artwork>
 ---------
 Old text: (Appendix A)
 ---------
@@ -2773,7 +2833,10 @@ Note 3: An INIT chunk MUST NOT contain the Host Name Address
 parameter.  The receiver of an INIT chunk containing a Host Name
 Address parameter MUST send an ABORT and MAY include an Error Cause
 indicating an Unresolvable Address.
-
+</artwork>
+</figure>
+<figure>
+<artwork>
 ---------
 Old text: (Section 3.3.2.1)
 ---------
@@ -2789,7 +2852,10 @@ New text: (Section 3.3.2.1)
 
 The sender of an INIT chunk MUST NOT include this parameter. The
 usage of the Host Name Address parameter is deprecated.
-
+</artwork>
+</figure>
+<figure>
+<artwork>
 ---------
 Old text: (Section 3.3.2.1)
 ---------
@@ -2807,7 +2873,10 @@ Address Type: 16 bits (unsigned integer)
    This is filled with the type value of the corresponding address
    TLV (e.g., IPv4 = 5, IPv6 = 6). The value indicating the Host
    Name Address parameter (Host name = 11) MUST NOT be used.
-
+</artwork>
+</figure>
+<figure>
+<artwork>
 ---------
 Old text: (Section 3.3.3)
 ---------
@@ -2826,7 +2895,10 @@ Note 3: An INIT ACK chunk MUST NOT contain the Host Name Address
 parameter.  The receiver of INIT ACK chunks containing a Host Name
 Address parameter MUST send an ABORT and MAY include an Error Cause
 indicating an Unresolvable Address.
-
+</artwork>
+</figure>
+<figure>
+<artwork>
 ---------
 Old text: (Section 5.1.2)
 ---------
@@ -2878,7 +2950,10 @@ B) If there is a Host Name parameter present in the received INIT or
    MAY include an Error Cause indicating an Unresolvable Address to
    its peer.  The ABORT SHALL be sent to the source IP address
    from which the last peer packet was received.
-
+</artwork>
+</figure>
+<figure>
+<artwork>
 ---------
 Old text: (Section 11.2.4.1)
 ---------
@@ -2906,7 +2981,6 @@ The support of the Host Name Address parameter has been removed from
 the protocol. Endpoints receiving INIT or INIT ACK chunks containing
 the Host Name Address parameter MUST send an ABORT chunk in response
 and MAY include an Error Cause indicating an Unresolvable Address.
-
 </artwork>
 </figure>
 </section>
@@ -2947,7 +3021,6 @@ New text: (Section 5.1.2)
 The sender of INIT chunks MAY include a 'Supported Address Types'
 parameter in the INIT to indicate what types of addresses are
 acceptable.
-
 </artwork>
 </figure>
 </section>
@@ -3019,7 +3092,10 @@ New text: (Section 14.1)
    For each new chunk type, IANA creates a registration table for the
    chunk flags of that type.  The procedure for registering particular
    chunk flags is described in the following Section 14.2.
-
+</artwork>
+</figure>
+<figure>
+<artwork>
 ---------
 New text: (Section 14.2)
 ---------
@@ -3211,7 +3287,10 @@ I bit: 1 bit
    The (I)mmediate Bit MAY be set by the sender, whenever the sender of
    a DATA chunk can benefit from the corresponding SACK chunk being sent
    back without delay. See [RFC7053] for a discussion about 
-   
+</artwork>
+</figure>
+<figure>
+<artwork>
 ---------
 New text: (Append to Section 6.1)
 ---------
@@ -3232,8 +3311,10 @@ o  The sender is in the SHUTDOWN-PENDING state.
 
 o  The sending of a DATA chunk fills the congestion or receiver
    window.
-
-
+</artwork>
+</figure>
+<figure>
+<artwork>
 ---------
 Old text: (Section 6.2)
 ---------
@@ -3254,7 +3335,10 @@ Upon receipt of an SCTP packet containing a DATA chunk with the I bit
 set, the receiver SHOULD NOT delay the sending of the corresponding
 SACK chunk, i.e., the receiver SHOULD immediately respond with the
 corresponding SACK chunk.
-
+</artwork>
+</figure>
+<figure>
+<artwork>
 ---------
 Old text: (Section 10.1)
 ---------
@@ -3277,7 +3361,10 @@ E) Send
          [,unordered flag] [,no-bundle flag] [,payload protocol-id]
          [,sack immediately] )
  -> result
-
+</artwork>
+</figure>
+<figure>
+<artwork>
 ---------
 New text: (Append optional parameter in Subsection E of Section 10.1)
 ---------
@@ -3483,7 +3570,12 @@ uint32_t crc_c[256] =
 };
 
 #endif
-
+]]>
+</artwork>
+</figure>
+<figure>
+<artwork>
+<![CDATA[
 ---------
 Old text: (Appendix B)
 ---------
@@ -3636,7 +3728,12 @@ main (void)
     printf("\nThe CRC-32c table has been written to <%s>.\n",
       OUTPUT_FILE);
 }
-
+]]>
+</artwork>
+</figure>
+<figure>
+<artwork>
+<![CDATA[
 ---------
 Old text: (Appendix B)
 ---------
@@ -3829,7 +3926,10 @@ This means that the TSN just before each Gap Ack Block and the TSN just
 after each Gap Ack Block has not been received.  By definition, all TSNs
 acknowledged by Gap Ack Blocks are greater than the value of the
 Cumulative TSN Ack.
-
+</artwork>
+</figure>
+<figure>
+<artwork>
 ---------
 Old text: (Section 3.3.4)
 ---------
@@ -3963,7 +4063,6 @@ no adjustment to the congestion control window size.
 ---------
 New text: (Section 7.2.4)
 ---------
-
 </artwork>
 </figure>
 </section>
