@@ -8,7 +8,7 @@
 
 <rfc category="info"
      ipr="trust200902"
-     docName="draft-ietf-tsvwg-rfc4960-errata-08-to-be.txt">
+     docName="draft-ietf-tsvwg-rfc4960-errata-08.txt">
 <front>
 
 <title>RFC 4960 Errata and Issues</title>
@@ -2071,7 +2071,7 @@ The receiver MUST avoid sending a large number of window updates,
 in particular large bursts of them.
 One way to achieve this is to send a window update only if the
 window can be increased by at least a quarter of the receive
-buffer size.
+buffer size of the association.
 </artwork>
 </figure>
 <t>This text is in final form, and is not further updated in this document.</t>
