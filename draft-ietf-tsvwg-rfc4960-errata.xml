@@ -8,7 +8,7 @@
 
 <rfc category="info"
      ipr="trust200902"
-     docName="draft-ietf-tsvwg-rfc4960-errata-07.txt">
+     docName="draft-ietf-tsvwg-rfc4960-errata-08-to-be.txt">
 <front>
 
 <title>RFC 4960 Errata and Issues</title>
@@ -156,7 +156,8 @@ In addition to this, there are some references to the obsoleted
 </list>
 ]</t>
 
-<section title='Path Error Counter Threshold Handling'>
+<section title='Path Error Counter Threshold Handling'
+         anchor='Path_Error_Counter_Threshold_Handling'>
 <!-- http://www.rfc-editor.org/errata_search.php?eid=1440 -->
 
 <section title='Description of the Problem'>
@@ -197,6 +198,9 @@ HEARTBEAT on this destination address but SHOULD stop increasing the
 counter.
 </artwork>
 </figure>
+<t>This text has been modified by multiple errata.
+It is further updated in
+<xref target="Inconsistency_in_Notifications_Handling"/>.</t>
 </section>
 <section title='Solution Description'>
 <t>The intended state change should happen when the threshold is exceeded.</t>
@@ -233,6 +237,7 @@ ignore ULP shutdown requests, but MUST continue responding
 to SHUTDOWN chunks from its peer.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 </section>
 <section title='Solution Description'>
 <t>The text never intended the SCTP endpoint to ignore SHUTDOWN chunks from its
@@ -242,7 +247,8 @@ cases.</t>
 </section>
 </section>
 
-<section title='Registration of New Chunk Types'>
+<section title='Registration of New Chunk Types'
+         anchor='Registration_of_New_Chunk_Types'>
 <!-- http://www.rfc-editor.org/errata_search.php?eid=2592 -->
 <section title='Description of the Problem'>
 <t>Section 14.1 of <xref target="RFC4960"/> should deal with new chunk types,
@@ -271,6 +277,8 @@ IETF Consensus action, as defined in [RFC8126].  Documentation of the
 chunk type MUST contain the following information:
 </artwork>
 </figure>
+<t>This text has been modified by multiple errata.
+It is further updated in <xref target="Integration_of_RFC_6096"/>.</t>
 </section>
 <section title='Solution Description'>
 <t>Refer to chunk types as intended and change reference to
@@ -317,13 +325,15 @@ Host Name Address (Note 3)          Optional    11
 Supported Address Types (Note 4)    Optional    12
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 </section>
 <section title='Solution Description'>
 <t>Fix the formatting of the table.</t>
 </section>
 </section>
 
-<section title='CRC32c Sample Code on 64-bit Platforms'>
+<section title='CRC32c Sample Code on 64-bit Platforms'
+         anchor='CRC32c_Sample_Code_on_64_bit_Platforms'>
 <!-- http://www.rfc-editor.org/errata_search.php?eid=3423 -->
 <section title='Description of the Problem'>
 <t>The sample code for computing the CRC32c provided in <xref target="RFC4960"/>
@@ -356,6 +366,9 @@ generate_crc32c(unsigned char *buffer, unsigned int length)
   unsigned long crc32 = 0xffffffffL;
 </artwork>
 </figure>
+<t>This text has been modified by multiple errata.
+It is further updated in <xref target="CRC32c_Sample_Code"/> and in
+<xref target="CRC32c_Code_Improvements"/>.</t>
 </section>
 <section title='Solution Description'>
 <t>Use 0xffffffffL instead of ~0L which gives the same value on platforms using
@@ -363,8 +376,8 @@ generate_crc32c(unsigned char *buffer, unsigned int length)
 </section>
 </section>
 
-<section anchor='endpoint_failure_detection'
-         title='Endpoint Failure Detection'>
+<section title='Endpoint Failure Detection'
+         anchor='Endpoint_Failure_Detection'>
 <!-- http://www.rfc-editor.org/errata_search.php?eid=3788 -->
 <section title='Description of the Problem'>
 <t>The handling of the association error counter defined in Section 8.1 of
@@ -401,6 +414,9 @@ to association closure even if the path which is currently used for
 data transfer is available (but idle).
 </artwork>
 </figure>
+<t>This text has been modified by multiple errata.
+It is further updated in
+<xref target="Inconsistency_in_Notifications_Handling"/>.</t>
 </section>
 <section title='Solution Description'>
 <t>A more refined handling for the association error counter is defined.</t>
@@ -446,6 +462,7 @@ The algorithm can be similar to the one described in Section
 4.2.3.4 of [RFC1122].
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 </section>
 <section title='Solution Description'>
 <t>Last paragraph of Section 6.1 A) removed as intended in Section 2.15.2 of
@@ -453,7 +470,8 @@ The algorithm can be similar to the one described in Section
 </section>
 </section>
 
-<section title='T1-Cookie Timer'>
+<section title='T1-Cookie Timer'
+         anchor='T1_Cookie_Timer'>
 <!-- http://www.rfc-editor.org/errata_search.php?eid=4400 -->
 <section title='Description of the Problem'>
 <t>Figure 4 of <xref target="RFC4960"/> illustrates the SCTP association setup.
@@ -493,6 +511,8 @@ COOKIE ECHO [Cookie_Z] ------\
  Enter ESTABLISHED state)
 </artwork>
 </figure>
+<t>This text has been modified by multiple errata.
+It is further updated in <xref target="Miscellaneous_Typos"/>.</t>
 </section>
 <section title='Solution Description'>
 <t>Change the figure such that the T1-cookie timer is used instead of the
@@ -500,7 +520,8 @@ T1-init timer.</t>
 </section>
 </section>
 
-<section title='Miscellaneous Typos'>
+<section title='Miscellaneous Typos'
+         anchor='Miscellaneous_Typos'>
 <section title='Description of the Problem'>
 <t>While processing <xref target="RFC4960"/> some typos were not caught.</t>
 <t>One typo was reported as an Errata for <xref target="RFC4960"/> with
@@ -527,6 +548,7 @@ That is, the next TSN a DATA chunk MUST use after transmitting TSN =
 2**32 - 1 is TSN = 0.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 <!-- The following was correct in RFC 2960 -->
 <figure>
 <artwork>
@@ -546,6 +568,7 @@ No User Data: This error cause is returned to the originator of a
 DATA chunk if a received DATA chunk has no user data.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 <!-- The following was correct in RFC 2960 -->
 <figure>
 <artwork>
@@ -586,6 +609,7 @@ DATA [TSN=8,Strm=0,Seq=4] ---------------> (gap detected,
  and mark 7 as "1" missing report)
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 <!-- The following was correct in RFC 2960 -->
 <figure>
 <artwork>
@@ -609,11 +633,12 @@ including the SCTP packet and IP headers, MUST be less than or equal
 to the current PMTU.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 <!-- The following was correct in RFC 2960 -->
 <figure>
 <artwork>
 ---------
-Old text: (Section 10.1)
+Old text: (Section 10.1 O))
 ---------
 
 o  Receive Unacknowledged Message
@@ -623,7 +648,7 @@ o  Receive Unacknowledged Message
            flag] [,payload protocol-id])
 
 ---------
-New text: (Section 10.1)
+New text: (Section 10.1 O))
 ---------
 
 O) Receive Unacknowledged Message
@@ -633,11 +658,12 @@ O) Receive Unacknowledged Message
            flag] [,payload protocol-id])
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 <!-- The following was already incorrect in RFC 2960 -->
 <figure>
 <artwork>
 ---------
-Old text: (Section 10.1)
+Old text: (Section 10.1 M))
 ---------
 
 M) Set Protocol Parameters
@@ -647,7 +673,7 @@ M) Set Protocol Parameters
            protocol parameter list)
 
 ---------
-New text: (Section 10.1)
+New text: (Section 10.1 M))
 ---------
 
 M) Set Protocol Parameters
@@ -657,7 +683,7 @@ M) Set Protocol Parameters
            protocol parameter list)
 </artwork>
 </figure>
-
+<t>This text is in final form, and is not further updated in this document.</t>
 <!-- The following was correct in RFC 4460 -->
 <figure>
 <artwork>
@@ -678,6 +704,7 @@ ICMP2) An implementation MAY ignore all ICMPv6 messages where the
        Problem", or "Packet Too Big".
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 <figure>
 <artwork>
 ---------
@@ -697,6 +724,7 @@ ICMP7) If the ICMP message is either a v6 "Packet Too Big" or a v4
        information as defined for PMTU discovery.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 <!-- The following was already incorrect in RFC 2960 -->
 <figure>
 <artwork>
@@ -715,6 +743,7 @@ New text: (Section 5.4)
    is the one to which the INIT ACK was sent.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 <!-- The following was already incorrect in RFC 2960 -->
 <figure>
 <artwork>
@@ -745,6 +774,9 @@ COOKIE ECHO [Cookie_Z] ------\
  Enter ESTABLISHED state)
 </artwork>
 </figure>
+<t>This text has been modified by multiple errata.
+It includes modifications from <xref target="T1_Cookie_Timer"/>.
+It is in final form, and is not further updated in this document.</t>
 <!-- The following was already incorrect in RFC 2960 -->
 <figure>
 <artwork>
@@ -761,6 +793,7 @@ New text: (Section 5.2.5)
 5.2.5.  Handle Duplicate COOKIE ACK.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 <!-- The following was already incorrect in RFC 4460 -->
 <figure>
 <artwork>
@@ -794,13 +827,15 @@ reaching the SHUTDOWN-SENT state (SHUTDOWN sender) or the SHUTDOWN-
 ACK-SENT state (SHUTDOWN receiver).
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 </section>
 <section title='Solution Description'>
 <t>Typos fixed.</t>
 </section>
 </section>
 
-<section title='CRC32c Sample Code'>
+<section title='CRC32c Sample Code'
+         anchor='CRC32c_Sample_Code'>
 <section title='Description of the Problem'>
 <t>The CRC32c computation is described in Appendix B of <xref target="RFC4960"/>.
 However, the corresponding sample code and its explanation appears at the end
@@ -817,6 +852,10 @@ yielding a lookup table for SCTP CRC32c with 256 entries, each 32
 bits wide.
 </artwork>
 </figure>
+<t>This text has been modified by multiple errata.
+It includes modifications from
+<xref target="CRC32c_Sample_Code_on_64_bit_Platforms"/>.
+It is further updated in <xref target="CRC32c_Code_Improvements"/>.</t>
 </section>
 <section title='Solution Description'>
 <t>Text moved to the appropriate location.</t>
@@ -855,6 +894,7 @@ cwnd = 1*MTU
 partial_bytes_acked = 0
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 </section>
 <section title='Solution Description'>
 <t>Specify that partial_bytes_acked should be reset to 0 after T3-rtx timer
@@ -862,7 +902,8 @@ expiration.</t>
 </section>
 </section>
 
-<section title='Order of Adjustments of partial_bytes_acked and cwnd'>
+<section title='Order of Adjustments of partial_bytes_acked and cwnd'
+         anchor='Order_of_Adjustments_of_partial_bytes_acked_and_cwnd'>
 <!-- The correction is in accordance with RFC 3465, Section 2.1 -->
 <section title='Description of the Problem'>
 <t>Section 7.2.2 of <xref target="RFC4960"/> likely implies the wrong order of
@@ -893,6 +934,9 @@ o  When partial_bytes_acked is equal to or greater than cwnd and
    to (partial_bytes_acked - cwnd). Next, cwnd is increased by 1*MTU.
 </artwork>
 </figure>
+<t>This text has been modified by multiple errata.
+It is further updated in
+<xref target="CWND_Increase_in_Congestion_Avoidance_Phase"/>.</t>
 </section>
 <section title='Solution Description'>
 <t>The new text defines the exact order of adjustments of
@@ -900,7 +944,8 @@ partial_bytes_acked and cwnd in the congestion avoidance phase.</t>
 </section>
 </section>
 
-<section title='HEARTBEAT ACK and the association error counter'>
+<section title='HEARTBEAT ACK and the association error counter'
+         anchor='HEARTBEAT_ACK_and_the_association_error_counter'>
 <section title='Description of the Problem'>
 <t>Section 8.1 and Section 8.3 of <xref target="RFC4960"/>
 prescribe that the receiver of a HEARTBEAT ACK must reset the
@@ -935,6 +980,7 @@ This allows for handling the possible difference in reachability
 based on DATA chunks and HEARTBEAT chunks.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 <figure>
 <artwork>
 ---------
@@ -964,6 +1010,9 @@ HEARTBEAT ACK. The receiver of the HEARTBEAT ACK SHOULD also clear
 the association overall error counter (as defined in Section 8.1).
 </artwork>
 </figure>
+<t>This text has been modified by multiple errata.
+It is further updated in
+<xref target="Inconsistency_in_Notifications_Handling"/>.</t>
 </section>
 <section title='Solution Description'>
 <t>The new text provides a possibility to not reset the association
@@ -995,7 +1044,6 @@ the DATA chunk was sent.
 New text: (Section 6.4)
 ---------
 
-
 Furthermore, when its peer is multi-homed, an endpoint SHOULD try to
 retransmit a chunk that timed out to an active destination transport
 address that is different from the last destination address to which
@@ -1008,6 +1056,7 @@ original data was sent to the old primary path before the fast
 retransmit, the implementation MAY send it to the new primary path.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 </section>
 <section title='Solution Description'>
 <t>The new text clarifies where to send fast retransmissions.</t>
@@ -1051,6 +1100,7 @@ New text: (Section 7.2.4)
     retransmission for this single packet.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 </section>
 <section title='Solution Description'>
 <t>The new text explicitly specifies to send only the first packet in
@@ -1086,6 +1136,7 @@ o  The initial value of ssthresh SHOULD be arbitrarily high (e.g.,
    the size of the largest possible advertised window).
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 </section>
 <section title='Solution Description'>
 <t>Use the same value as suggested in <xref target="RFC5681"/>, Section 3.1,
@@ -1122,6 +1173,7 @@ New text: (Section 5.4)
    automatically considered to be CONFIRMED.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 </section>
 <section title='Solution Description'>
 <t>The new text clarifies that only addresses provided by the upper
@@ -1160,6 +1212,7 @@ o  The initial cwnd after a retransmission timeout MUST be no more
    until successful acknowledgement.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 </section>
 <section title='Solution Description'>
 <t>The new text clearly specifies that only one packet is allowed to be
@@ -1212,6 +1265,7 @@ responding, the following rules MUST be applied:
     received INIT.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 </section>
 <section title='Solution Description'>
 <t>The new text requires sending INIT ACK to a destination address
@@ -1258,6 +1312,7 @@ keep its window closed for an indefinite time.  Section 6.2 describes
 the receiver behavior when it advertises a zero window.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 </section>
 <section title='Solution Description'>
 <t>The new text clarifies that if the receiver continues to send
@@ -1267,7 +1322,8 @@ do not acknowledge the probes.</t>
 </section>
 </section>
 
-<section title='Normative Language in Section 10'>
+<section title='Normative Language in Section 10'
+         anchor='Normative_Language_in_Section_10'>
 <section title='Description of the Problem'>
 <t>Section 10 of <xref target="RFC4960"/> is informative and, therefore,
 normative language such as MUST and MAY cannot be used there.
@@ -1277,54 +1333,28 @@ However, there are several places in Section 10 where MUST and MAY are used.</t>
 <figure>
 <artwork>
 ---------
-Old text: (Section 10.1)
+Old text: (Section 10.1 E))
 ---------
-
-E) Send
-
- Format: SEND(association id, buffer address, byte count [,context]
-         [,stream id] [,life time] [,destination transport address]
-         [,unordered flag] [,no-bundle flag] [,payload protocol-id] )
- -> result
-
-...
 
 o  no-bundle flag - instructs SCTP not to bundle this user data with
    other outbound DATA chunks.  SCTP MAY still bundle even when this
    flag is present, when faced with network congestion.
 
 ---------
-New text: (Section 10.1)
+New text: (Section 10.1 E))
 ---------
-
-E) Send
-
- Format: SEND(association id, buffer address, byte count [,context]
-         [,stream id] [,life time] [,destination transport address]
-         [,unordered flag] [,no-bundle flag] [,payload protocol-id] )
- -> result
-
-...
 
 o  no-bundle flag - instructs SCTP not to bundle this user data with
    other outbound DATA chunks.  SCTP may still bundle even when this
    flag is present, when faced with network congestion.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 <figure>
 <artwork>
 ---------
-Old text: (Section 10.1)
+Old text: (Section 10.1 G))
 ---------
-
-G) Receive
-
- Format: RECEIVE(association id, buffer address, buffer size
-         [,stream id])
- -> byte count [,transport address] [,stream id] [,stream sequence
-    number] [,partial flag] [,delivery number] [,payload protocol-id]
-
-...
 
 o  Stream Sequence Number - the Stream Sequence Number assigned by
    the sending SCTP peer.
@@ -1337,17 +1367,8 @@ o  partial flag - if this returned flag is set to 1, then this
    Number.
 
 ---------
-New text: (Section 10.1)
+New text: (Section 10.1 G))
 ---------
-
-G) Receive
-
- Format: RECEIVE(association id, buffer address, buffer size
-         [,stream id])
- -> byte count [,transport address] [,stream id] [,stream sequence
-    number] [,partial flag] [,delivery number] [,payload protocol-id]
-
-...
 
 o  stream sequence number - the Stream Sequence Number assigned by
    the sending SCTP peer.
@@ -1360,19 +1381,12 @@ o  partial flag - if this returned flag is set to 1, then this
    number.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 <figure>
 <artwork>
 ---------
-Old text: (Section 10.1)
+Old text: (Section 10.1 N))
 ---------
-
-N) Receive Unsent Message
-
-   Format: RECEIVE_UNSENT(data retrieval id, buffer address, buffer
-           size [,stream id] [, stream sequence number] [,partial
-           flag] [,payload protocol-id])
-
-...
 
 o  Stream Sequence Number - this value is returned indicating the
    Stream Sequence Number that was associated with the message.
@@ -1385,16 +1399,8 @@ o  partial flag - if this returned flag is set to 1, then this
    Number.
 
 ---------
-New text: (Section 10.1)
+New text: (Section 10.1 N))
 ---------
-
-N) Receive Unsent Message
-
-   Format: RECEIVE_UNSENT(data retrieval id, buffer address, buffer
-           size [,stream id] [, stream sequence number] [,partial
-           flag] [,payload protocol-id])
-
-...
 
 o  stream sequence number - this value is returned indicating the
    Stream Sequence Number that was associated with the message.
@@ -1407,19 +1413,12 @@ o  partial flag - if this returned flag is set to 1, then this
    number.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 <figure>
 <artwork>
 ---------
-Old text: (Section 10.1)
+Old text: (Section 10.1 O))
 ---------
-
-O) Receive Unacknowledged Message
-
-   Format: RECEIVE_UNACKED(data retrieval id, buffer address, buffer
-           size [,stream id] [,stream sequence number] [,partial
-           flag] [,payload protocol-id])
-
-...
 
 o  Stream Sequence Number - this value is returned indicating the
    Stream Sequence Number that was associated with the message.
@@ -1432,16 +1431,8 @@ o  partial flag - if this returned flag is set to 1, then this
    Number.
 
 ---------
-New text: (Section 10.1)
+New text: (Section 10.1 O))
 ---------
-
-O) Receive Unacknowledged Message
-
-   Format: RECEIVE_UNACKED(data retrieval id, buffer address, buffer
-           size [,stream id] [,stream sequence number] [,partial
-           flag] [,payload protocol-id])
-
-...
 
 o  stream sequence number - this value is returned indicating the
    Stream Sequence Number that was associated with the message.
@@ -1454,6 +1445,7 @@ o  partial flag - if this returned flag is set to 1, then this
    number.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 </section>
 <section title='Solution Description'>
 <t>The normative language is removed from Section 10.
@@ -1461,7 +1453,8 @@ In addition, the consistency of the text has been improved.</t>
 </section>
 </section>
 
-<section title='Increase of partial_bytes_acked in Congestion Avoidance'>
+<section title='Increase of partial_bytes_acked in Congestion Avoidance'
+         anchor='Increase_of_partial_bytes_acked_in_Congestion_Avoidance'>
 <section title='Description of the Problem'>
 <t>Two issues have been discovered with the partial_bytes_acked handling
 described in Section 7.2.2 of <xref target="RFC4960"/>:
@@ -1498,6 +1491,9 @@ o  Whenever cwnd is greater than ssthresh, upon each SACK arrival,
    of bytes of duplicated chunks reported in Duplicate TSNs.
 </artwork>
 </figure>
+<t>This text has been modified by multiple errata.
+It is further updated in
+<xref target="CWND_Increase_in_Congestion_Avoidance_Phase"/>.</t>
 </section>
 <section title='Solution Description'>
 <t>Now partial_bytes_acked is increased by TSNs reported as duplicated
@@ -1506,7 +1502,8 @@ Cumulative TSN Ack Point is not advanced.</t>
 </section>
 </section>
 
-<section title='Inconsistency in Notifications Handling'>
+<section title='Inconsistency in Notifications Handling'
+         anchor='Inconsistency_in_Notifications_Handling'>
 <section title='Description of the Problem'>
 <t><xref target="RFC4960"/> uses inconsistent normative and
 non-normative language when describing rules for sending
@@ -1520,8 +1517,6 @@ upper layer.</t>
 <t>This makes the text inconsistent.</t>
 </section>
 <section title='Text Changes to the Document'>
-<t>The following change is based on the change described in
-<xref target='endpoint_failure_detection'/>.</t>
 <figure>
 <artwork>
 ---------
@@ -1529,23 +1524,9 @@ Old text: (Section 8.1)
 ---------
 
 An endpoint shall keep a counter on the total number of consecutive
-retransmissions to its peer (this includes data retransmissions
-to all the destination transport addresses of the peer if it is
-multi-homed), including the number of unacknowledged HEARTBEAT
-chunks observed on the path which currently is used for data
-transfer. Unacknowledged HEARTBEAT chunks observed on paths
-different from the path currently used for data transfer shall
-not increment the association error counter, as this could lead
-to association closure even if the path which currently is used for
-data transfer is available (but idle). If the value of this
-counter exceeds the limit indicated in the protocol parameter
-'Association.Max.Retrans', the endpoint shall consider the peer
-endpoint unreachable and shall stop transmitting any more data to it
-(and thus the association enters the CLOSED state).  In addition, the
-endpoint MAY report the failure to the upper layer and optionally
-report back all outstanding user data remaining in its outbound
-queue.  The association is automatically closed when the peer
-endpoint becomes unreachable.
+retransmissions to its peer (this includes retransmissions to all the
+destination transport addresses of the peer if it is multi-homed),
+including unacknowledged HEARTBEAT chunks.
 
 ---------
 New text: (Section 8.1)
@@ -1571,7 +1552,9 @@ queue.  The association is automatically closed when the peer
 endpoint becomes unreachable.
 </artwork>
 </figure>
-<t>The following changes are based on <xref target='RFC4960'/>.</t>
+<t>This text has been modified by multiple errata.
+It includes modifications from <xref target="Endpoint_Failure_Detection"/>.
+It is in final form, and is not further updated in this document.</t>
 <figure>
 <artwork>
 ---------
@@ -1609,6 +1592,7 @@ choose not to clear the error counter if the last chunk sent was a
 retransmission.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 <figure>
 <artwork>
 ---------
@@ -1636,6 +1620,10 @@ HEARTBEAT on this destination address but SHOULD stop increasing the
 counter.
 </artwork>
 </figure>
+<t>This text has been modified by multiple errata.
+It includes modifications from
+<xref target="Path_Error_Counter_Threshold_Handling"/>.
+It is in final form, and is not further updated in this document.</t>
 <figure>
 <artwork>
 ---------
@@ -1665,6 +1653,11 @@ HEARTBEAT ACK. The receiver of the HEARTBEAT ACK SHOULD also clear
 the association overall error counter (as defined in Section 8.1).
 </artwork>
 </figure>
+<t>This text has been modified by multiple errata.
+It includes modifications from
+<xref target="HEARTBEAT_ACK_and_the_association_error_counter"/>.
+It is in final form, and is not further updated in this document.</t>
+
 <figure>
 <artwork>
 ---------
@@ -1688,6 +1681,7 @@ and SHOULD report the peer endpoint unreachable to the upper layer
 (and thus the association enters the CLOSED state).
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 <figure>
 <artwork>
 ---------
@@ -1713,13 +1707,15 @@ unreachable to the upper layer (and thus the association enters the
 CLOSED state).
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 </section>
 <section title='Solution Description'>
 <t>The inconsistencies are removed by using consistently SHOULD.</t>
 </section>
 </section>
 
-<section title='SACK.Delay Not Listed as a Protocol Parameter'>
+<section title='SACK.Delay Not Listed as a Protocol Parameter'
+         anchor='SACK_Delay_Not_Listed_as_a_Protocol_Parameter'>
 <section title='Description of the Problem'>
 <t>SCTP as specified in <xref target='RFC4960'/> supports delaying SACKs.
 The timer value for this is a parameter and Section 6.2 of
@@ -1750,6 +1746,7 @@ In other words, an implementation MAY lower the value of
 SACK.Delay below 500 ms but MUST NOT raise it above 500 ms.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 <figure>
 <artwork>
 ---------
@@ -1792,6 +1789,8 @@ The following protocol parameters are RECOMMENDED:
    SACK.Delay - 200 milliseconds
 </artwork>
 </figure>
+<t>This text has been modified by multiple errata.
+It is further updated in <xref target="Reduction_of_RTO_Initial"/>.</t>
 </section>
 <section title='Solution Description'>
 <t>The parameter was given a name and added to the list of protocol
@@ -1836,6 +1835,7 @@ New text: (Section 3.2)
       chunk in an 'Unrecognized Chunk Type'.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 <figure>
 <artwork>
 ---------
@@ -1870,6 +1870,7 @@ all further chunks if the INIT chunk is bundled with other chunks or
 the packet has a non-zero verification tag.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 </section>
 <section title='Solution Description'>
 <t>The new text makes it clear that chunks can be processed from the beginning
@@ -1877,7 +1878,8 @@ to the end and no rollback or pre-screening is required.</t>
 </section>
 </section>
 
-<section title='CWND Increase in Congestion Avoidance Phase'>
+<section title='CWND Increase in Congestion Avoidance Phase'
+         anchor='CWND_Increase_in_Congestion_Avoidance_Phase'>
 <section title='Description of the Problem'>
 <t><xref target='RFC4960'/> in Section 7.2.2 prescribes to increase cwnd
 by 1*MTU per RTT if the sender has cwnd or more bytes of data outstanding
@@ -1916,6 +1918,7 @@ o  SCTP SHOULD increment cwnd by one 1*MTU once per RTT when
 o  SCTP MUST NOT increment cwnd by more than 1*MTU per RTT.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 <figure>
 <artwork>
 ---------
@@ -1956,6 +1959,11 @@ o  When partial_bytes_acked is equal to or greater than cwnd and
    to (partial_bytes_acked - cwnd). Next, cwnd is increased by 1*MTU.
 </artwork>
 </figure>
+<t>This text has been modified by multiple errata.
+It includes modifications from
+<xref target="Order_of_Adjustments_of_partial_bytes_acked_and_cwnd"/>
+and <xref target="Increase_of_partial_bytes_acked_in_Congestion_Avoidance"/>.
+It is in final form, and is not further updated in this document.</t>
 </section>
 <section title='Solution Description'>
 <t>The basic guidelines for incrementing cwnd during the congestion avoidance
@@ -2020,6 +2028,7 @@ o  While the endpoint does not transmit data on a given transport
    the ssthresh of the transport address SHOULD be set to the cwnd.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 </section>
 <section title='Solution Description'>
 <t>A rule about cwnd adjustment after a sufficiently long idle period
@@ -2065,6 +2074,7 @@ window can be increased by at least a quarter of the receive
 buffer size.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 </section>
 <section title='Solution Description'>
 <t>The new text makes clear that additional SACK chunks for window updates
@@ -2129,6 +2139,7 @@ be transmitted to one of the destination transport addresses from
 which the DATA or control chunks being acknowledged were received.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 </section>
 <section title='Solution Description'>
 <t>The SACK transmission policy is left implementation dependent but it is
@@ -2191,6 +2202,7 @@ o  Congestion window (cwnd): An SCTP variable that limits outstanding
    destination transport address before receiving an acknowledgement.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 <figure>
 <artwork>
 ---------
@@ -2211,6 +2223,7 @@ C) When the time comes for the sender to transmit, before sending new
    are marked for retransmission (limited by the current cwnd).
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 </section>
 <section title='Solution Description'>
 <t>Now Section 1.3, Key Terms, includes explanations of outstanding data,
@@ -2262,6 +2275,7 @@ D) When the time comes for the sender to transmit new DATA chunks,
    cwnd SHOULD NOT be changed permanently.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 </section>
 <section title='Solution Description'>
 <t>The new text clarifies that cwnd should not be changed when applying
@@ -2271,7 +2285,8 @@ of user messages.</t>
 </section>
 </section>
 
-<section title='Reduction of RTO.Initial'>
+<section title='Reduction of RTO.Initial'
+         anchor='Reduction_of_RTO_Initial'>
 <section title='Description of the Problem'>
 <t><xref target="RFC4960"/> uses 3 seconds as the default value for RTO.Initial
 in accordance with Section 4.3.2.1 of <xref target="RFC1122"/>.
@@ -2299,7 +2314,6 @@ The following protocol parameters are RECOMMENDED:
    Max.Init.Retransmits - 8 attempts
    HB.interval - 30 seconds
    HB.Max.Burst - 1
-   SACK.Delay - 200 milliseconds
 
 ---------
 New text: (Section 15)
@@ -2322,6 +2336,10 @@ The following protocol parameters are RECOMMENDED:
    SACK.Delay - 200 milliseconds
 </artwork>
 </figure>
+<t>This text has been modified by multiple errata.
+It includes modifications from
+<xref target="SACK_Delay_Not_Listed_as_a_Protocol_Parameter"/>.
+It is in final form, and is not further updated in this document.</t>
 </section>
 <section title='Solution Description'>
 <t>The value RTO.Initial has been lowered to 1 second to be in tune with
@@ -2366,6 +2384,7 @@ DATA chunk.  The endpoint MAY bundle the ERROR chunk and the SACK Chunk
 in the same packet.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 </section>
 <section title='Solution Description'>
 <t>The unnecessary restriction regarding the ordering of the SACK and ERROR
@@ -2384,7 +2403,7 @@ is given in <xref target="RFC4960"/> and the parameter is unnecessary.</t>
 <figure>
 <artwork>
 ---------
-Old text: (Section 10.1)
+Old text: (Section 10.1 G))
 ---------
 
 G) Receive
@@ -2395,7 +2414,7 @@ Format: RECEIVE(association id, buffer address, buffer size
    number] [,partial flag] [,delivery number] [,payload protocol-id]
 
 ---------
-New text: (Section 10.1)
+New text: (Section 10.1 G))
 ---------
 
 G) Receive
@@ -2406,13 +2425,15 @@ Format: RECEIVE(association id, buffer address, buffer size
    number] [,partial flag] [,payload protocol-id]
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 </section>
 <section title='Solution Description'>
 <t>The undefined parameter has been removed.</t>
 </section>
 </section>
 
-<section title='DSCP Changes'>
+<section title='DSCP Changes'
+         anchor='DSCP_Changes'>
 <section title='Description of the Problem'>
 <t>The upper layer can change the Differentiated Services Code Point (DSCP) used
 for packets being sent.
@@ -2436,21 +2457,12 @@ New text: (Section 7.2.5)
    destination addresses MUST be reset to their initial values.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 <figure>
 <artwork>
 ---------
-Old text: (Section 10.1)
+Old text: (Section 10.1 M))
 ---------
-
-M) Set Protocol Parameters
-
-   Format: SETPROTOCOLPARAMETERS(association id,
-           [,destination transport address,]
-           protocol parameter list)
-   -> result
-
-This primitive allows the local SCTP to customize the protocol
-parameters.
 
 Mandatory attributes:
 
@@ -2461,18 +2473,8 @@ o  protocol parameter list - the specific names and values of the
    15) that the SCTP user wishes to customize.
 
 ---------
-New text: (Section 10.1)
+New text: (Section 10.1 M))
 ---------
-
-M) Set Protocol Parameters
-
-   Format: SETPROTOCOLPARAMETERS(association id,
-           [,destination transport address,]
-           protocol parameter list)
-   -> result
-
-This primitive allows the local SCTP to customize the protocol
-parameters.
 
 Mandatory attributes:
 
@@ -2484,13 +2486,15 @@ o  protocol parameter list - the specific names and values of the
    to customize.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 </section>
 <section title='Solution Description'>
 <t>Text describing the required action on DSCP changes has been added.</t>
 </section>
 </section>
 
-<section title='Inconsistent Handling of ICMPv4 and ICMPv6 Messages'>
+<section title='Inconsistent Handling of ICMPv4 and ICMPv6 Messages'
+         anchor='Inconsistent_Handling_of_ICMPv4_and_ICMPv6_Messages'>
 <section title='Description of the Problem'>
 <t>Appendix C of <xref target="RFC4960"/> describes the handling of ICMPv4 and
 ICMPv6 messages.
@@ -2520,6 +2524,7 @@ ICMP3) An implementation SHOULD ignore any ICMP messages where the
        code indicates "Port Unreachable".
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 <figure>
 <artwork>
 ---------
@@ -2539,6 +2544,8 @@ ICMP9) If the ICMP type is "Destination Unreachable", the
        state or alternatively increment the path error counter.
 </artwork>
 </figure>
+<t>This text has been modified by multiple errata.
+It is further updated in <xref target="Soft_Errors"/>.</t>
 </section>
 <section title='Solution Description'>
 <t>The text has been changed to describe the intended handling of ICMP
@@ -2547,7 +2554,8 @@ Furthermore, remove the limitation to ICMPv6 in the ninth rule.</t>
 </section>
 </section>
 
-<section title='Handling of Soft Errors'>
+<section title='Handling of Soft Errors'
+         anchor='Soft_Errors'>
 <section title='Description of the Problem'>
 <t><xref target="RFC1122"/> defines the handling of soft errors and hard errors
 for TCP. Appendix C of <xref target="RFC4960"/> only deals with hard errors.</t>
@@ -2559,7 +2567,7 @@ for TCP. Appendix C of <xref target="RFC4960"/> only deals with hard errors.</t>
 Old text: (Appendix C)
 ---------
 
-ICMP9) If the ICMP type is "Destination Unreachable", the
+ICMP9) If the ICMPv6 code is "Destination Unreachable", the
        implementation MAY mark the destination into the unreachable
        state or alternatively increment the path error counter.
 
@@ -2575,6 +2583,10 @@ ICMP9) If the ICMP type is "Destination Unreachable", the
        change.
 </artwork>
 </figure>
+<t>This text has been modified by multiple errata.
+It includes modifications from
+<xref target="Inconsistent_Handling_of_ICMPv4_and_ICMPv6_Messages"/>.
+It is in final form, and is not further updated in this document.</t>
 </section>
 <section title='Solution Description'>
 <t>Text has been added allowing SCTP to notify the application in case
@@ -2612,6 +2624,7 @@ B) At any given time, the sender MUST NOT transmit new data to a
    cwnd. The breach of cwnd MUST constitute one packet only.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 <figure>
 <artwork>
 ---------
@@ -2630,6 +2643,7 @@ o  Whenever cwnd is greater than zero, the endpoint is allowed to
    be supported.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 </section>
 <section title='Solution Description'>
 <t>Text was added to clarify how the cwnd limit should be handled.</t>
@@ -2688,6 +2702,7 @@ A) At any given time, the data sender MUST NOT transmit new data to
    window probing MUST be supported.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 </section>
 <section title='Solution Description'>
 <t>The terminology is used in a cleaner way.</t>
@@ -2719,6 +2734,7 @@ extension to IP that details a method to become aware of congestion
 outside of datagram loss.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 <figure>
 <artwork>
 ---------
@@ -2736,6 +2752,7 @@ In general, [RFC3168] updated by [RFC8311] SHOULD be followed with the
 following exceptions.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 <figure>
 <artwork>
 ---------
@@ -2753,6 +2770,7 @@ New text: (Appendix A)
 SYN and SYN-ACK stages of a TCP connection.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 <figure>
 <artwork>
 ---------
@@ -2772,6 +2790,7 @@ to send back in its TCP acknowledgements to notify the sender of the
 Congestion Experienced (CE) bit having arrived from the network.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 <figure>
 <artwork>
 ---------
@@ -2790,6 +2809,7 @@ to send in the header of its next outbound TCP segment to indicate to
 its peer that it has reduced its congestion window.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 </section>
 <section title='Solution Description'>
 <t>References to <xref target="RFC8311"/> have been added.
@@ -2835,6 +2855,7 @@ Address parameter MUST send an ABORT and MAY include an Error Cause
 indicating an Unresolvable Address.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 <figure>
 <artwork>
 ---------
@@ -2854,6 +2875,7 @@ The sender of an INIT chunk MUST NOT include this parameter. The
 usage of the Host Name Address parameter is deprecated.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 <figure>
 <artwork>
 ---------
@@ -2875,6 +2897,7 @@ Address Type: 16 bits (unsigned integer)
    Name Address parameter (Host name = 11) MUST NOT be used.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 <figure>
 <artwork>
 ---------
@@ -2897,6 +2920,7 @@ Address parameter MUST send an ABORT and MAY include an Error Cause
 indicating an Unresolvable Address.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 <figure>
 <artwork>
 ---------
@@ -2952,6 +2976,7 @@ B) If there is a Host Name parameter present in the received INIT or
    from which the last peer packet was received.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 <figure>
 <artwork>
 ---------
@@ -2983,6 +3008,7 @@ the Host Name Address parameter MUST send an ABORT chunk in response
 and MAY include an Error Cause indicating an Unresolvable Address.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 </section>
 <section title='Solution Description'>
 <t>The usage of the Host Name Address parameter has been deprecated.</t>
@@ -3023,13 +3049,15 @@ parameter in the INIT to indicate what types of addresses are
 acceptable.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 </section>
 <section title='Solution Description'>
 <t>The conflicting text has been removed.</t>
 </section>
 </section>
 
-<section title='Integration of RFC 6096'>
+<section title='Integration of RFC 6096'
+         anchor='Integration_of_RFC_6096'>
 <section title='Description of the Problem'>
 <t><xref target="RFC6096"/> updates <xref target="RFC4960"/> by adding a
 Chunk Flags Registry.
@@ -3094,6 +3122,9 @@ New text: (Section 14.1)
    chunk flags is described in the following Section 14.2.
 </artwork>
 </figure>
+<t>This text has been modified by multiple errata.
+It includes modifications from <xref target="Registration_of_New_Chunk_Types"/>.
+It is in final form, and is not further updated in this document.</t>
 <figure>
 <artwork>
 ---------
@@ -3118,6 +3149,7 @@ New text: (Section 14.2)
    the chunk flag values for the specific chunk type.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 <t>Please note that Sections 14.2, 14.3, 14.4, and 14.5 need to be renumbered.</t>
 </section>
 <section title='Solution Description'>
@@ -3216,6 +3248,7 @@ procedure defined in [RFC8126].  The details of this process are
 defined in [RFC6335].
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 </section>
 <section title='Solution Description'>
 <t><xref target="RFC6335"/> was integrated and the reference was updated to
@@ -3289,6 +3322,7 @@ I bit: 1 bit
    back without delay. See [RFC7053] for a discussion about 
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 <figure>
 <artwork>
 ---------
@@ -3313,6 +3347,7 @@ o  The sending of a DATA chunk fills the congestion or receiver
    window.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 <figure>
 <artwork>
 ---------
@@ -3337,10 +3372,12 @@ SACK chunk, i.e., the receiver SHOULD immediately respond with the
 corresponding SACK chunk.
 </artwork>
 </figure>
+<t>Please note that this change is only about adding a paragraph.</t>
+<t>This text is in final form, and is not further updated in this document.</t>
 <figure>
 <artwork>
 ---------
-Old text: (Section 10.1)
+Old text: (Section 10.1 E))
 ---------
 
 E) Send
@@ -3351,7 +3388,7 @@ E) Send
  -> result
 
 ---------
-New text: (Section 10.1)
+New text: (Section 10.1 E))
 ---------
 
 E) Send
@@ -3363,6 +3400,7 @@ E) Send
  -> result
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 <figure>
 <artwork>
 ---------
@@ -3373,14 +3411,15 @@ o  sack immediately - set the I bit on the last DATA chunk used for
    sending buffer.
 </artwork>
 </figure>
-<t>Please note that the change in Section 6.2 is only about adding a paragraph.</t>
+<t>This text is in final form, and is not further updated in this document.</t>
 </section>
 <section title='Solution Description'>
 <t><xref target="RFC7053"/> was integrated.</t>
 </section>
 </section>
 
-<section title='CRC32c Code Improvements'>
+<section title='CRC32c Code Improvements'
+         anchor='CRC32c_Code_Improvements'>
 <section title='Description of the Problem'>
 <t>The code given for the CRC32c computations uses types like long which
 may have different length on different operating systems or processors.
@@ -3392,7 +3431,7 @@ Therefore, the code is changed to use specific types like uint32_t.</t>
 <artwork>
 <![CDATA[
 ---------
-Old text: (Appendix B)
+Old text: (Appendix C)
 ---------
 /*************************************************************/
 /* Note Definition for Ross Williams table generator would   */
@@ -3573,11 +3612,14 @@ uint32_t crc_c[256] =
 ]]>
 </artwork>
 </figure>
+<t>This text has been modified by multiple errata.
+It includes modifications from <xref target="CRC32c_Sample_Code"/>.
+It is in final form, and is not further updated in this document.</t>
 <figure>
 <artwork>
 <![CDATA[
 ---------
-Old text: (Appendix B)
+Old text: (Appendix C)
 ---------
 
 /* Example of table build routine */
@@ -3731,11 +3773,14 @@ main (void)
 ]]>
 </artwork>
 </figure>
+<t>This text has been modified by multiple errata.
+It includes modifications from <xref target="CRC32c_Sample_Code"/>.
+It is in final form, and is not further updated in this document.</t>
 <figure>
 <artwork>
 <![CDATA[
 ---------
-Old text: (Appendix B)
+Old text: (Appendix C)
 ---------
 
 /* Example of crc insertion */
@@ -3889,6 +3934,11 @@ validate_crc32(unsigned char *buffer, unsigned int length)
 ]]>
 </artwork>
 </figure>
+<t>This text has been modified by multiple errata.
+It includes modifications from
+<xref target="CRC32c_Sample_Code_on_64_bit_Platforms"/> and
+<xref target="CRC32c_Sample_Code"/>.
+It is in final form, and is not further updated in this document.</t>
 </section>
 <section title='Solution Description'>
 <t>The code was changed to use platform independent types.</t>
@@ -3928,6 +3978,7 @@ acknowledged by Gap Ack Blocks are greater than the value of the
 Cumulative TSN Ack.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 <figure>
 <artwork>
 ---------
@@ -3962,6 +4013,7 @@ Gap Ack Blocks:
    have not been received.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 </section>
 <section title='Solution Description'>
 <t>Normative text describing the intended usage of Gap Ack Blocks has been
@@ -3998,6 +4050,7 @@ Note: For each stream, the data sender SHOULD NOT have more than 2**16-1
 ordered user messages in the current send window.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 </section>
 <section title='Solution Description'>
 <t>The data sender is required to limit the number of ordered user messages
@@ -4032,6 +4085,7 @@ BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
 capitals, as shown here.
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 </section>
 <section title='Solution Description'>
 <t>The text has been updated to the one specified in
@@ -4065,6 +4119,7 @@ New text: (Section 7.2.4)
 ---------
 </artwork>
 </figure>
+<t>This text is in final form, and is not further updated in this document.</t>
 </section>
 <section title='Solution Description'>
 <t>The text has finally been removed.</t>
