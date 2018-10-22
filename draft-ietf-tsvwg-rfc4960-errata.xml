@@ -4133,7 +4133,7 @@ New text: (Section 7.2.4)
 number registry for SCTP to be consistent with <xref target="RFC6335"/>.
 IANA is requested to review <xref target="Integration_RFC_6335"/>.</t>
 <t>IANA is only requested to check if it is OK to make the proposed text change
-in an upcoming standards track document that updates<xref target="RFC4960"/>.
+in an upcoming standards track document that updates <xref target="RFC4960"/>.
 IANA is not asked to perform any other action and this document does not request
 IANA to make a change to any registry.</t>
 </section>
