@@ -24,7 +24,7 @@ print_and_delete(int n)
 	for (cntr = 0; cntr < n; cntr++)
 		while ((c = getchar()) != '\n')
 			if (c == EOF)
-				exit(0);                        /* exit on EOF */
+				exit(0);      /* exit on EOF */
 	putchar(c);                           /* write that last CR */
 }
 
@@ -33,9 +33,8 @@ main(int argc, char *argv[])
 {
 	int c, nlines;
 
-/* Process option (-nlines) */
-
 	nlines = 0;
+	/* Process option (-nlines) */
 	while ((c = getopt(argc, argv, "n:N:")) != EOF)
 		switch(c) {
 		case 'n':
@@ -43,7 +42,7 @@ main(int argc, char *argv[])
 			nlines = atoi(optarg);
 			break;
 		}
-	/* READ AND PROCESS CHARS */
+	/* Read and process characters */
 	while ((c = getchar()) != EOF)
 		if (c == '\f')
 			print_and_delete(nlines);
