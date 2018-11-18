@@ -23,8 +23,10 @@ print_and_delete(int n)
 
 	for (cntr = 0; cntr < n; cntr++)
 		while ((c = getchar()) != '\n')
-			if (c == EOF)
+			if (c == EOF) {
+				putchar('\n');
 				exit(0);      /* exit on EOF */
+			}
 	putchar(c);                           /* write that last CR */
 }
 
