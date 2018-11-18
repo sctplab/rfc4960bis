@@ -3059,7 +3059,8 @@ new association.  Otherwise, "Z" will be vulnerable to resource
 attacks.
 
 .ti  3
-C) Upon reception of the INIT ACK from "Z", "A" shall stop the T1-init
+\# FIXME MT: T1- init -> T1-init
+C) Upon reception of the INIT ACK from "Z", "A" shall stop the T1- init
 timer and leave the COOKIE-WAIT state.  "A" shall then send the
 State Cookie received in the INIT ACK chunk in a COOKIE ECHO
 chunk, start the T1-cookie timer, and enter the COOKIE-ECHOED
@@ -3083,7 +3084,8 @@ valid COOKIE ECHO chunk.
 
 .ti  3
 E) Upon reception of the COOKIE ACK, endpoint "A" will move from the
-COOKIE-ECHOED state to the ESTABLISHED state, stopping the T1-cookie
+\# FIXME MT: T1- cookie -> T1-cookie
+COOKIE-ECHOED state to the ESTABLISHED state, stopping the T1- cookie
 timer.  It may also notify its ULP about the successful
 establishment of the association with a Communication Up
 notification (see Section 10).
@@ -4330,7 +4332,7 @@ order, the data sender can develop an incorrect view of the peer's
 receive buffer space.
 
 Since there is no explicit identifier that can be used to detect
-out-of-order SACKs, the data sender must use heuristics to determine
+\%out-of-order SACKs, the data sender must use heuristics to determine
 if a SACK is new.
 
 An endpoint SHOULD use the following rules to calculate the rwnd,
@@ -4777,7 +4779,7 @@ The following example shows the use of SACK to report a gap.
 
 Endpoint A                                    Endpoint Z
 {App sends 3 messages; strm 0}
-DATA [TSN=6,Strm=0,Seq=2] ---------------> (ack delayed)
+DATA [TSN=6,Strm=0,Seq=2] ---------- -----> (ack delayed)
 (Start T3-rtx timer)
 
 DATA [TSN=7,Strm=0,Seq=3] --------> X (lost)
@@ -5034,7 +5036,7 @@ different transport address than the original transmission.
 .ti  3
 o  The sender keeps a separate congestion control parameter set for
 each of the destination addresses it can send to (not each
-source-destination pair but for each destination).  The parameters
+\%source-destination pair but for each destination).  The parameters
 .bp
 should decay if the address is not used for a long enough time period.
 
@@ -5335,7 +5337,7 @@ in its discussion of the MTU discovery mechanism and strategies for
 determining the current end-to-end MTU setting as well as detecting
 changes in this value.
 
-An endpoint SHOULD apply these techniques, and SHOULD do so on a per-destination-address basis.
+An endpoint SHOULD apply these techniques, and SHOULD do so on a \%per-destination-address basis.
 
 There are two important SCTP-specific points regarding Path MTU
 discovery:
@@ -5807,7 +5809,8 @@ timer is used, it SHOULD be set to the recommended value of 5 times
 \'RTO.Max'.
 
 If the receiver of the SHUTDOWN has no more outstanding DATA chunks,
-the SHUTDOWN receiver MUST send a SHUTDOWN ACK and start a T2-shutdown
+\# FIXME MT: T2- shutdown -> T2-shutdown
+the SHUTDOWN receiver MUST send a SHUTDOWN ACK and start a T2- shutdown
 timer of its own, entering the SHUTDOWN-ACK-SENT state.  If
 the timer expires, the endpoint must resend the SHUTDOWN ACK.
 
@@ -8072,7 +8075,8 @@ Informative References
 .in  16
 .ti  3
 [FALL96]     Fall, K. and S. Floyd, "Simulation-based Comparisons of
-Tahoe, Reno, and SACK TCP", SIGCOMM'99 V. 26 N. 3 pp 5-21,
+\# FIXME MT: 5- 21 -> 5-21
+Tahoe, Reno, and SACK TCP", SIGCOMM'99 V. 26 N. 3 pp 5- 21,
 July 1996.
 
 .ne 3
@@ -8102,7 +8106,7 @@ Considerations for IP Fragment Filtering", RFC 1858, October 1995.
 
 .ti  3
 [RFC2104]    Krawczyk, H., Bellare, M., and R. Canetti, "HMAC:
-Keyed-Hashing for Message Authentication", RFC 2104, February 1997.
+\%Keyed-Hashing for Message Authentication", RFC 2104, February 1997.
 
 .ti  3
 [RFC2196]    Fraser, B., "Site Security Handbook", FYI 8, RFC 2196,
