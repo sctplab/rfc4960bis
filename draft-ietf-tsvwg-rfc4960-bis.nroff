@@ -31,6 +31,7 @@ Stream Control Transmission Protocol
 .ti 0
 Abstract
 
+.in 3
 This document obsoletes RFC 4960, if approved.  It
 describes the Stream Control Transmission Protocol (SCTP).  SCTP is
 designed to transport Public Switched Telephone Network (PSTN)
@@ -120,6 +121,7 @@ than English.
 
 .ti 0
 Table of Contents
+
 .in 0
 .nf
    1. Introduction ....................................................6
