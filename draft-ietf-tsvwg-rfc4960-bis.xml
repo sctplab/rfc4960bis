@@ -1,0 +1,653 @@
+<?xml version="1.0"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+<?rfc toc="yes"?>
+<?rfc tocdepth="2" ?>
+<?rfc compact="yes" ?>
+<?rfc subcompact="yes" ?>
+<?rfc strict="yes" ?>
+
+<rfc category="std"
+     ipr=" pre5378Trust200902"
+     obsoletes="4960"
+     docName="draft-ietf-tsvwg-rfc4960-bis-01">
+<front>
+
+<title>Stream Control Transmission Protocol</title>
+
+<!-- *************** RANDALL STEWART *************** -->
+<author initials="R. R." surname="Stewart" fullname="Randall R. Stewart">
+<organization>Netflix, Inc.</organization>
+<address>
+    <postal>
+        <street>2455 Heritage Green Ave</street>
+        <city>Davenport</city>
+        <region>FL</region>
+        <code>33837</code>
+        <country>United States</country>
+    </postal>
+    <email>randall@lakerest.net</email>
+</address>
+</author>
+
+<!-- ************** MICHAEL TUEXEN *************** -->
+<author initials="M." surname="Tuexen" fullname="Michael Tuexen">
+<organization abbrev='Muenster Univ. of Appl. Sciences'>
+              Muenster University of Applied Sciences</organization>
+<address>
+    <postal>
+        <street>Stegerwaldstrasse 39</street>
+        <code>48565</code>
+        <city>Steinfurt</city>
+        <country>Germany</country>
+    </postal>
+    <email>tuexen@fh-muenster.de</email>
+</address>
+</author>
+
+<!-- ************** KAREN NIELSEN *************** -->
+<author initials="K. E. E." surname="Nielsen" fullname="Karen E. E. Nielsen">
+<organization>Kamstrup A/S</organization>
+<address>
+    <postal>
+        <street>Industrivej 28</street>
+        <code>DK-8660</code>
+        <city>Skanderborg</city>
+        <country>Denmark</country>
+    </postal>
+    <email>kee@kamstrup.com</email>
+</address>
+</author>
+
+<date />
+
+<abstract>
+<t>This document obsoletes RFC 4960, if approved.
+It describes the Stream Control Transmission Protocol (SCTP).
+SCTP is designed to transport Public Switched Telephone Network (PSTN)
+signaling messages over IP networks, but is capable of broader applications.</t>
+
+<t>SCTP is a reliable transport protocol operating on top of a
+connectionless packet network such as IP.
+It offers the following services to its users:
+<list style="symbols">
+<t>acknowledged error-free non-duplicated transfer of user data,</t>
+<t>data fragmentation to conform to discovered path MTU size,</t>
+<t>sequenced delivery of user messages within multiple streams, with
+an option for order-of-arrival delivery of individual user messages,</t>
+<t>optional bundling of multiple user messages into a single SCTP packet,
+and</t>
+<t>network-level fault tolerance through supporting of multi-homing
+at either or both ends of an association.</t>
+</list></t>
+<t>The design of SCTP includes appropriate congestion avoidance behavior
+and resistance to flooding and masquerade attacks.</t>
+</abstract>
+
+</front>
+
+<middle>
+
+<section title='Introduction'>
+
+<t>This section explains the reasoning behind the development of the
+Stream Control Transmission Protocol (SCTP), the services it offers,
+and the basic concepts needed to understand the detailed description
+of the protocol.</t>
+
+<t>This document obsoletes <xref target="RFC4960"/>, if approved.</t>
+
+<section title='Motivation'>
+<t>TCP <xref target="RFC0793"/> has performed immense service as the primary
+means of reliable data transfer in IP networks.
+However, an increasing number of recent applications have found TCP too
+limiting, and have incorporated their own reliable data transfer protocol
+on top of UDP <xref target="RFC0768"/>.
+The limitations that users have wished to bypass include the following:
+<list style='symbols'>
+<t>TCP provides both reliable data transfer and strict
+order-of-transmission delivery of data.
+Some applications need reliable transfer without sequence maintenance,
+while others would be satisfied with partial ordering of the data.
+In both of these cases, the head-of-line blocking offered by TCP causes
+unnecessary delay.</t>
+<t>The stream-oriented nature of TCP is often an inconvenience.
+Applications must add their own record marking to delineate their
+messages, and must make explicit use of the push facility to
+ensure that a complete message is transferred in a reasonable
+time.</t>
+<t>The limited scope of TCP sockets complicates the task of providing
+highly-available data transfer capability using multi-homed hosts.</t>
+<t>TCP is relatively vulnerable to denial-of-service attacks, such
+as SYN attacks.</t>
+</list></t>
+<t>Transport of PSTN signaling across the IP network is an application
+for which all of these limitations of TCP are relevant.
+While this application directly motivated the development of SCTP, other
+applications may find SCTP a good match to their requirements.</t>
+</section>
+
+<section title='Architectural View of SCTP'>
+<t>SCTP is viewed as a layer between the SCTP user application ("SCTP
+user" for short) and a connectionless packet network service such as
+IP.
+The remainder of this document assumes SCTP runs on top of IP.
+The basic service offered by SCTP is the reliable transfer of user
+messages between peer SCTP users.
+It performs this service within the context of an association between
+two SCTP endpoints.
+<xref target='sec:api'/> of this document sketches the API that should exist
+at the boundary between the SCTP and the SCTP user layers.</t>
+<t>SCTP is connection-oriented in nature, but the SCTP association is a
+broader concept than the TCP connection.
+SCTP provides the means for each SCTP endpoint (<xref target="sec:key_terms"/>)
+to provide the other endpoint (during association startup) with a list of
+transport addresses (i.e., multiple IP addresses in combination with an SCTP
+port) through which that endpoint can be reached and from which it will
+originate SCTP packets.
+The association spans transfers over all of the possible source/destination
+combinations that may be generated from each endpoint's lists.</t>
+<figure anchor='fig:association'
+        title='An SCTP Association'>
+<artwork>
+<![CDATA[
+ _____________                                      _____________
+|  SCTP User  |                                    |  SCTP User  |
+| Application |                                    | Application |
+|-------------|                                    |-------------|
+|    SCTP     |                                    |    SCTP     |
+|  Transport  |                                    |  Transport  |
+|   Service   |                                    |   Service   |
+|-------------|                                    |-------------|
+|             |One or more    ----      One or more|             |
+| IP Network  |IP address      \/        IP address| IP Network  |
+|   Service   |appearances     /\       appearances|   Service   |
+|_____________|               ----                 |_____________|
+
+  SCTP Node A |<-------- Network transport ------->| SCTP Node B
+]]>
+</artwork>
+</figure>
+</section>
+
+<section anchor='sec:key_terms'
+         title='Key Terms'>
+<t>Some of the language used to describe SCTP has been introduced in the
+previous sections.  This section provides a consolidated list of the
+key terms and their definitions.</t>
+
+<t><list style='hanging'>
+<t hangText='Active destination transport address:'>
+A transport address on a peer endpoint that a transmitting endpoint considers
+available for receiving user messages.</t>
+<t hangText='Bundling:'>
+An optional multiplexing operation, whereby more than one user message may
+be carried in the same SCTP packet.
+Each user message occupies its own DATA chunk.</t>
+<t hangText='Chunk:'>
+A unit of information within an SCTP packet, consisting of a chunk header
+and chunk-specific content.</t>
+<t hangText='Congestion window (cwnd):'>
+An SCTP variable that limits the data, in number of bytes, a sender can send
+to a particular destination transport address before receiving an
+acknowledgement.</t>
+<t hangText='Cumulative TSN Ack Point:'>
+The TSN of the last DATA chunk acknowledged via the Cumulative TSN Ack
+field of a SACK.</t>
+<t hangText='Idle destination address:'>
+An address that has not had user messages sent to it within some length
+of time, normally the HEARTBEAT interval or greater.</t>
+<t hangText='Inactive destination transport address:'>
+An address that is considered inactive due to errors and unavailable to
+transport user messages.</t>
+<t hangText='Message = user message:'>
+Data submitted to SCTP by the Upper Layer Protocol (ULP).</t>
+<t hangText='Message Authentication Code (MAC):'>
+An integrity check mechanism based on cryptographic hash functions using a
+secret key.
+Typically, message authentication codes are used between two
+parties that share a secret key in order to validate information
+transmitted between these parties.
+In SCTP, it is used by an endpoint to validate the State Cookie information
+that is returned from the peer in the COOKIE ECHO chunk.
+The term "MAC" has different meanings in different contexts.
+SCTP uses this term with the same meaning as in <xref target="RFC2104"/>.</t>
+<t hangText='Network Byte Order:'>
+Most significant byte first, a.k.a., big endian.</t>
+<t hangText='Ordered Message:'>
+A user message that is delivered in order with respect to all previous user
+messages sent within the stream on which the message was sent.</t>
+<t hangText='Outstanding TSN (at an SCTP endpoint):'>
+A TSN (and the associated DATA chunk) that has been sent by the endpoint
+but for which it has not yet received an acknowledgement.</t>
+<t hangText='Path:'>
+The route taken by the SCTP packets sent by one SCTP endpoint to a specific
+destination transport address of its peer SCTP endpoint.
+Sending to different destination transport addresses does not necessarily
+guarantee getting separate paths.</t>
+<t hangText='Primary Path:'>
+The primary path is the destination and source address that will be put into
+a packet outbound to the peer endpoint by default.
+The definition includes the source address since an implementation MAY wish
+to specify both destination and source address to better control the return
+path taken by reply chunks and on which interface the packet is transmitted
+when the data sender is multi-homed.</t>
+<t hangText='Receiver Window (rwnd):'>
+An SCTP variable a data sender uses to store the most recently calculated
+receiver window of its peer, in number of bytes.
+This gives the sender an indication of the space available in the receiver's
+inbound buffer.</t>
+<t hangText='SCTP association:'>
+A protocol relationship between SCTP endpoints, composed of the two SCTP
+endpoints and protocol state information including Verification Tags and the
+currently active set of Transmission Sequence Numbers (TSNs), etc.
+An association can be uniquely identified by the transport addresses used by the
+endpoints in the association.
+Two SCTP endpoints MUST NOT have more than one SCTP association between
+them at any given time.</t>
+<t hangText='SCTP endpoint:'>
+The logical sender/receiver of SCTP packets.
+On a multi-homed host, an SCTP endpoint is represented to its peers as
+a combination of a set of eligible destination transport addresses
+to which SCTP packets can be sent and a set of eligible source
+transport addresses from which SCTP packets can be received.
+All transport addresses used by an SCTP endpoint must use the same
+port number, but can use multiple IP addresses.
+A transport address used by an SCTP endpoint must not be used by another SCTP
+endpoint.
+In other words, a transport address is unique to an SCTP endpoint.</t>
+<t hangText='SCTP packet (or packet):'>
+The unit of data delivery across the interface between SCTP and the
+connectionless packet network (e.g., IP).
+An SCTP packet includes the common SCTP header, possible SCTP control chunks,
+and user data encapsulated within SCTP DATA chunks.</t>
+<t hangText='SCTP user application (SCTP user):'>
+The logical higher-layer application entity which uses the services of SCTP,
+also called the Upper-Layer Protocol (ULP).</t>
+<t hangText='Slow-Start Threshold (ssthresh):'>
+An SCTP variable.
+This is the threshold that the endpoint will use to determine whether to
+perform slow start or congestion avoidance on a particular destination
+transport address.
+Ssthresh is in number of bytes.</t>
+<t hangText='Stream:'>
+A unidirectional logical channel established from one to
+another associated SCTP endpoint, within which all user messages
+are delivered in sequence except for those submitted to the
+unordered delivery service.
+Note: The relationship between stream numbers in opposite directions
+is strictly a matter of how the applications use them.  It is the
+responsibility of the SCTP user to create and manage these
+correlations if they are so desired.</t>
+<t hangText='Stream Sequence Number:'>
+A 16-bit sequence number used internally by SCTP to ensure sequenced delivery
+of the user messages within a given stream.
+One Stream Sequence Number is attached to each user message.</t>
+<t hangText='Tie-Tags:'>
+Two 32-bit random numbers that together make a 64-bit nonce.
+These tags are used within a State Cookie and TCB so that a newly restarting
+association can be linked to the original association within the endpoint
+that did not restart and yet not reveal the true Verification Tags of an
+existing association.</t>
+<t hangText='Transmission Control Block (TCB):'>
+An internal data structure created by an SCTP endpoint for each of its
+existing SCTP associations to other SCTP endpoints.
+TCB contains all the status and operational information for the endpoint
+to maintain and manage the corresponding association.</t>
+<t hangText='Transmission Sequence Number (TSN):'>
+A 32-bit sequence number used internally by SCTP.
+One TSN is attached to each chunk containing user data to permit the
+receiving SCTP endpoint to acknowledge its receipt and detect duplicate
+deliveries.</t>
+<t hangText='Transport address:'>
+A transport address is traditionally defined by a network-layer address,
+a transport-layer protocol, and a transport-layer port number.
+In the case of SCTP running over IP, a transport address is defined by
+the combination of an IP address and an SCTP port number (where SCTP is the
+transport protocol).</t>
+<t hangText='Unacknowledged TSN (at an SCTP endpoint):'>
+A TSN (and the associated DATA chunk) that has been received by the endpoint but
+for which an acknowledgement has not yet been sent.
+Or in the opposite case, for a packet that has been sent but no acknowledgement
+has been received.</t>
+<t hangText='Unordered Message:'>
+Unordered messages are "unordered" with respect to any other message;
+this includes both other unordered messages as well as other ordered messages.
+An unordered message might be delivered prior to or later than ordered messages
+sent on the same stream.</t>
+<t hangText='User message:'>
+The unit of data delivery across the interface between SCTP and its user.</t>
+<t hangText='Verification Tag:'>
+A 32-bit unsigned integer that is randomly generated.
+The Verification Tag provides a key that allows a receiver to verify that the
+SCTP packet belongs to the current association and is not an old or stale
+packet from a previous association.</t>
+</list></t>
+</section>
+
+<section title='Abbreviations'>
+<t><list style='hanging'
+         hangIndent='7'>
+<t hangText='MAC'>Message Authentication Code <xref target="RFC2104"/></t>
+<t hangText='RTO'>Retransmission Timeout</t>
+<t hangText='RTT'>Round-Trip Time</t>
+<t hangText='RTTVAR'>Round-Trip Time Variation</t>
+<t hangText='SCTP'>Stream Control Transmission Protocol</t>
+<t hangText='SRTT'>Smoothed RTT</t>
+<t hangText='TCB'>Transmission Control Block</t>
+<t hangText='TLV'>Type-Length-Value coding format</t>
+<t hangText='TSN'>Transmission Sequence Number</t>
+<t hangText='ULP'>Upper-Layer Protocol</t>
+</list></t>
+</section>
+
+<section title='Functional View of SCTP'>
+
+<t>The SCTP transport service can be decomposed into a number of functions.
+These are depicted in <xref target='fig:functional_view'/> and explained
+in the remainder of this section.</t>
+
+<figure anchor='fig:functional_view'
+        title='Functional View of the SCTP Transport Service'>
+<artwork>
+<![CDATA[
+                SCTP User Application
+
+-----------------------------------------------------
+ _____________                  ____________________
+|             |                | Sequenced Delivery |
+| Association |                |   within Streams   |
+|             |                |____________________|
+|   Startup   |
+|             |         ____________________________
+|     and     |        |    User Data Fragmentation |
+|             |        |____________________________|
+|   Takedown  |
+|             |         ____________________________
+|             |        |     Acknowledgement        |
+|             |        |          and               |
+|             |        |    Congestion Avoidance    |
+|             |        |____________________________|
+|             |
+|             |         ____________________________
+|             |        |       Chunk Bundling       |
+|             |        |____________________________|
+|             |
+|             |     ________________________________
+|             |    |      Packet Validation         |
+|             |    |________________________________|
+|             |
+|             |     ________________________________
+|             |    |     Path Management            |
+|_____________|    |________________________________|
+]]>
+</artwork>
+</figure>
+
+<section title='Association Startup and Takedown'>
+<t>An association is initiated by a request from the SCTP user (see the
+description of the ASSOCIATE (or SEND) primitive in
+<xref target='sec:api'/>).</t>
+
+<t>A cookie mechanism, similar to one described by Karn and Simpson in
+[RFC2522], is employed during the initialization to provide
+protection against synchronization attacks.
+The cookie mechanism uses a four-way handshake, the last two legs of which
+are allowed to carry user data for fast setup.
+The startup sequence is described in <xref target='sec:assoc_initialization'/>
+of this document.</t>
+
+<t>SCTP provides for graceful close (i.e., shutdown) of an active
+association on request from the SCTP user.
+See the description of the SHUTDOWN primitive in <xref target='sec:api'/>.
+SCTP also allows ungraceful close (i.e., abort), either on request from the
+user (ABORT primitive) or as a result of an error condition detected within
+the SCTP layer.
+<xref target='sec:assoc_termination'/> describes both the graceful and the
+ungraceful close procedures.</t>
+
+<t>SCTP does not support a half-open state (like TCP) wherein one side
+may continue sending data while the other end is closed.
+When either endpoint performs a shutdown, the association on each peer will
+stop accepting new data from its user and only deliver data in queue at
+the time of the graceful close (see <xref target='sec:assoc_termination'/>).</t>
+</section>
+
+<section title='Sequenced Delivery within Streams'>
+<t>The term "stream" is used in SCTP to refer to a sequence of user
+messages that are to be delivered to the upper-layer protocol in
+order with respect to other messages within the same stream.
+This is in contrast to its usage in TCP, where it refers to a sequence of
+bytes (in this document, a byte is assumed to be 8 bits).</t>
+<t>The SCTP user can specify at association startup time the number of
+streams to be supported by the association.
+This number is negotiated with the remote end
+(see <xref target='sec:handle_stream_parameters'/>).
+User messages are associated with stream numbers (SEND, RECEIVE primitives,
+<xref target='sec:api'/>).
+Internally, SCTP assigns a Stream Sequence Number to each message passed to
+it by the SCTP user.
+On the receiving side, SCTP ensures that messages are delivered to the SCTP
+user in sequence within a given stream.
+However, while one stream may be blocked waiting for the next in-sequence
+user message, delivery from other streams may proceed.</t>
+<t>SCTP provides a mechanism for bypassing the sequenced delivery
+service.
+User messages sent using this mechanism are delivered to the SCTP user as
+soon as they are received.</t>
+</section>
+
+<section title='User Data Fragmentation'>
+<t>When needed, SCTP fragments user messages to ensure that the SCTP
+packet passed to the lower layer conforms to the path MTU.
+On receipt, fragments are reassembled into complete messages before
+being passed to the SCTP user.</t>
+</section>
+
+<section title='Acknowledgement and Congestion Avoidance'>
+<t>SCTP assigns a Transmission Sequence Number (TSN) to each user data
+fragment or unfragmented message.
+The TSN is independent of any Stream Sequence Number assigned at the
+stream level.
+The receiving end acknowledges all TSNs received, even if there are gaps in the
+sequence.
+In this way, reliable delivery is kept functionally separate from sequenced
+stream delivery.</t>
+<t>The acknowledgement and congestion avoidance function is responsible
+for packet retransmission when timely acknowledgement has not been
+received.
+Packet retransmission is conditioned by congestion avoidance procedures
+similar to those used for TCP.  See <xref target='sec:data_transfer'/> and
+<xref target='sec:congestion_control'/> for a detailed description of the
+protocol procedures associated with this function.</t>
+</section>
+
+<section title='Chunk Bundling'>
+<t>As described in <xref target='sec:sctp_packet_format'/>, the SCTP packet
+as delivered to the lower layer consists of a common header followed by one
+or more chunks.
+Each chunk may contain either user data or SCTP control information.
+The SCTP user has the option to request bundling of more than one
+user message into a single SCTP packet.
+The chunk bundling function of SCTP is responsible for assembly of the
+complete SCTP packet and its disassembly at the receiving end.</t>
+<t>During times of congestion, an SCTP implementation MAY still perform
+bundling even if the user has requested that SCTP not bundle.
+The user's disabling of bundling only affects SCTP implementations that
+may delay a small period of time before transmission (to attempt to
+encourage bundling).
+When the user layer disables bundling, this small delay is prohibited but
+not bundling that is performed during congestion or retransmission.</t>
+</section>
+
+<section title='Packet Validation'>
+<t>A mandatory Verification Tag field and a 32-bit checksum field (see
+<xref target='sec:crc32c'/> for a description of the CRC32c checksum)
+are included in the SCTP common header.
+The Verification Tag value is chosen by each end of the association during
+association startup.
+Packets received without the expected Verification Tag value are discarded,
+as a protection against blind masquerade attacks and against stale SCTP
+packets from a previous association.
+The CRC32c checksum should be set by the sender of each SCTP packet to
+provide additional protection against data corruption in the network.
+The receiver of an SCTP packet with an invalid CRC32c checksum silently
+discards the packet.</t>
+</section>
+
+<section title='Path Management'>
+<t>The sending SCTP user is able to manipulate the set of transport
+addresses used as destinations for SCTP packets through the
+primitives described in <xref target='sec:api'/>.
+The SCTP path management function chooses the destination transport address
+for each outgoing SCTP packet based on the SCTP user's instructions and the
+currently perceived reachability status of the eligible destination set.
+The path management function monitors reachability through heartbeats
+when other packet traffic is inadequate to provide this information
+and advises the SCTP user when reachability of any far-end transport
+address changes.
+The path management function is also responsible for reporting the eligible
+set of local transport addresses to the far end during association startup,
+and for reporting the transport addresses returned from the far end to the
+SCTP user.</t>
+<t>At association startup, a primary path is defined for each SCTP
+endpoint, and is used for normal sending of SCTP packets.</t>
+<t>On the receiving end, the path management is responsible for
+verifying the existence of a valid SCTP association to which the
+inbound SCTP packet belongs before passing it for further processing.</t>
+<t>Note: Path Management and Packet Validation are done at the same
+time, so although described separately above, in reality they cannot
+be performed as separate items.</t>
+</section>
+</section>
+
+<section title='Serial Number Arithmetic'>
+<t>It is essential to remember that the actual Transmission Sequence
+Number space is finite, though very large.
+This space ranges from 0 to 2**32 - 1.
+Since the space is finite, all arithmetic dealing with Transmission Sequence
+Numbers must be performed modulo 2**32.
+This unsigned arithmetic preserves the relationship of sequence numbers as
+they cycle from 2**32 - 1 to 0 again.
+There are some subtleties to computer modulo arithmetic, so great care should
+be taken in programming the comparison of such values.
+When referring to TSNs, the symbol "=&lt;" means
+"less than or equal"(modulo 2**32).</t>
+<t>Comparisons and arithmetic on TSNs in this document SHOULD use Serial
+Number Arithmetic as defined in <xref target="RFC1982"/>
+where SERIAL_BITS = 32.</t>
+<t>An endpoint SHOULD NOT transmit a DATA chunk with a TSN that is more
+than 2**31 - 1 above the beginning TSN of its current send window.
+Doing so will cause problems in comparing TSNs.</t>
+<t>Transmission Sequence Numbers wrap around when they reach 2**32 - 1.
+That is, the next TSN a DATA chunk MUST use after transmitting TSN =
+2*32 - 1 is TSN = 0.</t>
+<t>Any arithmetic done on Stream Sequence Numbers SHOULD use Serial
+Number Arithmetic as defined in [RFC1982] where SERIAL_BITS = 16.
+All other arithmetic and comparisons in this document use normal
+arithmetic.</t>
+</section>
+
+<section title='Changes from RFC 4960'>
+<t>SCTP was originally defined in <xref target="RFC4960"/>, which this document
+obsoletes, if approved.
+In this current revision no changes other than formatting changes are
+present.</t>
+<!--Readers interested in the details of the various changes
+that this document incorporates are asked to consult [RFC4460].-->
+</section>
+</section>
+
+<section title='Conventions'>
+<t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+"SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL"
+in this document are to be interpreted as described in
+RFC 2119 <xref target="RFC2119"/>.</t>
+</section>
+
+<section anchor='sec:sctp_packet_format'
+         title='SCTP Packet Format'>
+</section>
+
+<section anchor='sec:sctp_assoc_diagram'
+         title='SCTP Association State Diagram'>
+</section>
+
+<section anchor='sec:assoc_initialization'
+         title='Association Initialization'>
+<section anchor='sec:normal_establishment'
+         title='Normal Establishment of an Association'>
+<section anchor='sec:handle_stream_parameters'
+         title='Handle Stream Parameters'>
+</section>
+</section>
+</section>
+
+<section anchor='sec:data_transfer'
+         title='User Data Transfer'>
+</section>
+
+<section anchor='sec:congestion_control'
+         title='Congestion Control'>
+</section>
+
+<section anchor='sec:fault_management'
+         title='Fault Management'>
+</section>
+
+<section anchor='sec:assoc_termination'
+         title='Termination of Association'>
+</section>
+
+<section anchor='sec:api'
+         title='Interface with Upper Layer'>
+</section>
+
+<section anchor='sec:security'
+         title='Security Considerations'>
+</section>
+
+<section anchor='sec:network_management'
+         title='Network Management Considerations'>
+</section>
+
+<section anchor='sec:tcb_parameter'
+         title='Recommended Transmission Control Block (TCB) Parameters'>
+</section>
+
+<section anchor='sec:iana'
+         title='IANA Considerations'>
+</section>
+
+<section anchor='sec:parameter_values'
+         title='Suggested SCTP Protocol Parameter Values'>
+</section>
+
+<section anchor='sec:acknowledgements'
+         title='Acknowledgements'>
+</section>
+
+</middle>
+
+<back>
+
+<references title='Normative References'>
+<?rfc include="reference.RFC.1982" ?>
+<?rfc include="reference.RFC.2119" ?>
+</references>
+<references title='Informative References'>
+<?rfc include="reference.RFC.0768" ?>
+<?rfc include="reference.RFC.0793" ?>
+<?rfc include="reference.RFC.2104" ?>
+<?rfc include="reference.RFC.4960" ?>
+</references>
+<section anchor='sec:ecn'
+         title='Explicit Congestion Notification'>
+</section>
+<section anchor='sec:crc32c'
+         title='CRC32c Checksum Calculation'>
+</section>
+<section anchor='sec:icmp'
+         title='ICMP Handling'>
+</section>
+</back>
+</rfc>
