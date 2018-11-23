@@ -138,7 +138,7 @@ Table of Contents
            1.5.6. Packet Validation ..................................14
            1.5.7. Path Management ....................................14
       1.6. Serial Number Arithmetic ..................................15
-      1.7. Changes from RFC 2960 .....................................16
+      1.7. Changes from RFC 4960 .....................................16
    2. Conventions ....................................................16
    3. SCTP Packet Format .............................................16
       3.1. SCTP Common Header Field Descriptions .....................17
@@ -282,7 +282,7 @@ Stream Control Transmission Protocol (SCTP), the services it offers,
 and the basic concepts needed to understand the detailed description
 of the protocol.  
 
-This document obsoletes [RFC2960] and [RFC3309].
+This document obsoletes [RFC4960], if approved.
 
 .ti 0
 1.1.  Motivation
@@ -812,11 +812,13 @@ arithmetic.
 
 .ne 5
 .ti 0
-1.7.  Changes from RFC 2960
+1.7.  Changes from RFC 4960
 
-SCTP was originally defined in [RFC2960], which this document
-obsoletes.  Readers interested in the details of the various changes
-that this document incorporates are asked to consult [RFC4460].
+SCTP was originally defined in [RFC4960], which this document
+obsoletes, if approved. In this current revision no changes other
+than formatting changes are present.
+\"Readers interested in the details of the various changes
+\"that this document incorporates are asked to consult [RFC4460].
 
 .ti 0
 2.  Conventions
@@ -8193,6 +8195,10 @@ Errata and Issues", RFC 4460, April 2006.
 [RFC4895]    Tuexen, M., Stewart, R., Lei, P., and E. Rescorla,
 "Authenticated Chunks for Stream Control Transmission Protocol
 (SCTP)", RFC 4895, August 2007.
+
+.ti  3
+[RFC4960]    R. Stewart,
+"Stream Control Transmission Protocol", RFC 4960, September 2007.
 
 .bp
 .in  0
