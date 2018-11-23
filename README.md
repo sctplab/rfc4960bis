@@ -5,12 +5,14 @@ changes to the upcoming successor of [RFC4960](https://tools.ietf.org/html/rfc49
 ## draft-ietf-tsvwg-rfc4960-errata
 
 The `.xml` source file can be processed by [xml2rfc](http://xml2rfc.tools.ietf.org).
-You can access the current unsubmitted version rendered as [html](http://xml2rfc.ietf.org/cgi-bin/xml2rfc.cgi?input=&url=https%3A%2F%2Fraw.githubusercontent.com%2Fsctplab%2Frfc4960bis%2Fmaster%2Fdraft-ietf-tsvwg-rfc4960-errata.xml&modeAsFormat=html%2Fascii&type=towindow&Submit=Submit) or [txt](http://xml2rfc.ietf.org/cgi-bin/xml2rfc.cgi?input=&url=https%3A%2F%2Fraw.githubusercontent.com%2Fsctplab%2Frfc4960bis%2Fmaster%2Fdraft-ietf-tsvwg-rfc4960-errata.xml&modeAsFormat=txt%2Fascii&type=towindow&Submit=Submit).
+You can access the current unsubmitted version rendered as [html](https://xml2rfc.tools.ietf.org/cgi-bin/xml2rfc.cgi?input=&url=https%3A%2F%2Fraw.githubusercontent.com%2Fsctplab%2Frfc4960bis%2Fmaster%2Fdraft-ietf-tsvwg-rfc4960-errata.xml&modeAsFormat=html%2Fascii&type=towindow&Submit=Submit) or [txt](https://xml2rfc.tools.ietf.org/cgi-bin/xml2rfc.cgi?input=&url=https%3A%2F%2Fraw.githubusercontent.com%2Fsctplab%2Frfc4960bis%2Fmaster%2Fdraft-ietf-tsvwg-rfc4960-errata.xml&modeAsFormat=txt%2Fascii&type=towindow&Submit=Submit).
 
 ## draft-ietf-tsvwg-rfc4960-bis
 
 To process nroff sources on MacOS, use
 ```
-nroff -ms -Tascii draft-ietf-tsvwg-rfc4960-bis.nroff | ./fix.sh
+nroff -ms -Tascii draft-ietf-tsvwg-rfc4960-bis.nroff | ./fix.sh > draft-ietf-tsvwg-rfc4960-bis-00.txt
 ```
 after compiling `pg.c`.
+
+You can access the current unsubmitted version rendered as [html](https://xml2rfc.tools.ietf.org/cgi-bin/xml2rfc.cgi?input=&url=https%3A%2F%2Fraw.githubusercontent.com%2Fsctplab%2Frfc4960bis%2Fmaster%2Fdraft-ietf-tsvwg-rfc4960-bis.xml&modeAsFormat=html%2Fascii&type=towindow&Submit=Submit) or [txt](https://xml2rfc.tools.ietf.org/cgi-bin/xml2rfc.cgi?input=&url=https%3A%2F%2Fraw.githubusercontent.com%2Fsctplab%2Frfc4960bis%2Fmaster%2Fdraft-ietf-tsvwg-rfc4960-bis.xml&modeAsFormat=txt%2Fascii&type=towindow&Submit=Submit).
