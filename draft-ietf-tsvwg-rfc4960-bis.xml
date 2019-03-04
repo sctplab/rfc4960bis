@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
 <?rfc toc="yes"?>
-<?rfc tocdepth="2" ?>
+<?rfc tocdepth="4" ?>
 <?rfc compact="yes" ?>
 <?rfc subcompact="yes" ?>
 <?rfc strict="yes" ?>
@@ -389,7 +389,7 @@ description of the ASSOCIATE (or SEND) primitive in
 <xref target='sec:api'/>).</t>
 
 <t>A cookie mechanism, similar to one described by Karn and Simpson in
-[RFC2522], is employed during the initialization to provide
+<xref target='RFC2522'/>, is employed during the initialization to provide
 protection against synchronization attacks.
 The cookie mechanism uses a four-way handshake, the last two legs of which
 are allowed to carry user data for fast setup.
@@ -456,7 +456,7 @@ stream delivery.</t>
 for packet retransmission when timely acknowledgement has not been
 received.
 Packet retransmission is conditioned by congestion avoidance procedures
-similar to those used for TCP.  See <xref target='sec:data_transfer'/> and
+similar to those used for TCP.  See <xref target='sec:user_data_transfer'/> and
 <xref target='sec:congestion_control'/> for a detailed description of the
 protocol procedures associated with this function.</t>
 </section>
@@ -542,7 +542,7 @@ Doing so will cause problems in comparing TSNs.</t>
 That is, the next TSN a DATA chunk MUST use after transmitting TSN =
 2*32 - 1 is TSN = 0.</t>
 <t>Any arithmetic done on Stream Sequence Numbers SHOULD use Serial
-Number Arithmetic as defined in [RFC1982] where SERIAL_BITS = 16.
+Number Arithmetic as defined in <xref target="RFC1982"/> where SERIAL_BITS = 16.
 All other arithmetic and comparisons in this document use normal
 arithmetic.</t>
 </section>
@@ -566,10 +566,247 @@ RFC 2119 <xref target="RFC2119"/>.</t>
 
 <section anchor='sec:sctp_packet_format'
          title='SCTP Packet Format'>
+<t>An SCTP packet is composed of a common header and chunks.
+A chunk contains either control information or user data.</t>
+
+<t>The SCTP packet format is shown below:</t>
+<figure>
+<artwork>
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                        Common Header                          |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                          Chunk #1                             |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                           ...                                 |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                          Chunk #n                             |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</artwork>
+</figure>
+<t>Multiple chunks can be bundled into one SCTP packet up to the MTU
+size, except for the INIT, INIT ACK, and SHUTDOWN COMPLETE chunks.
+These chunks MUST NOT be bundled with any other chunk in a packet.
+See <xref target='sec:bundling'/>. for more details on chunk bundling.</t>
+<t>If a user data message doesn't fit into one SCTP packet it can be
+fragmented into multiple chunks using the procedure defined in
+<xref target='sec:frag_reass'/>.</t>
+<t>All integer fields in an SCTP packet MUST be transmitted in network
+byte order, unless otherwise stated.</t>
+
+<section anchor='sec:sctp_common_header_field_desriptions'
+         title='SCTP Common Header Field Descriptions'>
+<t>
+<figure>
+<artwork>
+                   SCTP Common Header Format
+
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|     Source Port Number        |     Destination Port Number   |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                      Verification Tag                         |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                           Checksum                            |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</artwork>
+</figure>
+<list style='hanging'>
+<t hangText="Source Port Number: 16 bits (unsigned integer)">
+<vspace/>
+This is the SCTP sender's port number.
+It can be used by the receiver in combination with the source IP address,
+the SCTP destination port, and possibly the destination IP address to
+identify the association to which this packet belongs.
+The port number 0 MUST NOT be used.</t>
+
+<t hangText="Destination Port Number: 16 bits (unsigned integer)">
+<vspace/>
+This is the SCTP port number to which this packet is destined.
+The receiving host will use this port number to de-multiplex the
+SCTP packet to the correct receiving endpoint/application.
+The port number 0 MUST NOT be used.</t>
+
+<t hangText="Verification Tag: 32 bits (unsigned integer)">
+<vspace/>
+The receiver of this packet uses the Verification Tag to validate
+the sender of this SCTP packet.
+On transmit, the value of this Verification Tag MUST be set to the value of
+the Initiate Tag received from the peer endpoint during the association
+initialization, with the following exceptions:
+<list style='symbols'>
+<t>A packet containing an INIT chunk MUST have a zero Verification Tag.</t>
+<t>A packet containing a SHUTDOWN COMPLETE chunk with the T bit set MUST have
+the Verification Tag copied from the packet with the SHUTDOWN ACK chunk.</t>
+<t>A packet containing an ABORT chunk may have the verification tag copied
+from the packet that caused the ABORT to be sent.
+For details see <xref target='sec:handle_out_of_the_blue_packets'/> and
+<xref target='sec:verification_tag'/>.</t>
+</list></t>
+</list></t>
+<!-- MT FIXME: The following is a stray sentence. -->
+<t>An INIT chunk MUST be the only chunk in the SCTP packet carrying it.</t>
+<t><list style='hanging'>
+<t hangText="Checksum: 32 bits (unsigned integer)">
+<vspace/>
+This field contains the checksum of this SCTP packet.
+Its calculation is discussed in
+<xref target='sec:crc32c_checksum_calculation'/>.
+SCTP uses the CRC32c algorithm as described in <xref target='sec:crc32c'/> for
+calculating the checksum.</t>
+</list></t>
+</section>
 </section>
 
 <section anchor='sec:sctp_assoc_diagram'
          title='SCTP Association State Diagram'>
+<t>During the life time of an SCTP association, the SCTP endpoint's
+association progresses from one state to another in response to
+various events.
+The events that may potentially advance an association's state include:
+<list style='symbols'>
+<t>SCTP user primitive calls, e.g., [ASSOCIATE], [SHUTDOWN], [ABORT],</t>
+<t>Reception of INIT, COOKIE ECHO, ABORT, SHUTDOWN, etc., control chunks, or</t>
+<t>Some timeout events.</t>
+</list></t>
+<t>The state diagram in the figures below illustrates state changes, together
+with the causing events and resulting actions.
+Note that some of the error conditions are not shown in the state diagram.
+Full descriptions of all special cases are found in the text.</t>
+<t>Note: Chunk names are given in all capital letters, while parameter
+names have the first letter capitalized, e.g., COOKIE ECHO chunk type
+vs. State Cookie parameter.
+If more than one event/message can occur that causes a state transition, it
+is labeled (A), (B), etc.</t>
+<figure anchor='fig:state_diagram'
+        title='State Transition Diagram of SCTP'>
+<artwork>
+<![CDATA[
+                   -----          -------- (from any state)
+                 /       \      /  rcv ABORT      [ABORT]
+rcv INIT        |         |    |   ----------  or ----------
+--------------- |         v    v   delete TCB     snd ABORT
+generate Cookie  \    +---------+                 delete TCB
+snd INIT ACK       ---|  CLOSED |
+                      +---------+
+                       /      \      [ASSOCIATE]
+                      /        \     ---------------
+                     |          |    create TCB
+                     |          |    snd INIT
+                     |          |    strt init timer
+      rcv valid      |          |
+    COOKIE  ECHO     |          v
+(1) ---------------- |      +------------+
+    create TCB       |      | COOKIE-WAIT| (2)
+    snd COOKIE ACK   |      +------------+
+                     |          |
+                     |          |    rcv INIT ACK
+                     |          |    -----------------
+                     |          |    snd COOKIE ECHO
+                     |          |    stop init timer
+                     |          |    strt cookie timer
+                     |          v
+                     |      +--------------+
+                     |      | COOKIE-ECHOED| (3)
+                     |      +--------------+
+                     |          |
+                     |          |    rcv COOKIE ACK
+                     |          |    -----------------
+                     |          |    stop cookie timer
+                     v          v
+                   +---------------+
+                   |  ESTABLISHED  |
+                   +---------------+
+                            |
+                            |
+                       /----+------------\
+   [SHUTDOWN]         /                   \
+   -------------------|                   |
+   check outstanding  |                   |
+   DATA chunks        |                   |
+                      v                   |
+                 +---------+              |
+                 |SHUTDOWN-|              | rcv SHUTDOWN
+                 |PENDING  |              |------------------
+                 +---------+              | check outstanding
+                      |                   | DATA chunks
+ No more outstanding  |                   |
+ ---------------------|                   |
+ snd SHUTDOWN         |                   |
+ strt shutdown timer  |                   |
+                      v                   v
+                 +---------+        +-----------+
+             (4) |SHUTDOWN-|        | SHUTDOWN- |  (5,6)
+                 |SENT     |        | RECEIVED  |
+                 +---------+        +-----------+
+                      |  \                |
+(A) rcv SHUTDOWN ACK  |   \               |
+----------------------|    \              |
+stop shutdown timer   |     \rcv:SHUTDOWN |
+send SHUTDOWN COMPLETE|      \  (B)       |
+delete TCB            |       \           |
+                      |        \          | No more outstanding
+                      |         \         |-----------------
+                      |          \        | send SHUTDOWN ACK
+(B)rcv SHUTDOWN       |           \       | strt shutdown timer
+----------------------|            \      |
+send SHUTDOWN ACK     |             \     |
+start shutdown timer  |              \    |
+move to SHUTDOWN-     |               \   |
+ACK-SENT              |                |  |
+                      |                v  |
+                      |             +-----------+
+                      |             | SHUTDOWN- | (7)
+                      |             | ACK-SENT  |
+                      |             +----------+-
+                      |                   | (C)rcv SHUTDOWN COMPLETE
+                      |                   |-----------------
+                      |                   | stop shutdown timer
+                      |                   | delete TCB
+                      |                   |
+                      |                   | (D)rcv SHUTDOWN ACK
+                      |                   |--------------
+                      |                   | stop shutdown timer
+                      |                   | send SHUTDOWN COMPLETE
+                      |                   | delete TCB
+                      |                   |
+                      \    +---------+    /
+                       \-->| CLOSED  |<--/
+                           +---------+
+]]>
+</artwork>
+</figure>
+<t>Notes:
+<list style='format %d)'>
+<t>If the State Cookie in the received COOKIE ECHO is invalid (i.e.,
+failed to pass the integrity check), the receiver MUST silently discard
+the packet.
+Or, if the received State Cookie is expired (see
+<xref target='sec:state_coockie_authentication'/>), the receiver MUST send back
+an ERROR chunk.
+In either case, the receiver stays in the CLOSED state.</t>
+<t>If the T1-init timer expires, the endpoint MUST retransmit INIT
+and restart the T1-init timer without changing state.
+This MUST be repeated up to 'Max.Init.Retransmits' times.
+After that, the endpoint MUST abort the initialization process and report the
+error to the SCTP user.</t>
+<t>If the T1-cookie timer expires, the endpoint MUST retransmit COOKIE ECHO and
+ estart the T1-cookie timer without changing state.
+This MUST be repeated up to 'Max.Init.Retransmits' times.
+After that, the endpoint MUST abort the initialization process and report the
+error to the SCTP user.</t>
+<t>In the SHUTDOWN-SENT state, the endpoint MUST acknowledge any
+received DATA chunks without delay.</t>
+<t>In the SHUTDOWN-RECEIVED state, the endpoint MUST NOT accept any
+new send requests from its SCTP user.</t>
+<t>In the SHUTDOWN-RECEIVED state, the endpoint MUST transmit or retransmit
+data and leave this state when all data in queue is transmitted.</t>
+<t>In the SHUTDOWN-ACK-SENT state, the endpoint MUST NOT accept any new send
+requests from its SCTP user.</t>
+</list></t>
+<t>The CLOSED state is used to indicate that an association is not created
+(i.e., doesn't exist).</t>
 </section>
 
 <section anchor='sec:assoc_initialization'
@@ -579,35 +816,918 @@ RFC 2119 <xref target="RFC2119"/>.</t>
 <section anchor='sec:handle_stream_parameters'
          title='Handle Stream Parameters'>
 </section>
+<section anchor='sec:handle_address_parameters'
+         title='Handle Address Parameters'>
+</section>
+<section anchor='sec:generating_state_cookie'
+         title='Generating State Cookie'>
+</section>
+<section anchor='sec:state_coockie_processing'
+         title='State Cookie Processing'>
+</section>
+<section anchor='sec:state_coockie_authentication'
+         title='State Cookie Authentication'>
+</section>
+<section anchor='sec:'
+         title='An Example of Normal Association Establishment'>
+</section>
 </section>
 </section>
 
-<section anchor='sec:data_transfer'
+<section anchor='sec:user_data_transfer'
          title='User Data Transfer'>
+<section anchor='sec:transmission_of_data_chunks'
+         title='Transmission of DATA Chunks'>
+</section>
+<section anchor='sec:acknowledgements_of_reception_of_data_chunks'
+         title='Acknowledgement on Reception of DATA Chunks'>
+<section anchor='sec:processing_of_received_sack'
+         title='Processing a Received SACK'>
+</section>
+</section>
+<section anchor='sec:management_of_retransission_timer'
+         title='Management of Retransmission Timer'>
+<section anchor='sec:rto_calculation'
+         title='RTO Calculation'>
+</section>
+<section anchor='sec:retransmission_timer_rules'
+         title='Retransmission Timer Rules'>
+</section>
+<section anchor='sec:handle_t3_rtx_expiration'
+         title='Handle T3-rtx Expiration'>
+</section>
+</section>
+<section anchor='sec:multi_homed_sctp_endpoints'
+         title='Multi-Homed SCTP Endpoints'>
+<section anchor='sec:failover_from_an_inavtive_destination_address'
+         title='Failover from an Inactive Destination Address'>
+</section>
+</section>
+<section anchor='sec:stream_identifier_and_stream_sequence_number'
+         title='Stream Identifier and Stream Sequence Number'>
+</section>
+<section anchor='sec:ordered_and_unordered_delivery'
+         title='Ordered and Unordered Delivery'>
+</section>
+<section anchor='sec:report_gaps_in_received_data_tsns'
+         title='Report Gaps in Received DATA TSNs'>
+</section>
+<section anchor='sec:crc32c_checksum_calculation'
+         title='CRC32c Checksum Calculation'>
+<t>When sending an SCTP packet, the endpoint MUST strengthen the data integrity
+of the transmission by including the CRC32c checksum value calculated on the
+packet, as described below.</t>
+<t>After the packet is constructed (containing the SCTP common header
+and one or more control or DATA chunks), the transmitter MUST
+<list style='format %d)'>
+<t>fill in the proper Verification Tag in the SCTP common header and initialize
+the checksum field to '0's,</t>
+<t>calculate the CRC32c checksum of the whole packet, including the SCTP common
+header and all the chunks (refer to <xref target='sec:crc32c'/> for details of
+the CRC32c algorithm); and</t>
+<t>put the resultant value into the checksum field in the common header, and
+leave the rest of the bits unchanged.</t>
+</list></t>
+<t>When an SCTP packet is received, the receiver MUST first check the CRC32c
+checksum as follows:
+<list style='format %d)'>
+<t>Store the received CRC32c checksum value aside.</t>
+<t>Replace the 32 bits of the checksum field in the received SCTP packet with
+all '0's and calculate a CRC32c checksum value of the whole received packet.</t>
+<t>Verify that the calculated CRC32c checksum is the same as the received
+CRC32c checksum.
+If it is not, the receiver MUST treat the packet as an invalid SCTP packet.</t>
+</list></t>
+<t>The default procedure for handling invalid SCTP packets is to silently
+discard them.</t>
+<t>Any hardware implementation SHOULD be done in a way that is verifiable by
+the software.</t>
+</section>
+<section anchor='sec:frag_reass'
+         title='Fragmentation and Reassembly'>
+<t>An endpoint MAY support fragmentation when sending DATA chunks, but
+it MUST support reassembly when receiving DATA chunks.
+If an endpoint supports fragmentation, it MUST fragment a user message if
+the size of the user message to be sent causes the outbound SCTP
+packet size to exceed the current MTU.
+If an implementation does not support fragmentation of outbound user messages,
+the endpoint MUST return an error to its upper layer and not attempt to send
+the user message.</t>
+<t>Note: If an implementation that supports fragmentation makes available to
+its upper layer a mechanism to turn off fragmentation, it may do so.
+However, in so doing, it MUST react just like an implementation that does
+NOT support fragmentation, i.e., it MUST reject sends that exceed the
+current Path MTU (P-MTU).</t>
+<t>IMPLEMENTATION NOTE: In this error case, the Send primitive discussed
+in <xref target='sec:ulp_to_sctp'/> would need to return an error to the
+upper layer.</t>
+
+<t>If its peer is multi-homed, the endpoint shall choose a size no larger than
+the association Path MTU.
+The association Path MTU is the smallest Path MTU of all destination
+addresses.</t>
+
+<t>Note: Once a message is fragmented, it cannot be re-fragmented.
+Instead, if the PMTU has been reduced, then IP fragmentation must be used.
+Please see <xref target='sec:path_mtu_discovery'/> for details of
+PMTU discovery.</t>
+
+<t>When determining when to fragment, the SCTP implementation MUST take
+into account the SCTP packet header as well as the DATA chunk header(s).
+The implementation MUST also take into account the space required for a SACK
+chunk if bundling a SACK chunk with the DATA chunk.</t>
+<t>Fragmentation takes the following steps:
+<list style='format %d)'>
+<t>The data sender MUST break the user message into a series of DATA chunks
+such that each chunk plus SCTP overhead fits into an IP datagram smaller than
+or equal to the association Path MTU.</t>
+<t>The transmitter MUST then assign, in sequence, a separate TSN to each of the
+DATA chunks in the series.
+The transmitter assigns the same SSN to each of the DATA chunks.
+If the user indicates that the user message is to be delivered using unordered
+delivery, then the U flag of each DATA chunk of the user message MUST be set
+to 1.</t>
+<t>The transmitter MUST also set the B/E bits of the first DATA chunk in the
+series to '10', the B/E bits of the last DATA chunk in the series to '01',
+and the B/E bits of all other DATA chunks in the series to '00'.</t>
+</list></t>
+<t>>An endpoint MUST recognize fragmented DATA chunks by examining the B/E bits
+in each of the received DATA chunks, and queue the fragmented DATA chunks for
+reassembly.
+Once the user message is reassembled, SCTP shall pass the reassembled user
+message to the specific stream for possible reordering and final
+dispatching.</t>
+<t>Note: If the data receiver runs out of buffer space while still waiting for
+more fragments to complete the reassembly of the message, it should dispatch
+part of its inbound message through a partial delivery API
+(see <xref target='sec:api'/>), freeing some of its receive buffer space so
+that the rest of the message may be received.</t>
+</section>
+<section anchor='sec:bundling'
+         title='Bundling'>
+<t>An endpoint bundles chunks by simply including multiple chunks in one
+outbound SCTP packet.
+The total size of the resultant IP datagram,</t>
+<!-- MT FIXME: Join paragraphs -->
+<t>including the SCTP packet and IP headers, MUST be less that or equal
+to the current Path MTU.</t>
+<t>If its peer endpoint is multi-homed, the sending endpoint shall choose a
+size no larger than the latest MTU of the current primary path.</t>
+<t>When bundling control chunks with DATA chunks, an endpoint MUST place
+control chunks first in the outbound SCTP packet.
+The transmitter MUST transmit DATA chunks within an SCTP packet in increasing
+order of TSN.</t>
+<t>Note: Since control chunks must be placed first in a packet and since
+DATA chunks must be transmitted before SHUTDOWN or SHUTDOWN ACK
+chunks, DATA chunks cannot be bundled with SHUTDOWN or SHUTDOWN ACK
+chunks.</t>
+<t>Partial chunks MUST NOT be placed in an SCTP packet.
+A partial chunk is a chunk that is not completely contained in the SCTP packet;
+i.e., the SCTP packet is too short to contain all the bytes of the chunk as
+indicated by the chunk length.</t>
+<t>An endpoint MUST process received chunks in their order in the packet.
+The receiver uses the Chunk Length field to determine the end of a chunk
+and beginning of the next chunk taking account of the
+fact that all chunks end on a 4-byte boundary.
+If the receiver detects a partial chunk, it MUST drop the chunk.</t>
+<t>An endpoint MUST NOT bundle INIT, INIT ACK, or SHUTDOWN COMPLETE with
+any other chunks.</t>
+</section>
 </section>
 
 <section anchor='sec:congestion_control'
          title='Congestion Control'>
+<t>Congestion control is one of the basic functions in SCTP.
+For some applications, it may be likely that adequate resources will be
+allocated to SCTP traffic to ensure prompt delivery of time-critical
+data -- thus, it would appear to be unlikely, during normal
+operations, that transmissions encounter severe congestion conditions.
+However, SCTP must operate under adverse operational conditions, which can
+develop upon partial network failures or unexpected traffic surges.
+In such situations, SCTP must follow correct congestion control steps to
+recover from congestion quickly in order to get data delivered as soon as
+possible.
+In the absence of network congestion, these preventive congestion control
+algorithms should show no impact on the protocol performance.</t>
+<t>IMPLEMENTATION NOTE: As far as its specific performance requirements
+are met, an implementation is always allowed to adopt a more conservative
+congestion control algorithm than the one defined below.</t>
+<t>The congestion control algorithms used by SCTP are based on
+<xref target='RFC2581'/>.
+This section describes how the algorithms defined in <xref target='RFC2581'/>
+are adapted for use in SCTP.
+We first list differences in protocol designs between TCP and SCTP, and then
+describe SCTP's congestion control scheme.
+The description will use the same terminology as in TCP congestion control
+whenever appropriate.</t>
+
+<t>SCTP congestion control is always applied to the entire association,
+and not to individual streams.</t>
+
+<section anchor='sec:sctp_differences_from_tcp_congestion_control'
+         title='SCTP Differences from TCP Congestion Control'>
+</section>
+<section anchor='sec:sctp_slow_start_and_congestion_avoidance'
+         title='SCTP Slow-Start and Congestion Avoidance'>
+<section anchor='sec:slow_start'
+         title='Slow-Start'>
+</section>
+<section anchor='sec:congestion_avoidance'
+         title='Congestion Avoidance'>
+</section>
+<section anchor='sec:congestion_control_sub'
+         title='Congestion Control'>
+</section>
+<section anchor='sec:fast_retransmit_on_gap_reports'
+         title='Fast Retransmit on Gap Reports'>
+</section>
+</section>
+<section anchor='sec:path_mtu_discovery'
+         title='Path MTU Discovery'>
+<t><xref target='RFC4821'/>, <xref target='RFC1981'/>, and
+<xref target='RFC1191'/> specify "Packetization Layer Path MTU Discovery",
+whereby an endpoint maintains an estimate of the maximum transmission unit (MTU)
+along a given Internet path and refrains from sending packets along that path
+that exceed the MTU, other than occasional attempts to probe for a change in
+the Path MTU (PMTU).
+<xref target='RFC4821'/> is thorough in its discussion of the MTU discovery
+mechanism and strategies for determining the current end-to-end MTU
+setting as well as detecting changes in this value.</t>
+<t>An endpoint SHOULD apply these techniques, and SHOULD do so on a
+per-destination-address basis.</t>
+<t>There are two important SCTP-specific points regarding Path MTU discovery:
+<list style='format %d)'>
+<t>SCTP associations can span multiple addresses.
+An endpoint MUST maintain separate MTU estimates for each destination address
+of its peer.</t>
+<t>The sender should track an association PMTU that will be the
+smallest PMTU discovered for all of the peer's destination addresses.
+When fragmenting messages into multiple parts this association PMTU should
+be used to calculate the size of each fragment.
+This will allow retransmissions to be seamlessly sent to an alternate address
+without encountering IP fragmentation.</t>
+</list></t>
+</section>
 </section>
 
 <section anchor='sec:fault_management'
          title='Fault Management'>
+<section anchor='sec:endpoint_failure_detection'
+         title='Endpoint Failure Detection'>
+<t>An endpoint shall keep a counter on the total number of consecutive
+retransmissions to its peer (this includes retransmissions to all the
+destination transport addresses of the peer if it is multi-homed),
+including unacknowledged HEARTBEAT chunks.
+If the value of this counter exceeds the limit indicated in the protocol
+parameter 'Association.Max.Retrans', the endpoint shall consider the peer
+endpoint unreachable and shall stop transmitting any more data to it
+(and thus the association enters the CLOSED state).
+In addition, the endpoint MAY report the failure to the upper layer and
+optionally report back all outstanding user data remaining in its outbound
+queue.
+The association is automatically closed when the peer endpoint becomes
+unreachable.</t>
+<t>The counter shall be reset each time a DATA chunk sent to that peer
+endpoint is acknowledged (by the reception of a SACK) or a HEARTBEAT
+ACK is received from the peer endpoint.</t>
+</section>
+
+<section anchor='sec:path_failure_detection'
+         title='Path Failure Detection'>
+<t>When its peer endpoint is multi-homed, an endpoint should keep an
+error counter for each of the destination transport addresses of the
+peer endpoint.</t>
+<t>Each time the T3-rtx timer expires on any address, or when a
+HEARTBEAT sent to an idle address is not acknowledged within an RTO,
+the error counter of that destination address will be incremented.
+When the value in the error counter exceeds the protocol parameter
+'Path.Max.Retrans' of that destination address, the endpoint should
+mark the destination transport address as inactive, and a
+notification SHOULD be sent to the upper layer.</t>
+<t>When an outstanding TSN is acknowledged or a HEARTBEAT sent to that
+address is acknowledged with a HEARTBEAT ACK, the endpoint shall
+clear the error counter of the destination transport address to which
+the DATA chunk was last sent (or HEARTBEAT was sent).
+When the peer endpoint is multi-homed and the last chunk sent to it was a
+retransmission to an alternate address, there exists an ambiguity as
+to whether or not the acknowledgement should be credited to the
+address of the last chunk sent.
+However, this ambiguity does not seem to bear any significant consequence to
+SCTP behavior.
+If this ambiguity is undesirable, the transmitter may choose not to clear the
+error counter if the last chunk sent was a retransmission.</t>
+<t>Note: When configuring the SCTP endpoint, the user should avoid
+having the value of 'Association.Max.Retrans' larger than the
+summation of the 'Path.Max.Retrans' of all the destination addresses
+for the remote endpoint.
+Otherwise, all the destination addresses may become inactive while the endpoint
+still considers the peer endpoint reachable.
+When this condition occurs, how SCTP chooses to function is implementation
+specific.</t>
+<t>When the primary path is marked inactive (due to excessive retransmissions,
+for instance), the sender MAY automatically transmit new packets to an
+alternate destination address if one exists and is active.
+If more than one alternate address is active when the primary path is marked
+inactive, only ONE transport address SHOULD be chosen and used as the new
+destination transport address.</t>
+</section>
+
+<section anchor='sec:path_heartbeat'
+         title='Path Heartbeat'>
+<t>>By default, an SCTP endpoint SHOULD monitor the reachability of the
+idle destination transport address(es) of its peer by sending a
+HEARTBEAT chunk periodically to the destination transport address(es).
+HEARTBEAT sending MAY begin upon reaching the ESTABLISHED state and is
+discontinued after sending either SHUTDOWN or SHUTDOWN-ACK.
+A receiver of a HEARTBEAT MUST respond to a HEARTBEAT with a HEARTBEAT-ACK
+after entering the COOKIE-ECHOED state (INIT sender) or the ESTABLISHED state
+(INIT receiver), up until reaching the SHUTDOWN-SENT state (SHUTDOWN sender)
+or the SHUTDOWN- ACK-SENT state (SHUTDOWN receiver).</t>
+<t>A destination transport address is considered "idle" if no new chunk
+that can be used for updating path RTT (usually including first transmission
+DATA, INIT, COOKIE ECHO, HEARTBEAT, etc.) and no HEARTBEAT has been sent to
+it within the current heartbeat period of that address.
+This applies to both active and inactive destination addresses.</t>
+<t>The upper layer can optionally initiate the following functions:
+<list style='format %C)'>
+<t>Disable heartbeat on a specific destination transport address of a
+given association,</t>
+<t>Change the HB.interval,</t>
+<t>Re-enable heartbeat on a specific destination transport address of a given
+association, and</t>
+<t>Request an on-demand HEARTBEAT on a specific destination transport address
+of a given association.</t>
+</list></t>
+<t>The endpoint should increment the respective error counter of the destination
+transport address each time a HEARTBEAT is sent to that address and not
+acknowledged within one RTO.</t>
+<t>When the value of this counter reaches the protocol parameter
+'Path.Max.Retrans', the endpoint should mark the corresponding destination
+address as inactive if it is not so marked, and may also optionally report to
+the upper layer the change of reachability of this destination address.
+After this, the endpoint should continue HEARTBEAT on this destination address
+but should stop increasing the counter.</t>
+<t>The sender of the HEARTBEAT chunk should include in the Heartbeat Information
+field of the chunk the current time when the packet is sent out and the
+destination address to which the packet is sent.</t>
+<t>IMPLEMENTATION NOTE: An alternative implementation of the heartbeat
+mechanism that can be used is to increment the error counter variable every time
+a HEARTBEAT is sent to a destination.
+Whenever a HEARTBEAT ACK arrives, the sender SHOULD clear the error counter of
+the destination that the HEARTBEAT was sent to.
+This in effect would clear the previously stroked error (and any other error
+counts as well).</t>
+<t>The receiver of the HEARTBEAT should immediately respond with a
+HEARTBEAT ACK that contains the Heartbeat Information TLV, together with any
+other received TLVs, copied unchanged from the received HEARTBEAT chunk.</t>
+<t>Upon the receipt of the HEARTBEAT ACK, the sender of the HEARTBEAT
+should clear the error counter of the destination transport address
+to which the HEARTBEAT was sent, and mark the destination transport address as
+active if it is not so marked.
+The endpoint may optionally report to the upper layer when an inactive
+destination address is marked as active due to the reception of the latest
+HEARTBEAT ACK.
+The receiver of the HEARTBEAT ACK must also clear the association overall error
+count as well (as defined in
+<xref target='sec:endpoint_failure_detection'/>).</t>
+<t>The receiver of the HEARTBEAT ACK should also perform an RTT measurement for
+that destination transport address using the time value carried in the
+HEARTBEAT ACK chunk.</t>
+<t>On an idle destination address that is allowed to heartbeat, it is
+recommended that a HEARTBEAT chunk is sent once per RTO of that destination
+address plus the protocol parameter 'HB.interval', with jittering of +/- 50% of
+the RTO value, and exponential backoff of the RTO if the previous HEARTBEAT
+is unanswered.</t>
+<t>A primitive is provided for the SCTP user to change the HB.interval and turn
+on or off the heartbeat on a given destination address.
+The heartbeat interval set by the SCTP user is added to the RTO of that
+destination (including any exponential backoff).
+Only one heartbeat should be sent each time the heartbeat timer expires (if
+multiple destinations are idle).
+It is an implementation decision on how to choose which of the candidate idle
+destinations to heartbeat to (if more than one destination is idle).</t>
+<t>Note: When tuning the heartbeat interval, there is a side effect that
+SHOULD be taken into account.
+When this value is increased, i.e., the HEARTBEAT takes longer, the detection
+of lost ABORT messages takes longer as well.
+If a peer endpoint ABORTs the association for any reason and the ABORT chunk is
+lost, the local endpoint will only discover the lost ABORT by sending a
+DATA chunk or HEARTBEAT chunk (thus causing the peer to send another ABORT).
+This must be considered when tuning the HEARTBEAT timer.
+If the HEARTBEAT is disabled, only sending DATA to the association will discover
+a lost ABORT from the peer.</t>
+</section>
+
+<section anchor='sec:handle_out_of_the_blue_packets'
+         title='Handle "Out of the Blue" Packets'>
+<t>An SCTP packet is called an "out of the blue" (OOTB) packet if it is
+correctly formed (i.e., passed the receiver's CRC32c check;
+see <xref target='sec:crc32c_checksum_calculation'/>),
+but the receiver is not able to identify the association to which this
+packet belongs.</t>
+<t>The receiver of an OOTB packet MUST do the following:
+<list style='format %d)'>
+<t>If the OOTB packet is to or from a non-unicast address, a receiver SHOULD
+silently discard the packet.
+Otherwise,</t>
+<t>If the OOTB packet contains an ABORT chunk, the receiver MUST silently
+discard the OOTB packet and take no further action.
+Otherwise,</t>
+<t>If the packet contains an INIT chunk with a Verification Tag set
+to '0', process it as described in <xref target='sec:normal_establishment'/>.
+If, for whatever reason, the INIT cannot be processed normally and an ABORT
+has to be sent in response, the Verification Tag of the packet containing the
+ABORT chunk MUST be the Initiate Tag of the received INIT chunk, and the T bit
+of the ABORT chunk has to be set to 0, indicating that the Verification Tag
+is NOT reflected.</t>
+<t>If the packet contains a COOKIE ECHO in the first chunk, process it as
+described in <xref target='sec:normal_establishment'/>.
+Otherwise,</t>
+<t>If the packet contains a SHUTDOWN ACK chunk, the receiver should respond to
+the sender of the OOTB packet with a SHUTDOWN COMPLETE.
+When sending the SHUTDOWN COMPLETE, the receiver of the OOTB packet must fill
+in the Verification Tag field of the outbound packet with the Verification Tag
+received in the SHUTDOWN ACK and set the T bit in the Chunk Flags to indicate
+that the Verification Tag is reflected.
+Otherwise,</t>
+<t>If the packet contains a SHUTDOWN COMPLETE chunk, the receiver should
+silently discard the packet and take no further action.
+Otherwise,</t>
+<t>If the packet contains a "Stale Cookie" ERROR or a COOKIE ACK, the SCTP
+packet should be silently discarded.
+Otherwise,</t>
+<t>The receiver should respond to the sender of the OOTB packet with an ABORT.
+When sending the ABORT, the receiver of the OOTB packet MUST fill in the
+Verification Tag field of the outbound packet with the value found in the
+Verification Tag field of the OOTB packet and set the T bit in the Chunk Flags
+to indicate that the Verification Tag is reflected.
+After sending this ABORT, the receiver of the OOTB packet shall discard the
+OOTB packet and take no further action.</t>
+</list></t>
+</section>
+
+<section anchor='sec:verification_tag'
+         title='Verification Tag'>
+<t>The Verification Tag rules defined in this section apply when sending or
+receiving SCTP packets that do not contain an INIT, SHUTDOWN COMPLETE,
+COOKIE ECHO (see Section 5.1), ABORT, or SHUTDOWN ACK chunk.
+The rules for sending and receiving SCTP packets containing one of these chunk
+types are discussed separately in
+<xref target='sec:exceptions_in_verification_tag_rules'/>.</t>
+<t>When sending an SCTP packet, the endpoint MUST fill in the Verification Tag
+field of the outbound packet with the tag value in the Initiate Tag parameter
+of the INIT or INIT ACK received from its peer.</t>
+<t>When receiving an SCTP packet, the endpoint MUST ensure that the value in
+the Verification Tag field of the received SCTP packet matches its own tag.
+If the received Verification Tag value does not match the receiver's own tag
+value, the receiver shall silently discard the packet and shall not process it
+any further except for those cases listed in
+<xref target='sec:exceptions_in_verification_tag_rules'/> below.</t>
+
+<section anchor='sec:exceptions_in_verification_tag_rules'
+         title='Exceptions in Verification Tag Rules'>
+<t><list style='hanging'>
+<t hangText='A) Rules for packet carrying INIT'>
+<list style='symbols'>
+<t>The sender MUST set the Verification Tag of the packet to 0.</t>
+<t>When an endpoint receives an SCTP packet with the Verification Tag set to 0,
+it should verify that the packet contains only an INIT chunk.
+Otherwise, the receiver MUST silently discard the packet.</t>
+</list></t>
+
+<t hangText='B) Rules for packet carrying ABORT'>
+<list style='symbols'>
+<t>The endpoint MUST always fill in the Verification Tag field of the outbound
+packet with the destination endpoint's tag value, if it is known.</t>
+<t>If the ABORT is sent in response to an OOTB packet, the endpoint MUST follow
+the procedure described in
+<xref target='sec:handle_out_of_the_blue_packets'/>.</t>
+<t>The receiver of an ABORT MUST accept the packet if the Verification Tag field
+of the packet matches its own tag and the T bit is not set OR if it is set to
+its peer's tag and the T bit is set in the Chunk Flags.
+Otherwise, the receiver MUST silently discard the packet and take no further
+action.</t>
+</list></t>
+
+<t hangText='C) Rules for packet carrying SHUTDOWN COMPLETE'>
+<list style='symbols'>
+<t>When sending a SHUTDOWN COMPLETE, if the receiver of the SHUTDOWN ACK has
+a TCB, then the destination endpoint's tag MUST be used, and the T bit MUST NOT
+be set.
+Only where no TCB exists should the sender use the Verification Tag from the
+SHUTDOWN ACK, and MUST set the T bit.</t>
+<t>The receiver of a SHUTDOWN COMPLETE shall accept the packet if the
+Verification Tag field of the packet matches its own tag and the T bit is not
+set OR if it is set to its peer's tag and the T bit is set in the Chunk Flags.
+Otherwise, the receiver MUST silently discard the packet and take no further
+action.
+An endpoint MUST ignore the SHUTDOWN COMPLETE if it is not in the
+SHUTDOWN-ACK-SENT state.</t>
+</list></t>
+<t hangText='D) Rules for packet carrying a COOKIE ECHO'>
+<list style='symbols'>
+<t>When sending a COOKIE ECHO, the endpoint MUST use the value of the
+Initiate Tag received in the INIT ACK.</t>
+<t>The receiver of a COOKIE ECHO follows the procedures in
+<xref target='sec:assoc_initialization'/>.</t>
+</list></t>
+<t hangText='E) Rules for packet carrying a SHUTDOWN ACK'>
+<list style='symbols'>
+<t>If the receiver is in COOKIE-ECHOED or COOKIE-WAIT state the procedures
+in <xref target='sec:handle_out_of_the_blue_packets'/> SHOULD be followed;
+in other words, it should be treated as an Out Of The Blue packet.</t>
+</list></t>
+</list></t>
+</section>
+</section>
 </section>
 
 <section anchor='sec:assoc_termination'
          title='Termination of Association'>
+<t>An endpoint should terminate its association when it exits from service.
+An association can be terminated by either abort or shutdown.
+An abort of an association is abortive by definition in that any data pending
+on either end of the association is discarded and not delivered to the peer.
+A shutdown of an association is considered a graceful close where all data in
+queue by either endpoint is delivered to the respective peers.
+However, in the case of a shutdown, SCTP does not support a half-open state
+(like TCP) wherein one side may continue sending data while the other end is
+closed.
+When either endpoint performs a shutdown, the association on each peer will
+stop accepting new data from its user and only deliver data in queue at the time
+of sending or receiving the SHUTDOWN chunk.</t>
+<section anchor='sec:abort_of_an_association'
+         title='Abort of an Association'>
+<t>When an endpoint decides to abort an existing association, it MUST send an
+ABORT chunk to its peer endpoint.
+The sender MUST fill in the peer's Verification Tag in the outbound packet and
+MUST NOT bundle any DATA chunk with the ABORT.
+If the association is aborted on request of the upper layer, a
+User-Initiated Abort error cause (see Section 3.3.10.12) SHOULD be present in
+the ABORT chunk.</t>
+<t>An endpoint MUST NOT respond to any received packet that contains an ABORT
+chunk (also see <xref target='sec:handle_out_of_the_blue_packets'/>).</t>
+<t>An endpoint receiving an ABORT MUST apply the special Verification Tag check
+rules described in <xref target='sec:exceptions_in_verification_tag_rules'/>.</t>
+<t>After checking the Verification Tag, the receiving endpoint MUST remove the
+association from its record and SHOULD report the termination to its upper
+layer.
+If a User-Initiated Abort error cause is present in the ABORT chunk, the Upper
+Layer Abort Reason SHOULD be made available to the upper layer.</t>
+</section>
+<section anchor='sec:shutdown_of_an_association'
+         title='Shutdown of an Association'>
+<t>Using the SHUTDOWN primitive (see <xref target='sec:ulp_to_sctp'/>), the
+upper layer of an endpoint in an association can gracefully close the
+association.
+This will allow all outstanding DATA chunks from the peer of the
+shutdown initiator to be delivered before the association terminates.</t>
+<t>Upon receipt of the SHUTDOWN primitive from its upper layer, the endpoint
+enters the SHUTDOWN-PENDING state and remains there until all outstanding data
+has been acknowledged by its peer.
+The endpoint accepts no new data from its upper layer, but retransmits data to
+the far end if necessary to fill gaps.</t>
+<t>Once all its outstanding data has been acknowledged, the endpoint shall send
+a SHUTDOWN chunk to its peer including in the Cumulative TSN Ack field the last
+sequential TSN it has received from the peer.
+It shall then start the T2-shutdown timer and enter the SHUTDOWN-SENT state.
+If the timer expires, the endpoint must resend the SHUTDOWN with the updated
+last sequential TSN received from its peer.</t>
+<t>The rules in <xref target='sec:management_of_retransission_timer'/> MUST be
+followed to determine the proper timer value for T2-shutdown.
+To indicate any gaps in TSN, the endpoint may also bundle a SACK with the
+SHUTDOWN chunk in the same SCTP packet.</t>
+<t>An endpoint should limit the number of retransmissions of the SHUTDOWN chunk
+to the protocol parameter 'Association.Max.Retrans'.
+If this threshold is exceeded, the endpoint should destroy the TCB and MUST
+report the peer endpoint unreachable to the upper layer (and thus the
+association enters the CLOSED state).
+The reception of any packet from its peer (i.e., as the peer sends all of its
+queued DATA chunks) should clear the endpoint's retransmission count and restart
+the T2-shutdown timer, giving its peer ample opportunity to transmit all of its
+queued DATA chunks that have not yet been sent.</t>
+<t>Upon reception of the SHUTDOWN, the peer endpoint shall
+<list style='symbols'>
+<t>enter the SHUTDOWN-RECEIVED state,</t>
+<t>stop accepting new data from its SCTP user, and</t>
+<t>verify, by checking the Cumulative TSN Ack field of the chunk, that all its
+outstanding DATA chunks have been received by the SHUTDOWN sender.</t>
+</list></t>
+<t>Once an endpoint has reached the SHUTDOWN-RECEIVED state, it MUST NOT send
+a SHUTDOWN in response to a ULP request, and should discard subsequent
+SHUTDOWN chunks.</t>
+<t>If there are still outstanding DATA chunks left, the SHUTDOWN receiver MUST
+continue to follow normal data transmission procedures defined in
+<xref target='sec:user_data_transfer'/>, until all outstanding DATA chunks are
+acknowledged; however, the SHUTDOWN receiver MUST NOT accept new data from its
+SCTP user.</t>
+<t>While in the SHUTDOWN-SENT state, the SHUTDOWN sender MUST immediately
+respond to each received packet containing one or more DATA chunks with a
+SHUTDOWN chunk and restart the T2-shutdown timer.
+If a SHUTDOWN chunk by itself cannot acknowledge all of the received DATA chunks
+(i.e., there are TSNs that can be acknowledged that are larger than the
+cumulative TSN, and thus gaps exist in the TSN sequence), or if duplicate TSNs
+have been received, then a SACK chunk MUST also be sent.</t>
+<t>The sender of the SHUTDOWN MAY also start an overall guard timer
+'T5-shutdown-guard' to bound the overall time for the shutdown sequence.
+At the expiration of this timer, the sender SHOULD abort the association by
+sending an ABORT chunk.  If the 'T5-shutdown- guard' timer is used, it SHOULD
+be set to the recommended value of 5 times 'RTO.Max'.</t>
+<t>If the receiver of the SHUTDOWN has no more outstanding DATA chunks,
+the SHUTDOWN receiver MUST send a SHUTDOWN ACK and start a T2- shutdown timer
+of its own, entering the SHUTDOWN-ACK-SENT state.
+If the timer expires, the endpoint must resend the SHUTDOWN ACK.</t>
+<t>The sender of the SHUTDOWN ACK should limit the number of retransmissions of
+the SHUTDOWN ACK chunk to the protocol parameter 'Association.Max.Retrans'.
+If this threshold is exceeded, the endpoint should destroy the TCB and may
+report the peer endpoint unreachable to the upper layer (and thus the
+association enters the CLOSED state).</t>
+<t>Upon the receipt of the SHUTDOWN ACK, the SHUTDOWN sender shall stop
+the T2-shutdown timer, send a SHUTDOWN COMPLETE chunk to its peer, and remove
+all record of the association.</t>
+<t>Upon reception of the SHUTDOWN COMPLETE chunk, the endpoint will verify that
+it is in the SHUTDOWN-ACK-SENT state;
+if it is not, the chunk should be discarded.
+If the endpoint is in the SHUTDOWN-ACK-SENT state, the endpoint should stop
+the T2-shutdown timer and remove all knowledge of the association (and thus the
+association enters the CLOSED state).</t>
+<t>An endpoint SHOULD ensure that all its outstanding DATA chunks have been
+acknowledged before initiating the shutdown procedure.</t>
+<t>An endpoint should reject any new data request from its upper layer if it is
+in the SHUTDOWN-PENDING, SHUTDOWN-SENT, SHUTDOWN-RECEIVED, or SHUTDOWN-ACK-SENT
+state.</t>
+<t>If an endpoint is in the SHUTDOWN-ACK-SENT state and receives an INIT
+chunk (e.g., if the SHUTDOWN COMPLETE was lost) with source and destination
+transport addresses (either in the IP addresses or in the INIT chunk) that
+belong to this association, it should discard the INIT chunk and retransmit
+the SHUTDOWN ACK chunk.</t>
+<t>Note: Receipt of an INIT with the same source and destination IP addresses
+as used in transport addresses assigned to an endpoint but with a different
+port number indicates the initialization of a separate association.</t>
+<t>The sender of the INIT or COOKIE ECHO should respond to the receipt of a
+SHUTDOWN ACK with a stand-alone SHUTDOWN COMPLETE in an SCTP packet with the
+Verification Tag field of its common header set to the same tag that was
+received in the SHUTDOWN ACK packet.
+This is considered an Out of the Blue packet as defined in
+<xref target='sec:handle_out_of_the_blue_packets'/>.
+The sender of the INIT lets T1-init continue running and remains in the
+COOKIE-WAIT or COOKIE-ECHOED state.
+Normal T1-init timer expiration will cause the INIT or COOKIE chunk to be
+retransmitted and thus start a new association.</t>
+<t>If a SHUTDOWN is received in the COOKIE-WAIT or COOKIE ECHOED state,
+the SHUTDOWN chunk SHOULD be silently discarded.</t>
+<t>If an endpoint is in the SHUTDOWN-SENT state and receives a SHUTDOWN chunk
+from its peer, the endpoint shall respond immediately with a SHUTDOWN ACK to its
+peer, and move into the SHUTDOWN-ACK-SENT state restarting its T2-shutdown
+timer.</t>
+<t>If an endpoint is in the SHUTDOWN-ACK-SENT state and receives a SHUTDOWN ACK,
+it shall stop the T2-shutdown timer, send a SHUTDOWN COMPLETE chunk to its peer,
+and remove all record of the association.</t>
+</section>
 </section>
 
 <section anchor='sec:api'
          title='Interface with Upper Layer'>
+<section anchor='sec:ulp_to_sctp'
+         title='ULP-to-SCTP'>
+</section>
+<section anchor='sec:sctp_to_ulp'
+         title='SCTP-to-ULP'>
+</section>
 </section>
 
 <section anchor='sec:security'
          title='Security Considerations'>
+<section anchor='sec:security_objectives'
+         title='Security Objectives'>
+<t>As a common transport protocol designed to reliably carry time-sensitive
+user messages, such as billing or signaling messages for telephony services,
+between two networked endpoints, SCTP has the following security objectives.
+<list style='symbols'>
+<t>availability of reliable and timely data transport services</t>
+<t>integrity of the user-to-user information carried by SCTP</t>
+</list></t>
+</section>
+
+<section anchor='sctp_responses_to_potential_threats'
+         title='SCTP Responses to Potential Threats'>
+<t>SCTP may potentially be used in a wide variety of risk situations.
+It is important for operators of systems running SCTP to analyze
+their particular situations and decide on the appropriate counter-measures.</t>
+<t>Operators of systems running SCTP should consult <xref target='RFC2196'/> for
+guidance in securing their site.</t>
+
+<section title='Countering Insider Attacks'>
+<t>The principles of <xref target='RFC2196'/> should be applied to minimize the
+risk of theft of information or sabotage by insiders.
+Such procedures include publication of security policies, control of access at
+the physical, software, and network levels, and separation of services.</t>
+</section>
+
+<section title='Protecting against Data Corruption in the Network'>
+<t>Where the risk of undetected errors in datagrams delivered by the lower-layer
+transport services is considered to be too great, additional integrity
+protection is required.
+If this additional protection were provided in the application layer, the
+SCTP header would remain vulnerable to deliberate integrity attacks.
+While the existing SCTP mechanisms for detection of packet replays are
+considered sufficient for normal operation, stronger protections are needed to
+protect SCTP when the operating environment contains significant risk of
+deliberate attacks from a sophisticated adversary.</t>
+<t>The SCTP Authentication extension SCTP-AUTH <xref target='RFC4895'/> MAY be
+used when the threat environment requires stronger integrity protections,
+but does not require confidentiality.</t>
+</section>
+
+<section title='Protecting Confidentiality'>
+<t>In most cases, the risk of breach of confidentiality applies to the
+signaling data payload, not to the SCTP or lower-layer protocol overheads.
+If that is true, encryption of the SCTP user data only might be considered.
+As with the supplementary checksum service, user data encryption MAY be
+performed by the SCTP user application.
+Alternately, the user application MAY use an implementation-specific API to
+request that the IP Encapsulating Security Payload (ESP)
+<xref target='RFC4303'/> be used to provide confidentiality and integrity.</t>
+<t>Particularly for mobile users, the requirement for confidentiality might
+include the masking of IP addresses and ports.
+In this case, ESP SHOULD be used instead of application-level confidentiality.
+If ESP is used to protect confidentiality of SCTP traffic, an ESP cryptographic
+transform that includes cryptographic integrity protection MUST be used, because
+if there is a confidentiality threat there will also be a strong integrity
+threat.</t>
+<t>>Whenever ESP is in use, application-level encryption is not generally
+required.</t>
+<t>Regardless of where confidentiality is provided, the Internet Key
+Exchange Protocol version 2 (IKEv2) <xref target='RFC4306'/> SHOULD be used for
+key management.</t>
+<t>Operators should consult <xref target='RFC4301'/> for more information on the
+security services available at and immediately above the Internet Protocol
+layer.</t>
+</section>
+
+<section title='Protecting against Blind Denial-of-Service Attacks'>
+
+<t>A blind attack is one where the attacker is unable to intercept or otherwise
+see the content of data flows passing to and from the target SCTP node.
+Blind denial-of-service attacks may take the form of flooding, masquerade,
+or improper monopolization of services.</t>
+
+<section title='Flooding'>
+
+<t>The objective of flooding is to cause loss of service and incorrect
+behavior at target systems through resource exhaustion, interference
+with legitimate transactions, and exploitation of buffer-related
+software bugs.
+Flooding may be directed either at the SCTP node or at resources in the
+intervening IP Access Links or the Internet.
+Where the latter entities are the target, flooding will manifest itself as loss
+of network services, including potentially the breach of any firewalls in
+place.</t>
+
+<t>In general, protection against flooding begins at the equipment
+design level, where it includes measures such as:
+<list style='symbols'>
+<t>avoiding commitment of limited resources before determining that the request
+for service is legitimate.</t>
+<t>giving priority to completion of processing in progress over the acceptance
+of new work.</t>
+<t>identification and removal of duplicate or stale queued requests for
+service.</t>
+<t>not responding to unexpected packets sent to non-unicast addresses.</t>
+</list></t>
+<t>>Network equipment should be capable of generating an alarm and log if a
+suspicious increase in traffic occurs.
+The log should provide information such as the identity of the incoming link
+and source address(es) used, which will help the network or SCTP system operator
+to take protective measures.
+Procedures should be in place for the operator to act on such alarms if a clear
+pattern of abuse emerges.</t>
+<t>The design of SCTP is resistant to flooding attacks, particularly in its use
+of a four-way startup handshake, its use of a cookie to defer commitment of
+resources at the responding SCTP node until the handshake is completed, and its
+use of a Verification Tag to prevent insertion of extraneous packets into the
+flow of an established association.</t>
+<t>The IP Authentication Header and Encapsulating Security Payload might be
+useful in reducing the risk of certain kinds of denial-of-service attacks.</t>
+<t>The use of the host name feature in the INIT chunk could be used to flood a
+target DNS server.
+A large backlog of DNS queries, resolving the host name received in the
+INIT chunk to IP addresses, could be accomplished by sending INITs to multiple
+hosts in a given domain.
+In addition, an attacker could use the host name feature in an indirect attack
+on a third party by sending large numbers of INITs to random hosts containing
+the host name of the target.
+In addition to the strain on DNS resources, this could also result in large
+numbers of INIT ACKs being sent to the target.
+One method to protect against this type of attack is to verify that the IP
+addresses received from DNS include the source IP address of the original INIT.
+If the list of IP addresses received from DNS does not include the source IP
+address of the INIT, the endpoint MAY silently discard the INIT.
+This last option will not protect against the attack against the DNS.</t>
+</section>
+
+<section title='Blind Masquerade'>
+<t>Masquerade can be used to deny service in several ways:
+<list style='symbols'>
+<t>by tying up resources at the target SCTP node to which the impersonated node
+has limited access.
+For example, the target node may by policy permit a maximum of one
+SCTP association with the impersonated SCTP node.
+The masquerading attacker may attempt to establish an association purporting to
+come from the impersonated node so that the latter cannot do so when it requires
+it.</t>
+<t>by deliberately allowing the impersonation to be detected, thereby
+provoking counter-measures that cause the impersonated node to be locked out of
+the target SCTP node.</t>
+<t>by interfering with an established association by inserting extraneous
+content such as a SHUTDOWN request.</t>
+</list></t>
+<t>SCTP reduces the risk of blind masquerade attacks through IP spoofing
+by use of the four-way startup handshake.
+Because the initial exchange is memory-less, no lockout mechanism is triggered
+by blind masquerade attacks.
+In addition, the INIT ACK containing the State Cookie is transmitted back to
+the IP address from which it received the INIT.
+Thus, the attacker would not receive the INIT ACK containing the State Cookie.
+SCTP protects against insertion of extraneous packets into the flow of an
+established association by use of the Verification Tag.</t>
+<t>Logging of received INIT requests and abnormalities such as unexpected
+INIT ACKs might be considered as a way to detect patterns of hostile activity.
+However, the potential usefulness of such logging must be weighed against the
+increased SCTP startup processing it implies, rendering the SCTP node more
+vulnerable to flooding attacks.
+Logging is pointless without the establishment of operating procedures to
+review and analyze the logs on a routine basis.</t>
+</section>
+
+<section title='Improper Monopolization of Services'>
+<t>Attacks under this heading are performed openly and legitimately by the
+attacker.
+They are directed against fellow users of the target SCTP node or of the shared
+resources between the attacker and the target node.
+Possible attacks include the opening of a large number of associations between
+the attacker's node and the target, or transfer of large volumes of information
+within a legitimately established association.</t>
+<t>Policy limits should be placed on the number of associations per
+adjoining SCTP node.
+SCTP user applications should be capable of detecting large volumes of
+illegitimate or "no-op" messages within a given association and either logging
+or terminating the association as a result, based on local policy.</t>
+</section>
+</section>
+</section>
+
+<section anchor='sec:sctp_interaction_with_firewalls'
+         title='SCTP Interactions with Firewalls'>
+<t>It is helpful for some firewalls if they can inspect just the first
+fragment of a fragmented SCTP packet and unambiguously determine whether it
+corresponds to an INIT chunk (for further information, please refer to
+<xref target='RFC1858'/>).
+Accordingly, we stress the requirements, stated in
+<xref target='sec:sctp_common_header_field_desriptions'/>, that
+(1) an INIT chunk MUST NOT be bundled with any other chunk in a packet, and
+(2) a packet containing an INIT chunk MUST have a zero Verification Tag.
+Furthermore, we require that the receiver of an INIT chunk MUST enforce these
+rules by silently discarding an arriving packet with an INIT chunk that is
+bundled with other chunks or has a non-zero verification tag and contains an
+INIT-chunk.</t>
+</section>
+
+<section anchor='sec:protection_of_non_sctp_capable_hosts'
+         title='Protection of Non-SCTP-Capable Hosts'>
+
+<t>To provide a non-SCTP-capable host with the same level of protection
+against attacks as for SCTP-capable ones, all SCTP stacks MUST implement the
+ICMP handling described in <xref target='sec:icmp'/>.</t>
+<t>>When an SCTP stack receives a packet containing multiple control or DATA
+chunks and the processing of the packet requires the sending of
+multiple chunks in response, the sender of the response chunk(s) MUST NOT send
+more than one packet.
+If bundling is supported, multiple response chunks that fit into a single
+packet MAY be bundled together into one single response packet.
+If bundling is not supported, then the sender MUST NOT send more than one
+response chunk and MUST discard all other responses.
+Note that this rule does NOT apply to a SACK chunk, since a SACK chunk is,
+in itself, a response to DATA and a SACK does not require a response of
+more DATA.</t>
+<t>An SCTP implementation SHOULD abort the association if it receives a SACK
+acknowledging a TSN that has not been sent.</t>
+<t>An SCTP implementation that receives an INIT that would require a large
+packet in response, due to the inclusion of multiple ERROR parameters,
+MAY (at its discretion) elect to omit some or all of the ERROR parameters to
+reduce the size of the INIT ACK.
+Due to a combination of the size of the COOKIE parameter and the number of
+addresses a receiver of an INIT may be indicating to a peer, it is always
+possible that the INIT ACK will be larger than the original INIT.
+An SCTP implementation SHOULD attempt to make the INIT ACK as small as possible
+to reduce the possibility of byte amplification attacks.</t>
+</section>
 </section>
 
 <section anchor='sec:network_management'
          title='Network Management Considerations'>
+<t>The MIB module for SCTP defined in <xref target='RFC3873'/> applies for the
+version of the protocol specified in this document.</t>
 </section>
 
 <section anchor='sec:tcb_parameter'
@@ -631,13 +1751,25 @@ RFC 2119 <xref target="RFC2119"/>.</t>
 <back>
 
 <references title='Normative References'>
+<?rfc include="reference.RFC.1191" ?>
+<?rfc include="reference.RFC.1981" ?>
 <?rfc include="reference.RFC.1982" ?>
 <?rfc include="reference.RFC.2119" ?>
+<?rfc include="reference.RFC.2581" ?>
+<?rfc include="reference.RFC.3873" ?>
+<?rfc include="reference.RFC.4301" ?>
+<?rfc include="reference.RFC.4303" ?>
+<?rfc include="reference.RFC.4306" ?>
+<?rfc include="reference.RFC.4821" ?>
 </references>
 <references title='Informative References'>
 <?rfc include="reference.RFC.0768" ?>
 <?rfc include="reference.RFC.0793" ?>
+<?rfc include="reference.RFC.1858" ?>
 <?rfc include="reference.RFC.2104" ?>
+<?rfc include="reference.RFC.2196" ?>
+<?rfc include="reference.RFC.2522" ?>
+<?rfc include="reference.RFC.4895" ?>
 <?rfc include="reference.RFC.4960" ?>
 </references>
 <section anchor='sec:ecn'
