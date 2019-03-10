@@ -657,6 +657,106 @@ SCTP uses the CRC32c algorithm as described in <xref target='sec_crc32c'/> for
 calculating the checksum.</t>
 </list></t>
 </section>
+
+<section anchor='sec_chunk_field_descriptions'
+         title='Chunk Field Descriptions'>
+<section anchor='sec_parameter_format'
+         title='Optional/Variable-Length Parameter Format'>
+</section>
+<section anchor='sec_reporting_of_unreconginzed_parameters'
+         title='Reporting of Unrecognized Parameters'>
+</section>
+</section>
+<section anchor='sec_sctp_chunk_definitions'
+         title='SCTP Chunk Definitions'>
+<section anchor='sec_data_chunk'
+         title='Payload Data (DATA)'>
+</section>
+<section anchor='sec_init_chunk'
+         title='Initiation (INIT) (1)'>
+<section anchor='sec_optional_variable_length_parameters_in_init'
+         title='Optional/Variable-Length Parameters in INIT'>
+</section>
+</section>
+<section anchor='sec_init_ack_chunk'
+         title='Initiation Acknowledgement (INIT ACK) (2)'>
+<section anchor='sec_optional_or_variable_length_parameters'
+         title='Optional or Variable-Length Parameters'>
+</section>
+</section>
+<section anchor='sec_sack_chunk'
+         title='Selective Acknowledgement (SACK) (3)'>
+</section>
+<section anchor='sec_heartbeat_chunk'
+         title='Heartbeat Request (HEARTBEAT) (4)'>
+</section>
+<section anchor='sec_heartbeat_ack_chunk'
+         title='Heartbeat Acknowledgement (HEARTBEAT ACK) (5)'>
+</section>
+<section anchor='sec_abort_chunk'
+         title='Abort Association (ABORT) (6)'>
+</section>
+<section anchor='sec_shutdown_chunk'
+         title='Shutdown Association (SHUTDOWN) (7)'>
+</section>
+<section anchor='sec_shutdown_ack_chunk'
+         title='Shutdown Acknowledgement (SHUTDOWN ACK) (8)'>
+</section>
+<section anchor='sec_error_chunk'
+         title='Operation Error (ERROR) (9)'>
+<section anchor='sec_invalid_stream_identifier_cause'
+         title='Invalid Stream Identifier (1)'>
+</section>
+<section anchor='sec_missing_mandatory_parameter_cause'
+         title='Missing Mandatory Parameter (2)'>
+</section>
+<section anchor='sec_stale_cookie_error_cause'
+         title='Stale Cookie Error (3)'>
+</section>
+<section anchor='sec_out_of_resource_cause'
+         title='Out of Resource (4)'>
+</section>
+<section anchor='sec_unresolvable_address_cause'
+         title='Unresolvable Address (5)'>
+</section>
+<section anchor='sec_unrecognized_chunk_type_cause'
+         title='Unrecognized Chunk Type (6)'>
+</section>
+<section anchor='sec_invalid_mandatory_parameter_cause'
+         title='Invalid Mandatory Parameter (7)'>
+</section>
+<section anchor='sec_unrecongnized_parameters'
+         title='Unrecognized Parameters (8)'>
+</section>
+<section anchor='sec_no_user_data_cause'
+         title='No User Data (9)'>
+</section>
+<section anchor='sec_cookie_received_while_shutting_down_cause'
+         title='Cookie Received While Shutting Down (10)'>
+</section>
+<section anchor='sec_restart_with_new_addresses_cause'
+         title='Restart of an Association with New Addresses (11)'>
+</section>
+<section anchor='sec_user_initiated_abort_cause'
+         title='User-Initiated Abort (12)'>
+</section>
+<section anchor='sec_protocol_violation_cause'
+         title='Protocol Violation (13)'>
+</section>
+</section>
+
+<section anchor='sec_cookie_echo_chunk'
+         title='Cookie Echo (COOKIE ECHO) (10)'>
+</section>
+
+<section anchor='sec_cookie_ack_chunk'
+         title='Cookie Acknowledgement (COOKIE ACK) (11)'>
+</section>
+
+<section anchor='sec_shutdown_complete_chunk'
+         title='Shutdown Complete (SHUTDOWN COMPLETE) (14)'>
+</section>
+</section>
 </section>
 
 <section anchor='sec_sctp_assoc_diagram'
@@ -1782,7 +1882,7 @@ raise it above 500 ms.</t>
 requested by the ULP, in which case an endpoint MAY send an
 acknowledgement in the SHUTDOWN chunk.
 A SACK chunk can acknowledge the reception of multiple DATA chunks.
-See Section 3.3.4 for SACK chunk format.<!-- MT FIXME: Reference -->
+See <xref target='sec_sack_chunk'/> for SACK chunk format.
 In particular, the SCTP endpoint MUST fill in the Cumulative TSN Ack field to
 indicate the latest sequential TSN (of a valid DATA chunk) it has received.
 Any received DATA chunks with TSN greater than the value in the
@@ -2237,7 +2337,8 @@ that doesn't fill the gap.</t>
 calculate the missing DATA chunks and make decisions on whether to
 retransmit them (see <xref target='sec_processing_of_received_sack'/>
 for details).</t>
-<t>Multiple gaps can be reported in one single SACK (see Section 3.3.4).</t><!-- MT FIXME: Reference-->
+<t>Multiple gaps can be reported in one single SACK
+(see <xref target='sec_sack_chunk'/>).</t>
 <t>When its peer is multi-homed, the SCTP endpoint SHOULD always try to
 send the SACK to the same destination address from which the last
 DATA chunk was received.</t>
@@ -3370,18 +3471,292 @@ version of the protocol specified in this document.</t>
 
 <section anchor='sec_tcb_parameter'
          title='Recommended Transmission Control Block (TCB) Parameters'>
+<t>This section details a recommended set of parameters that should be contained
+within the TCB for an implementation.
+This section is for illustrative purposes and should not be deemed as
+requirements on an implementation or as an exhaustive list of all parameters
+inside an SCTP TCB.
+Each implementation may need its own additional parameters for optimization.</t>
+
+<section anchor='sec_parameters_necessary_for_the_sctp_instance'
+         title='Parameters Necessary for the SCTP Instance'>
+</section>
+<section anchor='sec_parameters_necessary_per_association'
+         title='Parameters Necessary per Association (i.e., the TCB)'>
+</section>
+<section anchor='sec_per_transport_address_data'
+         title='Per Transport Address Data'>
+</section>
+
+<section anchor='sec_general_parameters_needed'
+         title='General Parameters Needed'>
+<t><list style='hanging'>
+<t hangText='Out Queue :'>A queue of outbound DATA chunks.</t>
+<t hangText='In Queue  :'>A queue of inbound DATA chunks.</t>
+</list></t>
+</section>
 </section>
 
 <section anchor='sec_iana'
          title='IANA Considerations'>
+<t>SCTP defines three registries that IANA maintains:
+<list style='symbols'>
+<t>through definition of additional chunk types,</t>
+<t>through definition of additional parameter types, or</t>
+<t>through definition of additional cause codes within ERROR chunks.</t>
+</list></t>
+<t>SCTP requires that the IANA Port Numbers registry be opened for SCTP port
+registrations, <xref target='sec_port_number_registry'/> describes how.
+An IESG-appointed Expert Reviewer supports IANA in evaluating SCTP port
+allocation requests.</t>
+
+<section anchor='sec_ietf_defined_chunks_extension'
+         title='IETF-defined Chunk Extension'>
+<t>The assignment of new chunk parameter type codes is done through an
+IETF Consensus action, as defined in <xref target='RFC2434'/>.
+Documentation of the chunk parameter MUST contain the following information:
+<list>
+<t>A long and short name for the new chunk type.</t>
+<t>A detailed description of the structure of the chunk, which MUST conform to
+the basic structure defined in
+<xref target='sec_chunk_field_descriptions'/>.</t>
+<t>A detailed definition and description of intended use of each field within
+the chunk, including the chunk flags if any.</t>
+<t>A detailed procedural description of the use of the new chunk type within
+the operation of the protocol.</t>
+</list></t>
+<t>The last chunk type (255) is reserved for future extension if necessary.</t>
+</section>
+
+<section anchor='sec_ietf_defined_chunk_parameter_extension'
+         title='IETF-Defined Chunk Parameter Extension'>
+<t>The assignment of new chunk parameter type codes is done through an IETF
+Consensus action as defined in <xref target='RFC2434'/>.
+Documentation of the chunk parameter MUST contain the following information:
+<list style='format %c)'>
+<t>Name of the parameter type.</t>
+<t>Detailed description of the structure of the parameter field.
+This structure MUST conform to the general Type-Length-Value format described
+in Section 3.2.1.</t> <!-- FIXME MT: Reference -->
+<t>Detailed definition of each component of the parameter value.</t>
+<t>Detailed description of the intended use of this parameter type, and an
+indication of whether and under what circumstances multiple instances of this
+parameter type may be found within the same chunk.</t>
+<t>Each parameter type MUST be unique across all chunks.</t>
+</list></t>
+</section>
+
+<section anchor='sec_ietf_defined_additional_error_causes'
+         title='IETF-Defined Additional Error Causes'>
+<t>Additional cause codes may be allocated in the range 11 to 65535
+through a Specification Required action as defined in <xref target='RFC2434'/>.
+Provided documentation must include the following information:
+<list style='format %c)'>
+<t>Name of the error condition.</t>
+<t>Detailed description of the conditions under which an SCTP endpoint should
+issue an ERROR (or ABORT) with this cause code.</t>
+<t>Expected action by the SCTP endpoint that receives an ERROR (or ABORT) chunk
+containing this cause code.</t>
+<t>Detailed description of the structure and content of data fields that
+accompany this cause code.</t>
+</list></t>
+<t>The initial word (32 bits) of a cause code parameter MUST conform to the
+format shown in Section 3.3.10, i.e.: <!-- FIXME MT: Reference -->
+<list style='symbols'>
+<t>first 2 bytes contain the cause code value</t>
+<t>last 2 bytes contain the length of the cause parameter.</t>
+</list></t>
+</section>
+
+<section anchor='sec_payload_prototol_identifiers'
+         title='Payload Protocol Identifiers'>
+<t>Except for value 0, which is reserved by SCTP to indicate an unspecified
+payload protocol identifier in a DATA chunk, SCTP will not be responsible for
+standardizing or verifying any payload protocol identifiers;
+SCTP simply receives the identifier from the upper layer and carries it with
+the corresponding payload data.</t>
+<t>The upper layer, i.e., the SCTP user, SHOULD standardize any specific
+protocol identifier with IANA if it is so desired.
+The use of any specific payload protocol identifier is out of the scope of
+SCTP.</t>
+</section>
+<section anchor='sec_port_number_registry'
+         title='Port Numbers Registry'>
+<t>SCTP services may use contact port numbers to provide service to unknown
+callers, as in TCP and UDP.
+IANA is therefore requested to open the existing Port Numbers registry for
+SCTP using the following rules, which we intend to mesh well with existing
+Port Numbers registration procedures.
+An IESG-appointed Expert Reviewer supports IANA in evaluating SCTP port
+allocation requests, according to the procedure defined in
+<xref target='RFC2434'/>.</t>
+<t>Port numbers are divided into three ranges.
+The Well Known Ports are those from 0 through 1023, the Registered Ports are
+those from 1024 through 49151, and the Dynamic and/or Private Ports are those
+from 49152 through 65535.
+Well Known and Registered Ports are intended for use by server applications
+that desire a default contact point on a system.
+On most systems, Well Known Ports can only be used by system (or root) processes
+or by programs executed by privileged users, while Registered Ports can be used
+by ordinary user processes or programs executed by ordinary users.
+Dynamic and/or Private Ports are intended for temporary use, including
+client-side ports, out-of-band negotiated ports, and application testing prior
+to registration of a dedicated port; they MUST NOT be registered.</t>
+<t>The Port Numbers registry should accept registrations for SCTP ports
+in the Well Known Ports and Registered Ports ranges.
+Well Known and Registered Ports SHOULD NOT be used without registration.
+Although in some cases -- such as porting an application from TCP to SCTP --
+it may seem natural to use an SCTP port before registration completes, we
+emphasize that IANA will not guarantee registration of particular Well Known
+and Registered Ports.
+Registrations should be requested as early as possible.</t>
+<t>Each port registration SHALL include the following information:
+<list style='symbols'>
+<t>A short port name, consisting entirely of letters (A-Z and a-z),
+digits (0-9), and punctuation characters from "-_+./*" (not including the
+quotes).</t>
+<t>The port number that is requested for registration.</t>
+<t>A short English phrase describing the port's purpose.</t>
+<t>Name and contact information for the person or entity performing the
+registration, and possibly a reference to a document defining the port's use.
+Registrations coming from IETF working groups need only name the working group,
+but indicating a contact person is recommended.</t>
+</list></t>
+<t>Registrants are encouraged to follow these guidelines when submitting
+a registration.
+<list style='symbols'>
+<t>A port name SHOULD NOT be registered for more than one SCTP port number.</t>
+<t>A port name registered for TCP MAY be registered for SCTP as well.
+Any such registration SHOULD use the same port number as the existing TCP
+registration.</t>
+<t>Concrete intent to use a port SHOULD precede port registration. For example,
+existing TCP ports SHOULD NOT be registered in advance of any intent to use
+those ports for SCTP.</t>
+</list></t>
+<t>This document registers the following ports.
+(These registrations should be considered models to follow for future allocation
+requests.)</t>
+<figure>
+<artwork>
+<![CDATA[
+discard    9/sctp  Discard  # IETF TSVWG
+                            # Randall Stewart <rrs@cisco.com>
+                            # [RFC4960]
+
+   The discard service, which accepts SCTP connections on port
+   9, discards all incoming application data and sends no data
+   in response.  Thus, SCTP's discard port is analogous to
+   TCP's discard port, and might be used to check the health
+   of an SCTP stack.
+
+ftp-data  20/sctp  FTP      # IETF TSVWG
+                            # Randall Stewart <rrs@cisco.com>
+                            # [RFC4960]
+
+ftp       21/sctp  FTP      # IETF TSVWG
+                            # Randall Stewart <rrs@cisco.com>
+                            # [RFC4960]
+
+   File Transfer Protocol (FTP) data (20) and control ports
+   (21).
+
+ssh       22/sctp  SSH      # IETF TSVWG
+                            # Randall Stewart <rrs@cisco.com>
+                            # [RFC4960]
+
+   The Secure Shell (SSH) remote login service, which allows
+   secure shell logins to a host.
+
+http      80/sctp  HTTP     # IETF TSVWG
+                            # Randall Stewart <rrs@cisco.com>
+                            # [RFC4960]
+
+   World Wide Web HTTP over SCTP.
+
+bgp      179/sctp  BGP      # IETF TSVWG
+                            # Randall Stewart <rrs@cisco.com>
+                            # [RFC4960]
+
+   Border Gateway Protocol over SCTP.
+
+https    443/sctp  HTTPS    # IETF TSVWG
+                            # Randall Stewart <rrs@cisco.com>
+                            # [RFC4960]
+
+   World Wide Web HTTP over TLS/SSL over SCTP.
+]]>
+</artwork></figure>
+</section>
 </section>
 
 <section anchor='sec_parameter_values'
          title='Suggested SCTP Protocol Parameter Values'>
+<t>The following protocol parameters are RECOMMENDED:
+<list style='hanging'>
+<t hangText='RTO.Initial -'>3 seconds</t>
+<t hangText='RTO.Min -'>1 second</t>
+<t hangText='RTO.Max -'>60 seconds</t>
+<t hangText='Max.Burst -'>4</t>
+<t hangText='RTO.Alpha -'>1/8</t>
+<t hangText='RTO.Beta -'>1/4</t>
+<t hangText='Valid.Cookie.Life -'>60 seconds</t>
+<t hangText='Association.Max.Retrans -'>10 attempts</t>
+<t hangText='Path.Max.Retrans -'>5 attempts (per destination address)</t>
+<t hangText='Max.Init.Retransmits -'>8 attempts</t>
+<t hangText='HB.interval -'>30 seconds</t>
+<t hangText='HB.Max.Burst -'>1</t>
+</list></t>
+<t>IMPLEMENTATION NOTE: The SCTP implementation may allow ULP to customize some
+of these protocol parameters (see <xref target='sec_api'/>).</t>
+<t>Note: RTO.Min SHOULD be set as recommended above.</t>
 </section>
 
 <section anchor='sec_acknowledgements'
          title='Acknowledgements'>
+<t>An undertaking represented by this updated document is not a small
+feat and represents the summation of the initial authors of RFC 2960:
+Q. Xie, K. Morneault, C. Sharp, H. Schwarzbauer, T. Taylor, I. Rytina,
+M. Kalla, L. Zhang, and V. Paxson.</t>
+<t>Add to that, the comments from everyone who contributed to the original
+RFC:</t>
+<t>Mark Allman, R.J. Atkinson, Richard Band, Scott Bradner, Steve Bellovin,
+Peter Butler, Ram Dantu, R. Ezhirpavai, Mike Fisk, Sally Floyd,
+Atsushi Fukumoto, Matt Holdrege, Henry Houh, Christian Huitema, Gary Lehecka,
+Jonathan Lee, David Lehmann, John Loughney, Daniel Luan, Barry Nagelberg,
+Thomas Narten, Erik Nordmark, Lyndon Ong, Shyamal Prasad, Kelvin Porter,
+Heinz Prantner, Jarno Rajahalme, Raymond E. Reeves, Renee Revis,
+Ivan Arias Rodriguez, A. Sankar, Greg Sidebottom, Brian Wyld, La Monte Yarroll,
+and many others for their invaluable comments.</t>
+<t>Then, add the authors of the SCTP implementor's guide, I. Arias- Rodriguez,
+K. Poon, A. Caro, and M. Tuexen.</t>
+<t>Then add to these the efforts of all the subsequent seven
+SCTP interoperability tests and those who commented on RFC 4460 as shown in
+its acknowledgements:</t>
+<t>Barry Zuckerman, La Monte Yarroll, Qiaobing Xie, Wang Xiaopeng,
+Jonathan Wood, Jeff Waskow, Mike Turner, John Townsend, Sabina Torrente,
+Cliff Thomas, Yuji Suzuki, Manoj Solanki, Sverre Slotte, Keyur Shah, Jan Rovins,
+Ben Robinson, Renee Revis, Ian Periam, RC Monee, Sanjay Rao,
+Sujith Radhakrishnan, Heinz Prantner, Biren Patel, Nathalie Mouellic,
+Mitch Miers, Bernward Meyknecht, Stan McClellan, Oliver Mayor,
+Tomas Orti Martin, Sandeep Mahajan, David Lehmann, Jonathan Lee,
+Philippe Langlois, Karl Knutson, Joe Keller, Gareth Keily, Andreas Jungmaier,
+Janardhan Iyengar, Mutsuya Irie, John Hebert, Kausar Hassan, Fred Hasle,
+Dan Harrison, Jon Grim, Laurent Glaude, Steven Furniss, Atsushi Fukumoto,
+Ken Fujita, Steve Dimig, Thomas Curran, Serkan Cil, Melissa Campbell,
+Peter Butler, Rob Brennan, Harsh Bhondwe, Brian Bidulock, Caitlin Bestler,
+Jon Berger, Robby Benedyk, Stephen Baucke, Sandeep Balani,
+and Ronnie Sellar.</t>
+<t>A special thanks to Mark Allman, who should actually be a co-author
+for his work on the max-burst, but managed to wiggle out due to a
+technicality.
+Also, we would like to acknowledge Lyndon Ong and Phil Conrad for their
+valuable input and many contributions.</t>
+<t>And finally, you have this document, and those who have commented
+upon that including Alfred Hoenes and Ronnie Sellars.</t>
+<t>My thanks cannot be adequately expressed to all of you who have participated
+in the coding, testing, and updating process of this document.
+ All I can say is, Thank You!</t>
+<t>Randall Stewart - Editor</t>
 </section>
 
 </middle>
@@ -3389,11 +3764,13 @@ version of the protocol specified in this document.</t>
 <back>
 
 <references title='Normative References'>
+<?rfc include="reference.ITU.V42.1994" ?>
 <?rfc include="reference.RFC.1122" ?>
 <?rfc include="reference.RFC.1191" ?>
 <?rfc include="reference.RFC.1981" ?>
 <?rfc include="reference.RFC.1982" ?>
 <?rfc include="reference.RFC.2119" ?>
+<?rfc include="reference.RFC.2434" ?>
 <?rfc include="reference.RFC.2581" ?>
 <?rfc include="reference.RFC.3873" ?>
 <?rfc include="reference.RFC.4301" ?>
@@ -3409,18 +3786,456 @@ version of the protocol specified in this document.</t>
 <?rfc include="reference.RFC.2104" ?>
 <?rfc include="reference.RFC.2196" ?>
 <?rfc include="reference.RFC.2522" ?>
+<?rfc include="reference.RFC.3168" ?>
 <?rfc include="reference.RFC.4086" ?>
 <?rfc include="reference.RFC.4895" ?>
 <?rfc include="reference.RFC.4960" ?>
 </references>
 <section anchor='sec_ecn'
          title='Explicit Congestion Notification'>
+<t>ECN <xref target='RFC3168'/> describes a proposed extension to IP that
+details a method to become aware of congestion outside of datagram loss.
+This is an optional feature that an implementation MAY choose to add to SCTP.
+This appendix details the minor differences implementers will need to be aware
+of if they choose to implement this feature.
+In general, <xref target='RFC3168'/> should be followed with the following
+exceptions.</t>
+<t>Negotiation:</t>
+<t><xref target='RFC3168'/> details negotiation of ECN during the
+SYN and SYN-ACK stages of a TCP connection.
+The sender of the SYN sets 2 bits in the TCP flags, and the sender of the
+SYN-ACK sets only 1 bit.
+The reasoning behind this is to ensure that both sides are truly ECN capable.
+For SCTP, this is not necessary.
+To indicate that an endpoint is ECN capable, an endpoint SHOULD add to
+the INIT and or INIT ACK chunk the TLV reserved for ECN.
+This TLV contains no parameters, and thus has the following format:</t>
+<figure>
+<artwork>
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Parameter Type = 32768      |     Parameter Length = 4      |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</artwork>
+</figure>
+<t>ECN-Echo:</t>
+
+<t><xref target='RFC3168'/> details a specific bit for a receiver to send back
+in its TCP acknowledgements to notify the sender of the
+Congestion Experienced (CE) bit having arrived from the network.
+For SCTP, this same indication is made by including the ECNE chunk.
+This chunk contains one data element, i.e., the lowest TSN associated with the
+IP datagram marked with the CE bit, and looks as follows:</t>
+<figure>
+<artwork>
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+| Chunk Type=12 | Flags=00000000|    Chunk Length = 8           |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                      Lowest TSN Number                        |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</artwork>
+</figure>
+<t>Note: The ECNE is considered a Control chunk.</t>
+<t>CWR:</t>
+<t><xref target='RFC3168'/> details a specific bit for a sender to send in
+the header of its next outbound TCP segment to indicate to its peer that it has
+reduced its congestion window.
+This is termed the CWR bit.
+For SCTP, the same indication is made by including the CWR chunk.
+This chunk contains one data element, i.e., the TSN number that was sent
+in the ECNE chunk.
+This element represents the lowest TSN number in the datagram that was
+originally marked with the CE bit.</t>
+<figure>
+<artwork>
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+| Chunk Type=13 | Flags=00000000|    Chunk Length = 8           |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                      Lowest TSN Number                        |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</artwork>
+</figure>
+<t>Note: The CWR is considered a Control chunk.</t>
 </section>
+
 <section anchor='sec_crc32c'
          title='CRC32c Checksum Calculation'>
+<t>We define a 'reflected value' as one that is the opposite of the normal
+bit order of the machine.
+The 32-bit CRC (Cyclic Redundancy Check) is calculated as described for CRC32c
+and uses the polynomial code 0x11EDC6F41 (Castagnoli93) or
+x^32+x^28+x^27+x^26+x^25+x^23+x^22+x^20+x^19+x^18+ x^14+x^13+x^11+x^10+x^9+x^8+x^6+x^0.
+The CRC is computed using a procedure similar to
+ETHERNET CRC <xref target='ITU.V42.1994'/>, modified to reflect
+transport-level usage.</t>
+<t>CRC computation uses polynomial division.  A message bit-string M is
+transformed to a polynomial, M(X), and the CRC is calculated from M(X) using
+polynomial arithmetic.</t>
+<t>When CRCs are used at the link layer, the polynomial is derived from
+on-the-wire bit ordering: the first bit 'on the wire' is the high-
+order coefficient.
+Since SCTP is a transport-level protocol, it cannot know the actual
+serial-media bit ordering.
+Moreover, different links in the path between SCTP endpoints may use different
+link-level bit orders.</t>
+<t>A convention must therefore be established for mapping SCTP transport
+messages to polynomials for purposes of CRC computation.
+The bit-ordering for mapping SCTP messages to polynomials is that bytes are
+taken most-significant first, but within each byte, bits are taken
+least-significant first.
+The first byte of the message provides the eight highest coefficients.
+Within each byte, the least-significant SCTP bit gives the most-significant
+polynomial coefficient within that byte, and the most-significant SCTP bit is
+the least-significant polynomial coefficient in that byte.
+(This bit ordering is sometimes called 'mirrored' or 'reflected' [WILLIAMS93].)
+CRC polynomials are to be transformed back into SCTP transport-level
+byte values, using a consistent mapping.</t> <!-- FIXME MT: Reference -->
+
+<t>The SCTP transport-level CRC value should be calculated as follows:
+<list style='symbols'>
+<t>CRC input data are assigned to a byte stream, numbered from 0 to N-1.</t>
+<t>The transport-level byte stream is mapped to a polynomial value.
+An N-byte PDU with j bytes numbered 0 to N-1 is considered as
+coefficients of a polynomial M(x) of order 8N-1, with bit 0 of
+byte j being coefficient x^(8(N-j)-8), and bit 7 of byte j being
+coefficient x^(8(N-j)-1).</t>
+<t>The CRC remainder register is initialized with all 1s and the CRC is computed
+with an algorithm that simultaneously multiplies by x^32 and divides by the
+CRC polynomial.</t>
+<t>The polynomial is multiplied by x^32 and divided by G(x), the generator
+polynomial, producing a remainder R(x) of degree less than or equal to 31.</t>
+<t>The coefficients of R(x) are considered a 32-bit sequence.</t>
+<t>The bit sequence is complemented.
+The result is the CRC polynomial.</t>
+<t>The CRC polynomial is mapped back into SCTP transport-level bytes.
+The coefficient of x^31 gives the value of bit 7 of SCTP byte 0,
+and the coefficient of x^24 gives the value of bit 0 of byte 0.
+The coefficient of x^7 gives bit 7 of byte 3, and the coefficient
+of x^0 gives bit 0 of byte 3.
+The resulting 4-byte transport-level sequence is the 32-bit SCTP checksum
+value.</t>
+</list></t>
+<t>IMPLEMENTATION NOTE: Standards documents, textbooks, and vendor
+literature on CRCs often follow an alternative formulation, in which the
+register used to hold the remainder of the long-division algorithm is
+initialized to zero rather than all-1s, and instead the first 32 bits of the
+message are complemented.
+The long-division algorithm used in our formulation is specified such that the
+initial multiplication by 2^32 and the long-division are combined into one
+simultaneous operation.
+For such algorithms, and for messages longer than 64 bits, the two
+specifications are precisely equivalent.
+That equivalence is the intent of this document.</t>
+<t>Implementors of SCTP are warned that both specifications are to be
+found in the literature, sometimes with no restriction on the long-division
+algorithm.
+The choice of formulation in this document is to permit non-SCTP usage, where
+the same CRC algorithm may be used to protect messages shorter than 64 bits.</t>
+<t>There may be a computational advantage in validating the association
+against the Verification Tag, prior to performing a checksum, as invalid tags
+will result in the same action as a bad checksum in most cases.
+The exceptions for this technique would be INIT and some SHUTDOWN-COMPLETE
+exchanges, as well as a stale COOKIE ECHO.
+These special-case exchanges must represent small packets and will minimize
+the effect of the checksum calculation.</t>
 </section>
 <section anchor='sec_icmp'
          title='ICMP Handling'>
+<t>Whenever an ICMP message is received by an SCTP endpoint, the following
+procedures MUST be followed to ensure proper utilization of the information
+being provided by layer 3.
+<list style='format ICMP%d)'>
+<t>An implementation MAY ignore all ICMPv4 messages where the type field is not
+set to "Destination Unreachable".</t>
+<t>An implementation MAY ignore all ICMPv6 messages where the type field is
+not "Destination Unreachable", "Parameter Problem",, or "Packet Too Big".</t>
+<t>An implementation MAY ignore any ICMPv4 messages where the code does not
+indicate "Protocol Unreachable" or "Fragmentation Needed".</t>
+<t>An implementation MAY ignore all ICMPv6 messages of type "Parameter Problem"
+if the code is not "Unrecognized Next Header Type Encountered".</t>
+<t>An implementation MUST use the payload of the ICMP message (v4 or v6) to
+locate the association that sent the message to which ICMP is responding.
+If the association cannot be found, an implementation SHOULD ignore the
+ICMP message.</t>
+<t>An implementation MUST validate that the Verification Tag contained in the
+ICMP message matches the Verification Tag of the peer.
+If the Verification Tag is not 0 and does NOT match, discard the ICMP message.
+If it is 0 and the ICMP message contains enough bytes to verify that the
+chunk type is an INIT chunk and that the Initiate Tag matches the tag of the
+peer, continue with ICMP7.
+If the ICMP message is too short or the chunk type or the Initiate Tag does
+not match, silently discard the packet.</t>
+<t>If the ICMP message is either a v6 "Packet Too Big" or a
+v4 "Fragmentation Needed", an implementation MAY process this information as
+defined for PATH MTU discovery.</t>
+<t>If the ICMP code is an "Unrecognized Next Header Type Encountered" or
+a "Protocol Unreachable", an implementation MUST treat this message as an abort
+with the T bit set if it does not contain an INIT chunk.
+If it does contain an INIT chunk and the association is in the
+COOKIE-WAIT state, handle the ICMP message like an ABORT.</t>
+<t>If the ICMPv6 code is "Destination Unreachable", the implementation MAY mark
+the destination into the unreachable state or alternatively increment the
+path error counter.</t>
+</list></t>
+<t>Note that these procedures differ from <xref target='RFC1122'/> and from its
+requirements for processing of port-unreachable messages and the requirements
+that an implementation MUST abort associations in response to a
+"protocol unreachable" message.
+Port-unreachable messages are not processed, since an implementation will send
+an ABORT, not a port unreachable.  The stricter handling of the
+"protocol unreachable" message is due to security concerns for hosts that do
+NOT support SCTP.</t>
+<t>The following non-normative sample code is taken from an open-source
+CRC generator [WILLIAMS93], using the "mirroring" technique and yielding a
+lookup table for SCTP CRC32c with 256 entries, each 32 bits wide.
+While neither especially slow nor especially fast, as software table-lookup
+CRCs go, it has the advantage of working on both big-endian and little-endian
+CPUs, using the same (host-order) lookup tables, and using only the
+predefined ntohl() and htonl() operations.
+The code is somewhat modified from [WILLIAMS93], to ensure portability between
+big-endian and little-endian architectures.
+(Note that if the byte endian-ness of the target architecture is known to be
+little-endian, the final bit-reversal and byte-reversal steps can be folded
+into a single operation.)</t> <!-- FIXME MT: Refernces -->
+<figure>
+<artwork>
+<![CDATA[
+/*************************************************************/
+/* Note Definition for Ross Williams table generator would   */
+/* be: TB_WIDTH=4, TB_POLLY=0x1EDC6F41, TB_REVER=TRUE        */
+/* For Mr. Williams direct calculation code use the settings */
+/* cm_width=32, cm_poly=0x1EDC6F41, cm_init=0xFFFFFFFF,      */
+/* cm_refin=TRUE, cm_refot=TRUE, cm_xorort=0x00000000        */
+/*************************************************************/
+
+/* Example of the crc table file */
+#ifndef __crc32cr_table_h__
+#define __crc32cr_table_h__
+
+#define CRC32C_POLY 0x1EDC6F41
+#define CRC32C(c,d) (c=(c>>8)^crc_c[(c^(d))&0xFF])
+
+unsigned long  crc_c[256] =
+{
+0x00000000L, 0xF26B8303L, 0xE13B70F7L, 0x1350F3F4L,
+0xC79A971FL, 0x35F1141CL, 0x26A1E7E8L, 0xD4CA64EBL,
+0x8AD958CFL, 0x78B2DBCCL, 0x6BE22838L, 0x9989AB3BL,
+0x4D43CFD0L, 0xBF284CD3L, 0xAC78BF27L, 0x5E133C24L,
+0x105EC76FL, 0xE235446CL, 0xF165B798L, 0x030E349BL,
+0xD7C45070L, 0x25AFD373L, 0x36FF2087L, 0xC494A384L,
+0x9A879FA0L, 0x68EC1CA3L, 0x7BBCEF57L, 0x89D76C54L,
+0x5D1D08BFL, 0xAF768BBCL, 0xBC267848L, 0x4E4DFB4BL,
+0x20BD8EDEL, 0xD2D60DDDL, 0xC186FE29L, 0x33ED7D2AL,
+0xE72719C1L, 0x154C9AC2L, 0x061C6936L, 0xF477EA35L,
+0xAA64D611L, 0x580F5512L, 0x4B5FA6E6L, 0xB93425E5L,
+0x6DFE410EL, 0x9F95C20DL, 0x8CC531F9L, 0x7EAEB2FAL,
+0x30E349B1L, 0xC288CAB2L, 0xD1D83946L, 0x23B3BA45L,
+
+0xF779DEAEL, 0x05125DADL, 0x1642AE59L, 0xE4292D5AL,
+0xBA3A117EL, 0x4851927DL, 0x5B016189L, 0xA96AE28AL,
+0x7DA08661L, 0x8FCB0562L, 0x9C9BF696L, 0x6EF07595L,
+0x417B1DBCL, 0xB3109EBFL, 0xA0406D4BL, 0x522BEE48L,
+0x86E18AA3L, 0x748A09A0L, 0x67DAFA54L, 0x95B17957L,
+0xCBA24573L, 0x39C9C670L, 0x2A993584L, 0xD8F2B687L,
+0x0C38D26CL, 0xFE53516FL, 0xED03A29BL, 0x1F682198L,
+0x5125DAD3L, 0xA34E59D0L, 0xB01EAA24L, 0x42752927L,
+0x96BF4DCCL, 0x64D4CECFL, 0x77843D3BL, 0x85EFBE38L,
+0xDBFC821CL, 0x2997011FL, 0x3AC7F2EBL, 0xC8AC71E8L,
+0x1C661503L, 0xEE0D9600L, 0xFD5D65F4L, 0x0F36E6F7L,
+0x61C69362L, 0x93AD1061L, 0x80FDE395L, 0x72966096L,
+0xA65C047DL, 0x5437877EL, 0x4767748AL, 0xB50CF789L,
+0xEB1FCBADL, 0x197448AEL, 0x0A24BB5AL, 0xF84F3859L,
+0x2C855CB2L, 0xDEEEDFB1L, 0xCDBE2C45L, 0x3FD5AF46L,
+0x7198540DL, 0x83F3D70EL, 0x90A324FAL, 0x62C8A7F9L,
+0xB602C312L, 0x44694011L, 0x5739B3E5L, 0xA55230E6L,
+0xFB410CC2L, 0x092A8FC1L, 0x1A7A7C35L, 0xE811FF36L,
+0x3CDB9BDDL, 0xCEB018DEL, 0xDDE0EB2AL, 0x2F8B6829L,
+0x82F63B78L, 0x709DB87BL, 0x63CD4B8FL, 0x91A6C88CL,
+0x456CAC67L, 0xB7072F64L, 0xA457DC90L, 0x563C5F93L,
+0x082F63B7L, 0xFA44E0B4L, 0xE9141340L, 0x1B7F9043L,
+0xCFB5F4A8L, 0x3DDE77ABL, 0x2E8E845FL, 0xDCE5075CL,
+0x92A8FC17L, 0x60C37F14L, 0x73938CE0L, 0x81F80FE3L,
+0x55326B08L, 0xA759E80BL, 0xB4091BFFL, 0x466298FCL,
+0x1871A4D8L, 0xEA1A27DBL, 0xF94AD42FL, 0x0B21572CL,
+0xDFEB33C7L, 0x2D80B0C4L, 0x3ED04330L, 0xCCBBC033L,
+0xA24BB5A6L, 0x502036A5L, 0x4370C551L, 0xB11B4652L,
+0x65D122B9L, 0x97BAA1BAL, 0x84EA524EL, 0x7681D14DL,
+0x2892ED69L, 0xDAF96E6AL, 0xC9A99D9EL, 0x3BC21E9DL,
+0xEF087A76L, 0x1D63F975L, 0x0E330A81L, 0xFC588982L,
+0xB21572C9L, 0x407EF1CAL, 0x532E023EL, 0xA145813DL,
+0x758FE5D6L, 0x87E466D5L, 0x94B49521L, 0x66DF1622L,
+0x38CC2A06L, 0xCAA7A905L, 0xD9F75AF1L, 0x2B9CD9F2L,
+0xFF56BD19L, 0x0D3D3E1AL, 0x1E6DCDEEL, 0xEC064EEDL,
+0xC38D26C4L, 0x31E6A5C7L, 0x22B65633L, 0xD0DDD530L,
+0x0417B1DBL, 0xF67C32D8L, 0xE52CC12CL, 0x1747422FL,
+0x49547E0BL, 0xBB3FFD08L, 0xA86F0EFCL, 0x5A048DFFL,
+0x8ECEE914L, 0x7CA56A17L, 0x6FF599E3L, 0x9D9E1AE0L,
+0xD3D3E1ABL, 0x21B862A8L, 0x32E8915CL, 0xC083125FL,
+0x144976B4L, 0xE622F5B7L, 0xF5720643L, 0x07198540L,
+0x590AB964L, 0xAB613A67L, 0xB831C993L, 0x4A5A4A90L,
+0x9E902E7BL, 0x6CFBAD78L, 0x7FAB5E8CL, 0x8DC0DD8FL,
+0xE330A81AL, 0x115B2B19L, 0x020BD8EDL, 0xF0605BEEL,
+0x24AA3F05L, 0xD6C1BC06L, 0xC5914FF2L, 0x37FACCF1L,
+0x69E9F0D5L, 0x9B8273D6L, 0x88D28022L, 0x7AB90321L,
+0xAE7367CAL, 0x5C18E4C9L, 0x4F48173DL, 0xBD23943EL,
+0xF36E6F75L, 0x0105EC76L, 0x12551F82L, 0xE03E9C81L,
+
+0x34F4F86AL, 0xC69F7B69L, 0xD5CF889DL, 0x27A40B9EL,
+0x79B737BAL, 0x8BDCB4B9L, 0x988C474DL, 0x6AE7C44EL,
+0xBE2DA0A5L, 0x4C4623A6L, 0x5F16D052L, 0xAD7D5351L,
+};
+
+#endif
+
+ /* Example of table build routine */
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#define OUTPUT_FILE   "crc32cr.h"
+#define CRC32C_POLY    0x1EDC6F41L
+FILE *tf;
+unsigned long
+reflect_32 (unsigned long b)
+{
+  int i;
+  unsigned long rw = 0L;
+
+  for (i = 0; i < 32; i++){
+      if (b & 1)
+        rw |= 1 << (31 - i);
+      b >>= 1;
+  }
+  return (rw);
+}
+
+unsigned long
+build_crc_table (int index)
+{
+  int i;
+  unsigned long rb;
+
+  rb = reflect_32 (index);
+
+  for (i = 0; i < 8; i++){
+      if (rb & 0x80000000L)
+       rb = (rb << 1) ^ CRC32C_POLY;
+      else
+       rb <<= 1;
+  }
+  return (reflect_32 (rb));
+}
+
+main ()
+{
+  int i;
+
+  printf ("\nGenerating CRC-32c table file <%s>\n",
+  OUTPUT_FILE);
+  if ((tf = fopen (OUTPUT_FILE, "w")) == NULL){
+      printf ("Unable to open %s\n", OUTPUT_FILE);
+      exit (1);
+  }
+  fprintf (tf, "#ifndef __crc32cr_table_h__\n");
+  fprintf (tf, "#define __crc32cr_table_h__\n\n");
+  fprintf (tf, "#define CRC32C_POLY 0x%08lX\n",
+  CRC32C_POLY);
+  fprintf (tf,
+  "#define CRC32C(c,d) (c=(c>>8)^crc_c[(c^(d))&0xFF])\n");
+  fprintf (tf, "\nunsigned long  crc_c[256] =\n{\n");
+  for (i = 0; i < 256; i++){
+      fprintf (tf, "0x%08lXL, ", build_crc_table (i));
+      if ((i & 3) == 3)
+        fprintf (tf, "\n");
+  }
+  fprintf (tf, "};\n\n#endif\n");
+
+  if (fclose (tf) != 0)
+    printf ("Unable to close <%s>." OUTPUT_FILE);
+  else
+    printf ("\nThe CRC-32c table has been written to <%s>.\n",
+      OUTPUT_FILE);
+}
+
+/* Example of crc insertion */
+
+#include "crc32cr.h"
+
+unsigned long
+generate_crc32c(unsigned char *buffer, unsigned int length)
+{
+  unsigned int i;
+  unsigned long crc32 = ~0L;
+  unsigned long result;
+  unsigned char byte0,byte1,byte2,byte3;
+
+  for (i = 0; i < length; i++){
+      CRC32C(crc32, buffer[i]);
+  }
+
+  result = ~crc32;
+
+  /*  result now holds the negated polynomial remainder;
+   *  since the table and algorithm is "reflected" [williams95].
+   *  That is, result has the same value as if we mapped the message
+   *  to a polynomial, computed the host-bit-order polynomial
+   *  remainder, performed final negation, then did an end-for-end
+   *  bit-reversal.
+   *  Note that a 32-bit bit-reversal is identical to four inplace
+   *  8-bit reversals followed by an end-for-end byteswap.
+   *  In other words, the bytes of each bit are in the right order,
+   *  but the bytes have been byteswapped.  So we now do an explicit
+   *  byteswap.  On a little-endian machine, this byteswap and
+   *  the final ntohl cancel out and could be elided.
+   */
+
+  byte0 = result & 0xff;
+  byte1 = (result>>8) & 0xff;
+  byte2 = (result>>16) & 0xff;
+  byte3 = (result>>24) & 0xff;
+  crc32 = ((byte0 << 24) |
+           (byte1 << 16) |
+           (byte2 << 8)  |
+           byte3);
+  return ( crc32 );
+}
+
+int
+insert_crc32(unsigned char *buffer, unsigned int length)
+{
+  SCTP_message *message;
+  unsigned long crc32;
+  message = (SCTP_message *) buffer;
+  message->common_header.checksum = 0L;
+  crc32 = generate_crc32c(buffer,length);
+  /* and insert it into the message */
+  message->common_header.checksum = htonl(crc32);
+  return 1;
+}
+
+int
+validate_crc32(unsigned char *buffer, unsigned int length)
+{
+  SCTP_message *message;
+  unsigned int i;
+  unsigned long original_crc32;
+  unsigned long crc32 = ~0L;
+
+  /* save and zero checksum */
+  message = (SCTP_message *) buffer;
+  original_crc32 = ntohl(message->common_header.checksum);
+  message->common_header.checksum = 0L;
+  crc32 = generate_crc32c(buffer,length);
+  return ((original_crc32 == crc32)? 1 : -1);
+}
+]]>
+</artwork>
+</figure>
 </section>
 </back>
 </rfc>
