@@ -7,7 +7,7 @@
 <?rfc strict="yes" ?>
 
 <rfc category="std"
-     ipr=" pre5378Trust200902"
+     ipr="pre5378Trust200902"
      obsoletes="4960"
      docName="draft-ietf-tsvwg-rfc4960-bis-01">
 <front>
@@ -135,18 +135,18 @@ The basic service offered by SCTP is the reliable transfer of user
 messages between peer SCTP users.
 It performs this service within the context of an association between
 two SCTP endpoints.
-<xref target='sec:api'/> of this document sketches the API that should exist
+<xref target='sec_api'/> of this document sketches the API that should exist
 at the boundary between the SCTP and the SCTP user layers.</t>
 <t>SCTP is connection-oriented in nature, but the SCTP association is a
 broader concept than the TCP connection.
-SCTP provides the means for each SCTP endpoint (<xref target="sec:key_terms"/>)
+SCTP provides the means for each SCTP endpoint (<xref target="sec_key_terms"/>)
 to provide the other endpoint (during association startup) with a list of
 transport addresses (i.e., multiple IP addresses in combination with an SCTP
 port) through which that endpoint can be reached and from which it will
 originate SCTP packets.
 The association spans transfers over all of the possible source/destination
 combinations that may be generated from each endpoint's lists.</t>
-<figure anchor='fig:association'
+<figure anchor='fig_association'
         title='An SCTP Association'>
 <artwork>
 <![CDATA[
@@ -169,7 +169,7 @@ combinations that may be generated from each endpoint's lists.</t>
 </figure>
 </section>
 
-<section anchor='sec:key_terms'
+<section anchor='sec_key_terms'
          title='Key Terms'>
 <t>Some of the language used to describe SCTP has been introduced in the
 previous sections.  This section provides a consolidated list of the
@@ -343,10 +343,10 @@ packet from a previous association.</t>
 <section title='Functional View of SCTP'>
 
 <t>The SCTP transport service can be decomposed into a number of functions.
-These are depicted in <xref target='fig:functional_view'/> and explained
+These are depicted in <xref target='fig_functional_view'/> and explained
 in the remainder of this section.</t>
 
-<figure anchor='fig:functional_view'
+<figure anchor='fig_functional_view'
         title='Functional View of the SCTP Transport Service'>
 <artwork>
 <![CDATA[
@@ -386,30 +386,30 @@ in the remainder of this section.</t>
 <section title='Association Startup and Takedown'>
 <t>An association is initiated by a request from the SCTP user (see the
 description of the ASSOCIATE (or SEND) primitive in
-<xref target='sec:api'/>).</t>
+<xref target='sec_api'/>).</t>
 
 <t>A cookie mechanism, similar to one described by Karn and Simpson in
 <xref target='RFC2522'/>, is employed during the initialization to provide
 protection against synchronization attacks.
 The cookie mechanism uses a four-way handshake, the last two legs of which
 are allowed to carry user data for fast setup.
-The startup sequence is described in <xref target='sec:assoc_initialization'/>
+The startup sequence is described in <xref target='sec_assoc_initialization'/>
 of this document.</t>
 
 <t>SCTP provides for graceful close (i.e., shutdown) of an active
 association on request from the SCTP user.
-See the description of the SHUTDOWN primitive in <xref target='sec:api'/>.
+See the description of the SHUTDOWN primitive in <xref target='sec_api'/>.
 SCTP also allows ungraceful close (i.e., abort), either on request from the
 user (ABORT primitive) or as a result of an error condition detected within
 the SCTP layer.
-<xref target='sec:assoc_termination'/> describes both the graceful and the
+<xref target='sec_assoc_termination'/> describes both the graceful and the
 ungraceful close procedures.</t>
 
 <t>SCTP does not support a half-open state (like TCP) wherein one side
 may continue sending data while the other end is closed.
 When either endpoint performs a shutdown, the association on each peer will
 stop accepting new data from its user and only deliver data in queue at
-the time of the graceful close (see <xref target='sec:assoc_termination'/>).</t>
+the time of the graceful close (see <xref target='sec_assoc_termination'/>).</t>
 </section>
 
 <section title='Sequenced Delivery within Streams'>
@@ -421,9 +421,9 @@ bytes (in this document, a byte is assumed to be 8 bits).</t>
 <t>The SCTP user can specify at association startup time the number of
 streams to be supported by the association.
 This number is negotiated with the remote end
-(see <xref target='sec:handle_stream_parameters'/>).
+(see <xref target='sec_handle_stream_parameters'/>).
 User messages are associated with stream numbers (SEND, RECEIVE primitives,
-<xref target='sec:api'/>).
+<xref target='sec_api'/>).
 Internally, SCTP assigns a Stream Sequence Number to each message passed to
 it by the SCTP user.
 On the receiving side, SCTP ensures that messages are delivered to the SCTP
@@ -456,13 +456,13 @@ stream delivery.</t>
 for packet retransmission when timely acknowledgement has not been
 received.
 Packet retransmission is conditioned by congestion avoidance procedures
-similar to those used for TCP.  See <xref target='sec:user_data_transfer'/> and
-<xref target='sec:congestion_control'/> for a detailed description of the
+similar to those used for TCP.  See <xref target='sec_user_data_transfer'/> and
+<xref target='sec_congestion_control'/> for a detailed description of the
 protocol procedures associated with this function.</t>
 </section>
 
 <section title='Chunk Bundling'>
-<t>As described in <xref target='sec:sctp_packet_format'/>, the SCTP packet
+<t>As described in <xref target='sec_sctp_packet_format'/>, the SCTP packet
 as delivered to the lower layer consists of a common header followed by one
 or more chunks.
 Each chunk may contain either user data or SCTP control information.
@@ -481,7 +481,7 @@ not bundling that is performed during congestion or retransmission.</t>
 
 <section title='Packet Validation'>
 <t>A mandatory Verification Tag field and a 32-bit checksum field (see
-<xref target='sec:crc32c'/> for a description of the CRC32c checksum)
+<xref target='sec_crc32c'/> for a description of the CRC32c checksum)
 are included in the SCTP common header.
 The Verification Tag value is chosen by each end of the association during
 association startup.
@@ -497,7 +497,7 @@ discards the packet.</t>
 <section title='Path Management'>
 <t>The sending SCTP user is able to manipulate the set of transport
 addresses used as destinations for SCTP packets through the
-primitives described in <xref target='sec:api'/>.
+primitives described in <xref target='sec_api'/>.
 The SCTP path management function chooses the destination transport address
 for each outgoing SCTP packet based on the SCTP user's instructions and the
 currently perceived reachability status of the eligible destination set.
@@ -564,7 +564,7 @@ in this document are to be interpreted as described in
 RFC 2119 <xref target="RFC2119"/>.</t>
 </section>
 
-<section anchor='sec:sctp_packet_format'
+<section anchor='sec_sctp_packet_format'
          title='SCTP Packet Format'>
 <t>An SCTP packet is composed of a common header and chunks.
 A chunk contains either control information or user data.</t>
@@ -587,14 +587,14 @@ A chunk contains either control information or user data.</t>
 <t>Multiple chunks can be bundled into one SCTP packet up to the MTU
 size, except for the INIT, INIT ACK, and SHUTDOWN COMPLETE chunks.
 These chunks MUST NOT be bundled with any other chunk in a packet.
-See <xref target='sec:bundling'/>. for more details on chunk bundling.</t>
+See <xref target='sec_bundling'/>. for more details on chunk bundling.</t>
 <t>If a user data message doesn't fit into one SCTP packet it can be
 fragmented into multiple chunks using the procedure defined in
-<xref target='sec:frag_reass'/>.</t>
+<xref target='sec_frag_reass'/>.</t>
 <t>All integer fields in an SCTP packet MUST be transmitted in network
 byte order, unless otherwise stated.</t>
 
-<section anchor='sec:sctp_common_header_field_desriptions'
+<section anchor='sec_sctp_common_header_field_desriptions'
          title='SCTP Common Header Field Descriptions'>
 <t>
 <figure>
@@ -641,8 +641,8 @@ initialization, with the following exceptions:
 the Verification Tag copied from the packet with the SHUTDOWN ACK chunk.</t>
 <t>A packet containing an ABORT chunk may have the verification tag copied
 from the packet that caused the ABORT to be sent.
-For details see <xref target='sec:handle_out_of_the_blue_packets'/> and
-<xref target='sec:verification_tag'/>.</t>
+For details see <xref target='sec_handle_out_of_the_blue_packets'/> and
+<xref target='sec_verification_tag'/>.</t>
 </list></t>
 </list></t>
 <!-- MT FIXME: The following is a stray sentence. -->
@@ -652,14 +652,14 @@ For details see <xref target='sec:handle_out_of_the_blue_packets'/> and
 <vspace/>
 This field contains the checksum of this SCTP packet.
 Its calculation is discussed in
-<xref target='sec:crc32c_checksum_calculation'/>.
-SCTP uses the CRC32c algorithm as described in <xref target='sec:crc32c'/> for
+<xref target='sec_crc32c_checksum_calculation'/>.
+SCTP uses the CRC32c algorithm as described in <xref target='sec_crc32c'/> for
 calculating the checksum.</t>
 </list></t>
 </section>
 </section>
 
-<section anchor='sec:sctp_assoc_diagram'
+<section anchor='sec_sctp_assoc_diagram'
          title='SCTP Association State Diagram'>
 <t>During the life time of an SCTP association, the SCTP endpoint's
 association progresses from one state to another in response to
@@ -679,7 +679,7 @@ names have the first letter capitalized, e.g., COOKIE ECHO chunk type
 vs. State Cookie parameter.
 If more than one event/message can occur that causes a state transition, it
 is labeled (A), (B), etc.</t>
-<figure anchor='fig:state_diagram'
+<figure anchor='fig_state_diagram'
         title='State Transition Diagram of SCTP'>
 <artwork>
 <![CDATA[
@@ -783,7 +783,7 @@ ACK-SENT              |                |  |
 failed to pass the integrity check), the receiver MUST silently discard
 the packet.
 Or, if the received State Cookie is expired (see
-<xref target='sec:state_coockie_authentication'/>), the receiver MUST send back
+<xref target='sec_state_coockie_authentication'/>), the receiver MUST send back
 an ERROR chunk.
 In either case, the receiver stays in the CLOSED state.</t>
 <t>If the T1-init timer expires, the endpoint MUST retransmit INIT
@@ -809,70 +809,1474 @@ requests from its SCTP user.</t>
 (i.e., doesn't exist).</t>
 </section>
 
-<section anchor='sec:assoc_initialization'
+<section anchor='sec_assoc_initialization'
          title='Association Initialization'>
-<section anchor='sec:normal_establishment'
+<t>Before the first data transmission can take place from one SCTP
+endpoint ("A") to another SCTP endpoint ("Z"), the two endpoints must
+complete an initialization process in order to set up an SCTP
+association between them.</t>
+<t>The SCTP user at an endpoint should use the ASSOCIATE primitive to
+initialize an SCTP association to another SCTP endpoint.</t>
+<t>IMPLEMENTATION NOTE: From an SCTP user's point of view, an
+association may be implicitly opened, without an ASSOCIATE primitive
+(see <xref target='sec_ulp_to_sctp'/> B) being invoked, by the initiating
+endpoint's sending of the first user data to the destination endpoint.
+The initiating SCTP will assume default values for all mandatory and
+optional parameters for the INIT/INIT ACK.</t>
+<t>Once the association is established, unidirectional streams are open
+for data transfer on both ends
+(see <xref target='sec_handle_stream_parameters'/>).</t>
+
+<section anchor='sec_normal_establishment'
          title='Normal Establishment of an Association'>
-<section anchor='sec:handle_stream_parameters'
+<t>The initialization process consists of the following steps (assuming that
+SCTP endpoint "A" tries to set up an association with SCTP endpoint "Z" and
+"Z" accepts the new association):
+<list style='format %C)'>
+<t>"A" first sends an INIT chunk to "Z".  In the INIT, "A" must provide its
+Verification Tag (Tag_A) in the Initiate Tag field.
+Tag_A SHOULD be a random number in the range of 1 to 4294967295
+(see <xref target='sec_selection_of_tag_value'/> for Tag value selection).
+After sending the INIT, "A" starts the T1-init timer and enters the COOKIE-WAIT
+state.</t>
+<t>"Z" shall respond immediately with an INIT ACK chunk.
+The destination IP address of the INIT ACK MUST be set to the source IP address
+of the INIT to which this INIT ACK is responding.
+In the response, besides filling in other parameters, "Z" must set the
+Verification Tag field to Tag_A, and also provide its own
+Verification Tag (Tag_Z) in the Initiate Tag field.
+<vspace/>
+Moreover, "Z" MUST generate and send along with the INIT ACK a State Cookie.
+See <xref target='sec_generating_state_cookie'/> for State Cookie generation.
+<vspace/>
+Note: After sending out INIT ACK with the State Cookie parameter,
+"Z" MUST NOT allocate any resources or keep any states for the new
+association.
+Otherwise, "Z" will be vulnerable to resource attacks.</t>
+<t>Upon reception of the INIT ACK from "Z", "A" shall stop the T1-init timer
+and leave the COOKIE-WAIT state.
+"A" shall then send the State Cookie received in the INIT ACK chunk in a
+COOKIE ECHO chunk, start the T1-cookie timer, and enter the COOKIE-ECHOED
+state.
+<vspace/>
+Note: The COOKIE ECHO chunk can be bundled with any pending outbound DATA
+chunks, but it MUST be the first chunk in the packet and until the COOKIE ACK
+is returned the sender MUST NOT send any other packets to the peer.</t>
+<t>Upon reception of the COOKIE ECHO chunk, endpoint "Z" will reply
+with a COOKIE ACK chunk after building a TCB and moving to the
+ESTABLISHED state.
+A COOKIE ACK chunk may be bundled with any pending DATA chunks
+(and/or SACK chunks), but the COOKIE ACK chunk MUST be the first chunk in
+the packet.
+<vspace/>
+IMPLEMENTATION NOTE: An implementation may choose to send the
+Communication Up notification to the SCTP user upon reception of a
+valid COOKIE ECHO chunk.</t>
+<t>Upon reception of the COOKIE ACK, endpoint "A" will move from the
+COOKIE-ECHOED state to the ESTABLISHED state, stopping the T1-cookie timer.
+It may also notify its ULP about the successful establishment of the
+association with a Communication Up notification
+(see <xref target='sec_api'/>).</t>
+</list></t>
+<t>An INIT or INIT ACK chunk MUST NOT be bundled with any other chunk.
+They MUST be the only chunks present in the SCTP packets that carry them.</t>
+<t>An endpoint MUST send the INIT ACK to the IP address from which it
+received the INIT.</t>
+<t>Note: T1-init timer and T1-cookie timer shall follow the same rules
+given in <xref target='sec_management_of_retransission_timer'/>.</t>
+<t>If an endpoint receives an INIT, INIT ACK, or COOKIE ECHO chunk but decides
+not to establish the new association due to missing mandatory parameters in the
+received INIT or INIT ACK, invalid parameter values, or lack of local resources,
+it SHOULD respond with an ABORT chunk.
+It SHOULD also specify the cause of abort, such as the type of the missing
+mandatory parameters, etc., by including the error cause parameters with the
+ABORT chunk.
+The Verification Tag field in the common header of the outbound SCTP packet
+containing the ABORT chunk MUST be set to the Initiate Tag value of the
+peer.</t>
+<t>Note that a COOKIE ECHO chunk that does NOT pass the integrity check
+is NOT considered an 'invalid parameter' and requires special handling;
+see <xref target='sec_state_coockie_authentication'/>.</t>
+<t>After the reception of the first DATA chunk in an association the
+endpoint MUST immediately respond with a SACK to acknowledge the DATA
+chunk.
+Subsequent acknowledgements should be done as described in
+<xref target='sec_acknowledgements_of_reception_of_data_chunks'/>.</t>
+<t>When the TCB is created, each endpoint MUST set its internal
+Cumulative TSN Ack Point to the value of its transmitted Initial TSN
+minus one.</t>
+<t>IMPLEMENTATION NOTE: The IP addresses and SCTP port are generally
+used as the key to find the TCB within an SCTP instance.</t>
+
+<section anchor='sec_handle_stream_parameters'
          title='Handle Stream Parameters'>
+<t>In the INIT and INIT ACK chunks, the sender of the chunk MUST
+indicate the number of outbound streams (OSs) it wishes to have in
+the association, as well as the maximum inbound streams (MISs) it
+will accept from the other endpoint.</t>
+<t>After receiving the stream configuration information from the other
+side, each endpoint MUST perform the following check:
+If the peer's MIS is less than the endpoint's OS, meaning that the peer is
+incapable of supporting all the outbound streams the endpoint wants
+to configure, the endpoint MUST use MIS outbound streams and MAY
+report any shortage to the upper layer.
+The upper layer can then choose to abort the association if the resource
+shortage is unacceptable.</t>
+<t>After the association is initialized, the valid outbound stream identifier
+range for either endpoint shall be 0 to min(local OS, remote MIS)-1.</t>
 </section>
-<section anchor='sec:handle_address_parameters'
+<section anchor='sec_handle_address_parameters'
          title='Handle Address Parameters'>
+<t>During the association initialization, an endpoint shall use the
+following rules to discover and collect the destination transport address(es)
+of its peer.
+<list style='format %c)'>
+<t>If there are no address parameters present in the received INIT or
+INIT ACK chunk, the endpoint shall take the source IP address from
+which the chunk arrives and record it, in combination with the
+SCTP source port number, as the only destination transport address
+for this peer.</t>
+<t>If there is a Host Name parameter present in the received INIT or INIT ACK
+chunk, the endpoint shall resolve that host name to a list of IP address(es)
+and derive the transport address(es) of this peer by combining the resolved
+IP address(es) with the SCTP source port.
+<vspace/>
+The endpoint MUST ignore any other IP Address parameters if they are also
+present in the received INIT or INIT ACK chunk.
+<vspace/>
+The time at which the receiver of an INIT resolves the host name has potential
+security implications to SCTP.
+If the receiver of an INIT resolves the host name upon the reception of the
+chunk, and the mechanism the receiver uses to resolve the host name
+involves potential long delay (e.g., DNS query), the receiver may open itself
+up to resource attacks for the period of time while it is waiting for the
+name resolution results before it can build the State Cookie and release
+local resources.
+<vspace/>
+Therefore, in cases where the name translation involves potential long delay,
+the receiver of the INIT MUST postpone the name resolution till the reception
+of the COOKIE ECHO chunk from the peer.
+In such a case, the receiver of the INIT SHOULD build the State Cookie using
+the received Host Name (instead of destination transport addresses) and send
+the INIT ACK to the source IP address from which the INIT was received.
+<vspace/>
+The receiver of an INIT ACK shall always immediately attempt to resolve the
+name upon the reception of the chunk.
+<vspace/>
+The receiver of the INIT or INIT ACK MUST NOT send user data (piggy-backed
+or stand-alone) to its peer until the host name is successfully resolved.
+<vspace/>
+If the name resolution is not successful, the endpoint MUST immediately send
+an ABORT with "Unresolvable Address" error cause to its peer.
+The ABORT shall be sent to the source IP address from which the last peer
+packet was received.</t>
+<t>If there are only IPv4/IPv6 addresses present in the received INIT or
+INIT ACK chunk, the receiver MUST derive and record all the transport addresses
+from the received chunk AND the source IP address that sent the INIT or
+INIT ACK.
+The transport addresses are derived by the combination of SCTP source port
+(from the common header) and the IP Address parameter(s) carried in the INIT
+or INIT ACK chunk and the source IP address of the IP datagram.
+The receiver should use only these transport addresses as destination
+transport addresses when sending subsequent packets to its peer.</t>
+<t>An INIT or INIT ACK chunk MUST be treated as belonging to an already
+established association (or one in the process of being established) if the
+use of any of the valid address parameters contained within the chunk would
+identify an existing TCB.</t>
+</list></t>
+<t>IMPLEMENTATION NOTE: In some cases (e.g., when the implementation doesn't
+control the source IP address that is used for transmitting), an endpoint
+might need to include in its INIT or INIT ACK all possible IP addresses from
+which packets to the peer could be transmitted.</t>
+<t>After all transport addresses are derived from the INIT or INIT ACK chunk
+using the above rules, the endpoint shall select one of the transport addresses
+as the initial primary path.</t>
+<t>Note: The INIT ACK MUST be sent to the source address of the INIT.</t>
+<t>The sender of INIT may include a 'Supported Address Types' parameter
+in the INIT to indicate what types of address are acceptable.
+When this parameter is present, the receiver of INIT (initiate) MUST either
+use one of the address types indicated in the Supported Address Types parameter
+when responding to the INIT, or abort the association with an
+"Unresolvable Address" error cause if it is unwilling or incapable of using any
+of the address types indicated by its peer.</t>
+<t>IMPLEMENTATION NOTE: In the case that the receiver of an INIT ACK
+fails to resolve the address parameter due to an unsupported type, it
+can abort the initiation process and then attempt a reinitiation by
+using a 'Supported Address Types' parameter in the new INIT to indicate what
+types of address it prefers.</t>
+<t>IMPLEMENTATION NOTE: If an SCTP endpoint that only supports either IPv4 or
+IPv6 receives IPv4 and IPv6 addresses in an INIT or INIT ACK chunk from its
+peer, it MUST use all the addresses belonging to the supported address family.
+The other addresses MAY be ignored.
+The endpoint SHOULD NOT respond with any kind of error indication.</t>
+<t>IMPLEMENTATION NOTE: If an SCTP endpoint lists in the 'Supported Address
+Types' parameter either IPv4 or IPv6, but uses the other family for sending
+the packet containing the INIT chunk, or if it also lists addresses of the
+other family in the INIT chunk, then the address family that is not listed
+in the 'Supported Address Types' parameter SHOULD also be considered as
+supported by the receiver of the INIT chunk.
+The receiver of the INIT chunk SHOULD NOT respond with any kind of error
+indication.</t>
 </section>
-<section anchor='sec:generating_state_cookie'
+
+<section anchor='sec_generating_state_cookie'
          title='Generating State Cookie'>
+<t>When sending an INIT ACK as a response to an INIT chunk, the sender
+of INIT ACK creates a State Cookie and sends it in the State Cookie
+parameter of the INIT ACK.
+Inside this State Cookie, the sender should include a MAC
+(see <xref target='RFC2104'/> for an example), a timestamp on when the
+State Cookie is created, and the lifespan of the State Cookie, along with all
+the information necessary for it to establish the association.</t>
+<t>The following steps SHOULD be taken to generate the State Cookie:
+<list style='format %d)'>
+<t>Create an association TCB using information from both the
+received INIT and the outgoing INIT ACK chunk,</t>
+<t>In the TCB, set the creation time to the current time of day, and the
+lifespan to the protocol parameter 'Valid.Cookie.Life'
+(see <xref target='sec_parameter_values'/>),</t>
+<t>From the TCB, identify and collect the minimal subset of information needed
+to re-create the TCB, and generate a MAC using this subset of information and
+a secret key (see <xref target='RFC2104'/> for an example of generating a MAC),
+and</t>
+<t>Generate the State Cookie by combining this subset of information
+and the resultant MAC.</t>
+</list></t>
+<t>After sending the INIT ACK with the State Cookie parameter, the sender
+SHOULD delete the TCB and any other local resource related to the new
+association, so as to prevent resource attacks.</t>
+<t>The hashing method used to generate the MAC is strictly a private
+matter for the receiver of the INIT chunk.  The use of a MAC is
+mandatory to prevent denial-of-service attacks.
+The secret key SHOULD be random (<xref target='RFC4086'/> provides some
+information on randomness guidelines);
+it SHOULD be changed reasonably frequently, and the timestamp in the
+State Cookie MAY be used to determine which key should be used to verify
+the MAC.</t>
+<t>An implementation SHOULD make the cookie as small as possible to
+ensure interoperability.</t>
 </section>
-<section anchor='sec:state_coockie_processing'
+
+<section anchor='sec_state_coockie_processing'
          title='State Cookie Processing'>
+<t>When an endpoint (in the COOKIE-WAIT state) receives an INIT ACK
+chunk with a State Cookie parameter, it MUST immediately send a
+COOKIE ECHO chunk to its peer with the received State Cookie.
+The sender MAY also add any pending DATA chunks to the packet after the
+COOKIE ECHO chunk.</t>
+<t>The endpoint shall also start the T1-cookie timer after sending out
+the COOKIE ECHO chunk.
+If the timer expires, the endpoint shall retransmit the COOKIE ECHO chunk and
+restart the T1-cookie timer.
+This is repeated until either a COOKIE ACK is received or
+'Max.Init.Retransmits' (see <xref target='sec_parameter_values'/>) is reached
+causing the peer endpoint to be marked unreachable (and thus the association
+enters the CLOSED state).</t>
 </section>
-<section anchor='sec:state_coockie_authentication'
+
+<section anchor='sec_state_coockie_authentication'
          title='State Cookie Authentication'>
+<t>When an endpoint receives a COOKIE ECHO chunk from another endpoint
+with which it has no association, it shall take the following actions:
+<list style='format %d)'>
+<t>Compute a MAC using the TCB data carried in the State Cookie and
+the secret key (note the timestamp in the State Cookie MAY be used to
+determine which secret key to use).
+<xref target='RFC2104'/> can be used as a guideline for generating the MAC,</t>
+<t>Authenticate the State Cookie as one that it previously generated
+by comparing the computed MAC against the one carried in the State Cookie.
+If this comparison fails, the SCTP packet, including the COOKIE ECHO and
+any DATA chunks, should be silently discarded,</t>
+<t>Compare the port numbers and the Verification Tag contained within the
+COOKIE ECHO chunk to the actual port numbers and the Verification Tag within
+the SCTP common header of the received packet.
+If these values do not match, the packet MUST be silently discarded.</t>
+<t>Compare the creation timestamp in the State Cookie to the current local
+time.
+If the elapsed time is longer than the lifespan carried in the State Cookie,
+then the packet, including the COOKIE ECHO and any attached DATA chunks,
+SHOULD be discarded, and the endpoint MUST transmit an ERROR chunk with a
+"Stale Cookie" error cause to the peer endpoint.</t>
+<t>If the State Cookie is valid, create an association to the sender
+of the COOKIE ECHO chunk with the information in the TCB data
+carried in the COOKIE ECHO and enter the ESTABLISHED state.</t>
+<t>Send a COOKIE ACK chunk to the peer acknowledging receipt of the COOKIE ECHO.
+The COOKIE ACK MAY be bundled with an outbound DATA chunk or SACK chunk;
+however, the COOKIE ACK MUST be the first chunk in the SCTP packet.</t>
+<t>Immediately acknowledge any DATA chunk bundled with the COOKIE ECHO
+with a SACK (subsequent DATA chunk acknowledgement should follow the rules
+defined in <xref target='sec_acknowledgements_of_reception_of_data_chunks'/>).
+As mentioned in step 6, if the SACK is bundled with the COOKIE ACK,
+the COOKIE ACK MUST appear first in the SCTP packet.</t>
+</list></t>
+<t>If a COOKIE ECHO is received from an endpoint with which the receiver
+of the COOKIE ECHO has an existing association, the procedures in
+<xref target='sec_handle_duplicate_or_unexpected_chunks'/> should be
+followed.</t>
 </section>
-<section anchor='sec:'
+
+<section anchor='sec_example_of_normal_association_establishment'
          title='An Example of Normal Association Establishment'>
-</section>
+<t>In the following example, "A" initiates the association and then sends a
+user message to "Z", then "Z" sends two user messages to "A" later
+(assuming no bundling or fragmentation occurs):</t>
+<figure anchor='fig_initiation_example'
+        title='INITIATION Example'>
+<artwork>
+<![CDATA[
+Endpoint A                                          Endpoint Z
+{app sets association with Z}
+(build TCB)
+INIT [I-Tag=Tag_A
+      & other info]  ------\
+(Start T1-init timer)       \
+(Enter COOKIE-WAIT state)    \---> (compose temp TCB and Cookie_Z)
+                                /-- INIT ACK [Veri Tag=Tag_A,
+                               /             I-Tag=Tag_Z,
+(Cancel T1-init timer) <------/              Cookie_Z, & other info]
+                                     (destroy temp TCB)
+COOKIE ECHO [Cookie_Z] ------\
+(Start T1-init timer)         \
+(Enter COOKIE-ECHOED state)    \---> (build TCB enter ESTABLISHED
+                                      state)
+                               /---- COOKIE-ACK
+                              /
+(Cancel T1-init timer, <-----/
+ Enter ESTABLISHED state)
+{app sends 1st user data; strm 0}
+DATA [TSN=initial TSN_A
+    Strm=0,Seq=0 & user data]--\
+(Start T3-rtx timer)            \
+                                 \->
+                               /----- SACK [TSN Ack=init
+                              /           TSN_A,Block=0]
+(Cancel T3-rtx timer) <------/
+                                      ...
+                                     {app sends 2 messages;strm 0}
+                               /---- DATA
+                              /        [TSN=init TSN_Z
+                          <--/          Strm=0,Seq=0 & user data 1]
+SACK [TSN Ack=init TSN_Z,      /---- DATA
+      Block=0]     --------\  /        [TSN=init TSN_Z +1,
+                            \/          Strm=0,Seq=1 & user data 2]
+                     <------/\
+                              \
+                               \------>
+]]>
+</artwork>
+</figure>
+<t>If the T1-init timer expires at "A" after the INIT or COOKIE ECHO chunks
+are sent, the same INIT or COOKIE ECHO chunk with the same Initiate Tag
+(i.e., Tag_A) or State Cookie shall be retransmitted and the timer restarted.
+This shall be repeated Max.Init.Retransmits times before "A" considers "Z"
+unreachable and reports the failure to its upper layer (and thus the
+association enters the CLOSED state).</t>
+<t>When retransmitting the INIT, the endpoint MUST follow the rules
+defined in <xref target='sec_management_of_retransission_timer'/> to determine
+the proper timer value.</t>
 </section>
 </section>
 
-<section anchor='sec:user_data_transfer'
+<section anchor='sec_handle_duplicate_or_unexpected_chunks'
+         title='Handle Duplicate or Unexpected INIT, INIT ACK, COOKIE ECHO, and COOKIE ACK'>
+<t>During the life time of an association (in one of the possible states),
+an endpoint may receive from its peer endpoint one of the setup chunks (INIT,
+INIT ACK, COOKIE ECHO, and COOKIE ACK).
+The receiver shall treat such a setup chunk as a duplicate and process it
+as described in this section.</t>
+<t>Note: An endpoint will not receive the chunk unless the chunk was sent to
+an SCTP transport address and is from an SCTP transport address associated
+with this endpoint.
+Therefore, the endpoint processes such a chunk as part of its current
+association.</t>
+<t>The following scenarios can cause duplicated or unexpected chunks:
+<list style='format %C)'>
+<t>The peer has crashed without being detected, restarted itself, and
+sent out a new INIT chunk trying to restore the association,</t>
+<t>Both sides are trying to initialize the association at about the same
+time,</t>
+<t>The chunk is from a stale packet that was used to establish the present
+association or a past association that is no longer in existence,</t>
+<t>The chunk is a false packet generated by an attacker, or</t>
+<t>The peer never received the COOKIE ACK and is retransmitting its
+COOKIE ECHO.</t>
+</list></t>
+<t>The rules in the following sections shall be applied in order to identify
+and correctly handle these cases.</t>
+
+<section anchor='sec:init_received_in_cookie_wait_or_cookie_echoed_state'
+         title='INIT Received in COOKIE-WAIT or COOKIE-ECHOED State (Item B)'>
+<t>This usually indicates an initialization collision, i.e., each endpoint
+is attempting, at about the same time, to establish an association with the
+other endpoint.</t>
+<t>Upon receipt of an INIT in the COOKIE-WAIT state, an endpoint MUST
+respond with an INIT ACK using the same parameters it sent in its
+original INIT chunk (including its Initiate Tag, unchanged).
+When responding, the endpoint MUST send the INIT ACK back to the same
+address that the original INIT (sent by this endpoint) was sent.</t>
+<t>Upon receipt of an INIT in the COOKIE-ECHOED state, an endpoint MUST
+respond with an INIT ACK using the same parameters it sent in its
+original INIT chunk (including its Initiate Tag, unchanged), provided
+that no NEW address has been added to the forming association.
+If the INIT message indicates that a new address has been added to the
+association, then the entire INIT MUST be discarded, and NO changes
+should be made to the existing association.
+An ABORT SHOULD be sent in response that MAY include the error
+'Restart of an association with new addresses'.
+The error SHOULD list the addresses that were added to the restarting
+association.</t>
+<t>When responding in either state (COOKIE-WAIT or COOKIE-ECHOED) with
+an INIT ACK, the original parameters are combined with those from the
+newly received INIT chunk.
+The endpoint shall also generate a State Cookie with the INIT ACK.
+The endpoint uses the parameters sent in its INIT to calculate the
+State Cookie.</t>
+<t>After that, the endpoint MUST NOT change its state, the T1-init timer
+shall be left running, and the corresponding TCB MUST NOT be destroyed.
+The normal procedures for handling State Cookies when a
+TCB exists will resolve the duplicate INITs to a single association.</t>
+<t>For an endpoint that is in the COOKIE-ECHOED state, it MUST populate
+its Tie-Tags within both the association TCB and inside the State Cookie (see
+<xref target='sec_unexpected_init_in_states_other_than_closed_cookie_echoed'/>
+for a description of the Tie-Tags).</t>
+</section>
+
+<section anchor='sec_unexpected_init_in_states_other_than_closed_cookie_echoed'
+         title='Unexpected INIT in States Other than CLOSED, COOKIE-ECHOED'>
+<t>Unless otherwise stated, upon receipt of an unexpected INIT for this
+association, the endpoint shall generate an INIT ACK with a State Cookie.
+Before responding, the endpoint MUST check to see if the unexpected INIT adds
+new addresses to the association.
+If new addresses are added to the association, the endpoint MUST respond with
+an ABORT, copying the 'Initiate Tag' of the unexpected INIT into the
+'Verification Tag' of the outbound packet carrying the ABORT.
+In the ABORT response, the cause of error MAY be set to 'restart of an
+association with new addresses'.
+The error SHOULD list the addresses that were added to the restarting
+association.
+If no new addresses are added, when responding to the INIT in the outbound
+INIT ACK, the endpoint MUST copy its current Tie-Tags to a reserved place
+within the State Cookie and the association's TCB.
+We shall refer to these locations inside the cookie as the Peer's-Tie-Tag and
+the Local-Tie-Tag.
+We will refer to the copy within an association's TCB as the Local Tag and
+Peer's Tag.
+The outbound SCTP packet containing this INIT ACK MUST carry a Verification Tag
+value equal to the Initiate Tag found in the unexpected INIT.
+And the INIT ACK MUST contain a new Initiate Tag
+(randomly generated; see <xref target='sec_selection_of_tag_value'/>).
+Other parameters for the endpoint SHOULD be copied from the existing
+parameters of the association (e.g., number of outbound streams) into the
+INIT ACK and cookie.</t>
+<t>After sending out the INIT ACK or ABORT, the endpoint shall take no further
+actions; i.e., the existing association, including its current state, and the
+corresponding TCB MUST NOT be changed.</t>
+<t>Note: Only when a TCB exists and the association is not in a COOKIE-WAIT
+or SHUTDOWN-ACK-SENT state are the Tie-Tags populated with a value other than 0.
+For a normal association INIT (i.e., the endpoint is in the CLOSED state),
+the Tie-Tags MUST be set to 0 (indicating that no previous TCB existed).</t>
+
+</section>
+<section anchor='sec_unexpected_init_ack'
+         title='Unexpected INIT ACK'>
+<t>If an INIT ACK is received by an endpoint in any state other than the
+COOKIE-WAIT state, the endpoint should discard the INIT ACK chunk.
+An unexpected INIT ACK usually indicates the processing of an old or duplicated
+INIT chunk.</t>
+</section>
+
+<section anchor='sec_handle_a_cookie_echo_when_a_tcp_exists'
+         title='Handle a COOKIE ECHO when a TCB Exists'>
+<t>When a COOKIE ECHO chunk is received by an endpoint in any state for an
+existing association (i.e., not in the CLOSED state) the following rules
+shall be applied:
+<list style='format %d)'>
+<t>Compute a MAC as described in step 1 of
+<xref target='sec_state_coockie_authentication'/>,</t>
+<t>Authenticate the State Cookie as described in step 2 of
+<xref target='sec_state_coockie_authentication'/>
+(this is case C or D above).</t>
+<t>Compare the timestamp in the State Cookie to the current time.
+If the State Cookie is older than the lifespan carried in the State Cookie
+and the Verification Tags contained in the State Cookie do not match the
+current association's Verification Tags, the packet, including the COOKIE ECHO
+and any DATA chunks, should be discarded.
+The endpoint also MUST transmit an ERROR chunk with a "Stale Cookie" error cause
+to the peer endpoint (this is case C or D in
+<xref target='sec_handle_duplicate_or_unexpected_chunks'/>).
+If both Verification Tags in the State Cookie match the Verification Tags of
+the current association, consider the State Cookie valid (this is case E in
+<xref target='sec_handle_duplicate_or_unexpected_chunks'/>) even if the
+lifespan is exceeded.</t>
+<t>If the State Cookie proves to be valid, unpack the TCB into a
+temporary TCB.</t>
+<t>Refer to <xref target='table_handling_of_cookie_echo'/> to determine the
+correct action to be taken.</t>
+</list></t>
+<texttable anchor='table_handling_of_cookie_echo'
+           title='Handling of a COOKIE ECHO when a TCB Exists'
+           style='all'>
+<ttcol align='center'>Local Tag</ttcol>
+<ttcol align='center'>Peer's Tag</ttcol>
+<ttcol align='center'>Local-Tie-Tag</ttcol>
+<ttcol align='center'>Peer's-Tie-Tag</ttcol>
+<ttcol align='center'>Action</ttcol>
+<c>X</c><c>X</c><c>M</c><c>M</c><c>(A)</c>
+<c>M</c><c>X</c><c>A</c><c>A</c><c>(B)</c>
+<c>M</c><c>0</c><c>A</c><c>A</c><c>(B)</c>
+<c>X</c><c>M</c><c>0</c><c>0</c><c>(C)</c>
+<c>M</c><c>M</c><c>A</c><c>A</c><c>(D)</c>
+</texttable>
+<t>Legend:
+<list style='hanging'>
+<t hangText='X -'>Tag does not match the existing TCB.</t>
+<t hangText='M -'>Tag matches the existing TCB.</t>
+<t hangText='0 -'>No Tie-Tag in cookie (unknown).</t>
+<t hangText='A -'>All cases, i.e., M, X, or 0.</t>
+</list></t>
+<t>Note: For any case not shown in
+<xref target='table_handling_of_cookie_echo'/>, the cookie should be silently
+discarded.</t>
+
+<t>Action
+<list style='format %C)'>
+<t>In this case, the peer may have restarted.  When the endpoint
+recognizes this potential 'restart', the existing session is
+treated the same as if it received an ABORT followed by a new
+COOKIE ECHO with the following exceptions:
+<list style='symbols'>
+<t>Any SCTP DATA chunks MAY be retained (this is an implementation-specific
+option).</t>
+<t>A notification of RESTART SHOULD be sent to the ULP instead of a
+"COMMUNICATION LOST" notification.</t>
+</list>
+All the congestion control parameters (e.g., cwnd, ssthresh)
+related to this peer MUST be reset to their initial values
+(see <xref target='sec_processing_of_received_sack'/>).
+<vspace/>
+After this, the endpoint shall enter the ESTABLISHED state.
+<vspace/>
+If the endpoint is in the SHUTDOWN-ACK-SENT state and recognizes that the peer
+has restarted (Action A), it MUST NOT set up a new association but instead
+resend the SHUTDOWN ACK and send an ERROR chunk with a
+"Cookie Received While Shutting Down" error cause to its peer.</t>
+<t>In this case, both sides may be attempting to start an association
+at about the same time, but the peer endpoint started its INIT
+after responding to the local endpoint's INIT.
+Thus, it may have picked a new Verification Tag, not being aware of the
+previous tag it had sent this endpoint.
+The endpoint should stay in or enter the ESTABLISHED state, but it MUST update
+its peer's Verification Tag from the State Cookie, stop any init or
+cookie timers that may be running, and send a COOKIE ACK.</t>
+<t>In this case, the local endpoint's cookie has arrived late.
+Before it arrived, the local endpoint sent an INIT and received an INIT ACK
+and finally sent a COOKIE ECHO with the peer's same tag but a new tag of its
+own.
+The cookie should be silently discarded.
+The endpoint SHOULD NOT change states and should leave any timers running.</t>
+<t>When both local and remote tags match, the endpoint should enter the
+ESTABLISHED state, if it is in the COOKIE-ECHOED state.
+It should stop any cookie timer that may be running and send a COOKIE ACK.</t>
+</list></t>
+<t>Note: The "peer's Verification Tag" is the tag received in the Initiate Tag
+field of the INIT or INIT ACK chunk.</t>
+
+<section anchor='sec:an_example_of_a_association_restart'
+         title='An Example of a Association Restart'>
+<t>In the following example, "A" initiates the association after a restart
+has occurred.
+Endpoint "Z" had no knowledge of the restart until the exchange (i.e.,
+Heartbeats had not yet detected the failure of "A")
+(assuming no bundling or fragmentation occurs):</t>
+<figure anchor='fig_restart_example'
+        title='A Restart Example'>
+<artwork>
+<![CDATA[
+Endpoint A                                          Endpoint Z
+<-------------- Association is established---------------------->
+Tag=Tag_A                                             Tag=Tag_Z
+<--------------------------------------------------------------->
+{A crashes and restarts}
+{app sets up a association with Z}
+(build TCB)
+INIT [I-Tag=Tag_A'
+      & other info]  --------\
+(Start T1-init timer)         \
+(Enter COOKIE-WAIT state)      \---> (find an existing TCB
+                                      compose temp TCB and Cookie_Z
+                                      with Tie-Tags to previous
+                                      association)
+                                /--- INIT ACK [Veri Tag=Tag_A',
+                               /               I-Tag=Tag_Z',
+(Cancel T1-init timer) <------/                Cookie_Z[TieTags=
+                                               Tag_A,Tag_Z
+                                                & other info]
+                                     (destroy temp TCB,leave original
+                                      in place)
+COOKIE ECHO [Veri=Tag_Z',
+             Cookie_Z
+             Tie=Tag_A,
+             Tag_Z]----------\
+(Start T1-init timer)         \
+(Enter COOKIE-ECHOED state)    \---> (Find existing association,
+                                      Tie-Tags match old tags,
+                                      Tags do not match, i.e.,
+                                      case X X M M above,
+                                      Announce Restart to ULP
+                                      and reset association).
+                               /---- COOKIE ACK
+(Cancel T1-init timer, <------/
+ Enter ESTABLISHED state)
+{app sends 1st user data; strm 0}
+DATA [TSN=initial TSN_A
+    Strm=0,Seq=0 & user data]--\
+(Start T3-rtx timer)            \
+                                 \->
+                              /--- SACK [TSN Ack=init TSN_A,Block=0]
+(Cancel T3-rtx timer) <------/
+]]>
+</artwork>
+</figure>
+</section>
+</section>
+
+<section anchor='sec_handle_duplicate_cookie_ack'
+         title='Handle Duplicate COOKIE-ACK'>
+<t>At any state other than COOKIE-ECHOED, an endpoint should silently
+discard a received COOKIE ACK chunk.</t>
+</section>
+
+<section anchor='sec_handle_stale_cookie_error'
+         title='Handle Stale COOKIE Error'>
+<t>Receipt of an ERROR chunk with a "Stale Cookie" error cause indicates
+one of a number of possible events:
+<list style='format %C)'>
+<t>The association failed to completely setup before the State Cookie issued by
+the sender was processed.</t>
+<t>An old State Cookie was processed after setup completed.</t>
+<t>An old State Cookie is received from someone that the receiver is not
+interested in having an association with and the ABORT chunk was lost.</t>
+</list></t>
+<t>When processing an ERROR chunk with a "Stale Cookie" error cause an endpoint
+should first examine if an association is in the process of being set up, i.e.,
+the association is in the COOKIE-ECHOED state.
+In all cases, if the association is not in the COOKIE-ECHOED state, the
+ERROR chunk should be silently discarded.</t>
+<t>If the association is in the COOKIE-ECHOED state, the endpoint may elect
+one of the following three alternatives.
+<list style='format %d)'>
+<t>Send a new INIT chunk to the endpoint to generate a new State Cookie and
+reattempt the setup procedure.</t>
+<t>Discard the TCB and report to the upper layer the inability to set up
+the association.</t>
+<t>Send a new INIT chunk to the endpoint, adding a Cookie Preservative
+parameter requesting an extension to the life time of the State Cookie.
+When calculating the time extension, an implementation SHOULD use the RTT
+information measured based on the previous COOKIE ECHO / ERROR exchange,
+and should add no more than 1 second beyond the measured RTT, due to long
+State Cookie life times making the endpoint more subject to a replay attack.</t>
+</list></t>
+</section>
+</section>
+
+<section anchor='sec_other_initialization_issues'
+         title='Other Initialization Issues'>
+<section anchor='sec_selection_of_tag_value'
+         title='Selection of Tag Value'>
+<t>Initiate Tag values should be selected from the range of 1 to 2**32 - 1.
+It is very important that the Initiate Tag value be randomized to
+help protect against "man in the middle" and "sequence number"
+attacks.
+The methods described in <xref target='RFC4086'/> can be used for the
+Initiate Tag randomization.
+Careful selection of Initiate Tags is also necessary to prevent old duplicate
+packets from previous associations being mistakenly processed as belonging
+to the current association.</t>
+<t>Moreover, the Verification Tag value used by either endpoint in a
+given association MUST NOT change during the life time of an association.
+A new Verification Tag value MUST be used each time the endpoint tears down
+and then reestablishes an association to the same peer.</t>
+</section>
+</section>
+<section anchor='sec_path_verifiation'
+         title='Path Verification'>
+<t>During association establishment, the two peers exchange a list of
+addresses.
+In the predominant case, these lists accurately represent the addresses
+owned by each peer.
+However, it is possible that a misbehaving peer may supply addresses that it
+does not own.
+To prevent this, the following rules are applied to all addresses of the
+new association:
+<list style='format %d)'>
+<t>Any address passed to the sender of the INIT by its upper layer
+is automatically considered to be CONFIRMED.</t>
+<t>For the receiver of the COOKIE ECHO, the only CONFIRMED address
+is the one to which the INIT-ACK was sent.</t>
+<t>All other addresses not covered by rules 1 and 2 are considered
+UNCONFIRMED and are subject to probing for verification.</t>
+</list></t>
+<t>To probe an address for verification, an endpoint will send
+HEARTBEATs including a 64-bit random nonce and a path indicator (to
+identify the address that the HEARTBEAT is sent to) within the HEARTBEAT
+parameter.</t>
+<t>Upon receipt of the HEARTBEAT ACK, a verification is made that the
+nonce included in the HEARTBEAT parameter is the one sent to the
+address indicated inside the HEARTBEAT parameter.
+When this match occurs, the address that the original HEARTBEAT was sent to
+is now considered CONFIRMED and available for normal data transfer.
+These probing procedures are started when an association moves to the
+ESTABLISHED state and are ended when all paths are confirmed.</t>
+
+<t>In each RTO, a probe may be sent on an active UNCONFIRMED path in an
+attempt to move it to the CONFIRMED state.
+If during this probing the path becomes inactive, this rate is lowered to the
+normal HEARTBEAT rate.
+At the expiration of the RTO timer, the error counter of any path that was
+probed but not CONFIRMED is incremented by one and subjected to path failure
+detection, as defined in <xref target='sec_path_failure_detection'/>.
+When probing UNCONFIRMED addresses, however, the association overall error
+count is NOT incremented.</t>
+
+<t>The number of HEARTBEATS sent at each RTO SHOULD be limited by the
+HB.Max.Burst parameter.
+It is an implementation decision as to how to distribute HEARTBEATS to the
+peer's addresses for path verification.</t>
+<t>Whenever a path is confirmed, an indication MAY be given to the upper
+layer.</t>
+<t>An endpoint MUST NOT send any chunks to an UNCONFIRMED address, with
+the following exceptions:
+<list style='symbols'>
+<t>A HEARTBEAT including a nonce MAY be sent to an UNCONFIRMED address.</t>
+<t>A HEARTBEAT ACK MAY be sent to an UNCONFIRMED address.</t>
+<t>A COOKIE ACK MAY be sent to an UNCONFIRMED address, but it MUST be
+bundled with a HEARTBEAT including a nonce.
+An implementation that does NOT support bundling MUST NOT send a COOKIE ACK
+to an UNCONFIRMED address.</t>
+<t>A COOKIE ECHO MAY be sent to an UNCONFIRMED address, but it MUST
+be bundled with a HEARTBEAT including a nonce, and the packet MUST
+NOT exceed the path MTU.
+If the implementation does NOT support bundling or if the bundled COOKIE ECHO
+plus HEARTBEAT (including nonce) would exceed the path MTU, then the
+implementation MUST NOT send a COOKIE ECHO to an UNCONFIRMED address.</t>
+</list></t>
+</section>
+</section>
+
+<section anchor='sec_user_data_transfer'
          title='User Data Transfer'>
-<section anchor='sec:transmission_of_data_chunks'
+<t>Data transmission MUST only happen in the ESTABLISHED, SHUTDOWN-PENDING,
+and SHUTDOWN-RECEIVED states.
+The only exception to this is that DATA chunks are allowed to be bundled with
+an outbound COOKIE ECHO chunk when in the COOKIE-WAIT state.</t>
+<t>DATA chunks MUST only be received according to the rules below in
+ESTABLISHED, SHUTDOWN-PENDING, and SHUTDOWN-SENT.
+A DATA chunk received in CLOSED is out of the blue and SHOULD be handled per
+<xref target='sec_handle_out_of_the_blue_packets'/>.
+A DATA chunk received in any other state SHOULD be discarded.</t>
+<t>A SACK MUST be processed in ESTABLISHED, SHUTDOWN-PENDING, and
+SHUTDOWN-RECEIVED.
+An incoming SACK MAY be processed in COOKIE-ECHOED.
+A SACK in the CLOSED state is out of the blue and SHOULD be processed according
+to the rules in <xref target='sec_handle_out_of_the_blue_packets'/>.
+A SACK chunk received in any other state SHOULD be discarded.</t>
+<t>An SCTP receiver MUST be able to receive a minimum of 1500 bytes in
+one SCTP packet.
+This means that an SCTP endpoint MUST NOT indicate less than 1500 bytes in its
+initial a_rwnd sent in the INIT or INIT ACK.</t>
+<t>For transmission efficiency, SCTP defines mechanisms for bundling of
+small user messages and fragmentation of large user messages.
+The following diagram depicts the flow of user messages through SCTP.</t>
+<t>In this section, the term "data sender" refers to the endpoint that
+transmits a DATA chunk and the term "data receiver" refers to the
+endpoint that receives a DATA chunk.
+A data receiver will transmit SACK chunks.</t>
+<figure anchor='fig_user_data_transfer'
+        title='Illustration of User Data Transfer'>
+<artwork>
+<![CDATA[
+           +--------------------------+
+           |      User Messages       |
+           +--------------------------+
+ SCTP user        ^  |
+==================|==|=======================================
+                  |  v (1)
+       +------------------+    +--------------------+
+       | SCTP DATA Chunks |    |SCTP Control Chunks |
+       +------------------+    +--------------------+
+                  ^  |             ^  |
+                  |  v (2)         |  v (2)
+               +--------------------------+
+               |      SCTP packets        |
+               +--------------------------+
+ SCTP                      ^  |
+===========================|==|===========================
+                           |  v
+       Connectionless Packet Transfer Service (e.g., IP)
+]]>
+</artwork>
+</figure>
+<t>Notes:
+<list style='format %d)'>
+<t>When converting user messages into DATA chunks, an endpoint
+will fragment user messages larger than the current association
+path MTU into multiple DATA chunks.
+The data receiver will normally reassemble the fragmented message from DATA
+chunks before delivery to the user (see <xref target='sec_frag_reass'/>
+for details).</t>
+<t>Multiple DATA and control chunks may be bundled by the sender into a single
+SCTP packet for transmission, as long as the final size of the packet does not
+exceed the current path MTU.
+The receiver will unbundle the packet back into the original chunks.
+Control chunks MUST come before DATA chunks in the packet.</t>
+</list></t>
+<t>The fragmentation and bundling mechanisms, as detailed in
+<xref target='sec_frag_reass'/> and <xref target='sec_bundling'/>, are OPTIONAL
+to implement by the data sender, but they MUST be implemented by the data
+receiver, i.e., an endpoint MUST properly receive and process bundled or
+fragmented data.</t>
+
+<section anchor='sec_transmission_of_data_chunks'
          title='Transmission of DATA Chunks'>
+<t>This document is specified as if there is a single retransmission timer
+per destination transport address, but implementations MAY have a
+retransmission timer for each DATA chunk.</t>
+<t>The following general rules MUST be applied by the data sender for
+transmission and/or retransmission of outbound DATA chunks:
+<list style='format %C)'>
+<t>At any given time, the data sender MUST NOT transmit new data to
+any destination transport address if its peer's rwnd indicates
+that the peer has no buffer space (i.e., rwnd is 0;
+see <xref target='sec_processing_of_received_sack'/>).
+However, regardless of the value of rwnd (including if it is 0), the data
+sender can always have one DATA chunk in flight to the receiver if allowed by
+cwnd (see rule B, below).
+This rule allows the sender to probe for a change in rwnd that the sender
+missed due to the SACK's having been lost in transit from the data receiver to
+the data sender.
+<vspace/>
+When the receiver's advertised window is zero, this probe is called a zero
+window probe.
+Note that a zero window probe SHOULD only be sent when all outstanding DATA
+chunks have been cumulatively acknowledged and no DATA chunks are in flight.
+Zero window probing MUST be supported.
+<vspace/>
+If the sender continues to receive new packets from the receiver
+while doing zero window probing, the unacknowledged window probes
+should not increment the error counter for the association or any
+destination transport address.
+This is because the receiver MAY keep its window closed for an indefinite time.
+Refer to <xref target='sec_acknowledgements_of_reception_of_data_chunks'/>
+on the receiver behavior when it advertises a zero window.
+The sender SHOULD send the first zero window probe after 1 RTO when it detects
+that the receiver has closed its window and SHOULD increase the probe interval
+exponentially afterwards.
+Also note that the cwnd SHOULD be adjusted according to
+<xref target='sec_slow_start'/>.
+Zero window probing does not affect the calculation of cwnd.
+<vspace/>
+The sender MUST also have an algorithm for sending new DATA chunks to avoid
+silly window syndrome (SWS) as described in <xref target='RFC0813'/>.
+The algorithm can be similar to the one described in Section 4.2.3.4 of
+<xref target='RFC1122'/>.
+<vspace/>
+However, regardless of the value of rwnd (including if it is 0), the data
+sender can always have one DATA chunk in flight to the receiver if allowed
+by cwnd (see rule B below).
+This rule allows the sender to probe for a change in rwnd that the sender missed
+due to the SACK having been lost in transit from the data receiver to the data
+sender.</t>
+<t>At any given time, the sender MUST NOT transmit new data to a given
+transport address if it has cwnd or more bytes of data outstanding to that
+transport address.</t>
+<t>When the time comes for the sender to transmit, before sending new
+DATA chunks, the sender MUST first transmit any outstanding DATA
+chunks that are marked for retransmission (limited by the current cwnd).</t>
+<t>When the time comes for the sender to transmit new DATA chunks, the protocol
+parameter Max.Burst SHOULD be used to limit the number of packets sent.
+The limit MAY be applied by adjusting cwnd as follows:
+<list style='empty'>
+<t>if((flightsize + Max.Burst*MTU) &lt; cwnd) cwnd = flightsize + Max.Burst*MTU</t>
+</list>
+Or it MAY be applied by strictly limiting the number of packets emitted by
+the output routine.</t>
+<t>Then, the sender can send out as many new DATA chunks as rule A and rule B
+allow.</t>
+</list></t>
+<t>Multiple DATA chunks committed for transmission MAY be bundled in a
+single packet.
+Furthermore, DATA chunks being retransmitted MAY be bundled with new
+DATA chunks, as long as the resulting packet size does not exceed the path MTU.
+A ULP may request that no bundling is performed, but this should only turn off
+any delays that an SCTP implementation may be using to increase bundling
+efficiency.
+It does not in itself stop all bundling from occurring (i.e., in case of
+congestion or retransmission).</t>
+<t>Before an endpoint transmits a DATA chunk, if any received DATA
+chunks have not been acknowledged (e.g., due to delayed ack), the
+sender should create a SACK and bundle it with the outbound DATA
+chunk, as long as the size of the final SCTP packet does not exceed
+the current MTU.
+See <xref target='sec_acknowledgements_of_reception_of_data_chunks'/>.</t>
+<t>IMPLEMENTATION NOTE: When the window is full (i.e., transmission is
+disallowed by rule A and/or rule B), the sender MAY still accept send
+requests from its upper layer, but MUST transmit no more DATA chunks
+until some or all of the outstanding DATA chunks are acknowledged and
+transmission is allowed by rule A and rule B again.</t>
+<t>Whenever a transmission or retransmission is made to any address, if
+the T3-rtx timer of that address is not currently running, the sender
+MUST start that timer.
+If the timer for that address is already running, the sender MUST restart
+the timer if the earliest (i.e., lowest TSN) outstanding DATA chunk sent to
+that address is being retransmitted.
+Otherwise, the data sender MUST NOT restart the timer.</t>
+<t>When starting or restarting the T3-rtx timer, the timer value must be
+adjusted according to the timer rules defined in
+<xref target='sec_retransmission_timer_rules'/> and
+<xref target='sec_handle_t3_rtx_expiration'/>.</t>
+<t>Note: The data sender SHOULD NOT use a TSN that is more than 2**31 - 1 above
+the beginning TSN of the current send window.</t>
 </section>
-<section anchor='sec:acknowledgements_of_reception_of_data_chunks'
+
+<section anchor='sec_acknowledgements_of_reception_of_data_chunks'
          title='Acknowledgement on Reception of DATA Chunks'>
-<section anchor='sec:processing_of_received_sack'
+<t>The SCTP endpoint MUST always acknowledge the reception of each valid
+DATA chunk when the DATA chunk received is inside its receive window.</t>
+<t>When the receiver's advertised window is 0, the receiver MUST drop
+any new incoming DATA chunk with a TSN larger than the largest TSN
+received so far.
+If the new incoming DATA chunk holds a TSN value less than the largest
+TSN received so far, then the receiver SHOULD drop the largest TSN held for
+reordering and accept the new incoming DATA chunk.
+In either case, if such a DATA chunk is dropped, the receiver MUST immediately
+send back a SACK with the current receive window showing only DATA chunks
+received and accepted so far.
+The dropped DATA chunk(s) MUST NOT be included in the SACK, as they were
+not accepted.
+The receiver MUST also have an algorithm for advertising its receive window
+to avoid receiver silly window syndrome (SWS), as described in
+<xref target='RFC0813'/>.
+The algorithm can be similar to the one described in Section 4.2.3.3 of
+<xref target='RFC1122'/>.</t>
+<t>The guidelines on delayed acknowledgement algorithm specified in
+Section 4.2 of <xref target='RFC2581'/> SHOULD be followed.
+Specifically, an acknowledgement SHOULD be generated for at least every
+second packet (not every second DATA chunk) received, and SHOULD be generated
+within 200 ms of the arrival of any unacknowledged DATA chunk.
+In some situations, it may be beneficial for an SCTP transmitter to be
+more conservative than the algorithms detailed in this document allow.
+However, an SCTP transmitter MUST NOT be more aggressive than the following
+algorithms allow.</t>
+<t>An SCTP receiver MUST NOT generate more than one SACK for every
+incoming packet, other than to update the offered window as the
+receiving application consumes new data.</t>
+<t>IMPLEMENTATION NOTE: The maximum delay for generating an acknowledgement
+may be configured by the SCTP administrator, either statically or dynamically,
+in order to meet the specific timing requirement of the protocol being
+carried.</t>
+<t>An implementation MUST NOT allow the maximum delay to be configured
+to be more than 500 ms.
+In other words, an implementation MAY lower this value below 500 ms but MUST NOT
+raise it above 500 ms.</t>
+<t>Acknowledgements MUST be sent in SACK chunks unless shutdown was
+requested by the ULP, in which case an endpoint MAY send an
+acknowledgement in the SHUTDOWN chunk.
+A SACK chunk can acknowledge the reception of multiple DATA chunks.
+See Section 3.3.4 for SACK chunk format.<!-- MT FIXME: Reference -->
+In particular, the SCTP endpoint MUST fill in the Cumulative TSN Ack field to
+indicate the latest sequential TSN (of a valid DATA chunk) it has received.
+Any received DATA chunks with TSN greater than the value in the
+Cumulative TSN Ack field are reported in the Gap Ack Block fields.
+The SCTP endpoint MUST report as many Gap Ack Blocks as can fit in a single SACK
+chunk limited by the current path MTU.</t>
+<t>Note: The SHUTDOWN chunk does not contain Gap Ack Block fields.
+Therefore, the endpoint should use a SACK instead of the SHUTDOWN
+chunk to acknowledge DATA chunks received out of order.</t>
+<t>When a packet arrives with duplicate DATA chunk(s) and with no new
+DATA chunk(s), the endpoint MUST immediately send a SACK with no
+delay.
+If a packet arrives with duplicate DATA chunk(s) bundled with
+new DATA chunks, the endpoint MAY immediately send a SACK.
+Normally, receipt of duplicate DATA chunks will occur when the original SACK
+chunk was lost and the peer's RTO has expired.
+The duplicate TSN number(s) SHOULD be reported in the SACK as duplicate.</t>
+<t>When an endpoint receives a SACK, it MAY use the duplicate TSN
+information to determine if SACK loss is occurring.
+Further use of this data is for future study.</t>
+<t>The data receiver is responsible for maintaining its receive buffers.
+The data receiver SHOULD notify the data sender in a timely manner of
+changes in its ability to receive data.
+How an implementation manages its receive buffers is dependent on many
+factors (e.g., operating system, memory management system, amount of memory,
+etc.).
+However, the data sender strategy defined in
+<xref target='sec_processing_of_received_sack'/> is based on the assumption of
+receiver operation similar to the following:
+<list style='format %C)'>
+<t>At initialization of the association, the endpoint tells the peer
+how much receive buffer space it has allocated to the association
+in the INIT or INIT ACK.
+The endpoint sets a_rwnd to this value.</t>
+<t>As DATA chunks are received and buffered, decrement a_rwnd by the
+number of bytes received and buffered.
+This is, in effect, closing rwnd at the data sender and restricting the amount
+of data it can transmit.</t>
+<t>As DATA chunks are delivered to the ULP and released from the
+receive buffers, increment a_rwnd by the number of bytes delivered
+to the upper layer.
+This is, in effect, opening up rwnd on the data sender and allowing it to
+send more data.
+The data receiver SHOULD NOT increment a_rwnd unless it has released bytes
+from its receive buffer.
+For example, if the receiver is holding fragmented DATA chunks in a reassembly
+queue, it should not increment a_rwnd.</t>
+<t>When sending a SACK, the data receiver SHOULD place the current
+value of a_rwnd into the a_rwnd field.
+The data receiver SHOULD take into account that the data sender will not
+retransmit DATA chunks that are acked via the Cumulative TSN Ack (i.e., will
+drop from its retransmit queue).</t>
+</list></t>
+<t>Under certain circumstances, the data receiver may need to drop DATA
+chunks that it has received but hasn't released from its receive
+buffers (i.e., delivered to the ULP).
+These DATA chunks may have been acked in Gap Ack Blocks.
+For example, the data receiver may be holding data in its receive buffers
+while reassembling a fragmented user message from its peer when it runs out of
+receive buffer space.
+It may drop these DATA chunks even though it has acknowledged them in
+Gap Ack Blocks.
+If a data receiver drops DATA chunks, it MUST NOT include them in Gap Ack Blocks
+in subsequent SACKs until they are received again via retransmission.
+In addition, the endpoint should take into account the dropped data when
+calculating its a_rwnd.</t>
+<t>An endpoint SHOULD NOT revoke a SACK and discard data.
+Only in extreme circumstances should an endpoint use this procedure (such as
+out of buffer space).
+The data receiver should take into account that dropping data that has been
+acked in Gap Ack Blocks can result in suboptimal retransmission strategies in
+the data sender and thus in suboptimal performance.</t>
+<t>The following example illustrates the use of delayed acknowledgements:</t>
+<figure anchor='fig_delayed_ack_example'
+        title='Delayed Acknowledgement Example'>
+<artwork>
+<![CDATA[
+Endpoint A                                      Endpoint Z
+
+{App sends 3 messages; strm 0}
+DATA [TSN=7,Strm=0,Seq=3] ------------> (ack delayed)
+(Start T3-rtx timer)
+
+DATA [TSN=8,Strm=0,Seq=4] ------------> (send ack)
+                              /------- SACK [TSN Ack=8,block=0]
+(cancel T3-rtx timer)  <-----/
+
+DATA [TSN=9,Strm=0,Seq=5] ------------> (ack delayed)
+(Start T3-rtx timer)
+                                       ...
+                                       {App sends 1 message; strm 1}
+                                       (bundle SACK with DATA)
+                                /----- SACK [TSN Ack=9,block=0] \
+                               /         DATA [TSN=6,Strm=1,Seq=2]
+(cancel T3-rtx timer)  <------/        (Start T3-rtx timer)
+
+(ack delayed)
+(send ack)
+SACK [TSN Ack=6,block=0] -------------> (cancel T3-rtx timer)
+]]>
+</artwork>
+</figure>
+<t>If an endpoint receives a DATA chunk with no user data (i.e., the
+Length field is set to 16), it MUST send an ABORT with error cause
+set to "No User Data".</t>
+<t>An endpoint SHOULD NOT send a DATA chunk with no user data part.</t>
+
+<section anchor='sec_processing_of_received_sack'
          title='Processing a Received SACK'>
+<t>Each SACK an endpoint receives contains an a_rwnd value.
+This value represents the amount of buffer space the data receiver, at the time
+of transmitting the SACK, has left of its total receive buffer space
+(as specified in the INIT/INIT ACK).
+Using a_rwnd, Cumulative TSN Ack, and Gap Ack Blocks, the data sender can
+develop a representation of the peer's receive buffer space.</t>
+<t>One of the problems the data sender must take into account when
+processing a SACK is that a SACK can be received out of order.
+That is, a SACK sent by the data receiver can pass an earlier SACK and be
+received first by the data sender.
+If a SACK is received out of order, the data sender can develop an incorrect
+view of the peer's receive buffer space.</t>
+<t>Since there is no explicit identifier that can be used to detect out-of-order
+SACKs, the data sender must use heuristics to determine if a SACK is new.</t>
+<t>An endpoint SHOULD use the following rules to calculate the rwnd,
+using the a_rwnd value, the Cumulative TSN Ack, and Gap Ack Blocks in
+a received SACK.
+<list style='format %C)'>
+<t>At the establishment of the association, the endpoint initializes
+the rwnd to the Advertised Receiver Window Credit (a_rwnd) the peer specified
+in the INIT or INIT ACK.</t>
+<t>Any time a DATA chunk is transmitted (or retransmitted) to a peer, the
+endpoint subtracts the data size of the chunk from the rwnd of that peer.</t>
+<t>Any time a DATA chunk is marked for retransmission, either via T3-rtx timer
+expiration (<xref target='sec_handle_t3_rtx_expiration'/>) or
+via Fast Retransmit (<xref target='sec_fast_retransmit_on_gap_reports'/>),
+add the data size of those chunks to the rwnd.
+<vspace/>
+Note: If the implementation is maintaining a timer on each DATA chunk, then
+only DATA chunks whose timer expired would be marked for retransmission.</t>
+<t>Any time a SACK arrives, the endpoint performs the following:
+<list style='format %i)'>
+<t>If Cumulative TSN Ack is less than the Cumulative TSN Ack Point,
+then drop the SACK.
+Since Cumulative TSN Ack is monotonically increasing, a SACK whose
+Cumulative TSN Ack is less than the Cumulative TSN Ack Point indicates an
+out-of-order SACK.</t>
+<t>Set rwnd equal to the newly received a_rwnd minus the number of bytes still
+outstanding after processing the Cumulative TSN Ack and the Gap Ack Blocks.</t>
+<t>If the SACK is missing a TSN that was previously acknowledged via a
+Gap Ack Block (e.g., the data receiver reneged on the data), then consider
+the corresponding DATA that might be possibly missing:
+Count one miss indication towards Fast Retransmit as described in
+<xref target='sec_fast_retransmit_on_gap_reports'/>,
+and if no retransmit timer is running for the destination address to which the
+DATA chunk was originally transmitted, then T3-rtx is started for that
+destination address.</t>
+<t>If the Cumulative TSN Ack matches or exceeds the Fast Recovery exitpoint
+(<xref target='sec_fast_retransmit_on_gap_reports'/>),
+Fast Recovery is exited.</t>
+</list></t>
+</list></t>
 </section>
 </section>
-<section anchor='sec:management_of_retransission_timer'
+<section anchor='sec_management_of_retransission_timer'
          title='Management of Retransmission Timer'>
-<section anchor='sec:rto_calculation'
+<t>An SCTP endpoint uses a retransmission timer T3-rtx to ensure data
+delivery in the absence of any feedback from its peer.
+The duration of this timer is referred to as RTO (retransmission timeout).</t>
+<t>When an endpoint's peer is multi-homed, the endpoint will calculate a
+separate RTO for each different destination transport address of its
+peer endpoint.</t>
+<t>The computation and management of RTO in SCTP follow closely how TCP
+manages its retransmission timer.
+To compute the current RTO, an endpoint maintains two state variables per
+destination transport address: SRTT (smoothed round-trip time) and
+RTTVAR (round-trip time variation).</t>
+
+<section anchor='sec_rto_calculation'
          title='RTO Calculation'>
+<t>The rules governing the computation of SRTT, RTTVAR, and RTO are as follows:
+<list style='format C%d)'>
+<t>Until an RTT measurement has been made for a packet sent to the given
+destination transport address, set RTO to the protocol parameter
+'RTO.Initial'.</t>
+<t>When the first RTT measurement R is made, set
+<vspace blankLines='1'/>
+SRTT &lt;- R,
+<vspace blankLines='1'/>
+RTTVAR &lt;- R/2, and
+<vspace blankLines='1'/>
+RTO &lt;- SRTT + 4 * RTTVAR.</t>
+<t>When a new RTT measurement R' is made, set
+<vspace blankLines='1'/>
+RTTVAR &lt;- (1 - RTO.Beta) * RTTVAR + RTO.Beta * |SRTT - R'|
+<vspace blankLines='1'/>
+and
+<vspace blankLines='1'/>
+SRTT &lt;- (1 - RTO.Alpha) * SRTT + RTO.Alpha * R'
+<vspace blankLines='1'/>
+Note: The value of SRTT used in the update to RTTVAR is its
+value before updating SRTT itself using the second assignment.
+<vspace blankLines='1'/>
+After the computation, update RTO &lt;- SRTT + 4 * RTTVAR.</t>
+<t>When data is in flight and when allowed by rule C5 below, a new
+RTT measurement MUST be made each round trip.
+Furthermore, new RTT measurements SHOULD be made no more than once per
+round trip for a given destination transport address.
+There are two reasons for this recommendation:
+First, it appears that measuring more frequently often does not in practice
+yield any significant benefit [ALLMAN99];
+second, if measurements are made more often, then the values of RTO.Alpha and
+RTO.Beta in rule C3 above should be adjusted so that SRTT and RTTVAR still
+adjust to changes at roughly the same rate (in terms of how many round
+trips it takes them to reflect new values) as they would if making only one
+measurement per round-trip and using RTO.Alpha and RTO.Beta as given in rule C3.
+However, the exact nature of these adjustments remains a research issue.</t>
+<t>Karn's algorithm: RTT measurements MUST NOT be made using packets that
+were retransmitted (and thus for which it is ambiguous whether the reply was
+for the first instance of the chunk or for a later instance)
+<vspace blankLines='1'/>
+IMPLEMENTATION NOTE: RTT measurements should only be made using
+a chunk with TSN r if no chunk with TSN less than or equal to r
+is retransmitted since r is first sent.</t>
+<t>Whenever RTO is computed, if it is less than RTO.Min seconds then it is
+rounded up to RTO.Min seconds.
+The reason for this rule is that RTOs that do not have a high minimum value are
+susceptible to unnecessary timeouts [ALLMAN99].</t> <!-- FIXME MT: Reference -->
+<t>A maximum value may be placed on RTO provided it is at least
+RTO.max seconds.</t>
+</list></t>
+<t>There is no requirement for the clock granularity G used for computing
+RTT measurements and the different state variables, other than:
+<list style='format G%d)'>
+<t>Whenever RTTVAR is computed, if RTTVAR = 0, then adjust RTTVAR &lt;- G.</t>
+</list></t>
+<t>Experience [ALLMAN99] has shown that finer clock granularities (&lt;= 100 msec)
+perform somewhat better than more coarse granularities.</t> <!-- FIXME MT: Reference -->
+
 </section>
-<section anchor='sec:retransmission_timer_rules'
+<section anchor='sec_retransmission_timer_rules'
          title='Retransmission Timer Rules'>
+<t>The rules for managing the retransmission timer are as follows:
+<list style='format R%d)'>
+<t>Every time a DATA chunk is sent to any address (including a retransmission),
+if the T3-rtx timer of that address is not running, start it running so that
+it will expire after the RTO of that address.
+ The RTO used here is that obtained after any doubling due to previous
+T3-rtx timer expirations on the corresponding destination address as discussed
+in rule E2 below.</t>
+<t>Whenever all outstanding data sent to an address have been acknowledged,
+turn off the T3-rtx timer of that address.</t>
+<t>Whenever a SACK is received that acknowledges the DATA chunk with the
+earliest outstanding TSN for that address, restart the T3-rtx timer for that
+address with its current RTO (if there is still outstanding data on that
+address).</t>
+<t>Whenever a SACK is received missing a TSN that was previously acknowledged
+via a Gap Ack Block, start the T3-rtx for the destination address to which the
+DATA chunk was originally transmitted if it is not already running.</t>
+</list></t>
+<t>The following example shows the use of various timer rules (assuming
+that the receiver uses delayed acks).</t>
+<figure anchor='fig_timer_rule_examples'
+        title='Timer Rule Examples'>
+<artwork>
+<![CDATA[
+Endpoint A                                         Endpoint Z
+{App begins to send}
+Data [TSN=7,Strm=0,Seq=3] ------------> (ack delayed)
+(Start T3-rtx timer)
+                                        {App sends 1 message; strm 1}
+                                        (bundle ack with data)
+DATA [TSN=8,Strm=0,Seq=4] ----\     /-- SACK [TSN Ack=7,Block=0]
+                               \   /      DATA [TSN=6,Strm=1,Seq=2]
+                                \ /     (Start T3-rtx timer)
+                                 \
+                                / \
+(Restart T3-rtx timer)  <------/   \--> (ack delayed)
+(ack delayed)
+{send ack}
+SACK [TSN Ack=6,Block=0] --------------> (Cancel T3-rtx timer)
+                                        ..
+                                        (send ack)
+(Cancel T3-rtx timer)  <-------------- SACK [TSN Ack=8,Block=0]
+]]>
+</artwork>
+</figure>
 </section>
-<section anchor='sec:handle_t3_rtx_expiration'
+
+<section anchor='sec_handle_t3_rtx_expiration'
          title='Handle T3-rtx Expiration'>
+<t>Whenever the retransmission timer T3-rtx expires for a destination address,
+do the following:
+<list style='format E%d)'>
+<t>For the destination address for which the timer expires, adjust its ssthresh
+with rules defined in <xref target='sec_congestion_control_sub'/> and set
+the cwnd &lt;- MTU.</t>
+<t>For the destination address for which the timer expires, set
+RTO &lt;- RTO * 2 ("back off the timer").
+The maximum value discussed in rule C7 above (RTO.max) may be used to provide
+an upper bound to this doubling operation.</t>
+<t>Determine how many of the earliest (i.e., lowest TSN) outstanding
+DATA chunks for the address for which the T3-rtx has expired will fit into a
+single packet, subject to the MTU constraint for the path corresponding to the
+destination transport address to which the retransmission is being sent
+(this may be different from the address for which the timer expires;
+see <xref target='sec_multi_homed_sctp_endpoints'/>).
+Call this value K.
+Bundle and retransmit those K DATA chunks in a single packet to the destination
+endpoint.</t>
+<t>Start the retransmission timer T3-rtx on the destination address to which
+the retransmission is sent, if rule R1 above indicates to do so.
+The RTO to be used for starting T3-rtx should be the one for the destination
+address to which the retransmission is sent, which, when the receiver is
+multi-homed, may be different from the destination address for which the
+timer expired (see <xref target='sec_multi_homed_sctp_endpoints'/> below).</t>
+</list></t>
+<t>After retransmitting, once a new RTT measurement is obtained (which can
+happen only when new data has been sent and acknowledged, per rule C5,
+or for a measurement made from a HEARTBEAT;
+see <xref target='sec_path_heartbeat'/>), the computation in rule C3 is
+performed, including the computation of RTO, which may result in "collapsing"
+RTO back down after it has been subject to doubling (rule E2).</t>
+<t>Note: Any DATA chunks that were sent to the address for which the
+T3-rtx timer expired but did not fit in one MTU (rule E3 above) should be
+marked for retransmission and sent as soon as cwnd allows (normally, when a
+SACK arrives).</t>
+<t>The final rule for managing the retransmission timer concerns failover
+(see <xref target='sec_failover_from_an_inavtive_destination_address'/>):
+<list style='format F%d)'>
+<t>Whenever an endpoint switches from the current destination
+transport address to a different one, the current retransmission
+timers are left running.
+As soon as the endpoint transmits a packet containing DATA chunk(s) to the
+new transport address, start the timer on that transport address, using the
+RTO value of the destination address to which the data is being sent, if
+rule R1 indicates to do so.</t>
+</list></t>
 </section>
 </section>
-<section anchor='sec:multi_homed_sctp_endpoints'
+
+<section anchor='sec_multi_homed_sctp_endpoints'
          title='Multi-Homed SCTP Endpoints'>
-<section anchor='sec:failover_from_an_inavtive_destination_address'
+<t>An SCTP endpoint is considered multi-homed if there are more than one
+transport address that can be used as a destination address to reach that
+endpoint.</t>
+<t>Moreover, the ULP of an endpoint shall select one of the multiple
+destination addresses of a multi-homed peer endpoint as the primary
+path (see <xref target='sec_handle_address_parameters'/> and
+<xref target='sec_ulp_to_sctp'/> for details).</t>
+<t>By default, an endpoint SHOULD always transmit to the primary path,
+unless the SCTP user explicitly specifies the destination transport
+address (and possibly source transport address) to use.</t>
+<t>An endpoint SHOULD transmit reply chunks (e.g., SACK, HEARTBEAT ACK, etc.)
+to the same destination transport address from which it received the DATA or
+control chunk to which it is replying.
+This rule should also be followed if the endpoint is bundling DATA chunks
+together with the reply chunk.</t>
+<t>However, when acknowledging multiple DATA chunks received in packets
+from different source addresses in a single SACK, the SACK chunk may
+be transmitted to one of the destination transport addresses from
+which the DATA or control chunks being acknowledged were received.</t>
+<t>When a receiver of a duplicate DATA chunk sends a SACK to a multi-
+homed endpoint, it MAY be beneficial to vary the destination address
+and not use the source address of the DATA chunk.
+The reason is that receiving a duplicate from a multi-homed endpoint might
+indicate that the return path (as specified in the source address of the DATA
+chunk) for the SACK is broken.</t>
+<t>Furthermore, when its peer is multi-homed, an endpoint SHOULD try to
+retransmit a chunk that timed out to an active destination transport
+address that is different from the last destination address to which
+the DATA chunk was sent.</t>
+<t>Retransmissions do not affect the total outstanding data count.
+However, if the DATA chunk is retransmitted onto a different destination
+address, both the outstanding data counts on the new destination address and
+the old destination address to which the data chunk was last sent shall be
+adjusted accordingly.</t>
+<section anchor='sec_failover_from_an_inavtive_destination_address'
          title='Failover from an Inactive Destination Address'>
+<t>Some of the transport addresses of a multi-homed SCTP endxpoint may become
+inactive due to either the occurrence of certain error conditions
+(see <xref target='sec_path_failure_detection'/>) or adjustments from the
+SCTP user.</t>
+<t>When there is outbound data to send and the primary path becomes inactive
+(e.g., due to failures), or where the SCTP user explicitly requests to send data
+to an inactive destination transport address, before reporting an error to its
+ULP, the SCTP endpoint should try to send the data to an alternate active
+destination transport address if one exists.</t>
+<t>When retransmitting data that timed out, if the endpoint is multi-homed,
+it should consider each source-destination address pair in its
+retransmission selection policy.
+When retransmitting timed-out data, the endpoint should attempt to pick the
+most divergent source-destination pair from the original source-destination
+pair to which the packet was transmitted.</t>
+<t>Note: Rules for picking the most divergent source-destination pair
+are an implementation decision and are not specified within this document.</t>
 </section>
 </section>
-<section anchor='sec:stream_identifier_and_stream_sequence_number'
+<section anchor='sec_stream_identifier_and_stream_sequence_number'
          title='Stream Identifier and Stream Sequence Number'>
+<t>Every DATA chunk MUST carry a valid stream identifier.
+If an endpoint receives a DATA chunk with an invalid stream identifier, it
+shall acknowledge the reception of the DATA chunk following the
+normal procedure, immediately send an ERROR chunk with cause set to
+"Invalid Stream Identifier" (see Section 3.3.10), and discard the
+DATA chunk. <!-- MT FIME: Reference -->
+The endpoint may bundle the ERROR chunk in the same packet as the SACK as long
+as the ERROR follows the SACK.</t>
+<t>The Stream Sequence Number in all the streams MUST start from 0 when
+the association is established.
+Also, when the Stream Sequence Number reaches the value 65535 the next
+Stream Sequence Number MUST be set to 0.</t>
 </section>
-<section anchor='sec:ordered_and_unordered_delivery'
+<section anchor='sec_ordered_and_unordered_delivery'
          title='Ordered and Unordered Delivery'>
+<t>Within a stream, an endpoint MUST deliver DATA chunks received with
+the U flag set to 0 to the upper layer according to the order of
+their Stream Sequence Number.
+If DATA chunks arrive out of order of their Stream Sequence Number,
+the endpoint MUST hold the received DATA chunks from delivery to the ULP until
+they are reordered.</t>
+<t>However, an SCTP endpoint can indicate that no ordered delivery is
+required for a particular DATA chunk transmitted within the stream by
+setting the U flag of the DATA chunk to 1.</t>
+<t>When an endpoint receives a DATA chunk with the U flag set to 1, it
+must bypass the ordering mechanism and immediately deliver the data
+to the upper layer (after reassembly if the user data is fragmented
+by the data sender).</t>
+<t>This provides an effective way of transmitting "out-of-band" data in
+a given stream.
+Also, a stream can be used as an "unordered" stream by simply setting the
+U flag to 1 in all DATA chunks sent through that stream.</t>
+<t>IMPLEMENTATION NOTE: When sending an unordered DATA chunk, an implementation
+may choose to place the DATA chunk in an outbound packet that is at the head of
+the outbound transmission queue if possible.</t>
+<t>The 'Stream Sequence Number' field in a DATA chunk with U flag set to
+1 has no significance.
+The sender can fill it with arbitrary value, but the receiver MUST ignore
+the field.</t>
+<t>Note: When transmitting ordered and unordered data, an endpoint does
+not increment its Stream Sequence Number when transmitting a DATA chunk with
+U flag set to 1.</t>
 </section>
-<section anchor='sec:report_gaps_in_received_data_tsns'
+<section anchor='sec_report_gaps_in_received_data_tsns'
          title='Report Gaps in Received DATA TSNs'>
+<t>Upon the reception of a new DATA chunk, an endpoint shall examine the
+continuity of the TSNs received.
+If the endpoint detects a gap in the received DATA chunk sequence, it SHOULD
+send a SACK with Gap Ack Blocks immediately.
+The data receiver continues sending a SACK after receipt of each SCTP packet
+that doesn't fill the gap.</t>
+<t>Based on the Gap Ack Block from the received SACK, the endpoint can
+calculate the missing DATA chunks and make decisions on whether to
+retransmit them (see <xref target='sec_processing_of_received_sack'/>
+for details).</t>
+<t>Multiple gaps can be reported in one single SACK (see Section 3.3.4).</t><!-- MT FIXME: Reference-->
+<t>When its peer is multi-homed, the SCTP endpoint SHOULD always try to
+send the SACK to the same destination address from which the last
+DATA chunk was received.</t>
+<t>Upon the reception of a SACK, the endpoint MUST remove all DATA chunks that
+have been acknowledged by the SACK's Cumulative TSN Ack from its transmit queue.
+The endpoint MUST also treat all the DATA chunks with TSNs not included in the
+Gap Ack Blocks reported by the SACK as "missing".
+The number of "missing" reports for each outstanding DATA chunk MUST be
+recorded by the data sender in order to make retransmission decisions.
+See <xref target='sec_fast_retransmit_on_gap_reports'/> for details.</t>
+<t>The following example shows the use of SACK to report a gap.</t>
+<figure anchor='fig_report_gap_using_sack'
+        title='Reporting a Gap using SACK'>
+<artwork>
+<![CDATA[
+Endpoint A                                    Endpoint Z {App
+sends 3 messages; strm 0} DATA [TSN=6,Strm=0,Seq=2] ----------
+-----> (ack delayed) (Start T3-rtx timer)
+
+DATA [TSN=7,Strm=0,Seq=3] --------> X (lost)
+
+DATA [TSN=8,Strm=0,Seq=4] ---------------> (gap detected,
+                                            immediately send ack)
+                                /----- SACK [TSN Ack=6,Block=1,
+                               /             Start=2,End=2]
+                        <-----/ (remove 6 from out-queue,
+ and mark 7 as "1" missing report)
+]]>
+</artwork>
+</figure>
+<t>The maximum number of Gap Ack Blocks that can be reported within a
+single SACK chunk is limited by the current path MTU.
+When a single SACK cannot cover all the Gap Ack Blocks needed to be reported
+due to the MTU limitation, the endpoint MUST send only one SACK, reporting
+the Gap Ack Blocks from the lowest to highest TSNs, within the size
+limit set by the MTU, and leave the remaining highest TSN numbers
+unacknowledged.</t>
 </section>
-<section anchor='sec:crc32c_checksum_calculation'
+<section anchor='sec_crc32c_checksum_calculation'
          title='CRC32c Checksum Calculation'>
 <t>When sending an SCTP packet, the endpoint MUST strengthen the data integrity
 of the transmission by including the CRC32c checksum value calculated on the
@@ -883,7 +2287,7 @@ and one or more control or DATA chunks), the transmitter MUST
 <t>fill in the proper Verification Tag in the SCTP common header and initialize
 the checksum field to '0's,</t>
 <t>calculate the CRC32c checksum of the whole packet, including the SCTP common
-header and all the chunks (refer to <xref target='sec:crc32c'/> for details of
+header and all the chunks (refer to <xref target='sec_crc32c'/> for details of
 the CRC32c algorithm); and</t>
 <t>put the resultant value into the checksum field in the common header, and
 leave the rest of the bits unchanged.</t>
@@ -903,7 +2307,7 @@ discard them.</t>
 <t>Any hardware implementation SHOULD be done in a way that is verifiable by
 the software.</t>
 </section>
-<section anchor='sec:frag_reass'
+<section anchor='sec_frag_reass'
          title='Fragmentation and Reassembly'>
 <t>An endpoint MAY support fragmentation when sending DATA chunks, but
 it MUST support reassembly when receiving DATA chunks.
@@ -919,7 +2323,7 @@ However, in so doing, it MUST react just like an implementation that does
 NOT support fragmentation, i.e., it MUST reject sends that exceed the
 current Path MTU (P-MTU).</t>
 <t>IMPLEMENTATION NOTE: In this error case, the Send primitive discussed
-in <xref target='sec:ulp_to_sctp'/> would need to return an error to the
+in <xref target='sec_ulp_to_sctp'/> would need to return an error to the
 upper layer.</t>
 
 <t>If its peer is multi-homed, the endpoint shall choose a size no larger than
@@ -929,7 +2333,7 @@ addresses.</t>
 
 <t>Note: Once a message is fragmented, it cannot be re-fragmented.
 Instead, if the PMTU has been reduced, then IP fragmentation must be used.
-Please see <xref target='sec:path_mtu_discovery'/> for details of
+Please see <xref target='sec_path_mtu_discovery'/> for details of
 PMTU discovery.</t>
 
 <t>When determining when to fragment, the SCTP implementation MUST take
@@ -951,7 +2355,7 @@ to 1.</t>
 series to '10', the B/E bits of the last DATA chunk in the series to '01',
 and the B/E bits of all other DATA chunks in the series to '00'.</t>
 </list></t>
-<t>>An endpoint MUST recognize fragmented DATA chunks by examining the B/E bits
+<t>An endpoint MUST recognize fragmented DATA chunks by examining the B/E bits
 in each of the received DATA chunks, and queue the fragmented DATA chunks for
 reassembly.
 Once the user message is reassembled, SCTP shall pass the reassembled user
@@ -960,10 +2364,10 @@ dispatching.</t>
 <t>Note: If the data receiver runs out of buffer space while still waiting for
 more fragments to complete the reassembly of the message, it should dispatch
 part of its inbound message through a partial delivery API
-(see <xref target='sec:api'/>), freeing some of its receive buffer space so
+(see <xref target='sec_api'/>), freeing some of its receive buffer space so
 that the rest of the message may be received.</t>
 </section>
-<section anchor='sec:bundling'
+<section anchor='sec_bundling'
          title='Bundling'>
 <t>An endpoint bundles chunks by simply including multiple chunks in one
 outbound SCTP packet.
@@ -995,7 +2399,7 @@ any other chunks.</t>
 </section>
 </section>
 
-<section anchor='sec:congestion_control'
+<section anchor='sec_congestion_control'
          title='Congestion Control'>
 <t>Congestion control is one of the basic functions in SCTP.
 For some applications, it may be likely that adequate resources will be
@@ -1020,29 +2424,263 @@ We first list differences in protocol designs between TCP and SCTP, and then
 describe SCTP's congestion control scheme.
 The description will use the same terminology as in TCP congestion control
 whenever appropriate.</t>
-
 <t>SCTP congestion control is always applied to the entire association,
 and not to individual streams.</t>
 
-<section anchor='sec:sctp_differences_from_tcp_congestion_control'
+<section anchor='sec_sctp_differences_from_tcp_congestion_control'
          title='SCTP Differences from TCP Congestion Control'>
+<t>Gap Ack Blocks in the SCTP SACK carry the same semantic meaning as the
+TCP SACK.
+TCP considers the information carried in the SACK as advisory information only.
+SCTP considers the information carried in the Gap Ack Blocks in the SACK chunk
+as advisory.
+In SCTP, any DATA chunk that has been acknowledged by SACK, including DATA that
+arrived at the receiving end out of order, is not considered fully delivered
+until the Cumulative TSN Ack Point passes the TSN of the DATA chunk
+(i.e., the DATA chunk has been acknowledged by the Cumulative TSN Ack
+field in the SACK).
+Consequently, the value of cwnd controls the amount of outstanding data,
+rather than (as in the case of non-SACK TCP) the upper bound between the
+highest acknowledged sequence number and the latest DATA chunk that can be
+sent within the congestion window.
+SCTP SACK leads to different implementations of Fast Retransmit and Fast
+Recovery than non-SACK TCP.
+As an example, see [FALL96].</t> <!-- MT FIXME: Reference-->
+<t>The biggest difference between SCTP and TCP, however, is multi- homing.
+SCTP is designed to establish robust communication associations between
+two endpoints each of which may be reachable by more than one transport address.
+Potentially different addresses may lead to different data paths between the
+two endpoints;
+thus, ideally one may need a separate set of congestion control parameters for
+each of the paths.
+The treatment here of congestion control for multi-homed receivers is new with
+SCTP and may require refinement in the future.
+The current algorithms make the following assumptions:
+<list style='symbols'>
+<t>The sender usually uses the same destination address until being instructed
+by the upper layer to do otherwise; however, SCTP may change to an alternate
+destination in the event an address is marked inactive
+(see <xref target='sec_path_failure_detection'/>).
+Also, SCTP may retransmit to a different transport address than the original
+transmission.</t>
+<t>The sender keeps a separate congestion control parameter set for each of
+the destination addresses it can send to (not each source-destination pair but
+for each destination).
+The parameters should decay if the address is not used for a long enough time
+period.</t>
+<t>For each of the destination addresses, an endpoint does slow start upon
+the first transmission to that address.</t>
+</list></t>
+<t>Note: TCP guarantees in-sequence delivery of data to its upper-layer
+protocol within a single TCP session.
+This means that when TCP notices a gap in the received sequence number, it
+waits until the gap is filled before delivering the data that was received
+with sequence numbers higher than that of the missing data.
+On the other hand, SCTP can deliver data to its upper-layer protocol even if
+there is a gap in TSN if the Stream Sequence Numbers are in sequence for a
+particular stream (i.e., the missing DATA chunks are for a different stream)
+or if unordered delivery is indicated.
+Although this does not affect cwnd, it might affect rwnd calculation.</t>
 </section>
-<section anchor='sec:sctp_slow_start_and_congestion_avoidance'
+
+<section anchor='sec_sctp_slow_start_and_congestion_avoidance'
          title='SCTP Slow-Start and Congestion Avoidance'>
-<section anchor='sec:slow_start'
+<t>The slow-start and congestion avoidance algorithms MUST be used by an
+endpoint to control the amount of data being injected into the network.
+The congestion control in SCTP is employed in regard to the association, not
+to an individual stream.
+In some situations, it may be beneficial for an SCTP sender to be more
+conservative than the algorithms allow;
+however, an SCTP sender MUST NOT be more aggressive than the following
+algorithms allow.</t>
+<t>Like TCP, an SCTP endpoint uses the following three control variables
+to regulate its transmission rate.
+<list style='symbols'>
+<t>Receiver advertised window size (rwnd, in bytes), which is set by the
+receiver based on its available buffer space for incoming packets.
+<vspace/>
+Note: This variable is kept on the entire association.</t>
+<t>Congestion control window (cwnd, in bytes), which is adjusted by the sender
+based on observed network conditions.
+<vspace/>
+Note: This variable is maintained on a per-destination-address basis.</t>
+<t>Slow-start threshold (ssthresh, in bytes), which is used by the
+sender to distinguish slow-start and congestion avoidance phases.
+<vspace/>
+Note: This variable is maintained on a per-destination-address basis.</t>
+</list></t>
+<t>SCTP also requires one additional control variable, partial_bytes_acked,
+which is used during congestion avoidance phase to facilitate cwnd
+adjustment.</t>
+<t>Unlike TCP, an SCTP sender MUST keep a set of these control variables
+cwnd, ssthresh, and partial_bytes_acked for EACH destination address
+of its peer (when its peer is multi-homed).
+Only one rwnd is kept for the whole association (no matter if the peer is
+multi-homed or has a single address).</t>
+
+<section anchor='sec_slow_start'
          title='Slow-Start'>
+<t>Beginning data transmission into a network with unknown conditions or
+after a sufficiently long idle period requires SCTP to probe the
+network to determine the available capacity.
+The slow-start algorithm is used for this purpose at the beginning of a
+transfer, or after repairing loss detected by the retransmission timer.
+<list style='symbols'>
+<t>The initial cwnd before DATA transmission or after a sufficiently long idle
+period MUST be set to min(4*MTU, max (2*MTU, 4380 bytes)).</t>
+<t>The initial cwnd after a retransmission timeout MUST be no more than
+1*MTU.</t>
+<t>The initial value of ssthresh MAY be arbitrarily high (for example,
+implementations MAY use the size of the receiver advertised window).</t>
+<t>Whenever cwnd is greater than zero, the endpoint is allowed to have cwnd
+bytes of data outstanding on that transport address.</t>
+<t>When cwnd is less than or equal to ssthresh, an SCTP endpoint MUST
+use the slow-start algorithm to increase cwnd only if the current
+congestion window is being fully utilized, an incoming SACK advances the
+Cumulative TSN Ack Point, and the data sender is not in Fast Recovery.
+Only when these three conditions are met can the cwnd be increased;
+otherwise, the cwnd MUST not be increased.
+If these conditions are met, then cwnd MUST be increased by, at most, the
+lesser of
+1) the total size of the previously outstanding DATA chunk(s) acknowledged, and
+2) the destination's path MTU.
+This upper bound protects against the ACK-Splitting attack outlined in
+[SAVAGE99].</t> <!-- MT FIXME: Reference -->
+</list></t>
+<t>In instances where its peer endpoint is multi-homed, if an endpoint
+receives a SACK that advances its Cumulative TSN Ack Point, then it
+should update its cwnd (or cwnds) apportioned to the destination
+addresses to which it transmitted the acknowledged data.
+However, if the received SACK does not advance the Cumulative TSN Ack Point,
+the endpoint MUST NOT adjust the cwnd of any of the destination addresses.</t>
+<t>Because an endpoint's cwnd is not tied to its Cumulative TSN Ack Point,
+as duplicate SACKs come in, even though they may not advance the
+Cumulative TSN Ack Point an endpoint can still use them to clock out new data.
+That is, the data newly acknowledged by the SACK diminishes the amount of data
+now in flight to less than cwnd, and so the current, unchanged value of cwnd
+now allows new data to be sent.
+On the other hand, the increase of cwnd must be tied to the
+Cumulative TSN Ack Point advancement as specified above.
+Otherwise, the duplicate SACKs will not only clock out new data, but also will
+adversely clock out more new data than what has just left the network, during
+a time of possible congestion.</t>
+<t><list style='symbols'>
+<t>When the endpoint does not transmit data on a given transport address,
+the cwnd of the transport address should be adjusted to max(cwnd/2, 4*MTU)
+per RTO.</t>
+</list></t>
 </section>
-<section anchor='sec:congestion_avoidance'
+<section anchor='sec_congestion_avoidance'
          title='Congestion Avoidance'>
+<t>When cwnd is greater than ssthresh, cwnd should be incremented by 1*MTU per
+RTT if the sender has cwnd or more bytes of data outstanding for the
+corresponding transport address.</t>
+<t>In practice, an implementation can achieve this goal in the following way:
+<list style='symbols'>
+<t>partial_bytes_acked is initialized to 0.</t>
+<t>Whenever cwnd is greater than ssthresh, upon each SACK arrival that advances
+the Cumulative TSN Ack Point, increase partial_bytes_acked by the total number
+of bytes of all new chunks acknowledged in that SACK including chunks
+acknowledged by the new Cumulative TSN Ack and by Gap Ack Blocks.</t>
+<t>When partial_bytes_acked is equal to or greater than cwnd and before the
+arrival of the SACK the sender had cwnd or more bytes of data outstanding
+(i.e., before arrival of the SACK, flightsize was greater than or equal to
+cwnd), increase cwnd by MTU, and reset partial_bytes_acked to
+(partial_bytes_acked - cwnd).</t>
+<t>Same as in the slow start, when the sender does not transmit DATA on a given
+transport address, the cwnd of the transport address should be adjusted to
+max(cwnd / 2, 4*MTU) per RTO.</t>
+<t>When all of the data transmitted by the sender has been acknowledged by the
+receiver, partial_bytes_acked is initialized to 0.</t>
+</list></t>
 </section>
-<section anchor='sec:congestion_control_sub'
+<section anchor='sec_congestion_control_sub'
          title='Congestion Control'>
+<t>Upon detection of packet losses from SACK
+(see <xref target='sec_fast_retransmit_on_gap_reports'/>), an endpoint should
+do the following:
+<list style='empty'>
+<t>ssthresh = max(cwnd/2, 4*MTU)</t>
+<t>cwnd = ssthresh</t>
+<t>partial_bytes_acked = 0</t>
+</list></t>
+<t>Basically, a packet loss causes cwnd to be cut in half.</t>
+
+<t>When the T3-rtx timer expires on an address, SCTP should perform slow start
+by:
+<list style='empty'>
+<t>ssthresh = max(cwnd/2, 4*MTU)</t>
+<t>cwnd = 1*MTU</t>
+</list>
+and ensure that no more than one SCTP packet will be in flight for that address
+until the endpoint receives acknowledgement for successful delivery of data to
+that address.</t>
 </section>
-<section anchor='sec:fast_retransmit_on_gap_reports'
+<section anchor='sec_fast_retransmit_on_gap_reports'
          title='Fast Retransmit on Gap Reports'>
+<t>In the absence of data loss, an endpoint performs delayed acknowledgement.
+However, whenever an endpoint notices a hole in the arriving TSN sequence, it
+SHOULD start sending a SACK back every time a packet arrives carrying data
+until the hole is filled.</t>
+<t>Whenever an endpoint receives a SACK that indicates that some TSNs are
+missing, it SHOULD wait for two further miss indications (via subsequent SACKs
+for a total of three missing reports) on the same TSNs before taking action
+with regard to Fast Retransmit.</t>
+<t>Miss indications SHOULD follow the HTNA (Highest TSN Newly Acknowledged)
+algorithm.
+For each incoming SACK, miss indications are incremented only for missing TSNs
+prior to the highest TSN newly acknowledged in the SACK.
+A newly acknowledged DATA chunk is one not previously acknowledged in a SACK.
+If an endpoint is in Fast Recovery and a SACK arrives that advances the
+Cumulative TSN Ack Point, the miss indications are incremented for all TSNs
+reported missing in the SACK.</t>
+<t>When the third consecutive miss indication is received for a TSN(s),
+the data sender shall do the following:
+<list style='format %d)'>
+<t>Mark the DATA chunk(s) with three miss indications for retransmission.</t>
+<t>If not in Fast Recovery, adjust the ssthresh and cwnd of the destination
+address(es) to which the missing DATA chunks were last sent, according to the
+formula described in <xref target='sec_congestion_control_sub'/>.</t>
+<t>Determine how many of the earliest (i.e., lowest TSN) DATA chunks marked
+for retransmission will fit into a single packet, subject to constraint of the
+path MTU of the destination transport address to which the packet is being sent.
+Call this value K.
+Retransmit those K DATA chunks in a single packet.
+When a Fast Retransmit is being performed, the sender SHOULD ignore the value
+of cwnd and SHOULD NOT delay retransmission for this single packet.</t>
+<t>Restart the T3-rtx timer only if the last SACK acknowledged the lowest
+outstanding TSN number sent to that address, or the endpoint is retransmitting
+the first outstanding DATA chunk sent to that address.</t>
+<t>Mark the DATA chunk(s) as being fast retransmitted and thus ineligible for a
+subsequent Fast Retransmit.
+Those TSNs marked for retransmission due to the Fast-Retransmit algorithm that
+did not fit in the sent datagram carrying K other TSNs are also marked as
+ineligible for a subsequent Fast Retransmit.
+However, as they are marked for retransmission they will be retransmitted
+later on as soon as cwnd allows.</t>
+<t>If not in Fast Recovery, enter Fast Recovery and mark the highest
+outstanding TSN as the Fast Recovery exit point.
+When a SACK acknowledges all TSNs up to and including this exit point, Fast
+Recovery is exited.
+While in Fast Recovery, the ssthresh and cwnd SHOULD NOT change for any
+destinations due to a subsequent Fast Recovery event (i.e., one SHOULD NOT
+reduce the cwnd further due to a subsequent Fast Retransmit).</t>
+</list></t>
+<t>Note: Before the above adjustments, if the received SACK also acknowledges
+new DATA chunks and advances the Cumulative TSN Ack Point, the cwnd adjustment
+rules defined in <xref target='sec_slow_start'/> and
+<xref target='sec_congestion_avoidance'/> must be applied first.</t>
+<t>A straightforward implementation of the above keeps a counter for each
+TSN hole reported by a SACK.
+The counter increments for each consecutive SACK reporting the TSN hole.
+After reaching 3 and starting the Fast-Retransmit procedure, the counter
+resets to 0.</t>
+<t>Because cwnd in SCTP indirectly bounds the number of outstanding TSN's,
+the effect of TCP Fast Recovery is achieved automatically with no adjustment
+to the congestion control window size.</t>
 </section>
 </section>
-<section anchor='sec:path_mtu_discovery'
+<section anchor='sec_path_mtu_discovery'
          title='Path MTU Discovery'>
 <t><xref target='RFC4821'/>, <xref target='RFC1981'/>, and
 <xref target='RFC1191'/> specify "Packetization Layer Path MTU Discovery",
@@ -1070,9 +2708,9 @@ without encountering IP fragmentation.</t>
 </section>
 </section>
 
-<section anchor='sec:fault_management'
+<section anchor='sec_fault_management'
          title='Fault Management'>
-<section anchor='sec:endpoint_failure_detection'
+<section anchor='sec_endpoint_failure_detection'
          title='Endpoint Failure Detection'>
 <t>An endpoint shall keep a counter on the total number of consecutive
 retransmissions to its peer (this includes retransmissions to all the
@@ -1092,7 +2730,7 @@ endpoint is acknowledged (by the reception of a SACK) or a HEARTBEAT
 ACK is received from the peer endpoint.</t>
 </section>
 
-<section anchor='sec:path_failure_detection'
+<section anchor='sec_path_failure_detection'
          title='Path Failure Detection'>
 <t>When its peer endpoint is multi-homed, an endpoint should keep an
 error counter for each of the destination transport addresses of the
@@ -1132,9 +2770,9 @@ inactive, only ONE transport address SHOULD be chosen and used as the new
 destination transport address.</t>
 </section>
 
-<section anchor='sec:path_heartbeat'
+<section anchor='sec_path_heartbeat'
          title='Path Heartbeat'>
-<t>>By default, an SCTP endpoint SHOULD monitor the reachability of the
+<t>By default, an SCTP endpoint SHOULD monitor the reachability of the
 idle destination transport address(es) of its peer by sending a
 HEARTBEAT chunk periodically to the destination transport address(es).
 HEARTBEAT sending MAY begin upon reaching the ESTABLISHED state and is
@@ -1189,7 +2827,7 @@ destination address is marked as active due to the reception of the latest
 HEARTBEAT ACK.
 The receiver of the HEARTBEAT ACK must also clear the association overall error
 count as well (as defined in
-<xref target='sec:endpoint_failure_detection'/>).</t>
+<xref target='sec_endpoint_failure_detection'/>).</t>
 <t>The receiver of the HEARTBEAT ACK should also perform an RTT measurement for
 that destination transport address using the time value carried in the
 HEARTBEAT ACK chunk.</t>
@@ -1218,11 +2856,11 @@ If the HEARTBEAT is disabled, only sending DATA to the association will discover
 a lost ABORT from the peer.</t>
 </section>
 
-<section anchor='sec:handle_out_of_the_blue_packets'
+<section anchor='sec_handle_out_of_the_blue_packets'
          title='Handle "Out of the Blue" Packets'>
 <t>An SCTP packet is called an "out of the blue" (OOTB) packet if it is
 correctly formed (i.e., passed the receiver's CRC32c check;
-see <xref target='sec:crc32c_checksum_calculation'/>),
+see <xref target='sec_crc32c_checksum_calculation'/>),
 but the receiver is not able to identify the association to which this
 packet belongs.</t>
 <t>The receiver of an OOTB packet MUST do the following:
@@ -1234,14 +2872,14 @@ Otherwise,</t>
 discard the OOTB packet and take no further action.
 Otherwise,</t>
 <t>If the packet contains an INIT chunk with a Verification Tag set
-to '0', process it as described in <xref target='sec:normal_establishment'/>.
+to '0', process it as described in <xref target='sec_normal_establishment'/>.
 If, for whatever reason, the INIT cannot be processed normally and an ABORT
 has to be sent in response, the Verification Tag of the packet containing the
 ABORT chunk MUST be the Initiate Tag of the received INIT chunk, and the T bit
 of the ABORT chunk has to be set to 0, indicating that the Verification Tag
 is NOT reflected.</t>
 <t>If the packet contains a COOKIE ECHO in the first chunk, process it as
-described in <xref target='sec:normal_establishment'/>.
+described in <xref target='sec_normal_establishment'/>.
 Otherwise,</t>
 <t>If the packet contains a SHUTDOWN ACK chunk, the receiver should respond to
 the sender of the OOTB packet with a SHUTDOWN COMPLETE.
@@ -1266,14 +2904,14 @@ OOTB packet and take no further action.</t>
 </list></t>
 </section>
 
-<section anchor='sec:verification_tag'
+<section anchor='sec_verification_tag'
          title='Verification Tag'>
 <t>The Verification Tag rules defined in this section apply when sending or
 receiving SCTP packets that do not contain an INIT, SHUTDOWN COMPLETE,
 COOKIE ECHO (see Section 5.1), ABORT, or SHUTDOWN ACK chunk.
 The rules for sending and receiving SCTP packets containing one of these chunk
 types are discussed separately in
-<xref target='sec:exceptions_in_verification_tag_rules'/>.</t>
+<xref target='sec_exceptions_in_verification_tag_rules'/>.</t>
 <t>When sending an SCTP packet, the endpoint MUST fill in the Verification Tag
 field of the outbound packet with the tag value in the Initiate Tag parameter
 of the INIT or INIT ACK received from its peer.</t>
@@ -1282,9 +2920,9 @@ the Verification Tag field of the received SCTP packet matches its own tag.
 If the received Verification Tag value does not match the receiver's own tag
 value, the receiver shall silently discard the packet and shall not process it
 any further except for those cases listed in
-<xref target='sec:exceptions_in_verification_tag_rules'/> below.</t>
+<xref target='sec_exceptions_in_verification_tag_rules'/> below.</t>
 
-<section anchor='sec:exceptions_in_verification_tag_rules'
+<section anchor='sec_exceptions_in_verification_tag_rules'
          title='Exceptions in Verification Tag Rules'>
 <t><list style='hanging'>
 <t hangText='A) Rules for packet carrying INIT'>
@@ -1301,7 +2939,7 @@ Otherwise, the receiver MUST silently discard the packet.</t>
 packet with the destination endpoint's tag value, if it is known.</t>
 <t>If the ABORT is sent in response to an OOTB packet, the endpoint MUST follow
 the procedure described in
-<xref target='sec:handle_out_of_the_blue_packets'/>.</t>
+<xref target='sec_handle_out_of_the_blue_packets'/>.</t>
 <t>The receiver of an ABORT MUST accept the packet if the Verification Tag field
 of the packet matches its own tag and the T bit is not set OR if it is set to
 its peer's tag and the T bit is set in the Chunk Flags.
@@ -1329,12 +2967,12 @@ SHUTDOWN-ACK-SENT state.</t>
 <t>When sending a COOKIE ECHO, the endpoint MUST use the value of the
 Initiate Tag received in the INIT ACK.</t>
 <t>The receiver of a COOKIE ECHO follows the procedures in
-<xref target='sec:assoc_initialization'/>.</t>
+<xref target='sec_assoc_initialization'/>.</t>
 </list></t>
 <t hangText='E) Rules for packet carrying a SHUTDOWN ACK'>
 <list style='symbols'>
 <t>If the receiver is in COOKIE-ECHOED or COOKIE-WAIT state the procedures
-in <xref target='sec:handle_out_of_the_blue_packets'/> SHOULD be followed;
+in <xref target='sec_handle_out_of_the_blue_packets'/> SHOULD be followed;
 in other words, it should be treated as an Out Of The Blue packet.</t>
 </list></t>
 </list></t>
@@ -1342,7 +2980,7 @@ in other words, it should be treated as an Out Of The Blue packet.</t>
 </section>
 </section>
 
-<section anchor='sec:assoc_termination'
+<section anchor='sec_assoc_termination'
          title='Termination of Association'>
 <t>An endpoint should terminate its association when it exits from service.
 An association can be terminated by either abort or shutdown.
@@ -1356,7 +2994,7 @@ closed.
 When either endpoint performs a shutdown, the association on each peer will
 stop accepting new data from its user and only deliver data in queue at the time
 of sending or receiving the SHUTDOWN chunk.</t>
-<section anchor='sec:abort_of_an_association'
+<section anchor='sec_abort_of_an_association'
          title='Abort of an Association'>
 <t>When an endpoint decides to abort an existing association, it MUST send an
 ABORT chunk to its peer endpoint.
@@ -1366,18 +3004,18 @@ If the association is aborted on request of the upper layer, a
 User-Initiated Abort error cause (see Section 3.3.10.12) SHOULD be present in
 the ABORT chunk.</t>
 <t>An endpoint MUST NOT respond to any received packet that contains an ABORT
-chunk (also see <xref target='sec:handle_out_of_the_blue_packets'/>).</t>
+chunk (also see <xref target='sec_handle_out_of_the_blue_packets'/>).</t>
 <t>An endpoint receiving an ABORT MUST apply the special Verification Tag check
-rules described in <xref target='sec:exceptions_in_verification_tag_rules'/>.</t>
+rules described in <xref target='sec_exceptions_in_verification_tag_rules'/>.</t>
 <t>After checking the Verification Tag, the receiving endpoint MUST remove the
 association from its record and SHOULD report the termination to its upper
 layer.
 If a User-Initiated Abort error cause is present in the ABORT chunk, the Upper
 Layer Abort Reason SHOULD be made available to the upper layer.</t>
 </section>
-<section anchor='sec:shutdown_of_an_association'
+<section anchor='sec_shutdown_of_an_association'
          title='Shutdown of an Association'>
-<t>Using the SHUTDOWN primitive (see <xref target='sec:ulp_to_sctp'/>), the
+<t>Using the SHUTDOWN primitive (see <xref target='sec_ulp_to_sctp'/>), the
 upper layer of an endpoint in an association can gracefully close the
 association.
 This will allow all outstanding DATA chunks from the peer of the
@@ -1393,7 +3031,7 @@ sequential TSN it has received from the peer.
 It shall then start the T2-shutdown timer and enter the SHUTDOWN-SENT state.
 If the timer expires, the endpoint must resend the SHUTDOWN with the updated
 last sequential TSN received from its peer.</t>
-<t>The rules in <xref target='sec:management_of_retransission_timer'/> MUST be
+<t>The rules in <xref target='sec_management_of_retransission_timer'/> MUST be
 followed to determine the proper timer value for T2-shutdown.
 To indicate any gaps in TSN, the endpoint may also bundle a SACK with the
 SHUTDOWN chunk in the same SCTP packet.</t>
@@ -1418,7 +3056,7 @@ a SHUTDOWN in response to a ULP request, and should discard subsequent
 SHUTDOWN chunks.</t>
 <t>If there are still outstanding DATA chunks left, the SHUTDOWN receiver MUST
 continue to follow normal data transmission procedures defined in
-<xref target='sec:user_data_transfer'/>, until all outstanding DATA chunks are
+<xref target='sec_user_data_transfer'/>, until all outstanding DATA chunks are
 acknowledged; however, the SHUTDOWN receiver MUST NOT accept new data from its
 SCTP user.</t>
 <t>While in the SHUTDOWN-SENT state, the SHUTDOWN sender MUST immediately
@@ -1469,7 +3107,7 @@ SHUTDOWN ACK with a stand-alone SHUTDOWN COMPLETE in an SCTP packet with the
 Verification Tag field of its common header set to the same tag that was
 received in the SHUTDOWN ACK packet.
 This is considered an Out of the Blue packet as defined in
-<xref target='sec:handle_out_of_the_blue_packets'/>.
+<xref target='sec_handle_out_of_the_blue_packets'/>.
 The sender of the INIT lets T1-init continue running and remains in the
 COOKIE-WAIT or COOKIE-ECHOED state.
 Normal T1-init timer expiration will cause the INIT or COOKIE chunk to be
@@ -1486,19 +3124,19 @@ and remove all record of the association.</t>
 </section>
 </section>
 
-<section anchor='sec:api'
+<section anchor='sec_api'
          title='Interface with Upper Layer'>
-<section anchor='sec:ulp_to_sctp'
+<section anchor='sec_ulp_to_sctp'
          title='ULP-to-SCTP'>
 </section>
-<section anchor='sec:sctp_to_ulp'
+<section anchor='sec_sctp_to_ulp'
          title='SCTP-to-ULP'>
 </section>
 </section>
 
-<section anchor='sec:security'
+<section anchor='sec_security'
          title='Security Considerations'>
-<section anchor='sec:security_objectives'
+<section anchor='sec_security_objectives'
          title='Security Objectives'>
 <t>As a common transport protocol designed to reliably carry time-sensitive
 user messages, such as billing or signaling messages for telephony services,
@@ -1555,7 +3193,7 @@ If ESP is used to protect confidentiality of SCTP traffic, an ESP cryptographic
 transform that includes cryptographic integrity protection MUST be used, because
 if there is a confidentiality threat there will also be a strong integrity
 threat.</t>
-<t>>Whenever ESP is in use, application-level encryption is not generally
+<t>Whenever ESP is in use, application-level encryption is not generally
 required.</t>
 <t>Regardless of where confidentiality is provided, the Internet Key
 Exchange Protocol version 2 (IKEv2) <xref target='RFC4306'/> SHOULD be used for
@@ -1595,7 +3233,7 @@ of new work.</t>
 service.</t>
 <t>not responding to unexpected packets sent to non-unicast addresses.</t>
 </list></t>
-<t>>Network equipment should be capable of generating an alarm and log if a
+<t>Network equipment should be capable of generating an alarm and log if a
 suspicious increase in traffic occurs.
 The log should provide information such as the identity of the incoming link
 and source address(es) used, which will help the network or SCTP system operator
@@ -1677,14 +3315,14 @@ or terminating the association as a result, based on local policy.</t>
 </section>
 </section>
 
-<section anchor='sec:sctp_interaction_with_firewalls'
+<section anchor='sec_sctp_interaction_with_firewalls'
          title='SCTP Interactions with Firewalls'>
 <t>It is helpful for some firewalls if they can inspect just the first
 fragment of a fragmented SCTP packet and unambiguously determine whether it
 corresponds to an INIT chunk (for further information, please refer to
 <xref target='RFC1858'/>).
 Accordingly, we stress the requirements, stated in
-<xref target='sec:sctp_common_header_field_desriptions'/>, that
+<xref target='sec_sctp_common_header_field_desriptions'/>, that
 (1) an INIT chunk MUST NOT be bundled with any other chunk in a packet, and
 (2) a packet containing an INIT chunk MUST have a zero Verification Tag.
 Furthermore, we require that the receiver of an INIT chunk MUST enforce these
@@ -1693,13 +3331,13 @@ bundled with other chunks or has a non-zero verification tag and contains an
 INIT-chunk.</t>
 </section>
 
-<section anchor='sec:protection_of_non_sctp_capable_hosts'
+<section anchor='sec_protection_of_non_sctp_capable_hosts'
          title='Protection of Non-SCTP-Capable Hosts'>
 
 <t>To provide a non-SCTP-capable host with the same level of protection
 against attacks as for SCTP-capable ones, all SCTP stacks MUST implement the
-ICMP handling described in <xref target='sec:icmp'/>.</t>
-<t>>When an SCTP stack receives a packet containing multiple control or DATA
+ICMP handling described in <xref target='sec_icmp'/>.</t>
+<t>When an SCTP stack receives a packet containing multiple control or DATA
 chunks and the processing of the packet requires the sending of
 multiple chunks in response, the sender of the response chunk(s) MUST NOT send
 more than one packet.
@@ -1724,25 +3362,25 @@ to reduce the possibility of byte amplification attacks.</t>
 </section>
 </section>
 
-<section anchor='sec:network_management'
+<section anchor='sec_network_management'
          title='Network Management Considerations'>
 <t>The MIB module for SCTP defined in <xref target='RFC3873'/> applies for the
 version of the protocol specified in this document.</t>
 </section>
 
-<section anchor='sec:tcb_parameter'
+<section anchor='sec_tcb_parameter'
          title='Recommended Transmission Control Block (TCB) Parameters'>
 </section>
 
-<section anchor='sec:iana'
+<section anchor='sec_iana'
          title='IANA Considerations'>
 </section>
 
-<section anchor='sec:parameter_values'
+<section anchor='sec_parameter_values'
          title='Suggested SCTP Protocol Parameter Values'>
 </section>
 
-<section anchor='sec:acknowledgements'
+<section anchor='sec_acknowledgements'
          title='Acknowledgements'>
 </section>
 
@@ -1751,6 +3389,7 @@ version of the protocol specified in this document.</t>
 <back>
 
 <references title='Normative References'>
+<?rfc include="reference.RFC.1122" ?>
 <?rfc include="reference.RFC.1191" ?>
 <?rfc include="reference.RFC.1981" ?>
 <?rfc include="reference.RFC.1982" ?>
@@ -1765,20 +3404,22 @@ version of the protocol specified in this document.</t>
 <references title='Informative References'>
 <?rfc include="reference.RFC.0768" ?>
 <?rfc include="reference.RFC.0793" ?>
+<?rfc include="reference.RFC.0813" ?>
 <?rfc include="reference.RFC.1858" ?>
 <?rfc include="reference.RFC.2104" ?>
 <?rfc include="reference.RFC.2196" ?>
 <?rfc include="reference.RFC.2522" ?>
+<?rfc include="reference.RFC.4086" ?>
 <?rfc include="reference.RFC.4895" ?>
 <?rfc include="reference.RFC.4960" ?>
 </references>
-<section anchor='sec:ecn'
+<section anchor='sec_ecn'
          title='Explicit Congestion Notification'>
 </section>
-<section anchor='sec:crc32c'
+<section anchor='sec_crc32c'
          title='CRC32c Checksum Calculation'>
 </section>
-<section anchor='sec:icmp'
+<section anchor='sec_icmp'
          title='ICMP Handling'>
 </section>
 </back>
