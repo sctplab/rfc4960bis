@@ -572,6 +572,7 @@ A chunk contains either control information or user data.</t>
 <t>The SCTP packet format is shown below:</t>
 <figure>
 <artwork align='center'>
+ 0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                        Common Header                          |
@@ -587,7 +588,7 @@ A chunk contains either control information or user data.</t>
 <t>Multiple chunks can be bundled into one SCTP packet up to the MTU
 size, except for the INIT, INIT ACK, and SHUTDOWN COMPLETE chunks.
 These chunks MUST NOT be bundled with any other chunk in a packet.
-See <xref target='sec_bundling'/>. for more details on chunk bundling.</t>
+See <xref target='sec_bundling'/> for more details on chunk bundling.</t>
 <t>If a user data message doesn't fit into one SCTP packet it can be
 fragmented into multiple chunks using the procedure defined in
 <xref target='sec_frag_reass'/>.</t>
@@ -885,7 +886,7 @@ chunk.</t>
          title='SCTP Chunk Definitions'>
 <t>This section defines the format of the different SCTP chunk types.</t>
 <section anchor='sec_data_chunk'
-         title='Payload Data (DATA)'>
+         title='Payload Data (DATA) (0)'>
 <t>The following format MUST be used for the DATA chunk:
 <figure>
 <artwork align='center'>
@@ -2055,7 +2056,7 @@ This MUST be repeated up to 'Max.Init.Retransmits' times.
 After that, the endpoint MUST abort the initialization process and report the
 error to the SCTP user.</t>
 <t>If the T1-cookie timer expires, the endpoint MUST retransmit COOKIE ECHO and
- estart the T1-cookie timer without changing state.
+restart the T1-cookie timer without changing state.
 This MUST be repeated up to 'Max.Init.Retransmits' times.
 After that, the endpoint MUST abort the initialization process and report the
 error to the SCTP user.</t>
@@ -2193,7 +2194,7 @@ range for either endpoint shall be 0 to min(local OS, remote MIS)-1.</t>
 <t>During the association initialization, an endpoint shall use the
 following rules to discover and collect the destination transport address(es)
 of its peer.
-<list style='format %c)'>
+<list style='format %C)'>
 <t>If there are no address parameters present in the received INIT or
 INIT ACK chunk, the endpoint shall take the source IP address from
 which the chunk arrives and record it, in combination with the
@@ -2505,7 +2506,7 @@ for a description of the Tie-Tags).</t>
 </section>
 
 <section anchor='sec_unexpected_init_in_states_other_than_closed_cookie_echoed'
-         title='Unexpected INIT in States Other than CLOSED, COOKIE-ECHOED'>
+         title='Unexpected INIT in States Other than CLOSED, COOKIE-ECHOED, COOKIE-WAIT, and SHUTDOWN-ACK-SENT'>
 <t>Unless otherwise stated, upon receipt of an unexpected INIT for this
 association, the endpoint shall generate an INIT ACK with a State Cookie.
 Before responding, the endpoint MUST check to see if the unexpected INIT adds
@@ -3425,7 +3426,7 @@ the old destination address to which the data chunk was last sent shall be
 adjusted accordingly.</t>
 <section anchor='sec_failover_from_an_inavtive_destination_address'
          title='Failover from an Inactive Destination Address'>
-<t>Some of the transport addresses of a multi-homed SCTP endxpoint may become
+<t>Some of the transport addresses of a multi-homed SCTP endpoint may become
 inactive due to either the occurrence of certain error conditions
 (see <xref target='sec_path_failure_detection'/>) or adjustments from the
 SCTP user.</t>
@@ -4190,7 +4191,7 @@ any further except for those cases listed in
 <section anchor='sec_exceptions_in_verification_tag_rules'
          title='Exceptions in Verification Tag Rules'>
 <t><list style='hanging'>
-<t hangText='A) Rules for packet carrying INIT'>
+<t hangText='A) Rules for packet carrying INIT:'>
 <list style='symbols'>
 <t>The sender MUST set the Verification Tag of the packet to 0.</t>
 <t>When an endpoint receives an SCTP packet with the Verification Tag set to 0,
@@ -4198,7 +4199,7 @@ it should verify that the packet contains only an INIT chunk.
 Otherwise, the receiver MUST silently discard the packet.</t>
 </list></t>
 
-<t hangText='B) Rules for packet carrying ABORT'>
+<t hangText='B) Rules for packet carrying ABORT:'>
 <list style='symbols'>
 <t>The endpoint MUST always fill in the Verification Tag field of the outbound
 packet with the destination endpoint's tag value, if it is known.</t>
@@ -4212,7 +4213,7 @@ Otherwise, the receiver MUST silently discard the packet and take no further
 action.</t>
 </list></t>
 
-<t hangText='C) Rules for packet carrying SHUTDOWN COMPLETE'>
+<t hangText='C) Rules for packet carrying SHUTDOWN COMPLETE:'>
 <list style='symbols'>
 <t>When sending a SHUTDOWN COMPLETE, if the receiver of the SHUTDOWN ACK has
 a TCB, then the destination endpoint's tag MUST be used, and the T bit MUST NOT
@@ -4227,14 +4228,14 @@ action.
 An endpoint MUST ignore the SHUTDOWN COMPLETE if it is not in the
 SHUTDOWN-ACK-SENT state.</t>
 </list></t>
-<t hangText='D) Rules for packet carrying a COOKIE ECHO'>
+<t hangText='D) Rules for packet carrying a COOKIE ECHO:'>
 <list style='symbols'>
 <t>When sending a COOKIE ECHO, the endpoint MUST use the value of the
 Initiate Tag received in the INIT ACK.</t>
 <t>The receiver of a COOKIE ECHO follows the procedures in
 <xref target='sec_assoc_initialization'/>.</t>
 </list></t>
-<t hangText='E) Rules for packet carrying a SHUTDOWN ACK'>
+<t hangText='E) Rules for packet carrying a SHUTDOWN ACK:'>
 <list style='symbols'>
 <t>If the receiver is in COOKIE-ECHOED or COOKIE-WAIT state the procedures
 in <xref target='sec_handle_out_of_the_blue_packets'/> SHOULD be followed;
@@ -4391,6 +4392,15 @@ and remove all record of the association.</t>
 
 <section anchor='sec_api'
          title='Interface with Upper Layer'>
+<t>The Upper Layer Protocols (ULPs) shall request services by passing primitives
+to SCTP and shall receive notifications from SCTP for various events.</t>
+<t>The primitives and notifications described in this section should be
+used as a guideline for implementing SCTP.
+The following functional description of ULP interface primitives is shown for
+illustrative purposes.
+Different SCTP implementations may have different ULP interfaces.
+However, all SCTPs must provide a certain minimum set of services to guarantee
+that all SCTP implementations can support the same protocol hierarchy.</t>
 
 <section anchor='sec_ulp_to_sctp'
          title='ULP-to-SCTP'>
@@ -5425,7 +5435,7 @@ An IESG-appointed Expert Reviewer supports IANA in evaluating SCTP port
 allocation requests.</t>
 
 <section anchor='sec_ietf_defined_chunks_extension'
-         title='IETF-defined Chunk Extension'>
+         title='IETF-Defined Chunk Extension'>
 <t>The assignment of new chunk parameter type codes is done through an
 IETF Consensus action, as defined in <xref target='RFC2434'/>.
 Documentation of the chunk parameter MUST contain the following information:
