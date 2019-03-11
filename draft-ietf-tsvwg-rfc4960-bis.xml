@@ -70,12 +70,15 @@ signaling messages over IP networks, but is capable of broader applications.</t>
 connectionless packet network such as IP.
 It offers the following services to its users:
 <list style="symbols">
-<t>acknowledged error-free non-duplicated transfer of user data,</t>
-<t>data fragmentation to conform to discovered path MTU size,</t>
+<t>acknowledged error-free non-duplicated transfer of user data,
+<vspace blankLines='1'/></t>
+<t>data fragmentation to conform to discovered path MTU size,
+<vspace blankLines='1'/></t>
 <t>sequenced delivery of user messages within multiple streams, with
-an option for order-of-arrival delivery of individual user messages,</t>
-<t>optional bundling of multiple user messages into a single SCTP packet,
-and</t>
+an option for order-of-arrival delivery of individual user messages,
+<vspace blankLines='1'/></t>
+<t>optional bundling of multiple user messages into a single SCTP packet, and
+<vspace blankLines='1'/></t>
 <t>network-level fault tolerance through supporting of multi-homing
 at either or both ends of an association.</t>
 </list></t>
@@ -109,14 +112,17 @@ order-of-transmission delivery of data.
 Some applications need reliable transfer without sequence maintenance,
 while others would be satisfied with partial ordering of the data.
 In both of these cases, the head-of-line blocking offered by TCP causes
-unnecessary delay.</t>
+unnecessary delay.
+<vspace blankLines='1'/></t>
 <t>The stream-oriented nature of TCP is often an inconvenience.
 Applications must add their own record marking to delineate their
 messages, and must make explicit use of the push facility to
 ensure that a complete message is transferred in a reasonable
-time.</t>
+time.
+<vspace blankLines='1'/></t>
 <t>The limited scope of TCP sockets complicates the task of providing
-highly-available data transfer capability using multi-homed hosts.</t>
+highly-available data transfer capability using multi-homed hosts.
+<vspace blankLines='1'/></t>
 <t>TCP is relatively vulnerable to denial-of-service attacks, such
 as SYN attacks.</t>
 </list></t>
@@ -178,29 +184,37 @@ key terms and their definitions.</t>
 <t><list style='hanging'>
 <t hangText='Active destination transport address:'>
 A transport address on a peer endpoint that a transmitting endpoint considers
-available for receiving user messages.</t>
+available for receiving user messages.
+<vspace blankLines='1'/></t>
 <t hangText='Bundling:'>
 An optional multiplexing operation, whereby more than one user message may
 be carried in the same SCTP packet.
-Each user message occupies its own DATA chunk.</t>
+Each user message occupies its own DATA chunk.
+<vspace blankLines='1'/></t>
 <t hangText='Chunk:'>
 A unit of information within an SCTP packet, consisting of a chunk header
-and chunk-specific content.</t>
+and chunk-specific content.
+<vspace blankLines='1'/></t>
 <t hangText='Congestion window (cwnd):'>
 An SCTP variable that limits the data, in number of bytes, a sender can send
 to a particular destination transport address before receiving an
-acknowledgement.</t>
+acknowledgement.
+<vspace blankLines='1'/></t>
 <t hangText='Cumulative TSN Ack Point:'>
 The TSN of the last DATA chunk acknowledged via the Cumulative TSN Ack
-field of a SACK.</t>
+field of a SACK.
+<vspace blankLines='1'/></t>
 <t hangText='Idle destination address:'>
 An address that has not had user messages sent to it within some length
-of time, normally the HEARTBEAT interval or greater.</t>
+of time, normally the HEARTBEAT interval or greater.
+<vspace blankLines='1'/></t>
 <t hangText='Inactive destination transport address:'>
 An address that is considered inactive due to errors and unavailable to
-transport user messages.</t>
+transport user messages.
+<vspace blankLines='1'/></t>
 <t hangText='Message = user message:'>
-Data submitted to SCTP by the Upper Layer Protocol (ULP).</t>
+Data submitted to SCTP by the Upper Layer Protocol (ULP).
+<vspace blankLines='1'/></t>
 <t hangText='Message Authentication Code (MAC):'>
 An integrity check mechanism based on cryptographic hash functions using a
 secret key.
@@ -210,32 +224,39 @@ transmitted between these parties.
 In SCTP, it is used by an endpoint to validate the State Cookie information
 that is returned from the peer in the COOKIE ECHO chunk.
 The term "MAC" has different meanings in different contexts.
-SCTP uses this term with the same meaning as in <xref target="RFC2104"/>.</t>
+SCTP uses this term with the same meaning as in <xref target="RFC2104"/>.
+<vspace blankLines='1'/></t>
 <t hangText='Network Byte Order:'>
-Most significant byte first, a.k.a., big endian.</t>
+Most significant byte first, a.k.a., big endian.
+<vspace blankLines='1'/></t>
 <t hangText='Ordered Message:'>
 A user message that is delivered in order with respect to all previous user
-messages sent within the stream on which the message was sent.</t>
+messages sent within the stream on which the message was sent.
+<vspace blankLines='1'/></t>
 <t hangText='Outstanding TSN (at an SCTP endpoint):'>
 A TSN (and the associated DATA chunk) that has been sent by the endpoint
-but for which it has not yet received an acknowledgement.</t>
+but for which it has not yet received an acknowledgement.
+<vspace blankLines='1'/></t>
 <t hangText='Path:'>
 The route taken by the SCTP packets sent by one SCTP endpoint to a specific
 destination transport address of its peer SCTP endpoint.
 Sending to different destination transport addresses does not necessarily
-guarantee getting separate paths.</t>
+guarantee getting separate paths.
+<vspace blankLines='1'/></t>
 <t hangText='Primary Path:'>
 The primary path is the destination and source address that will be put into
 a packet outbound to the peer endpoint by default.
 The definition includes the source address since an implementation MAY wish
 to specify both destination and source address to better control the return
 path taken by reply chunks and on which interface the packet is transmitted
-when the data sender is multi-homed.</t>
+when the data sender is multi-homed.
+<vspace blankLines='1'/></t>
 <t hangText='Receiver Window (rwnd):'>
 An SCTP variable a data sender uses to store the most recently calculated
 receiver window of its peer, in number of bytes.
 This gives the sender an indication of the space available in the receiver's
-inbound buffer.</t>
+inbound buffer.
+<vspace blankLines='1'/></t>
 <t hangText='SCTP association:'>
 A protocol relationship between SCTP endpoints, composed of the two SCTP
 endpoints and protocol state information including Verification Tags and the
@@ -243,7 +264,8 @@ currently active set of Transmission Sequence Numbers (TSNs), etc.
 An association can be uniquely identified by the transport addresses used by the
 endpoints in the association.
 Two SCTP endpoints MUST NOT have more than one SCTP association between
-them at any given time.</t>
+them at any given time.
+<vspace blankLines='1'/></t>
 <t hangText='SCTP endpoint:'>
 The logical sender/receiver of SCTP packets.
 On a multi-homed host, an SCTP endpoint is represented to its peers as
@@ -254,68 +276,83 @@ All transport addresses used by an SCTP endpoint must use the same
 port number, but can use multiple IP addresses.
 A transport address used by an SCTP endpoint must not be used by another SCTP
 endpoint.
-In other words, a transport address is unique to an SCTP endpoint.</t>
+In other words, a transport address is unique to an SCTP endpoint.
+<vspace blankLines='1'/></t>
 <t hangText='SCTP packet (or packet):'>
 The unit of data delivery across the interface between SCTP and the
 connectionless packet network (e.g., IP).
 An SCTP packet includes the common SCTP header, possible SCTP control chunks,
-and user data encapsulated within SCTP DATA chunks.</t>
+and user data encapsulated within SCTP DATA chunks.
+<vspace blankLines='1'/></t>
 <t hangText='SCTP user application (SCTP user):'>
 The logical higher-layer application entity which uses the services of SCTP,
-also called the Upper-Layer Protocol (ULP).</t>
+also called the Upper-Layer Protocol (ULP).
+<vspace blankLines='1'/></t>
 <t hangText='Slow-Start Threshold (ssthresh):'>
 An SCTP variable.
 This is the threshold that the endpoint will use to determine whether to
 perform slow start or congestion avoidance on a particular destination
 transport address.
-Ssthresh is in number of bytes.</t>
+Ssthresh is in number of bytes.
+<vspace blankLines='1'/></t>
 <t hangText='Stream:'>
 A unidirectional logical channel established from one to
 another associated SCTP endpoint, within which all user messages
 are delivered in sequence except for those submitted to the
-unordered delivery service.
-Note: The relationship between stream numbers in opposite directions
+unordered delivery service.</t>
+</list></t>
+<!-- FIXME MT: This is broken -->
+<t>Note: The relationship between stream numbers in opposite directions
 is strictly a matter of how the applications use them.  It is the
 responsibility of the SCTP user to create and manage these
 correlations if they are so desired.</t>
+<t><list style='hanging'>
 <t hangText='Stream Sequence Number:'>
 A 16-bit sequence number used internally by SCTP to ensure sequenced delivery
 of the user messages within a given stream.
-One Stream Sequence Number is attached to each user message.</t>
+One Stream Sequence Number is attached to each user message.
+<vspace blankLines='1'/></t>
 <t hangText='Tie-Tags:'>
 Two 32-bit random numbers that together make a 64-bit nonce.
 These tags are used within a State Cookie and TCB so that a newly restarting
 association can be linked to the original association within the endpoint
 that did not restart and yet not reveal the true Verification Tags of an
-existing association.</t>
+existing association.
+<vspace blankLines='1'/></t>
 <t hangText='Transmission Control Block (TCB):'>
 An internal data structure created by an SCTP endpoint for each of its
 existing SCTP associations to other SCTP endpoints.
 TCB contains all the status and operational information for the endpoint
-to maintain and manage the corresponding association.</t>
+to maintain and manage the corresponding association.
+<vspace blankLines='1'/></t>
 <t hangText='Transmission Sequence Number (TSN):'>
 A 32-bit sequence number used internally by SCTP.
 One TSN is attached to each chunk containing user data to permit the
 receiving SCTP endpoint to acknowledge its receipt and detect duplicate
-deliveries.</t>
+deliveries.
+<vspace blankLines='1'/></t>
 <t hangText='Transport address:'>
 A transport address is traditionally defined by a network-layer address,
 a transport-layer protocol, and a transport-layer port number.
 In the case of SCTP running over IP, a transport address is defined by
 the combination of an IP address and an SCTP port number (where SCTP is the
-transport protocol).</t>
+transport protocol).
+<vspace blankLines='1'/></t>
 <t hangText='Unacknowledged TSN (at an SCTP endpoint):'>
 A TSN (and the associated DATA chunk) that has been received by the endpoint but
 for which an acknowledgement has not yet been sent.
 Or in the opposite case, for a packet that has been sent but no acknowledgement
-has been received.</t>
+has been received.
+<vspace blankLines='1'/></t>
 <t hangText='Unordered Message:'>
 Unordered messages are "unordered" with respect to any other message;
 this includes both other unordered messages as well as other ordered messages.
 An unordered message might be delivered prior to or later than ordered messages
-sent on the same stream.</t>
+sent on the same stream.
+<vspace blankLines='1'/></t>
 <t hangText='User message:'>
-The unit of data delivery across the interface between SCTP and its user.</t>
+The unit of data delivery across the interface between SCTP and its user.
+<vspace blankLines='1'/></t>
 <t hangText='Verification Tag:'>
 A 32-bit unsigned integer that is randomly generated.
 The Verification Tag provides a key that allows a receiver to verify that the
@@ -598,6 +635,7 @@ byte order, unless otherwise stated.</t>
 <section anchor='sec_sctp_common_header_field_desriptions'
          title='SCTP Common Header Field Descriptions'>
 <t>
+<vspace blankLines='1'/>
 <figure>
 <artwork align='center'>
                    SCTP Common Header Format
@@ -615,31 +653,33 @@ byte order, unless otherwise stated.</t>
 </figure>
 <list style='hanging'>
 <t hangText="Source Port Number: 16 bits (unsigned integer)">
-<vspace/>
+<vspace blankLines='1'/>
 This is the SCTP sender's port number.
 It can be used by the receiver in combination with the source IP address,
 the SCTP destination port, and possibly the destination IP address to
 identify the association to which this packet belongs.
-The port number 0 MUST NOT be used.</t>
-
+The port number 0 MUST NOT be used.
+<vspace blankLines='1'/></t>
 <t hangText="Destination Port Number: 16 bits (unsigned integer)">
-<vspace/>
+<vspace blankLines='1'/>
 This is the SCTP port number to which this packet is destined.
 The receiving host will use this port number to de-multiplex the
 SCTP packet to the correct receiving endpoint/application.
-The port number 0 MUST NOT be used.</t>
-
+The port number 0 MUST NOT be used.
+<vspace blankLines='1'/></t>
 <t hangText="Verification Tag: 32 bits (unsigned integer)">
-<vspace/>
+<vspace blankLines='1'/>
 The receiver of this packet uses the Verification Tag to validate
 the sender of this SCTP packet.
 On transmit, the value of this Verification Tag MUST be set to the value of
 the Initiate Tag received from the peer endpoint during the association
 initialization, with the following exceptions:
 <list style='symbols'>
-<t>A packet containing an INIT chunk MUST have a zero Verification Tag.</t>
+<t>A packet containing an INIT chunk MUST have a zero Verification Tag.
+<vspace blankLines='1'/></t>
 <t>A packet containing a SHUTDOWN COMPLETE chunk with the T bit set MUST have
-the Verification Tag copied from the packet with the SHUTDOWN ACK chunk.</t>
+the Verification Tag copied from the packet with the SHUTDOWN ACK chunk.
+<vspace blankLines='1'/></t>
 <t>A packet containing an ABORT chunk may have the verification tag copied
 from the packet that caused the ABORT to be sent.
 For details see <xref target='sec_handle_out_of_the_blue_packets'/> and
@@ -650,7 +690,7 @@ For details see <xref target='sec_handle_out_of_the_blue_packets'/> and
 <t>An INIT chunk MUST be the only chunk in the SCTP packet carrying it.</t>
 <t><list style='hanging'>
 <t hangText="Checksum: 32 bits (unsigned integer)">
-<vspace/>
+<vspace blankLines='1'/>
 This field contains the checksum of this SCTP packet.
 Its calculation is discussed in
 <xref target='sec_crc32c_checksum_calculation'/>.
@@ -680,12 +720,12 @@ a Chunk Length field, and a Value field.
 </figure>
 <list style='hanging'>
 <t hangText='Chunk Type: 8 bits (unsigned integer)'>
-<vspace blankLines='0'/>
+<vspace blankLines='1'/>
 This field identifies the type of information contained in the Chunk Value
 field.
 It takes a value from 0 to 254.
 The value of 255 is reserved for future use as an extension field.
-<vspace/>
+<vspace blankLines='1'/>
 The values of Chunk Types are defined as follows:
 <list style='hanging' hangIndent='12'>
 <t hangText='ID Value    '>Chunk Type</t>
@@ -715,41 +755,46 @@ The values of Chunk Types are defined as follows:
 <t hangText='192 to 254 -'> available</t>
 <t hangText='255        -'> reserved for IETF-defined Chunk Extensions</t>
 </list>
-<vspace blankLines='0'/>
+<vspace blankLines='1'/>
 Chunk Types are encoded such that the highest-order 2 bits specify the action
 that must be taken if the processing endpoint does not recognize the Chunk Type.
 <list style='hanging' hangIndent='5'>
 <t hangText='00 -'>
 Stop processing this SCTP packet and discard it, do not process any further
-chunks within it.</t>
+chunks within it.
+<vspace blankLines='1'/></t>
 <t hangText='01 -'>
 Stop processing this SCTP packet and discard it, do not process any further
 chunks within it, and report the unrecognized chunk in an
-'Unrecognized Chunk Type'.</t>
+'Unrecognized Chunk Type'.
+<vspace blankLines='1'/></t>
 <t hangText='10 -'>
-Skip this chunk and continue processing.</t>
+Skip this chunk and continue processing.
+<vspace blankLines='1'/></t>
 <t hangText='11 -'>
 Skip this chunk and continue processing, but report in an ERROR chunk using
 the 'Unrecognized Chunk Type' cause of error.</t>
 </list>
-<vspace blankLines='0'/>
+<vspace blankLines='1'/>
 Note: The ECNE and CWR chunk types are reserved for future use of Explicit
 Congestion Notification (ECN);
-see <xref target='sec_ecn'/>.</t>
+see <xref target='sec_ecn'/>.
+<vspace blankLines='1'/></t>
 <t hangText='Chunk Flags: 8 bits'>
-<vspace blankLines='0'/>
+<vspace blankLines='1'/>
 The usage of these bits depends on the Chunk type as given by the Chunk Type
 field.
 Unless otherwise specified, they are set to 0 on transmit and are ignored
-on receipt.</t>
+on receipt.
+<vspace blankLines='1'/></t>
 <t hangText='Chunk Length: 16 bits (unsigned integer)'>
-<vspace blankLines='0'/>
+<vspace blankLines='1'/>
 This value represents the size of the chunk in bytes, including the Chunk Type,
 Chunk Flags, Chunk Length, and Chunk Value fields.
 Therefore, if the Chunk Value field is zero-length, the Length field will be
 set to 4.
 The Chunk Length field does not count any chunk padding.
-<vspace blankLines='0'/>
+<vspace blankLines='1'/>
 Chunks (including Type, Length, and Value fields) are padded out by the sender
 with all zero bytes to be a multiple of 4 bytes long.
 This padding MUST NOT be more than 3 bytes in total.
@@ -757,11 +802,12 @@ The Chunk Length value does not include terminating padding of the chunk.
 However, it does include padding of any variable-length parameter except the
 last parameter in the chunk.
 The receiver MUST ignore the padding.
-<vspace blankLines='0'/>
+<vspace blankLines='1'/>
 Note: A robust implementation should accept the chunk whether or not the final
-padding has been included in the Chunk Length.</t>
+padding has been included in the Chunk Length.
+<vspace blankLines='1'/></t>
 <t hangText='Chunk Value: variable length'>
-<vspace blankLines='0'/>
+<vspace blankLines='1'/>
 The Chunk Value field contains the actual information to be transferred in the
 chunk.
 The usage and format of this field is dependent on the Chunk Type.</t>
@@ -799,26 +845,28 @@ defined in a Type-Length-Value format as shown below.
 </figure>
 <list style='hanging'>
 <t hangText='Chunk Parameter Type: 16 bits (unsigned integer)'>
-<vspace/>
+<vspace blankLines='1'/>
 The Type field is a 16-bit identifier of the type of parameter.
 It takes a value of 0 to 65534.
-<vspace/>
+<vspace blankLines='1'/>
 The value of 65535 is reserved for IETF-defined extensions.
 Values other than those defined in specific SCTP chunk descriptions are
-reserved for use by IETF.</t>
+reserved for use by IETF.
+<vspace blankLines='1'/></t>
 <t hangText='Chunk Parameter Length: 16 bits (unsigned integer)'>
-<vspace/>
+<vspace blankLines='1'/>
 The Parameter Length field contains the size of the parameter in
 bytes, including the Parameter Type, Parameter Length, and Parameter Value
 fields.
 Thus, a parameter with a zero-length Parameter Value field would have a Length
 field of 4.
-The Parameter Length does not include any padding bytes.</t>
+The Parameter Length does not include any padding bytes.
+<vspace blankLines='1'/></t>
 <t hangText='Chunk Parameter Value: variable length'>
-<vspace/>
+<vspace blankLines='1'/>
 The Parameter Value field contains the actual information to be transferred in
 the parameter. <!-- FIXME MT: Why not terminate here?--> 
-<vspace/>
+<vspace blankLines='1'/>
 The total length of a parameter (including Type, Parameter Length,
 and Value fields) MUST be a multiple of 4 bytes.
 If the length of the parameter is not a multiple of 4 bytes, the sender pads the
@@ -827,21 +875,24 @@ bytes.
 The length of the padding is not included in the Parameter Length field.
 A sender MUST NOT pad with more than 3 bytes.
 The receiver MUST ignore the padding bytes.
-<vspace/>
+<vspace blankLines='1'/>
 The Parameter Types are encoded such that the highest-order 2 bits specify the
 action that must be taken if the processing endpoint does not recognize the
 Parameter Type.
 <list style='hanging' hangIndent='5'>
 <t hangText='00 -'>
 Stop processing this parameter; do not process any further parameters within
-this chunk.</t>
+this chunk.
+<vspace blankLines='1'/></t>
 <t hangText='01 -'>
 Stop processing this parameter, do not process any further parameters within
 this chunk, and report the unrecognized parameter in an
 'Unrecognized Parameter', as described in
-<xref target='sec_reporting_of_unreconginzed_parameters'/>.</t>
+<xref target='sec_reporting_of_unreconginzed_parameters'/>.
+<vspace blankLines='1'/></t>
 <t hangText='10 -'>
-Skip this parameter and continue processing.</t>
+Skip this parameter and continue processing.
+<vspace blankLines='1'/></t>
 <t hangText='11 -'>
 Skip this parameter and continue processing but report the unrecognized
 parameter in an 'Unrecognized Parameter', as described in
@@ -1013,16 +1064,483 @@ A sender MUST never add more than 3 bytes of padding.</t>
 
 <section anchor='sec_init_chunk'
          title='Initiation (INIT) (1)'>
+<t>This chunk is used to initiate an SCTP association between two endpoints.
+The format of the INIT chunk is shown below:
+<figure>
+<artwork align='center'>
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Type = 1    |  Chunk Flags  |      Chunk Length             |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                         Initiate Tag                          |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|           Advertised Receiver Window Credit (a_rwnd)          |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  Number of Outbound Streams   |  Number of Inbound Streams    |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                          Initial TSN                          |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+\                                                               \
+/              Optional/Variable-Length Parameters              /
+\                                                               \
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</artwork>
+</figure></t>
+<t>The INIT chunk contains the following parameters.
+Unless otherwise noted, each parameter MUST only be included once in the
+INIT chunk.
+<figure>
+<artwork align='center'>
+Fixed Parameters                     Status
+----------------------------------------------
+Initiate Tag                        Mandatory
+Advertised Receiver Window Credit   Mandatory
+Number of Outbound Streams          Mandatory
+Number of Inbound Streams           Mandatory
+Initial TSN                         Mandatory
+</artwork>
+</figure>
+<figure>
+<artwork align='center'>
+Variable Parameters                  Status     Type Value
+-------------------------------------------------------------
+IPv4 Address (Note 1)               Optional    5 IPv6 Address
+(Note 1)               Optional    6 Cookie Preservative
+Optional    9 Reserved for ECN Capable (Note 2)   Optional
+32768 (0x8000) Host Name Address (Note 3)          Optional
+11 Supported Address Types (Note 4)    Optional    12
+</artwork>
+</figure>
+</t>
+<t>Note 1:
+The INIT chunks can contain multiple addresses that can be IPv4 and/or IPv6
+in any combination.</t>
+<t>Note 2:
+The ECN Capable field is reserved for future use of Explicit Congestion
+Notification.</t>
+<t>Note 3:
+An INIT chunk MUST NOT contain more than one Host Name Address parameter.
+Moreover, the sender of the INIT MUST NOT combine any other address types with
+the Host Name Address in the INIT.
+The receiver of INIT MUST ignore any other address types if the Host Name
+Address parameter is present in the received INIT chunk.</t>
+<t>Note 4:
+This parameter, when present, specifies all the address types the sending
+endpoint can support.
+The absence of this parameter indicates that the sending endpoint can support
+any address type.</t>
+<t>IMPLEMENTATION NOTE:
+If an INIT chunk is received with known parameters that are not optional
+parameters of the INIT chunk, then the receiver SHOULD process the INIT chunk
+and send back an INIT ACK.
+The receiver of the INIT chunk MAY bundle an ERROR chunk with the COOKIE ACK
+chunk later.
+However, restrictive implementations MAY send back an ABORT chunk in response
+to the INIT chunk.</t>
+<t>The Chunk Flags field in INIT is reserved, and all bits in it should
+be set to 0 by the sender and ignored by the receiver.
+The sequence of parameters within an INIT can be processed in any order.</t>
+<t><list style='hanging'>
+<t hangText='Initiate Tag: 32 bits (unsigned integer)'>
+<vspace blankLines='1'/>
+The receiver of the INIT (the responding end) records the value of the
+Initiate Tag parameter.
+This value MUST be placed into the Verification Tag field of every SCTP packet
+that the receiver of the INIT transmits within this association.
+<vspace blankLines='1'/>
+The Initiate Tag is allowed to have any value except 0.
+See <xref target='sec_selection_of_tag_value'/> for more on the selection of 
+the tag value.
+<vspace blankLines='1'/>
+If the value of the Initiate Tag in a received INIT chunk is found to be 0,
+the receiver MUST treat it as an error and close the association by
+transmitting an ABORT.
+<vspace blankLines='1'/></t>
+<t hangText='Advertised Receiver Window Credit (a_rwnd): 32 bits (unsigned integer)'>
+<vspace blankLines='1'/>
+This value represents the dedicated buffer space, in number of bytes, the sender
+of the INIT has reserved in association with this window.
+During the life of the association, this buffer space SHOULD NOT be lessened
+(i.e., dedicated buffers taken away from this association);
+however, an endpoint MAY change the value of a_rwnd it sends in SACK chunks.
+<vspace blankLines='1'/></t>
+<t hangText='Number of Outbound Streams (OS): 16 bits (unsigned integer)'>
+<vspace blankLines='1'/>
+Defines the number of outbound streams the sender of this INIT chunk wishes
+to create in this association.
+The value of 0 MUST NOT be used.
+<vspace blankLines='1'/>
+Note: A receiver of an INIT with the OS value set to 0 SHOULD abort the
+association.
+<vspace blankLines='1'/></t>
+<t hangText='Number of Inbound Streams (MIS): 16 bits (unsigned integer)'>
+<vspace blankLines='1'/>
+Defines the maximum number of streams the sender of this INIT chunk allows
+the peer end to create in this association.
+The value 0 MUST NOT be used.
+<vspace blankLines='1'/>
+Note: There is no negotiation of the actual number of streams but instead the
+two endpoints will use the min(requested, offered).
+See <xref target='sec_handle_stream_parameters'/> for details.
+<vspace blankLines='1'/>
+Note: A receiver of an INIT with the MIS value of 0 SHOULD abort the
+association.
+<vspace blankLines='1'/></t>
+<t hangText='Initial TSN (I-TSN): 32 bits (unsigned integer)'>
+<vspace blankLines='1'/>
+Defines the initial TSN that the sender will use.
+The valid range is from 0 to 4294967295.
+This field MAY be set to the value of the Initiate Tag field.</t>
+</list></t>
+
 <section anchor='sec_optional_variable_length_parameters_in_init'
          title='Optional/Variable-Length Parameters in INIT'>
+<t>The following parameters follow the Type-Length-Value format as defined in
+<xref target='sec_parameter_format'/>.
+Any Type-Length-Value fields MUST come after the fixed-length fields defined
+in the previous section.</t>
+<t>IPv4 Address Parameter (5)</t>
+<t>
+<figure>
+<artwork align='center'>
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|        Type = 5               |      Length = 8               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                        IPv4 Address                           |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</artwork>
+</figure>
+<list style='hanging'>
+<t hangText='IPv4 Address: 32 bits (unsigned integer)'>
+<vspace blankLines='1'/>
+Contains an IPv4 address of the sending endpoint.
+It is binary encoded.</t>
+</list></t>
+<t>IPv6 Address Parameter (6)</t>
+<t>
+<figure>
+<artwork align='center'>
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|            Type = 6           |          Length = 20          |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                               |
+|                         IPv6 Address                          |
+|                                                               |
+|                                                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</artwork>
+</figure>
+<list style='hanging'>
+<t hangText='IPv6 Address: 128 bits (unsigned integer)'>
+<vspace blankLines='1'/>
+Contains an IPv6 <xref target='RFC2460'/> address of the sending endpoint.
+It is binary encoded.
+<vspace blankLines='1'/><!-- FIXME MT: Identation correct? -->
+Note:
+A sender MUST NOT use an IPv4-mapped IPv6 address <xref target='RFC4291'/>,
+but should instead use an IPv4 Address parameter for an IPv4 address.
+<vspace blankLines='1'/>
+Combined with the Source Port Number in the SCTP common header, the value
+passed in an IPv4 or IPv6 Address parameter indicates a transport address the
+sender of the INIT will support for the association being initiated.
+That is, during the life time of this association, this IP address can appear
+in the source address field of an IP datagram sent from the sender of the INIT,
+and can be used as a destination address of an IP datagram sent from the
+receiver of the INIT.
+<vspace blankLines='1'/>
+More than one IP Address parameter can be included in an INIT chunk when the
+INIT sender is multi-homed.
+Moreover, a multi-homed endpoint may have access to different types of network;
+thus, more than one address type can be present in one INIT chunk, i.e.,
+IPv4 and IPv6 addresses are allowed in the same INIT chunk.
+<vspace blankLines='1'/>
+If the INIT contains at least one IP Address parameter, then the source address
+of the IP datagram containing the INIT chunk and any additional address(es)
+provided within the INIT can be used as destinations by the endpoint receiving
+the INIT.
+If the INIT does not contain any IP Address parameters, the endpoint receiving
+the INIT MUST use the source address associated with the received IP datagram
+as its sole destination address for the association.
+<vspace blankLines='1'/>
+Note that not using any IP Address parameters in the INIT and INIT ACK is an
+alternative to make an association more likely to work across a NAT box.</t>
+</list></t>
+<t>Cookie Preservative (9)</t>
+<t>The sender of the INIT shall use this parameter to suggest to the
+receiver of the INIT for a longer life-span of the State Cookie.</t>
+<t>
+<figure>
+<artwork align='center'>
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|          Type = 9             |          Length = 8           |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|         Suggested Cookie Life-Span Increment (msec.)          |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</artwork>
+</figure>
+<list style='hanging'>
+<t hangText='Suggested Cookie Life-Span Increment: 32 bits (unsigned integer)'>
+<vspace blankLines='1'/>
+This parameter indicates to the receiver how much increment in milliseconds
+the sender wishes the receiver to add to its default cookie life-span.
+<vspace blankLines='1'/>
+This optional parameter should be added to the INIT chunk by the sender when
+it reattempts establishing an association with a peer to which its previous
+attempt of establishing the association failed due to a stale cookie operation
+error.
+The receiver MAY choose to ignore the suggested cookie life-span increase for
+its own security reasons.</t>
+</list></t>
+<t>Host Name Address (11)</t>
+<t>The sender of INIT uses this parameter to pass its Host Name (in place of
+its IP addresses) to its peer.
+The peer is responsible for resolving the name.
+Using this parameter might make it more likely for the association to work
+across a NAT box.</t>
+<t>
+<figure>
+<artwork align='center'>
+0                   1                   2                   3
+0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|          Type = 11            |          Length               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+/                          Host Name                            /
+\                                                               \
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</artwork>
+</figure>
+<list style='hanging'>
+<t hangText='Host Name: variable length'>
+<vspace blankLines='1'/>
+This field contains a host name in "host name syntax" per RFC 1123
+Section 2.1 <xref target='RFC1123'/>.
+The method for resolving the host name is out of scope of SCTP.
+<vspace blankLines='1'/>
+Note:
+At least one null terminator is included in the Host Name string and must be
+included in the length.</t>
+</list></t>
+<t>Supported Address Types (12)</t>
+<t>The sender of INIT uses this parameter to list all the address types it can
+support.</t>
+<t>
+<figure>
+<artwork align='center'>
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|          Type = 12            |          Length               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|        Address Type #1        |        Address Type #2        |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                            ......                             |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-++-+-+-+-+-+-+-+-+-+-+-+-+-+-++-+-+-+
+</artwork>
+</figure>
+<list style='hanging'>
+<t hangText='Address Type: 16 bits (unsigned integer)'>
+<vspace blankLines='1'/>
+This is filled with the type value of the corresponding address
+TLV (e.g., IPv4 = 5, IPv6 = 6, Host name = 11).</t>
+</list></t>
 </section>
 </section>
+
 <section anchor='sec_init_ack_chunk'
          title='Initiation Acknowledgement (INIT ACK) (2)'>
+
+<t>The INIT ACK chunk is used to acknowledge the initiation of an SCTP
+association.</t>
+<t>The parameter part of INIT ACK is formatted similarly to the INIT
+chunk.
+It uses two extra variable parameters: The State Cookie and the Unrecognized
+Parameter:</t>
+<t>The format of the INIT ACK chunk is shown below:
+<figure>
+<artwork align='center'>
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Type = 2    |  Chunk Flags  |      Chunk Length             |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                         Initiate Tag                          |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|              Advertised Receiver Window Credit                |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  Number of Outbound Streams   |  Number of Inbound Streams    |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                          Initial TSN                          |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+\                                                               \
+/              Optional/Variable-Length Parameters              /
+\                                                               \
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</artwork>
+</figure>
+<list style='hanging'>
+<t hangText='Initiate Tag: 32 bits (unsigned integer)'>
+<vspace blankLines='1'/>
+The receiver of the INIT ACK records the value of the Initiate Tag parameter.
+This value MUST be placed into the Verification Tag field of every SCTP packet
+that the INIT ACK receiver transmits within this association.
+<vspace blankLines='1'/>
+The Initiate Tag MUST NOT take the value 0.
+See <xref target='sec_selection_of_tag_value'/> for more on the selection of
+the Initiate Tag value.
+<vspace blankLines='1'/>
+If the value of the Initiate Tag in a received INIT ACK chunk is found to be 0,
+the receiver MUST destroy the association discarding its TCB.
+The receiver MAY send an ABORT for debugging purpose.
+<vspace blankLines='1'/></t>
+<t hangText='Advertised Receiver Window Credit (a_rwnd): 32 bits (unsigned integer)'>
+<vspace blankLines='1'/>
+This value represents the dedicated buffer space, in number of bytes,
+the sender of the INIT ACK has reserved in association with this window.
+During the life of the association, this buffer space SHOULD NOT be lessened
+(i.e., dedicated buffers taken away from this association).
+<vspace blankLines='1'/></t>
+<t hangText='Number of Outbound Streams (OS): 16 bits (unsigned integer)'>
+<vspace blankLines='1'/>
+Defines the number of outbound streams the sender of this INIT ACK chunk wishes
+to create in this association.
+The value of 0 MUST NOT be used, and the value MUST NOT be greater than the
+MIS value sent in the INIT chunk.
+<vspace blankLines='1'/>
+Note:
+A receiver of an INIT ACK with the OS value set to 0 SHOULD destroy the
+association discarding its TCB.
+<vspace blankLines='1'/></t>
+<t hangText='Number of Inbound Streams (MIS): 16 bits (unsigned integer)'>
+<vspace blankLines='1'/>
+Defines the maximum number of streams the sender of this INIT ACK chunk allows
+the peer end to create in this association.
+The value 0 MUST NOT be used.
+<vspace blankLines='1'/>
+Note:
+There is no negotiation of the actual number of streams but instead the two
+endpoints will use the min(requested, offered).
+See <xref target='sec_handle_stream_parameters'/> for details.
+<vspace blankLines='1'/>
+Note:
+A receiver of an INIT ACK with the MIS value set to 0 SHOULD destroy the
+association discarding its TCB.
+<vspace blankLines='1'/></t>
+<t hangText='Initial TSN (I-TSN): 32 bits (unsigned integer)'>
+<vspace blankLines='1'/>
+Defines the initial TSN that the INIT ACK sender will use.
+The valid range is from 0 to 4294967295.
+This field MAY be set to the value of the Initiate Tag field.</t>
+</list></t>
+<t>
+<figure>
+<artwork align='center'>
+Fixed Parameters                     Status
+----------------------------------------------
+Initiate Tag                        Mandatory
+Advertised Receiver Window Credit   Mandatory
+Number of Outbound Streams          Mandatory
+Number of Inbound Streams           Mandatory
+Initial TSN                         Mandatory
+</artwork>
+</figure>
+<figure>
+<artwork align='center'>
+Variable Parameters                  Status     Type Value
+-------------------------------------------------------------
+State Cookie                        Mandatory   7
+IPv4 Address (Note 1)               Optional    5
+IPv6 Address (Note 1)               Optional    6
+Unrecognized Parameter              Optional    8
+Reserved for ECN Capable (Note 2)   Optional    32768 (0x8000)
+Host Name Address (Note 3)          Optional    11
+</artwork>
+</figure></t>
+<t>Note 1:
+The INIT ACK chunks can contain any number of IP address parameters that
+can be IPv4 and/or IPv6 in any combination.</t>
+<t>Note 2:
+The ECN Capable field is reserved for future use of Explicit Congestion
+Notification.</t>
+<t>Note 3:
+The INIT ACK chunks MUST NOT contain more than one Host Name Address parameter.
+Moreover, the sender of the INIT ACK MUST NOT combine any other address types
+with the Host Name Address in the INIT ACK.
+The receiver of the INIT ACK MUST ignore any other address types if the
+Host Name Address parameter is present.</t>
+<t>IMPLEMENTATION NOTE:
+An implementation MUST be prepared to receive an INIT ACK that is quite large
+(more than 1500 bytes) due to the variable size of the State Cookie AND the
+variable address list.
+For example if a responder to the INIT has 1000 IPv4 addresses it wishes
+to send, it would need at least 8,000 bytes to encode this in the INIT ACK.</t>
+<t>IMPLEMENTATION NOTE:
+If an INIT ACK chunk is received with known parameters that are not optional
+parameters of the INIT ACK chunk, then the receiver SHOULD process the
+INIT ACK chunk and send back a COOKIE ECHO.
+The receiver of the INIT ACK chunk MAY bundle an ERROR chunk with the
+COOKIE ECHO chunk.
+However, restrictive implementations MAY send back an ABORT chunk in
+response to the INIT ACK chunk.</t>
+<t>In combination with the Source Port carried in the SCTP common header,
+each IP Address parameter in the INIT ACK indicates to the receiver of the
+INIT ACK a valid transport address supported by the sender of the INIT ACK
+for the life time of the association being initiated.</t>
+<t>If the INIT ACK contains at least one IP Address parameter, then the source
+address of the IP datagram containing the INIT ACK and any additional
+address(es) provided within the INIT ACK may be used as destinations by the
+receiver of the INIT ACK.
+If the INIT ACK does not contain any IP Address parameters, the receiver of the
+INIT ACK MUST use the source address associated with the received IP datagram
+as its sole destination address for the association.</t>
+<t>The State Cookie and Unrecognized Parameters use the Type-Length-Value format
+as defined in <xref target='sec_parameter_format'/> and are described below.
+The other fields are defined the same as their counterparts in the
+INIT chunk.</t>
 <section anchor='sec_optional_or_variable_length_parameters'
          title='Optional or Variable-Length Parameters'>
+<t>State Cookie</t>
+<t><list style='hanging'>
+<t hangText='Parameter Type Value:'>
+7
+<vspace blankLines='1'/></t>
+<t hangText='Parameter Length:'>
+Variable size, depending on size of Cookie.
+<vspace blankLines='1'/></t>
+<t hangText='Parameter Value:'>
+<vspace blankLines='1'/>
+This parameter value MUST contain all the necessary state and parameter
+information required for the sender of this INIT ACK to create the association,
+along with a Message Authentication Code (MAC).
+See <xref target='sec_generating_state_cookie'/> for details on
+State Cookie definition.</t>
+</list></t>
+<t>Unrecognized Parameter:</t>
+<t><list style='hanging'>
+<t hangText='Parameter Type Value:'>
+8
+<vspace blankLines='1'/></t>
+<t hangText='Parameter Length:'>
+Variable size.
+<vspace blankLines='1'/></t>
+<t hangText='Parameter Value:'>
+<vspace blankLines='1'/>
+This parameter is returned to the originator of the INIT chunk when the INIT
+contains an unrecognized parameter that has a value that indicates it should
+be reported to the sender.
+This parameter value field will contain unrecognized parameters copied from the
+INIT chunk complete with Parameter Type, Length, and Value fields.</t>
+</list></t>
 </section>
 </section>
+
 <section anchor='sec_sack_chunk'
          title='Selective Acknowledgement (SACK) (3)'>
 <t>This chunk is sent to the peer endpoint to acknowledge received DATA chunks
@@ -1207,14 +1725,16 @@ variable-length opaque data structure understood only by the sender.
 </figure>
 <list style='hanging'>
 <t hangText='Chunk Flags: 8 bits'>
-<vspace/>
-Set to 0 on transmit and ignored on receipt.</t>
+<vspace blankLines='1'/>
+Set to 0 on transmit and ignored on receipt.
+<vspace blankLines='1'/></t>
 <t hangText='Heartbeat Length: 16 bits (unsigned integer)'>
-<vspace/>
+<vspace blankLines='1'/>
 Set to the size of the chunk in bytes, including the chunk header and the
-Heartbeat Information field.</t>
+Heartbeat Information field.
+<vspace blankLines='1'/></t>
 <t hangText='Heartbeat Information: variable length'>
-<vspace/>
+<vspace blankLines='1'/>
 Defined as a variable-length parameter using the format described
 in <xref target='sec_parameter_format'/>, i.e.:
 <figure>
@@ -1271,14 +1791,16 @@ containing the HEARTBEAT chunk to which this ack is responding.</t>
 </figure>
 <list style='hanging'>
 <t hangText='Chunk Flags: 8 bits'>
-<vspace/>
-Set to 0 on transmit and ignored on receipt.</t>
+<vspace blankLines='1'/>
+Set to 0 on transmit and ignored on receipt.
+<vspace blankLines='1'/></t>
 <t hangText='Heartbeat Ack Length: 16 bits (unsigned integer)'>
-<vspace/>
+<vspace blankLines='1'/>
 Set to the size of the chunk in bytes, including the chunk header and the
-Heartbeat Information field.</t>
+Heartbeat Information field.
+<vspace blankLines='1'/></t>
 <t hangText='Heartbeat Information: variable length'>
-<vspace/>
+<vspace blankLines='1'/>
 This field MUST contain the Heartbeat Information parameter of the Heartbeat
 Request to which this Heartbeat Acknowledgement is responding.
 <figure>
@@ -1322,23 +1844,26 @@ respond to that ABORT by sending an ABORT of its own.
 <t hangText='Chunk Flags: 8 bits'>
 <list style='hanging'>
 <t hangText='Reserved: 7 bits'>
-<vspace/>
-Set to 0 on transmit and ignored on receipt.</t>
+<vspace blankLines='1'/>
+Set to 0 on transmit and ignored on receipt.
+<vspace blankLines='1'/></t>
 <t hangText='T bit: 1 bit'>
-<vspace/>
+<vspace blankLines='1'/>
 The T bit is set to 0 if the sender filled in the Verification Tag
 expected by the peer.
 If the Verification Tag is reflected, the T bit MUST be set to 1.
 Reflecting means that the sent Verification Tag is the same as the received one.
-<vspace/>
+<vspace blankLines='1'/>
 Note: Special rules apply to this chunk for verification;
 please see <xref target='sec_exceptions_in_verification_tag_rules'/> for
 details.</t> <!-- FIXME MT: Why is this indented? -->
-</list></t>
+</list>
+<vspace blankLines='1'/></t>
 <t hangText='Length: 16 bits (unsigned integer)'>
+<vspace blankLines='1'/>
 Set to the size of the chunk in bytes, including the chunk header and all the
 Error Cause fields present.
-<vspace/>
+<vspace blankLines='1'/>
 See <xref target='sec_error_chunk'/> for Error Cause definitions.</t> <!-- FIXME MT: Indented? -->
 </list></t>
 </section>
@@ -1361,16 +1886,18 @@ This chunk has the following format.
 </figure>
 <list style='hanging'>
 <t hangText='Chunk Flags: 8 bits'>
-<vspace/>
-Set to 0 on transmit and ignored on receipt.</t>
+<vspace blankLines='1'/>
+Set to 0 on transmit and ignored on receipt.
+<vspace blankLines='1'/></t>
 <t hangText='Length: 16 bits (unsigned integer)'>
-<vspace/>
-Indicates the length of the parameter.  Set to 8.</t>
+<vspace blankLines='1'/>
+Indicates the length of the parameter.  Set to 8.
+<vspace blankLines='1'/></t>
 <t hangText='Cumulative TSN Ack: 32 bits (unsigned integer)'>
-<vspace/>
+<vspace blankLines='1'/>
 This parameter contains the TSN of the last chunk received in sequence before
 any gaps.
-<vspace/>
+<vspace blankLines='1'/>
 Note: Since the SHUTDOWN message does not contain Gap Ack Blocks,
 it cannot be used to acknowledge TSNs received out of order.
 In a SACK, lack of Gap Ack Blocks that were previously included indicates that
@@ -1399,7 +1926,7 @@ see <xref target='sec_shutdown_of_an_association'/> for details.</t>
 </figure>
 <list style='hanging'>
 <t hangText='Chunk Flags: 8 bits'>
-<vspace/>
+<vspace blankLines='1'/>
 Set to 0 on transmit and ignored on receipt.</t>
 </list></t>
 </section>
@@ -1427,10 +1954,11 @@ It has the following parameters:
 </figure>
 <list style='hanging'>
 <t hangText='Chunk Flags: 8 bits'>
-<vspace/>
-Set to 0 on transmit and ignored on receipt.</t>
+<vspace blankLines='1'/>
+Set to 0 on transmit and ignored on receipt.
+<vspace blankLines='1'/></t>
 <t hangText='Length: 16 bits (unsigned integer)'>
-<vspace/>
+<vspace blankLines='1'/>
 Set to the size of the chunk in bytes, including the chunk header and all the
 Error Cause fields present.</t>
 </list></t>
@@ -1450,7 +1978,7 @@ format described in <xref target='sec_parameter_format'/>, that is:
 </figure>
 <list style='hanging'>
 <t hangText='Cause Code: 16 bits (unsigned integer)'>
-<vspace/>
+<vspace blankLines='1'/>
 Defines the type of error conditions being reported.
 <list style='hanging' hangIndent='15'>
 <t hangText='Cause Code      '></t>
@@ -1471,11 +1999,11 @@ Defines the type of error conditions being reported.
 <t hangText='13              '>Protocol Violation</t>
 </list></t>
 <t hangText='Cause Length: 16 bits (unsigned integer)'>
-<vspace/>
+<vspace blankLines='1'/>
 Set to the size of the parameter in bytes, including the Cause Code,
 Cause Length, and Cause-Specific Information fields.</t>
 <t hangText='Cause-Specific Information: variable length'>
-<vspace/>
+<vspace blankLines='1'/>
 This field carries the details of the error condition.</t>
 </list></t>
 <t><xref target='sec_invalid_stream_identifier_cause'/> -
@@ -1547,7 +2075,7 @@ Each field will contain the missing mandatory parameter number.</t>
          title='Stale Cookie Error (3)'>
 <t>Cause of error
 <vspace/>
----------------</t>
+--------------</t>
 <t>Stale Cookie Error: Indicates the receipt of a valid State Cookie
 that has expired.
 <figure>
@@ -1697,6 +2225,7 @@ sender of the COOKIE ECHO chunk wishes to report unrecognized parameters.</t>
 <vspace/>
 ---------------</t>
 <t>No User Data: This error cause is returned to the originator of a
+<vspace/> <!-- FIXME MT: Remove -->
 DATA chunk if a received DATA chunk has no user data.
 <figure>
 <artwork align='center'>
@@ -1744,7 +2273,7 @@ retransmitted SHUTDOWN ACK.
          title='Restart of an Association with New Addresses (11)'>
 <t>Cause of error
 <vspace/>
----------------</t>
+--------------</t>
 <t>Restart of an association with new addresses:
 An INIT was received on an existing association.
 But the INIT added addresses to the association that were previously NOT part
@@ -1773,7 +2302,7 @@ Parameter Length.</t>
          title='User-Initiated Abort (12)'>
 <t>Cause of error
 <vspace/>
----------------</t>
+--------------</t>
 <t>This error cause MAY be included in ABORT chunks that are sent
 because of an upper-layer request.
 The upper layer can specify an Upper Layer Abort Reason that is transported by
@@ -1797,7 +2326,7 @@ SCTP transparently and MAY be delivered to the upper-layer protocol at the peer.
          title='Protocol Violation (13)'>
 <t>Cause of error
 <vspace/>
----------------</t>
+--------------</t>
 <t>This error cause MAY be included in ABORT chunks that are sent
 because an SCTP endpoint detects a protocol violation of the peer
 that is not covered by the error causes described in
@@ -1841,21 +2370,23 @@ bundled with one or more DATA chunks in the same packet.
 </artwork>
 </figure>
 <list style='hanging'>
-<t hangText='Chunk Flags: 8 bits'>
-<vspace/>
-Set to 0 on transmit and ignored on receipt.</t>
+<t hangText='Chunk Flags: 8 bit'> <!-- FIXME MT: bits? -->
+<vspace blankLines='1'/>
+Set to 0 on transmit and ignored on receipt.
+<vspace blankLines='1'/></t>
 <t hangText='Length: 16 bits (unsigned integer)'>
-<vspace/>
+<vspace blankLines='1'/>
 Set to the size of the chunk in bytes, including the 4 bytes of the
-chunk header and the size of the cookie.</t>
+chunk header and the size of the cookie.
+<vspace blankLines='1'/></t>
 <t hangText='Cookie: variable size'>
-<vspace/>
+<vspace blankLines='1'/>
 This field must contain the exact cookie received in the State Cookie parameter
 from the previous INIT ACK.
-<vspace/>
+<vspace blankLines='1'/>
 An implementation SHOULD make the cookie as small as possible to ensure
 interoperability.
-<vspace/>
+<vspace blankLines='1'/>
 Note: A Cookie Echo does NOT contain a State Cookie parameter;
 instead, the data within the State Cookie's Parameter Value becomes the data
 within the Cookie Echo's Chunk Value.
@@ -1882,7 +2413,7 @@ chunk's in the same SCTP packet.
 </figure>
 <list style='hanging'>
 <t hangText='Chunk Flags: 8 bits'>
-<vspace/>
+<vspace blankLines='1'/>
 Set to 0 on transmit and ignored on receipt.</t>
 </list></t>
 </section>
@@ -1906,10 +2437,11 @@ see <xref target='sec_shutdown_of_an_association'/> for details.</t>
 <t hangText='Chunk Flags: 8 bits'>
 <list style='hanging'>
 <t hangText='Reserved: 7 bits'>
-<vspace/>
-Set to 0 on transmit and ignored on receipt.</t>
+<vspace blankLines='1'/>
+Set to 0 on transmit and ignored on receipt.
+<vspace blankLines='1'/></t>
 <t hangText='T bit: 1 bit'>
-<vspace/>
+<vspace blankLines='1'/>
 The T bit is set to 0 if the sender filled in the Verification Tag
 expected by the peer.
 If the Verification Tag is reflected, the T bit MUST be set to 1.
@@ -2102,40 +2634,44 @@ Verification Tag (Tag_A) in the Initiate Tag field.
 Tag_A SHOULD be a random number in the range of 1 to 4294967295
 (see <xref target='sec_selection_of_tag_value'/> for Tag value selection).
 After sending the INIT, "A" starts the T1-init timer and enters the COOKIE-WAIT
-state.</t>
+state.
+<vspace blankLines='1'/></t>
 <t>"Z" shall respond immediately with an INIT ACK chunk.
 The destination IP address of the INIT ACK MUST be set to the source IP address
 of the INIT to which this INIT ACK is responding.
 In the response, besides filling in other parameters, "Z" must set the
 Verification Tag field to Tag_A, and also provide its own
 Verification Tag (Tag_Z) in the Initiate Tag field.
-<vspace/>
+<vspace blankLines='1'/>
 Moreover, "Z" MUST generate and send along with the INIT ACK a State Cookie.
 See <xref target='sec_generating_state_cookie'/> for State Cookie generation.
-<vspace/>
+<vspace blankLines='1'/>
 Note: After sending out INIT ACK with the State Cookie parameter,
 "Z" MUST NOT allocate any resources or keep any states for the new
 association.
-Otherwise, "Z" will be vulnerable to resource attacks.</t>
+Otherwise, "Z" will be vulnerable to resource attacks.
+<vspace blankLines='1'/></t>
 <t>Upon reception of the INIT ACK from "Z", "A" shall stop the T1-init timer
 and leave the COOKIE-WAIT state.
 "A" shall then send the State Cookie received in the INIT ACK chunk in a
 COOKIE ECHO chunk, start the T1-cookie timer, and enter the COOKIE-ECHOED
 state.
-<vspace/>
+<vspace blankLines='1'/>
 Note: The COOKIE ECHO chunk can be bundled with any pending outbound DATA
 chunks, but it MUST be the first chunk in the packet and until the COOKIE ACK
-is returned the sender MUST NOT send any other packets to the peer.</t>
+is returned the sender MUST NOT send any other packets to the peer.
+<vspace blankLines='1'/></t>
 <t>Upon reception of the COOKIE ECHO chunk, endpoint "Z" will reply
 with a COOKIE ACK chunk after building a TCB and moving to the
 ESTABLISHED state.
 A COOKIE ACK chunk may be bundled with any pending DATA chunks
 (and/or SACK chunks), but the COOKIE ACK chunk MUST be the first chunk in
 the packet.
-<vspace/>
+<vspace blankLines='1'/>
 IMPLEMENTATION NOTE: An implementation may choose to send the
 Communication Up notification to the SCTP user upon reception of a
-valid COOKIE ECHO chunk.</t>
+valid COOKIE ECHO chunk.
+<vspace blankLines='1'/></t>
 <t>Upon reception of the COOKIE ACK, endpoint "A" will move from the
 COOKIE-ECHOED state to the ESTABLISHED state, stopping the T1-cookie timer.
 It may also notify its ULP about the successful establishment of the
@@ -2199,15 +2735,16 @@ of its peer.
 INIT ACK chunk, the endpoint shall take the source IP address from
 which the chunk arrives and record it, in combination with the
 SCTP source port number, as the only destination transport address
-for this peer.</t>
+for this peer.
+<vspace blankLines='1'/></t>
 <t>If there is a Host Name parameter present in the received INIT or INIT ACK
 chunk, the endpoint shall resolve that host name to a list of IP address(es)
 and derive the transport address(es) of this peer by combining the resolved
 IP address(es) with the SCTP source port.
-<vspace/>
+<vspace blankLines='1'/>
 The endpoint MUST ignore any other IP Address parameters if they are also
 present in the received INIT or INIT ACK chunk.
-<vspace/>
+<vspace blankLines='1'/>
 The time at which the receiver of an INIT resolves the host name has potential
 security implications to SCTP.
 If the receiver of an INIT resolves the host name upon the reception of the
@@ -2216,24 +2753,25 @@ involves potential long delay (e.g., DNS query), the receiver may open itself
 up to resource attacks for the period of time while it is waiting for the
 name resolution results before it can build the State Cookie and release
 local resources.
-<vspace/>
+<vspace blankLines='1'/>
 Therefore, in cases where the name translation involves potential long delay,
 the receiver of the INIT MUST postpone the name resolution till the reception
 of the COOKIE ECHO chunk from the peer.
 In such a case, the receiver of the INIT SHOULD build the State Cookie using
 the received Host Name (instead of destination transport addresses) and send
 the INIT ACK to the source IP address from which the INIT was received.
-<vspace/>
+<vspace blankLines='1'/>
 The receiver of an INIT ACK shall always immediately attempt to resolve the
 name upon the reception of the chunk.
-<vspace/>
+<vspace blankLines='1'/>
 The receiver of the INIT or INIT ACK MUST NOT send user data (piggy-backed
 or stand-alone) to its peer until the host name is successfully resolved.
-<vspace/>
+<vspace blankLines='1'/>
 If the name resolution is not successful, the endpoint MUST immediately send
 an ABORT with "Unresolvable Address" error cause to its peer.
 The ABORT shall be sent to the source IP address from which the last peer
-packet was received.</t>
+packet was received.
+<vspace blankLines='1'/></t>
 <t>If there are only IPv4/IPv6 addresses present in the received INIT or
 INIT ACK chunk, the receiver MUST derive and record all the transport addresses
 from the received chunk AND the source IP address that sent the INIT or
@@ -2242,7 +2780,8 @@ The transport addresses are derived by the combination of SCTP source port
 (from the common header) and the IP Address parameter(s) carried in the INIT
 or INIT ACK chunk and the source IP address of the IP datagram.
 The receiver should use only these transport addresses as destination
-transport addresses when sending subsequent packets to its peer.</t>
+transport addresses when sending subsequent packets to its peer.
+<vspace blankLines='1'/></t>
 <t>An INIT or INIT ACK chunk MUST be treated as belonging to an already
 established association (or one in the process of being established) if the
 use of any of the valid address parameters contained within the chunk would
@@ -2456,12 +2995,16 @@ association.</t>
 <t>The following scenarios can cause duplicated or unexpected chunks:
 <list style='format %C)'>
 <t>The peer has crashed without being detected, restarted itself, and
-sent out a new INIT chunk trying to restore the association,</t>
+sent out a new INIT chunk trying to restore the association,
+<vspace blankLines='1'/></t>
 <t>Both sides are trying to initialize the association at about the same
-time,</t>
+time,
+<vspace blankLines='1'/></t>
 <t>The chunk is from a stale packet that was used to establish the present
-association or a past association that is no longer in existence,</t>
-<t>The chunk is a false packet generated by an attacker, or</t>
+association or a past association that is no longer in existence,
+<vspace blankLines='1'/></t>
+<t>The chunk is a false packet generated by an attacker, or
+<vspace blankLines='1'/></t>
 <t>The peer never received the COOKIE ACK and is retransmitting its
 COOKIE ECHO.</t>
 </list></t>
@@ -2556,10 +3099,12 @@ existing association (i.e., not in the CLOSED state) the following rules
 shall be applied:
 <list style='format %d)'>
 <t>Compute a MAC as described in step 1 of
-<xref target='sec_state_coockie_authentication'/>,</t>
+<xref target='sec_state_coockie_authentication'/>,
+<vspace blankLines='1'/></t>
 <t>Authenticate the State Cookie as described in step 2 of
 <xref target='sec_state_coockie_authentication'/>
-(this is case C or D above).</t>
+(this is case C or D above).
+<vspace blankLines='1'/></t>
 <t>Compare the timestamp in the State Cookie to the current time.
 If the State Cookie is older than the lifespan carried in the State Cookie
 and the Verification Tags contained in the State Cookie do not match the
@@ -2568,12 +3113,15 @@ and any DATA chunks, should be discarded.
 The endpoint also MUST transmit an ERROR chunk with a "Stale Cookie" error cause
 to the peer endpoint (this is case C or D in
 <xref target='sec_handle_duplicate_or_unexpected_chunks'/>).
+<vspace blankLines='1'/>
 If both Verification Tags in the State Cookie match the Verification Tags of
 the current association, consider the State Cookie valid (this is case E in
 <xref target='sec_handle_duplicate_or_unexpected_chunks'/>) even if the
-lifespan is exceeded.</t>
+lifespan is exceeded.
+<vspace blankLines='1'/></t>
 <t>If the State Cookie proves to be valid, unpack the TCB into a
-temporary TCB.</t>
+temporary TCB.
+<vspace blankLines='1'/></t>
 <t>Refer to <xref target='table_handling_of_cookie_echo'/> to determine the
 correct action to be taken.</t>
 </list></t>
@@ -2611,20 +3159,22 @@ treated the same as if it received an ABORT followed by a new
 COOKIE ECHO with the following exceptions:
 <list style='symbols'>
 <t>Any SCTP DATA chunks MAY be retained (this is an implementation-specific
-option).</t>
+option).
+<vspace blankLines='1'/></t>
 <t>A notification of RESTART SHOULD be sent to the ULP instead of a
 "COMMUNICATION LOST" notification.</t>
 </list>
 All the congestion control parameters (e.g., cwnd, ssthresh)
 related to this peer MUST be reset to their initial values
 (see <xref target='sec_processing_of_received_sack'/>).
-<vspace/>
+<vspace blankLines='1'/>
 After this, the endpoint shall enter the ESTABLISHED state.
-<vspace/>
+<vspace blankLines='1'/>
 If the endpoint is in the SHUTDOWN-ACK-SENT state and recognizes that the peer
 has restarted (Action A), it MUST NOT set up a new association but instead
 resend the SHUTDOWN ACK and send an ERROR chunk with a
-"Cookie Received While Shutting Down" error cause to its peer.</t>
+"Cookie Received While Shutting Down" error cause to its peer.
+<vspace blankLines='1'/></t>
 <t>In this case, both sides may be attempting to start an association
 at about the same time, but the peer endpoint started its INIT
 after responding to the local endpoint's INIT.
@@ -2632,13 +3182,15 @@ Thus, it may have picked a new Verification Tag, not being aware of the
 previous tag it had sent this endpoint.
 The endpoint should stay in or enter the ESTABLISHED state, but it MUST update
 its peer's Verification Tag from the State Cookie, stop any init or
-cookie timers that may be running, and send a COOKIE ACK.</t>
+cookie timers that may be running, and send a COOKIE ACK.
+<vspace blankLines='1'/></t>
 <t>In this case, the local endpoint's cookie has arrived late.
 Before it arrived, the local endpoint sent an INIT and received an INIT ACK
 and finally sent a COOKIE ECHO with the peer's same tag but a new tag of its
 own.
 The cookie should be silently discarded.
-The endpoint SHOULD NOT change states and should leave any timers running.</t>
+The endpoint SHOULD NOT change states and should leave any timers running.
+<vspace blankLines='1'/></t>
 <t>When both local and remote tags match, the endpoint should enter the
 ESTABLISHED state, if it is in the COOKIE-ECHOED state.
 It should stop any cookie timer that may be running and send a COOKIE ACK.</t>
@@ -2706,7 +3258,7 @@ DATA [TSN=initial TSN_A
 </section>
 
 <section anchor='sec_handle_duplicate_cookie_ack'
-         title='Handle Duplicate COOKIE-ACK'>
+         title='Handle Duplicate COOKIE-ACK.'> <!-- FIXME MT: No full stop -->
 <t>At any state other than COOKIE-ECHOED, an endpoint should silently
 discard a received COOKIE ACK chunk.</t>
 </section>
@@ -2717,8 +3269,10 @@ discard a received COOKIE ACK chunk.</t>
 one of a number of possible events:
 <list style='format %C)'>
 <t>The association failed to completely setup before the State Cookie issued by
-the sender was processed.</t>
-<t>An old State Cookie was processed after setup completed.</t>
+the sender was processed.
+<vspace blankLines='1'/></t>
+<t>An old State Cookie was processed after setup completed.
+<vspace blankLines='1'/></t>
 <t>An old State Cookie is received from someone that the receiver is not
 interested in having an association with and the ABORT chunk was lost.</t>
 </list></t>
@@ -2775,9 +3329,11 @@ To prevent this, the following rules are applied to all addresses of the
 new association:
 <list style='format %d)'>
 <t>Any address passed to the sender of the INIT by its upper layer
-is automatically considered to be CONFIRMED.</t>
+is automatically considered to be CONFIRMED.
+<vspace blankLines='1'/></t>
 <t>For the receiver of the COOKIE ECHO, the only CONFIRMED address
-is the one to which the INIT-ACK was sent.</t>
+is the one to which the INIT-ACK was sent.
+<vspace blankLines='1'/></t>
 <t>All other addresses not covered by rules 1 and 2 are considered
 UNCONFIRMED and are subject to probing for verification.</t>
 </list></t>
@@ -2790,6 +3346,7 @@ nonce included in the HEARTBEAT parameter is the one sent to the
 address indicated inside the HEARTBEAT parameter.
 When this match occurs, the address that the original HEARTBEAT was sent to
 is now considered CONFIRMED and available for normal data transfer.
+<vspace blankLines='1'/>
 These probing procedures are started when an association moves to the
 ESTABLISHED state and are ended when all paths are confirmed.</t>
 
@@ -2812,12 +3369,15 @@ layer.</t>
 <t>An endpoint MUST NOT send any chunks to an UNCONFIRMED address, with
 the following exceptions:
 <list style='symbols'>
-<t>A HEARTBEAT including a nonce MAY be sent to an UNCONFIRMED address.</t>
-<t>A HEARTBEAT ACK MAY be sent to an UNCONFIRMED address.</t>
+<t>A HEARTBEAT including a nonce MAY be sent to an UNCONFIRMED address.
+<vspace blankLines='1'/></t>
+<t>A HEARTBEAT ACK MAY be sent to an UNCONFIRMED address.
+<vspace blankLines='1'/></t>
 <t>A COOKIE ACK MAY be sent to an UNCONFIRMED address, but it MUST be
 bundled with a HEARTBEAT including a nonce.
 An implementation that does NOT support bundling MUST NOT send a COOKIE ACK
-to an UNCONFIRMED address.</t>
+to an UNCONFIRMED address.
+<vspace blankLines='1'/></t>
 <t>A COOKIE ECHO MAY be sent to an UNCONFIRMED address, but it MUST
 be bundled with a HEARTBEAT including a nonce, and the packet MUST
 NOT exceed the path MTU.
@@ -2919,13 +3479,13 @@ cwnd (see rule B, below).
 This rule allows the sender to probe for a change in rwnd that the sender
 missed due to the SACK's having been lost in transit from the data receiver to
 the data sender.
-<vspace/>
+<vspace blankLines='1'/>
 When the receiver's advertised window is zero, this probe is called a zero
 window probe.
 Note that a zero window probe SHOULD only be sent when all outstanding DATA
 chunks have been cumulatively acknowledged and no DATA chunks are in flight.
 Zero window probing MUST be supported.
-<vspace/>
+<vspace blankLines='1'/>
 If the sender continues to receive new packets from the receiver
 while doing zero window probing, the unacknowledged window probes
 should not increment the error counter for the association or any
@@ -2939,32 +3499,36 @@ exponentially afterwards.
 Also note that the cwnd SHOULD be adjusted according to
 <xref target='sec_slow_start'/>.
 Zero window probing does not affect the calculation of cwnd.
-<vspace/>
+<vspace blankLines='1'/>
 The sender MUST also have an algorithm for sending new DATA chunks to avoid
 silly window syndrome (SWS) as described in <xref target='RFC0813'/>.
 The algorithm can be similar to the one described in Section 4.2.3.4 of
 <xref target='RFC1122'/>.
-<vspace/>
+<vspace blankLines='1'/>
 However, regardless of the value of rwnd (including if it is 0), the data
 sender can always have one DATA chunk in flight to the receiver if allowed
 by cwnd (see rule B below).
 This rule allows the sender to probe for a change in rwnd that the sender missed
 due to the SACK having been lost in transit from the data receiver to the data
-sender.</t>
+sender.
+<vspace blankLines='1'/></t>
 <t>At any given time, the sender MUST NOT transmit new data to a given
 transport address if it has cwnd or more bytes of data outstanding to that
-transport address.</t>
+transport address.
+<vspace blankLines='1'/></t>
 <t>When the time comes for the sender to transmit, before sending new
 DATA chunks, the sender MUST first transmit any outstanding DATA
-chunks that are marked for retransmission (limited by the current cwnd).</t>
+chunks that are marked for retransmission (limited by the current cwnd).
+<vspace blankLines='1'/></t>
 <t>When the time comes for the sender to transmit new DATA chunks, the protocol
 parameter Max.Burst SHOULD be used to limit the number of packets sent.
 The limit MAY be applied by adjusting cwnd as follows:
-<list style='empty'>
-<t>if((flightsize + Max.Burst*MTU) &lt; cwnd) cwnd = flightsize + Max.Burst*MTU</t>
-</list>
+<vspace blankLines='1'/>
+if((flightsize + Max.Burst*MTU) &lt; cwnd) cwnd = flightsize + Max.Burst*MTU
+<vspace blankLines='1'/>
 Or it MAY be applied by strictly limiting the number of packets emitted by
-the output routine.</t>
+the output routine.
+<vspace blankLines='1'/></t>
 <t>Then, the sender can send out as many new DATA chunks as rule A and rule B
 allow.</t>
 </list></t>
@@ -3081,11 +3645,13 @@ receiver operation similar to the following:
 <t>At initialization of the association, the endpoint tells the peer
 how much receive buffer space it has allocated to the association
 in the INIT or INIT ACK.
-The endpoint sets a_rwnd to this value.</t>
+The endpoint sets a_rwnd to this value.
+<vspace blankLines='1'/></t>
 <t>As DATA chunks are received and buffered, decrement a_rwnd by the
 number of bytes received and buffered.
 This is, in effect, closing rwnd at the data sender and restricting the amount
-of data it can transmit.</t>
+of data it can transmit.
+<vspace blankLines='1'/></t>
 <t>As DATA chunks are delivered to the ULP and released from the
 receive buffers, increment a_rwnd by the number of bytes delivered
 to the upper layer.
@@ -3094,7 +3660,8 @@ send more data.
 The data receiver SHOULD NOT increment a_rwnd unless it has released bytes
 from its receive buffer.
 For example, if the receiver is holding fragmented DATA chunks in a reassembly
-queue, it should not increment a_rwnd.</t>
+queue, it should not increment a_rwnd.
+<vspace blankLines='1'/></t>
 <t>When sending a SACK, the data receiver SHOULD place the current
 value of a_rwnd into the a_rwnd field.
 The data receiver SHOULD take into account that the data sender will not
@@ -3177,25 +3744,30 @@ a received SACK.
 <list style='format %C)'>
 <t>At the establishment of the association, the endpoint initializes
 the rwnd to the Advertised Receiver Window Credit (a_rwnd) the peer specified
-in the INIT or INIT ACK.</t>
+in the INIT or INIT ACK.
+<vspace blankLines='1'/></t>
 <t>Any time a DATA chunk is transmitted (or retransmitted) to a peer, the
-endpoint subtracts the data size of the chunk from the rwnd of that peer.</t>
+endpoint subtracts the data size of the chunk from the rwnd of that peer.
+<vspace blankLines='1'/></t>
 <t>Any time a DATA chunk is marked for retransmission, either via T3-rtx timer
 expiration (<xref target='sec_handle_t3_rtx_expiration'/>) or
 via Fast Retransmit (<xref target='sec_fast_retransmit_on_gap_reports'/>),
 add the data size of those chunks to the rwnd.
-<vspace/>
+<vspace blankLines='1'/>
 Note: If the implementation is maintaining a timer on each DATA chunk, then
-only DATA chunks whose timer expired would be marked for retransmission.</t>
+only DATA chunks whose timer expired would be marked for retransmission.
+<vspace blankLines='1'/></t>
 <t>Any time a SACK arrives, the endpoint performs the following:
 <list style='format %i)'>
 <t>If Cumulative TSN Ack is less than the Cumulative TSN Ack Point,
 then drop the SACK.
 Since Cumulative TSN Ack is monotonically increasing, a SACK whose
 Cumulative TSN Ack is less than the Cumulative TSN Ack Point indicates an
-out-of-order SACK.</t>
+out-of-order SACK.
+<vspace blankLines='1'/></t>
 <t>Set rwnd equal to the newly received a_rwnd minus the number of bytes still
-outstanding after processing the Cumulative TSN Ack and the Gap Ack Blocks.</t>
+outstanding after processing the Cumulative TSN Ack and the Gap Ack Blocks.
+<vspace blankLines='1'/></t>
 <t>If the SACK is missing a TSN that was previously acknowledged via a
 Gap Ack Block (e.g., the data receiver reneged on the data), then consider
 the corresponding DATA that might be possibly missing:
@@ -3203,7 +3775,8 @@ Count one miss indication towards Fast Retransmit as described in
 <xref target='sec_fast_retransmit_on_gap_reports'/>,
 and if no retransmit timer is running for the destination address to which the
 DATA chunk was originally transmitted, then T3-rtx is started for that
-destination address.</t>
+destination address.
+<vspace blankLines='1'/></t>
 <t>If the Cumulative TSN Ack matches or exceeds the Fast Recovery exitpoint
 (<xref target='sec_fast_retransmit_on_gap_reports'/>),
 Fast Recovery is exited.</t>
@@ -3263,18 +3836,21 @@ RTO.Beta in rule C3 above should be adjusted so that SRTT and RTTVAR still
 adjust to changes at roughly the same rate (in terms of how many round
 trips it takes them to reflect new values) as they would if making only one
 measurement per round-trip and using RTO.Alpha and RTO.Beta as given in rule C3.
-However, the exact nature of these adjustments remains a research issue.</t>
+However, the exact nature of these adjustments remains a research issue.
+<vspace blankLines='1'/></t>
 <t>Karn's algorithm: RTT measurements MUST NOT be made using packets that
 were retransmitted (and thus for which it is ambiguous whether the reply was
 for the first instance of the chunk or for a later instance)
 <vspace blankLines='1'/>
 IMPLEMENTATION NOTE: RTT measurements should only be made using
 a chunk with TSN r if no chunk with TSN less than or equal to r
-is retransmitted since r is first sent.</t>
+is retransmitted since r is first sent.
+<vspace blankLines='1'/></t>
 <t>Whenever RTO is computed, if it is less than RTO.Min seconds then it is
 rounded up to RTO.Min seconds.
 The reason for this rule is that RTOs that do not have a high minimum value are
-susceptible to unnecessary timeouts <xref target='ALLMAN99'/>.</t>
+susceptible to unnecessary timeouts <xref target='ALLMAN99'/>.
+<vspace blankLines='1'/></t>
 <t>A maximum value may be placed on RTO provided it is at least
 RTO.max seconds.</t>
 </list></t>
@@ -3610,13 +4186,14 @@ chunk if bundling a SACK chunk with the DATA chunk.</t>
 <list style='format %d)'>
 <t>The data sender MUST break the user message into a series of DATA chunks
 such that each chunk plus SCTP overhead fits into an IP datagram smaller than
-or equal to the association Path MTU.</t>
+or equal to the association Path MTU.
+<vspace blankLines='1'/></t>
 <t>The transmitter MUST then assign, in sequence, a separate TSN to each of the
 DATA chunks in the series.
 The transmitter assigns the same SSN to each of the DATA chunks.
 If the user indicates that the user message is to be delivered using unordered
 delivery, then the U flag of each DATA chunk of the user message MUST be set
-to 1.</t>
+to 1.<vspace blankLines='1'/></t>
 <t>The transmitter MUST also set the B/E bits of the first DATA chunk in the
 series to '10', the B/E bits of the last DATA chunk in the series to '01',
 and the B/E bits of all other DATA chunks in the series to '00'.</t>
@@ -3728,12 +4305,14 @@ by the upper layer to do otherwise; however, SCTP may change to an alternate
 destination in the event an address is marked inactive
 (see <xref target='sec_path_failure_detection'/>).
 Also, SCTP may retransmit to a different transport address than the original
-transmission.</t>
+transmission.
+<vspace blankLines='1'/></t>
 <t>The sender keeps a separate congestion control parameter set for each of
 the destination addresses it can send to (not each source-destination pair but
 for each destination).
 The parameters should decay if the address is not used for a long enough time
-period.</t>
+period.
+<vspace blankLines='1'/></t>
 <t>For each of the destination addresses, an endpoint does slow start upon
 the first transmission to that address.</t>
 </list></t>
@@ -3963,7 +4542,8 @@ per-destination-address basis.</t>
 <list style='format %d)'>
 <t>SCTP associations can span multiple addresses.
 An endpoint MUST maintain separate MTU estimates for each destination address
-of its peer.</t>
+of its peer.
+<vspace blankLines='1'/></t>
 <t>The sender should track an association PMTU that will be the
 smallest PMTU discovered for all of the peer's destination addresses.
 When fragmenting messages into multiple parts this association PMTU should
@@ -4055,10 +4635,13 @@ This applies to both active and inactive destination addresses.</t>
 <t>The upper layer can optionally initiate the following functions:
 <list style='format %C)'>
 <t>Disable heartbeat on a specific destination transport address of a
-given association,</t>
-<t>Change the HB.interval,</t>
+given association,
+<vspace blankLines='1'/></t>
+<t>Change the HB.interval,
+<vspace blankLines='1'/></t>
 <t>Re-enable heartbeat on a specific destination transport address of a given
-association, and</t>
+association, and
+<vspace blankLines='1'/></t>
 <t>Request an on-demand HEARTBEAT on a specific destination transport address
 of a given association.</t>
 </list></t>
@@ -4193,25 +4776,28 @@ any further except for those cases listed in
 <t><list style='hanging'>
 <t hangText='A) Rules for packet carrying INIT:'>
 <list style='symbols'>
-<t>The sender MUST set the Verification Tag of the packet to 0.</t>
+<t>The sender MUST set the Verification Tag of the packet to 0.
+<vspace blankLines='1'/></t>
 <t>When an endpoint receives an SCTP packet with the Verification Tag set to 0,
 it should verify that the packet contains only an INIT chunk.
 Otherwise, the receiver MUST silently discard the packet.</t>
-</list></t>
+</list><vspace blankLines='1'/></t>
 
 <t hangText='B) Rules for packet carrying ABORT:'>
 <list style='symbols'>
 <t>The endpoint MUST always fill in the Verification Tag field of the outbound
-packet with the destination endpoint's tag value, if it is known.</t>
+packet with the destination endpoint's tag value, if it is known.
+<vspace blankLines='1'/></t>
 <t>If the ABORT is sent in response to an OOTB packet, the endpoint MUST follow
 the procedure described in
-<xref target='sec_handle_out_of_the_blue_packets'/>.</t>
+<xref target='sec_handle_out_of_the_blue_packets'/>.
+<vspace blankLines='1'/></t>
 <t>The receiver of an ABORT MUST accept the packet if the Verification Tag field
 of the packet matches its own tag and the T bit is not set OR if it is set to
 its peer's tag and the T bit is set in the Chunk Flags.
 Otherwise, the receiver MUST silently discard the packet and take no further
 action.</t>
-</list></t>
+</list><vspace blankLines='1'/></t>
 
 <t hangText='C) Rules for packet carrying SHUTDOWN COMPLETE:'>
 <list style='symbols'>
@@ -4219,7 +4805,8 @@ action.</t>
 a TCB, then the destination endpoint's tag MUST be used, and the T bit MUST NOT
 be set.
 Only where no TCB exists should the sender use the Verification Tag from the
-SHUTDOWN ACK, and MUST set the T bit.</t>
+SHUTDOWN ACK, and MUST set the T bit.
+<vspace blankLines='1'/></t>
 <t>The receiver of a SHUTDOWN COMPLETE shall accept the packet if the
 Verification Tag field of the packet matches its own tag and the T bit is not
 set OR if it is set to its peer's tag and the T bit is set in the Chunk Flags.
@@ -4227,15 +4814,16 @@ Otherwise, the receiver MUST silently discard the packet and take no further
 action.
 An endpoint MUST ignore the SHUTDOWN COMPLETE if it is not in the
 SHUTDOWN-ACK-SENT state.</t>
-</list></t>
-<t hangText='D) Rules for packet carrying a COOKIE ECHO:'>
+</list><vspace blankLines='1'/></t>
+<t hangText='D) Rules for packet carrying a COOKIE ECHO'> <!-- FIXME MT: Missing :-->
 <list style='symbols'>
 <t>When sending a COOKIE ECHO, the endpoint MUST use the value of the
-Initiate Tag received in the INIT ACK.</t>
+Initiate Tag received in the INIT ACK.
+<vspace blankLines='1'/></t>
 <t>The receiver of a COOKIE ECHO follows the procedures in
 <xref target='sec_assoc_initialization'/>.</t>
-</list></t>
-<t hangText='E) Rules for packet carrying a SHUTDOWN ACK:'>
+</list><vspace blankLines='1'/></t>
+<t hangText='E) Rules for packet carrying a SHUTDOWN ACK'> <!-- FIXME MT: Missing :-->
 <list style='symbols'>
 <t>If the receiver is in COOKIE-ECHOED or COOKIE-WAIT state the procedures
 in <xref target='sec_handle_out_of_the_blue_packets'/> SHOULD be followed;
@@ -4312,8 +4900,10 @@ the T2-shutdown timer, giving its peer ample opportunity to transmit all of its
 queued DATA chunks that have not yet been sent.</t>
 <t>Upon reception of the SHUTDOWN, the peer endpoint shall
 <list style='symbols'>
-<t>enter the SHUTDOWN-RECEIVED state,</t>
-<t>stop accepting new data from its SCTP user, and</t>
+<t>enter the SHUTDOWN-RECEIVED state,
+<vspace blankLines='1'/></t>
+<t>stop accepting new data from its SCTP user, and
+<vspace blankLines='1'/></t>
 <t>verify, by checking the Cumulative TSN Ack field of the chunk, that all its
 outstanding DATA chunks have been received by the SHUTDOWN sender.</t>
 </list></t>
@@ -5125,11 +5715,14 @@ place.</t>
 design level, where it includes measures such as:
 <list style='symbols'>
 <t>avoiding commitment of limited resources before determining that the request
-for service is legitimate.</t>
+for service is legitimate.
+<vspace blankLines='1'/></t>
 <t>giving priority to completion of processing in progress over the acceptance
-of new work.</t>
+of new work.
+<vspace blankLines='1'/></t>
 <t>identification and removal of duplicate or stale queued requests for
-service.</t>
+service.
+<vspace blankLines='1'/></t>
 <t>not responding to unexpected packets sent to non-unicast addresses.</t>
 </list></t>
 <t>Network equipment should be capable of generating an alarm and log if a
@@ -5172,10 +5765,12 @@ For example, the target node may by policy permit a maximum of one
 SCTP association with the impersonated SCTP node.
 The masquerading attacker may attempt to establish an association purporting to
 come from the impersonated node so that the latter cannot do so when it requires
-it.</t>
+it.
+<vspace blankLines='1'/></t>
 <t>by deliberately allowing the impersonation to be detected, thereby
 provoking counter-measures that cause the impersonated node to be locked out of
-the target SCTP node.</t>
+the target SCTP node.
+<vspace blankLines='1'/></t>
 <t>by interfering with an established association by inserting extraneous
 content such as a SHUTDOWN request.</t>
 </list></t>
@@ -5439,13 +6034,16 @@ allocation requests.</t>
 <t>The assignment of new chunk parameter type codes is done through an
 IETF Consensus action, as defined in <xref target='RFC2434'/>.
 Documentation of the chunk parameter MUST contain the following information:
-<list>
-<t>A long and short name for the new chunk type.</t>
+<list style='format %c)'>
+<t>A long and short name for the new chunk type.
+<vspace blankLines='1'/></t>
 <t>A detailed description of the structure of the chunk, which MUST conform to
 the basic structure defined in
-<xref target='sec_chunk_field_descriptions'/>.</t>
+<xref target='sec_chunk_field_descriptions'/>.
+<vspace blankLines='1'/></t>
 <t>A detailed definition and description of intended use of each field within
-the chunk, including the chunk flags if any.</t>
+the chunk, including the chunk flags if any.
+<vspace blankLines='1'/></t>
 <t>A detailed procedural description of the use of the new chunk type within
 the operation of the protocol.</t>
 </list></t>
@@ -5458,14 +6056,18 @@ the operation of the protocol.</t>
 Consensus action as defined in <xref target='RFC2434'/>.
 Documentation of the chunk parameter MUST contain the following information:
 <list style='format %c)'>
-<t>Name of the parameter type.</t>
+<t>Name of the parameter type.
+<vspace blankLines='1'/></t>
 <t>Detailed description of the structure of the parameter field.
 This structure MUST conform to the general Type-Length-Value format described
-in <xref target='sec_parameter_format'/>.</t>
-<t>Detailed definition of each component of the parameter value.</t>
+in <xref target='sec_parameter_format'/>.
+<vspace blankLines='1'/></t>
+<t>Detailed definition of each component of the parameter value.
+<vspace blankLines='1'/></t>
 <t>Detailed description of the intended use of this parameter type, and an
 indication of whether and under what circumstances multiple instances of this
-parameter type may be found within the same chunk.</t>
+parameter type may be found within the same chunk.
+<vspace blankLines='1'/></t>
 <t>Each parameter type MUST be unique across all chunks.</t>
 </list></t>
 </section>
@@ -5476,11 +6078,14 @@ parameter type may be found within the same chunk.</t>
 through a Specification Required action as defined in <xref target='RFC2434'/>.
 Provided documentation must include the following information:
 <list style='format %c)'>
-<t>Name of the error condition.</t>
+<t>Name of the error condition.
+<vspace blankLines='1'/></t>
 <t>Detailed description of the conditions under which an SCTP endpoint should
-issue an ERROR (or ABORT) with this cause code.</t>
+issue an ERROR (or ABORT) with this cause code.
+<vspace blankLines='1'/></t>
 <t>Expected action by the SCTP endpoint that receives an ERROR (or ABORT) chunk
-containing this cause code.</t>
+containing this cause code.
+<vspace blankLines='1'/></t>
 <t>Detailed description of the structure and content of data fields that
 accompany this cause code.</t>
 </list></t>
@@ -5549,10 +6154,12 @@ but indicating a contact person is recommended.</t>
 <t>Registrants are encouraged to follow these guidelines when submitting
 a registration.
 <list style='symbols'>
-<t>A port name SHOULD NOT be registered for more than one SCTP port number.</t>
+<t>A port name SHOULD NOT be registered for more than one SCTP port number.
+<vspace blankLines='1'/></t>
 <t>A port name registered for TCP MAY be registered for SCTP as well.
 Any such registration SHOULD use the same port number as the existing TCP
-registration.</t>
+registration.
+<vspace blankLines='1'/></t>
 <t>Concrete intent to use a port SHOULD precede port registration. For example,
 existing TCP ports SHOULD NOT be registered in advance of any intent to use
 those ports for SCTP.</t>
@@ -5639,20 +6246,21 @@ of these protocol parameters (see <xref target='sec_api'/>).</t>
          title='Acknowledgements'>
 <t>An undertaking represented by this updated document is not a small
 feat and represents the summation of the initial authors of RFC 2960:
-Q. Xie, K. Morneault, C. Sharp, H. Schwarzbauer, T. Taylor, I. Rytina,
-M. Kalla, L. Zhang, and V. Paxson.</t>
+Q.&nbsp;Xie, K.&nbsp;Morneault, C.&nbsp;Sharp, H.&nbsp;Schwarzbauer,
+T.&nbsp;Taylor, I.&nbsp;Rytina, M.&nbsp;Kalla, L.&nbsp;Zhang,
+and V.&nbsp;Paxson.</t>
 <t>Add to that, the comments from everyone who contributed to the original
 RFC:</t>
-<t>Mark Allman, R.J. Atkinson, Richard Band, Scott Bradner, Steve Bellovin,
-Peter Butler, Ram Dantu, R. Ezhirpavai, Mike Fisk, Sally Floyd,
+<t>Mark Allman, R.J.&nbsp;Atkinson, Richard Band, Scott Bradner, Steve Bellovin,
+Peter Butler, Ram Dantu, R.&nbsp;Ezhirpavai, Mike Fisk, Sally Floyd,
 Atsushi Fukumoto, Matt Holdrege, Henry Houh, Christian Huitema, Gary Lehecka,
 Jonathan Lee, David Lehmann, John Loughney, Daniel Luan, Barry Nagelberg,
 Thomas Narten, Erik Nordmark, Lyndon Ong, Shyamal Prasad, Kelvin Porter,
-Heinz Prantner, Jarno Rajahalme, Raymond E. Reeves, Renee Revis,
-Ivan Arias Rodriguez, A. Sankar, Greg Sidebottom, Brian Wyld, La Monte Yarroll,
-and many others for their invaluable comments.</t>
-<t>Then, add the authors of the SCTP implementor's guide, I. Arias- Rodriguez,
-K. Poon, A. Caro, and M. Tuexen.</t>
+Heinz Prantner, Jarno Rajahalme, Raymond E.&nbsp;Reeves, Renee Revis,
+Ivan Arias Rodriguez, A.&nbsp;Sankar, Greg Sidebottom, Brian Wyld,
+La Monte Yarroll, and many others for their invaluable comments.</t>
+<t>Then, add the authors of the SCTP implementor's guide,
+I.&nbsp;Arias-Rodriguez, K.&nbsp;Poon, A.&nbsp;Caro, and M.&nbsp;Tuexen.</t>
 <t>Then add to these the efforts of all the subsequent seven
 SCTP interoperability tests and those who commented on RFC 4460 as shown in
 its acknowledgements:</t>
@@ -5689,14 +6297,19 @@ in the coding, testing, and updating process of this document.
 
 <references title='Normative References'>
 <?rfc include="reference.ITU.V42.1994" ?>
+<?rfc include="reference.RFC.0768" ?>
+<?rfc include="reference.RFC.0793" ?>
 <?rfc include="reference.RFC.1122" ?>
+<?rfc include="reference.RFC.1123" ?>
 <?rfc include="reference.RFC.1191" ?>
 <?rfc include="reference.RFC.1981" ?>
 <?rfc include="reference.RFC.1982" ?>
 <?rfc include="reference.RFC.2119" ?>
 <?rfc include="reference.RFC.2434" ?>
+<?rfc include="reference.RFC.2460" ?>
 <?rfc include="reference.RFC.2581" ?>
 <?rfc include="reference.RFC.3873" ?>
+<?rfc include="reference.RFC.4291" ?>
 <?rfc include="reference.RFC.4301" ?>
 <?rfc include="reference.RFC.4303" ?>
 <?rfc include="reference.RFC.4306" ?>
@@ -5744,13 +6357,13 @@ in the coding, testing, and updating process of this document.
 </front>
 <seriesInfo name='SIGCOM' value='99'/>
 </reference>
-<?rfc include="reference.RFC.0768" ?>
-<?rfc include="reference.RFC.0793" ?>
 <?rfc include="reference.RFC.0813" ?>
 <?rfc include="reference.RFC.1858" ?>
 <?rfc include="reference.RFC.2104" ?>
 <?rfc include="reference.RFC.2196" ?>
 <?rfc include="reference.RFC.2522" ?>
+<?rfc include="reference.RFC.2960" ?> <!-- FIXME MT: Unused -->
+<?rfc include="reference.RFC.3309" ?> <!-- FIXME MT: Unused -->
 <?rfc include="reference.RFC.3168" ?>
 <?rfc include="reference.RFC.4086" ?>
 <?rfc include="reference.RFC.4895" ?>
@@ -5864,20 +6477,26 @@ CRC polynomials are to be transformed back into SCTP transport-level
 byte values, using a consistent mapping.</t>
 <t>The SCTP transport-level CRC value should be calculated as follows:
 <list style='symbols'>
-<t>CRC input data are assigned to a byte stream, numbered from 0 to N-1.</t>
+<t>CRC input data are assigned to a byte stream, numbered from 0 to N-1.
+<vspace blankLines='1'/></t>
 <t>The transport-level byte stream is mapped to a polynomial value.
 An N-byte PDU with j bytes numbered 0 to N-1 is considered as
 coefficients of a polynomial M(x) of order 8N-1, with bit 0 of
 byte j being coefficient x^(8(N-j)-8), and bit 7 of byte j being
-coefficient x^(8(N-j)-1).</t>
+coefficient x^(8(N-j)-1).
+<vspace blankLines='1'/></t>
 <t>The CRC remainder register is initialized with all 1s and the CRC is computed
 with an algorithm that simultaneously multiplies by x^32 and divides by the
-CRC polynomial.</t>
+CRC polynomial.
+<vspace blankLines='1'/></t>
 <t>The polynomial is multiplied by x^32 and divided by G(x), the generator
-polynomial, producing a remainder R(x) of degree less than or equal to 31.</t>
-<t>The coefficients of R(x) are considered a 32-bit sequence.</t>
+polynomial, producing a remainder R(x) of degree less than or equal to 31.
+<vspace blankLines='1'/></t>
+<t>The coefficients of R(x) are considered a 32-bit sequence.
+<vspace blankLines='1'/></t>
 <t>The bit sequence is complemented.
-The result is the CRC polynomial.</t>
+The result is the CRC polynomial.
+<vspace blankLines='1'/></t>
 <t>The CRC polynomial is mapped back into SCTP transport-level bytes.
 The coefficient of x^31 gives the value of bit 7 of SCTP byte 0,
 and the coefficient of x^24 gives the value of bit 0 of byte 0.
@@ -5917,17 +6536,22 @@ procedures MUST be followed to ensure proper utilization of the information
 being provided by layer 3.
 <list style='format ICMP%d)'>
 <t>An implementation MAY ignore all ICMPv4 messages where the type field is not
-set to "Destination Unreachable".</t>
+set to "Destination Unreachable".
+<vspace blankLines='1'/></t>
 <t>An implementation MAY ignore all ICMPv6 messages where the type field is
-not "Destination Unreachable", "Parameter Problem",, or "Packet Too Big".</t>
+not "Destination Unreachable", "Parameter Problem",, or "Packet Too Big".
+<vspace blankLines='1'/></t>
 <t>An implementation MAY ignore any ICMPv4 messages where the code does not
-indicate "Protocol Unreachable" or "Fragmentation Needed".</t>
+indicate "Protocol Unreachable" or "Fragmentation Needed".
+<vspace blankLines='1'/></t>
 <t>An implementation MAY ignore all ICMPv6 messages of type "Parameter Problem"
-if the code is not "Unrecognized Next Header Type Encountered".</t>
+if the code is not "Unrecognized Next Header Type Encountered".
+<vspace blankLines='1'/></t>
 <t>An implementation MUST use the payload of the ICMP message (v4 or v6) to
 locate the association that sent the message to which ICMP is responding.
 If the association cannot be found, an implementation SHOULD ignore the
-ICMP message.</t>
+ICMP message.
+<vspace blankLines='1'/></t>
 <t>An implementation MUST validate that the Verification Tag contained in the
 ICMP message matches the Verification Tag of the peer.
 If the Verification Tag is not 0 and does NOT match, discard the ICMP message.
@@ -5935,15 +6559,18 @@ If it is 0 and the ICMP message contains enough bytes to verify that the
 chunk type is an INIT chunk and that the Initiate Tag matches the tag of the
 peer, continue with ICMP7.
 If the ICMP message is too short or the chunk type or the Initiate Tag does
-not match, silently discard the packet.</t>
+not match, silently discard the packet.
+<vspace blankLines='1'/></t>
 <t>If the ICMP message is either a v6 "Packet Too Big" or a
 v4 "Fragmentation Needed", an implementation MAY process this information as
-defined for PATH MTU discovery.</t>
+defined for PATH MTU discovery.
+<vspace blankLines='1'/></t>
 <t>If the ICMP code is an "Unrecognized Next Header Type Encountered" or
 a "Protocol Unreachable", an implementation MUST treat this message as an abort
 with the T bit set if it does not contain an INIT chunk.
 If it does contain an INIT chunk and the association is in the
-COOKIE-WAIT state, handle the ICMP message like an ABORT.</t>
+COOKIE-WAIT state, handle the ICMP message like an ABORT.
+<vspace blankLines='1'/></t>
 <t>If the ICMPv6 code is "Destination Unreachable", the implementation MAY mark
 the destination into the unreachable state or alternatively increment the
 path error counter.</t>
