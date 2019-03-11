@@ -2092,7 +2092,7 @@ Furthermore, new RTT measurements SHOULD be made no more than once per
 round trip for a given destination transport address.
 There are two reasons for this recommendation:
 First, it appears that measuring more frequently often does not in practice
-yield any significant benefit [ALLMAN99];
+yield any significant benefit <xref target='ALLMAN99'/>;
 second, if measurements are made more often, then the values of RTO.Alpha and
 RTO.Beta in rule C3 above should be adjusted so that SRTT and RTTVAR still
 adjust to changes at roughly the same rate (in terms of how many round
@@ -2109,7 +2109,7 @@ is retransmitted since r is first sent.</t>
 <t>Whenever RTO is computed, if it is less than RTO.Min seconds then it is
 rounded up to RTO.Min seconds.
 The reason for this rule is that RTOs that do not have a high minimum value are
-susceptible to unnecessary timeouts [ALLMAN99].</t> <!-- FIXME MT: Reference -->
+susceptible to unnecessary timeouts <xref target='ALLMAN99'/>.</t>
 <t>A maximum value may be placed on RTO provided it is at least
 RTO.max seconds.</t>
 </list></t>
@@ -2118,8 +2118,8 @@ RTT measurements and the different state variables, other than:
 <list style='format G%d)'>
 <t>Whenever RTTVAR is computed, if RTTVAR = 0, then adjust RTTVAR &lt;- G.</t>
 </list></t>
-<t>Experience [ALLMAN99] has shown that finer clock granularities (&lt;= 100 msec)
-perform somewhat better than more coarse granularities.</t> <!-- FIXME MT: Reference -->
+<t>Experience <xref target='ALLMAN99'/> has shown that finer clock granularities
+(&lt;= 100 msec) perform somewhat better than more coarse granularities.</t>
 
 </section>
 <section anchor='sec_retransmission_timer_rules'
@@ -2546,7 +2546,7 @@ highest acknowledged sequence number and the latest DATA chunk that can be
 sent within the congestion window.
 SCTP SACK leads to different implementations of Fast Retransmit and Fast
 Recovery than non-SACK TCP.
-As an example, see [FALL96].</t> <!-- MT FIXME: Reference-->
+As an example, see <xref target='FALL96'/>.</t>
 <t>The biggest difference between SCTP and TCP, however, is multi- homing.
 SCTP is designed to establish robust communication associations between
 two endpoints each of which may be reachable by more than one transport address.
@@ -2646,7 +2646,7 @@ lesser of
 1) the total size of the previously outstanding DATA chunk(s) acknowledged, and
 2) the destination's path MTU.
 This upper bound protects against the ACK-Splitting attack outlined in
-[SAVAGE99].</t> <!-- MT FIXME: Reference -->
+<xref target='SAVAGE99'/>.</t>
 </list></t>
 <t>In instances where its peer endpoint is multi-homed, if an endpoint
 receives a SACK that advances its Cumulative TSN Ack Point, then it
@@ -3227,11 +3227,635 @@ and remove all record of the association.</t>
 
 <section anchor='sec_api'
          title='Interface with Upper Layer'>
+
 <section anchor='sec_ulp_to_sctp'
          title='ULP-to-SCTP'>
+<t>The following sections functionally characterize a ULP/SCTP interface.
+The notation used is similar to most procedure or function calls in high-level
+languages.</t>
+<t>The ULP primitives described below specify the basic functions that
+SCTP must perform to support inter-process communication.
+Individual implementations must define their own exact format, and may provide
+combinations or subsets of the basic functions in single calls.</t>
+<t><list style='format %C)'>
+<t>Initialize
+<list style='hanging' hangIndent='8'>
+<t hangText='Format:'>
+INITIALIZE ([local port],[local eligible address list]) ->
+local SCTP instance name</t>
+</list>
+This primitive allows SCTP to initialize its internal data structures
+and allocate necessary resources for setting up its operation
+environment.
+Once SCTP is initialized, ULP can communicate directly with other endpoints
+without re-invoking this primitive.
+<vspace/>
+SCTP will return a local SCTP instance name to the ULP.
+<vspace/>
+Mandatory attributes:
+<list style='symbols'>
+<t>None.</t>
+</list>
+Optional attributes:
+<vspace/>
+The following types of attributes may be passed along with the primitive:
+<list style='symbols'>
+<t>local port -
+SCTP port number, if ULP wants it to be specified.</t>
+<t>local eligible address list -
+an address list that the local SCTP endpoint should bind.
+By default, if an address list is not included, all IP addresses assigned to
+the host should be used by the local endpoint.</t>
+</list>
+IMPLEMENTATION NOTE: If this optional attribute is supported by an
+implementation, it will be the responsibility of the implementation
+to enforce that the IP source address field of any SCTP packets sent
+out by this endpoint contains one of the IP addresses indicated in
+the local eligible address list.</t>
+
+<t>Associate
+<list style='hanging' hangIndent='8'>
+<t hangText='Format:'>
+ASSOCIATE(local SCTP instance name, destination transport addr,
+outbound stream count) -> association id [,destination transport addr list]
+[,outbound stream count]</t>
+</list>
+This primitive allows the upper layer to initiate an association to a specific
+peer endpoint.
+<vspace/>
+The peer endpoint shall be specified by one of the transport
+addresses that defines the endpoint (see <xref target='sec_key_terms'/>).
+If the local SCTP instance has not been initialized, the ASSOCIATE is considered
+an error.
+<vspace/>
+An association id, which is a local handle to the SCTP association,
+will be returned on successful establishment of the association.
+If SCTP is not able to open an SCTP association with the peer endpoint,
+an error is returned.
+<vspace/>
+Other association parameters may be returned, including the complete
+destination transport addresses of the peer as well as the outbound
+stream count of the local endpoint.
+One of the transport addresses from the returned destination addresses will
+be selected by the local endpoint as default primary path for sending
+SCTP packets to this peer.
+The returned "destination transport addr list" can be used by the ULP to change
+the default primary path or to force sending a packet to a specific
+transport address.
+<vspace/>
+IMPLEMENTATION NOTE: If ASSOCIATE primitive is implemented as a
+blocking function call, the ASSOCIATE primitive can return
+association parameters in addition to the association id upon
+successful establishment.
+If ASSOCIATE primitive is implemented as a non-blocking call, only the
+association id shall be returned and association parameters shall be passed
+using the COMMUNICATION UP notification.
+<vspace/>
+Mandatory attributes:
+<list style='symbols'>
+<t>local SCTP instance name -
+obtained from the INITIALIZE operation.</t>
+<t>destination transport addr -
+specified as one of the transport addresses of the peer endpoint with which
+the association is to be established.</t>
+<t>outbound stream count -
+the number of outbound streams the ULP would like to open towards this
+peer endpoint.</t>
+</list>
+Optional attributes:
+<list style='symbols'>
+<t>None.</t>
+</list></t>
+
+<t>Shutdown
+<list style='hanging' hangIndent='8'>
+<t hangText='Format:'>
+SHUTDOWN(association id) -> result</t>
+</list>
+Gracefully closes an association.
+Any locally queued user data will be delivered to the peer.
+The association will be terminated only after the peer acknowledges all the
+SCTP packets sent.
+A success code will be returned on successful termination of the association.
+If attempting to terminate the association results in a failure, an error code
+shall be returned.
+<vspace/>
+Mandatory attributes:
+<list style='symbols'>
+<t>association id -
+local handle to the SCTP association.</t>
+</list>
+Optional attributes:
+<list style='symbols'>
+<t>None.</t>
+</list></t>
+
+<t>Abort
+<list style='hanging' hangIndent='8'>
+<t hangText='Format:'>
+ABORT(association id [, Upper Layer Abort Reason]) -> result</t>
+</list>
+Ungracefully closes an association.
+Any locally queued user data will be discarded, and an ABORT chunk is sent to
+the peer.
+A success code will be returned on successful abort of the association.
+If attempting to abort the association results in a failure, an error code
+shall be returned.
+<vspace/>
+Mandatory attributes:
+<list style='symbols'>
+<t>association id -
+local handle to the SCTP association.</t>
+</list>
+Optional attributes:
+<list style='symbols'>
+<t>Upper Layer Abort Reason -
+reason of the abort to be passed to the peer.</t>
+<t>None.</t> <!-- MT: stray none -->
+</list></t>
+
+<t>Send
+<list style='hanging' hangIndent='8'>
+<t hangText='Format:'>
+SEND(association id, buffer address, byte count [,context] [,stream id]
+[,life time] [,destination transport address] [,unordered flag]
+[,no-bundle flag] [,payload protocol-id] ) -> result</t>
+</list>
+This is the main method to send user data via SCTP.
+<vspace/>
+Mandatory attributes:
+<list style='symbols'>
+<t>association id -
+local handle to the SCTP association.</t>
+<t>buffer address -
+the location where the user message to be transmitted is stored.</t>
+<t>byte count -
+the size of the user data in number of bytes.</t>
+</list>
+Optional attributes:
+<list style='symbols'>
+<t>context -
+an optional 32-bit integer that will be carried in the sending failure
+notification to the ULP if the transportation of this user message fails.</t>
+<t>stream id -
+to indicate which stream to send the data on.
+If not specified, stream 0 will be used.</t>
+<t>life time -
+specifies the life time of the user data.
+The user data will not be sent by SCTP after the life time expires.
+This parameter can be used to avoid efforts to transmit stale user messages.
+SCTP notifies the ULP if the data cannot be initiated to transport (i.e., sent
+to the destination via SCTP's send primitive) within the life time variable.
+However, the user data will be transmitted if SCTP has attempted to transmit
+a chunk before the life time expired.
+<vspace/>
+IMPLEMENTATION NOTE: In order to better support the data life time
+option, the transmitter may hold back the assigning of the TSN number
+to an outbound DATA chunk to the last moment.
+And, for implementation simplicity, once a TSN number has been assigned the
+sender should consider the send of this DATA chunk as committed,
+overriding any life time option attached to the DATA chunk.</t>
+<t>destination transport address -
+specified as one of the destination transport addresses of the peer endpoint
+to which this packet should be sent.
+Whenever possible, SCTP should use this destination transport address for
+sending the packets, instead of the current primary path.</t>
+<t>unordered flag -
+this flag, if present, indicates that the user would like the data delivered
+in an unordered fashion to the peer (i.e., the U flag is set to 1 on all DATA
+chunks carrying this message).</t>
+<t>no-bundle flag -
+instructs SCTP not to bundle this user data with other outbound DATA chunks.
+SCTP MAY still bundle even when this flag is present, when faced with network
+congestion.</t>
+<t>payload protocol-id -
+a 32-bit unsigned integer that is to be passed to the peer indicating the type
+of payload protocol data being transmitted.
+This value is passed as opaque data by SCTP.</t>
+</list></t>
+
+<t>Set Primary
+<list style='hanging' hangIndent='8'>
+<t hangText='Format:'>
+SETPRIMARY(association id, destination transport address,
+[source transport address]) -> result</t>
+</list>
+Instructs the local SCTP to use the specified destination transport address as
+the primary path for sending packets.
+<vspace/>
+The result of attempting this operation shall be returned.
+If the specified destination transport address is not present in the
+"destination transport address list" returned earlier in an associate
+command or communication up notification, an error shall be returned.
+<vspace/>
+Mandatory attributes:
+<list style='symbols'>
+<t>association id -
+local handle to the SCTP association.</t>
+<t>destination transport address -
+specified as one of the transport addresses of the peer endpoint, which should
+be used as the primary address for sending packets.
+This overrides the current primary address information maintained by the
+local SCTP endpoint.</t>
+</list>
+Optional attributes:
+<list style='symbols'>
+<t>source transport address -
+optionally, some implementations may allow you to set the default source address
+placed in all outgoing IP datagrams.</t>
+</list></t>
+
+<t>Receive
+<list style='hanging' hangIndent='8'>
+<t hangText='Format:'>
+RECEIVE(association id, buffer address, buffer size [,stream id])
+-> byte count [,transport address] [,stream id] [,stream sequence number]
+[,partial flag] [,delivery number] [,payload protocol-id]</t>
+</list>
+This primitive shall read the first user message in the SCTP in-queue
+into the buffer specified by ULP, if there is one available.
+The size of the message read, in bytes, will be returned.
+It may, depending on the specific implementation, also return other
+information such as the sender's address, the stream id on which it
+is received, whether there are more messages available for retrieval,
+etc.
+For ordered messages, their Stream Sequence Number may also be returned.
+<vspace/>
+Depending upon the implementation, if this primitive is invoked when no message
+is available the implementation should return an indication of this condition
+or should block the invoking process until data does become available.
+<vspace/>
+Mandatory attributes:
+<list style='symbols'>
+<t>association id -
+local handle to the SCTP association</t>
+<t>buffer address -
+the memory location indicated by the ULP to store the received message.</t>
+<t>buffer size -
+the maximum size of data to be received, in bytes.</t>
+</list>
+Optional attributes:
+<list style='symbols'>
+<t>stream id -
+to indicate which stream to receive the data on.</t>
+<t>Stream Sequence Number -
+the Stream Sequence Number assigned by the sending SCTP peer.</t>
+<t>partial flag -
+if this returned flag is set to 1, then this Receive contains a partial
+delivery of the whole message.
+When this flag is set, the stream id and Stream Sequence Number MUST
+accompany this receive.
+When this flag is set to 0, it indicates that no more deliveries will be
+received for this Stream Sequence Number.</t>
+<t>payload protocol-id -
+a 32-bit unsigned integer that is received from the peer indicating the type
+of payload protocol of the received data.
+This value is passed as opaque data by SCTP.</t>
+</list></t>
+
+<t>Status
+<list style='hanging' hangIndent='8'>
+<t hangText='Format:'>
+STATUS(association id) -> status data</t>
+</list>
+This primitive should return a data block containing the following information:
+<list style='empty'>
+<t>association connection state,</t>
+<t>destination transport address list,</t>
+<t>destination transport address reachability states,</t>
+<t>current receiver window size,</t>
+<t>current congestion window sizes,</t>
+<t>number of unacknowledged DATA chunks,</t>
+<t>number of DATA chunks pending receipt,</t>
+<t>primary path,</t>
+<t>most recent SRTT on primary path,</t>
+<t>RTO on primary path,</t>
+<t>SRTT and RTO on other destination addresses, etc.</t>
+</list>
+Mandatory attributes:
+<list style='symbols'>
+<t>association id - local handle to the SCTP association.</t>
+</list>
+Optional attributes:
+<list style='symbols'>
+<t>None.</t>
+</list></t>
+
+<t>Change Heartbeat
+<list style='hanging' hangIndent='8'>
+<t hangText='Format:'>
+CHANGE HEARTBEAT(association id, destination transport address, new state
+[,interval]) -> result</t>
+</list>
+Instructs the local endpoint to enable or disable heartbeat on the
+specified destination transport address.
+<vspace/>
+The result of attempting this operation shall be returned.
+<vspace/>
+Note: Even when enabled, heartbeat will not take place if the destination
+transport address is not idle.
+<vspace/>
+Mandatory attributes:
+<list style='symbols'>
+<t>association id -
+local handle to the SCTP association.</t>
+<t>destination transport address -
+specified as one of the transport addresses of the peer endpoint.</t>
+<t>new state -
+the new state of heartbeat for this destination transport address
+(either enabled or disabled).</t>
+</list>
+Optional attributes:
+<list style='symbols'>
+<t>interval -
+if present, indicates the frequency of the heartbeat if this is to enable
+heartbeat on a destination transport address.
+This value is added to the RTO of the destination transport address.
+ This value, if present, affects all destinations.</t>
+ </list></t>
+
+<t>Request HeartBeat
+<list style='hanging' hangIndent='8'>
+<t hangText='Format:'>
+REQUESTHEARTBEAT(association id, destination transport address) -> result</t>
+</list>
+Instructs the local endpoint to perform a HeartBeat on the specified
+destination transport address of the given association.
+The returned result should indicate whether the transmission of the HEARTBEAT
+chunk to the destination address is successful.
+<vspace/>
+Mandatory attributes:
+<list style='symbols'>
+<t>association id -
+local handle to the SCTP association.</t>
+<t>destination transport address -
+the transport address of the association on which a heartbeat should be
+issued.</t>
+</list></t>
+
+<t>Get SRTT Report
+<list style='hanging' hangIndent='8'>
+<t hangText='Format:'>
+GETSRTTREPORT(association id, destination transport address) -> srtt result</t>
+</list>
+Instructs the local SCTP to report the current SRTT measurement on the
+specified destination transport address of the given association.
+The returned result can be an integer containing the most recent SRTT in
+milliseconds.
+<vspace/>
+Mandatory attributes:
+<list style='symbols'>
+<t>association id -
+local handle to the SCTP association.</t>
+<t>destination transport address -
+the transport address of the association on which the SRTT measurement is to
+be reported.</t>
+</list></t>
+
+<t>Set Failure Threshold
+<list style='hanging' hangIndent='8'>
+<t hangText='Format:'>
+SETFAILURETHRESHOLD(association id, destination transport address,
+failure threshold) -> result</t>
+</list>
+This primitive allows the local SCTP to customize the reachability failure
+detection threshold 'Path.Max.Retrans' for the specified destination address.
+<vspace/>
+Mandatory attributes:
+<list style='symbols'>
+<t>association id -
+local handle to the SCTP association.</t>
+<t>destination transport address -
+the transport address of the association on which the failure detection
+threshold is to be set.</t>
+<t>failure threshold -
+the new value of 'Path.Max.Retrans' for the destination address.</t>
+</list></t>
+<t>Set Protocol Parameters
+<list style='hanging' hangIndent='8'>
+<t hangText='Format:'>
+SETPROTOCOLPARAMETERS(association id, [,destination transport address,]
+protocol parameter list) -> result</t>
+</list>
+This primitive allows the local SCTP to customize the protocol parameters.
+<vspace/>
+   Mandatory attributes:
+<list style='symbols'>
+<t>association id -
+local handle to the SCTP association.</t>
+<t>protocol parameter list -
+the specific names and values of the protocol parameters
+(e.g., Association.Max.Retrans; see <xref target='sec_parameter_values'/>)
+that the SCTP user wishes to customize.</t>
+</list>
+Optional attributes:
+<list style='symbols'>
+<t>destination transport address -
+some of the protocol parameters may be set on a per destination transport
+address basis.</t>
+</list></t>
+<t>Receive Unsent Message
+<list style='hanging' hangIndent='8'>
+<t hangText='Format:'>
+RECEIVE_UNSENT(data retrieval id, buffer address, buffer size [,stream id]
+[, stream sequence number] [,partial flag] [,payload protocol-id])</t>
+</list>
+<list style='symbols'>
+<t>data retrieval id -
+the identification passed to the ULP in the failure notification.</t>
+<t>buffer address -
+the memory location indicated by the ULP to store the received message.</t>
+<t>buffer size -
+the maximum size of data to be received, in bytes.</t>
+</list>
+Optional attributes:
+<list style='symbols'>
+<t>stream id -
+this is a return value that is set to indicate which stream the data was
+sent to.</t>
+<t>Stream Sequence Number -
+this value is returned indicating the Stream Sequence Number that was
+associated with the message.</t>
+<t>partial flag -
+if this returned flag is set to 1, then this message is a partial delivery of
+the whole message.
+When this flag is set, the stream id and Stream Sequence Number MUST
+accompany this receive.
+When this flag is set to 0, it indicates that no more deliveries will be
+received for this Stream Sequence Number.</t>
+<t>payload protocol-id -
+The 32 bit unsigned integer that was sent to be sent to the peer indicating
+the type of payload protocol of the received data.</t>
+</list></t>
+<t>Receive Unacknowledged Message
+<list style='hanging' hangIndent='8'>
+<t hangText='Format:'>
+RECEIVE_UNACKED(data retrieval id, buffer address, buffer size, [,stream id]
+[, stream sequence number] [,partial flag] [,payload protocol-id])</t>
+</list>
+<list style='symbols'>
+<t>data retrieval id -
+the identification passed to the ULP in the failure notification.</t>
+<t>buffer address -
+the memory location indicated by the ULP to store the received message.</t>
+<t>buffer size -
+the maximum size of data to be received, in bytes.</t>
+</list>
+Optional attributes:
+<list style='symbols'>
+<t>stream id -
+this is a return value that is set to indicate which stream the data was sent
+to.</t>
+<t>Stream Sequence Number -
+this value is returned indicating the Stream Sequence Number that was
+associated with the message.</t>
+<t>partial flag -
+if this returned flag is set to 1, then this message is a partial delivery of
+the whole message.
+When this flag is set, the stream id and Stream Sequence Number MUST
+accompany this receive.
+When this flag is set to 0, it indicates that no more deliveries will be
+received for this Stream Sequence Number.</t>
+<t>payload protocol-id -
+the 32-bit unsigned integer that was sent to the peer indicating the type of
+payload protocol of the received data.</t>
+</list></t>
+<t>Destroy SCTP Instance
+<list style='hanging' hangIndent='8'>
+<t hangText='Format:'>
+DESTROY(local SCTP instance name)</t>
+</list>
+<list style='symbols'>
+<t>local SCTP instance name - this is the value that was passed to
+the application in the initialize primitive and it indicates which
+SCTP instance is to be destroyed.</t>
+</list></t>
+</list></t>
 </section>
+
 <section anchor='sec_sctp_to_ulp'
          title='SCTP-to-ULP'>
+<t>It is assumed that the operating system or application environment
+provides a means for the SCTP to asynchronously signal the ULP process.
+When SCTP does signal a ULP process, certain information is passed to
+the ULP.</t>
+<t>IMPLEMENTATION NOTE: In some cases, this may be done through a separate
+socket or error channel.</t>
+<t><list style='format %C)'>
+<t>DATA ARRIVE notification
+<vspace/>
+SCTP shall invoke this notification on the ULP when a user message is
+successfully received and ready for retrieval.
+<vspace/>
+The following may optionally be passed with the notification:
+<list style='symbols'>
+<t>association id - local handle to the SCTP association.</t>
+<t>stream id - to indicate which stream the data is received on.</t>
+</list></t>
+<t>SEND FAILURE notification
+<vspace/>
+If a message cannot be delivered, SCTP shall invoke this notification
+on the ULP.
+<vspace/>
+The following may optionally be passed with the notification:
+<list style='symbols'>
+<t>association id - local handle to the SCTP association.</t>
+<t>data retrieval id - an identification used to retrieve unsent and
+unacknowledged data.</t>
+<t>cause code - indicating the reason of the failure, e.g., size too
+large, message life time expiration, etc.</t>
+<t>context - optional information associated with this message (see D
+in <xref target='sec_ulp_to_sctp'/>).</t>
+</list></t>
+<t>NETWORK STATUS CHANGE notification
+<vspace/>
+When a destination transport address is marked inactive (e.g., when SCTP
+detects a failure) or marked active (e.g., when SCTP detects a recovery),
+SCTP shall invoke this notification on the ULP.
+<vspace/>
+The following shall be passed with the notification:
+<list style='symbols'>
+<t>association id - local handle to the SCTP association.</t>
+<t>destination transport address - this indicates the destination
+transport address of the peer endpoint affected by the change.</t>
+<t>new-status - this indicates the new status.</t>
+</list></t>
+<t>COMMUNICATION UP notification
+<vspace/>
+This notification is used when SCTP becomes ready to send or receive
+user messages, or when a lost communication to an endpoint is restored.
+<vspace/>
+IMPLEMENTATION NOTE: If the ASSOCIATE primitive is implemented as a
+blocking function call, the association parameters are returned as a
+result of the ASSOCIATE primitive itself.
+In that case, COMMUNICATION UP notification is optional at the association
+initiator's side.
+<vspace/>
+The following shall be passed with the notification:
+<list style='symbols'>
+<t>association id -  local handle to the SCTP association.</t>
+<t>status -  This indicates what type of event has occurred.</t>
+<t>destination transport address list -  the complete set of transport addresses
+of the peer.</t>
+<t>outbound stream count -  the maximum number of streams allowed to be used in
+this association by the ULP.</t>
+<t>inbound stream count -  the number of streams the peer endpoint has requested
+with this association (this may not be the same number as
+'outbound stream count').</t>
+</list></t>
+<t>COMMUNICATION LOST notification
+<vspace/>
+When SCTP loses communication to an endpoint completely (e.g., via Heartbeats)
+or detects that the endpoint has performed an abort operation, it shall invoke
+this notification on the ULP.
+<vspace/>
+The following shall be passed with the notification:
+<list style='symbols'>
+<t>association id -  local handle to the SCTP association.</t>
+<t>status -  this indicates what type of event has occurred;
+the status may indicate that a failure OR a normal termination event occurred
+in response to a shutdown or abort request.</t>
+</list>
+The following may be passed with the notification:
+<list style='symbols'>
+<t>data retrieval id -  an identification used to retrieve unsent and
+unacknowledged data.</t>
+<t>last-acked -  the TSN last acked by that peer endpoint.</t>
+<t>last-sent -  the TSN last sent to that peer endpoint.</t>
+<t>Upper Layer Abort Reason -  the abort reason specified in case of a
+user-initiated abort.</t>
+</list></t>
+<t>COMMUNICATION ERROR notification
+<vspace/>
+When SCTP receives an ERROR chunk from its peer and decides to notify its ULP,
+it can invoke this notification on the ULP.
+<vspace/>
+The following can be passed with the notification:
+<list style='symbols'>
+<t>association id -  local handle to the SCTP association.</t>
+<t>error info -  this indicates the type of error and optionally some additional
+information received through the ERROR chunk.</t>
+</list></t>
+<t>RESTART notification
+<vspace/>
+When SCTP detects that the peer has restarted, it may send this notification
+to its ULP.
+<vspace/>
+The following can be passed with the notification:
+<list style='symbols'>
+<t>association id -  local handle to the SCTP association.</t>
+</list></t>
+<t>SHUTDOWN COMPLETE notification
+<vspace/>
+When SCTP completes the shutdown procedures
+(<xref target='sec_shutdown_of_an_association'/>), this notification is passed
+to the upper layer.
+<vspace/>
+The following can be passed with the notification:
+<list style='symbols'>
+<t>association id -  local handle to the SCTP association.</t>
+</list></t>
+</list></t>
 </section>
 </section>
 
@@ -3480,19 +4104,145 @@ Each implementation may need its own additional parameters for optimization.</t>
 
 <section anchor='sec_parameters_necessary_for_the_sctp_instance'
          title='Parameters Necessary for the SCTP Instance'>
+<t><list style='hanging' hangIndent='14'>
+<t hangText='Associations:'>
+A list of current associations and mappings to the data consumers for each
+association.
+This may be in the form of a hash table or other implementation-dependent
+structure.
+The data consumers may be process identification information such as file
+descriptors, named pipe pointer, or table pointers dependent on how SCTP is
+implemented.</t>
+<t hangText='Secret Key:'>
+A secret key used by this endpoint to compute the MAC.
+This SHOULD be a cryptographic quality random number with a sufficient length.
+Discussion in <xref target='RFC4086'/> can be helpful in selection of the
+key.</t>
+<t hangText='Address List:'>
+The list of IP addresses that this instance has bound.
+This information is passed to one's peer(s) in INIT and INIT ACK chunks.</t>
+<t hangText='SCTP Port:'>
+The local SCTP port number to which the endpoint is bound.</t>
+</list></t>
 </section>
 <section anchor='sec_parameters_necessary_per_association'
          title='Parameters Necessary per Association (i.e., the TCB)'>
+<t><list style='hanging' hangIndent='14'>
+<t hangText='Peer Verification Tag:'>
+Tag value to be sent in every packet and is received in the INIT or
+INIT ACK chunk.</t>
+<t hangText='My Verification Tag:'>
+Tag expected in every inbound packet and sent in the INIT or INIT ACK chunk.</t>
+<t hangText='State:'>
+A state variable indicating what state the association is in, i.e.,
+COOKIE-WAIT, COOKIE-ECHOED, ESTABLISHED, SHUTDOWN-PENDING, SHUTDOWN-SENT,
+SHUTDOWN-RECEIVED, SHUTDOWN-ACK-SENT.
+<vspace/>
+Note: No "CLOSED" state is illustrated since if a association is "CLOSED"
+its TCB SHOULD be removed.</t>
+<t hangText='Peer Transport Address List:'>
+A list of SCTP transport addresses to which the peer is bound.
+This information is derived from the INIT or INIT ACK and is used to associate
+an inbound packet with a given association.
+Normally, this information is hashed or keyed for quick lookup and access
+of the TCB.</t>
+<t hangText='Primary Path:'>
+This is the current primary destination transport address of the peer endpoint.
+It may also specify a source transport address on this endpoint.</t>
+<t hangText='Overall Error Count:'>
+The overall association error count.</t>
+<t hangText='Overall Error Threshold:'>
+The threshold for this association that if the Overall Error Count reaches will
+cause this association to be torn down.</t>
+<t hangText='Peer Rwnd:'>
+Current calculated value of the peer's rwnd.</t>
+<t hangText='Next TSN:'>
+The next TSN number to be assigned to a new DATA chunk.
+This is sent in the INIT or INIT ACK chunk to the peer and incremented each
+time a DATA chunk is assigned a TSN (normally just prior to transmit or during
+fragmentation).</t>
+<t hangText='Last Rcvd TSN:'>
+This is the last TSN received in sequence.
+This value is set initially by taking the peer's initial TSN, received in the
+INIT or INIT ACK chunk, and subtracting one from it.</t>
+<t hangText='Mapping Array:'>
+An array of bits or bytes indicating which out-of- order TSNs have been
+received (relative to the Last Rcvd TSN).
+If no gaps exist, i.e., no out-of- order packets have been received, this
+array will be set to all zero.
+This structure may be in the form of a circular buffer or bit array.</t>
+<t hangText='Ack State:'>
+This flag indicates if the next received packet is to be responded to with
+a SACK.
+This is initialized to 0.
+When a packet is received it is incremented.
+If this value reaches 2 or more, a SACK is sent and the value is reset to 0.
+Note: This is used only when no DATA chunks are received out of order.
+When DATA chunks are out of order, SACKs are not delayed
+(see <xref target='sec_user_data_transfer'/>).</t>
+<t hangText='Inbound Streams:'>
+An array of structures to track the inbound streams, normally including the
+next sequence number expected  and possibly the stream number.</t>
+<t hangText='Outbound Streams:'>
+An array of structures to track the outbound streams, normally including the
+next sequence number to be sent on the stream.</t>
+<t hangText='Reasm Queue:'>
+A reassembly queue.</t>
+<t hangText='Local Transport Address List:'>
+The list of local IP addresses bound in to this association.</t>
+<t hangText='Association PMTU:'>
+The smallest PMTU discovered for all of the peer's transport addresses.</t>
+</list></t>
 </section>
 <section anchor='sec_per_transport_address_data'
          title='Per Transport Address Data'>
+<t>For each destination transport address in the peer's address list
+derived from the INIT or INIT ACK chunk, a number of data elements need to be
+maintained including:
+<list style='hanging' hangIndent='14'>
+<t hangText='Error Count:'>
+The current error count for this destination.</t>
+<t hangText='Error Threshold:'>
+Current error threshold for this destination, i.e., what value marks the
+destination down if error count reaches this value.</t>
+<t hangText='cwnd:'>
+The current congestion window.</t>
+<t hangText='ssthresh:'>
+The current ssthresh value.</t>
+<t hangText='RTO:'>
+The current retransmission timeout value.</t>
+<t hangText='SRTT:'>
+The current smoothed round-trip time.</t>
+<t hangText='RTTVAR:'>
+The current RTT variation.</t>
+<t hangText='partial bytes acked:'>
+The tracking method for increase of cwnd when in congestion avoidance mode
+(see <xref target='sec_congestion_avoidance'/>).</t>
+<t hangText='state:'>
+The current state of this destination, i.e., DOWN, UP, ALLOW-HB, NO-HEARTBEAT,
+etc.</t>
+<t hangText='PMTU:'>
+The current known path MTU.</t>
+<t hangText='Per Destination Timer:'>
+A timer used by each destination.</t>
+<t hangText='RTO-Pending:'>
+A flag used to track if one of the DATA chunks sent to this address is
+currently being used to compute an RTT.
+If this flag is 0, the next DATA chunk sent to this destination should be used
+to compute an RTT and this flag should be set.
+Every time the RTT calculation completes (i.e., the DATA chunk is SACK'd),
+clear this flag.</t>
+<t hangText='last-time:'>
+The time to which this destination was last sent.
+This can be to determine if a HEARTBEAT is needed.</t>
+</list></t>
 </section>
 
 <section anchor='sec_general_parameters_needed'
          title='General Parameters Needed'>
-<t><list style='hanging'>
-<t hangText='Out Queue :'>A queue of outbound DATA chunks.</t>
-<t hangText='In Queue  :'>A queue of inbound DATA chunks.</t>
+<t><list style='hanging' hangIndent='14'>
+<t hangText='Out Queue:'>A queue of outbound DATA chunks.</t>
+<t hangText='In Queue:'>A queue of inbound DATA chunks.</t>
 </list></t>
 </section>
 </section>
@@ -3537,7 +4287,7 @@ Documentation of the chunk parameter MUST contain the following information:
 <t>Name of the parameter type.</t>
 <t>Detailed description of the structure of the parameter field.
 This structure MUST conform to the general Type-Length-Value format described
-in Section 3.2.1.</t> <!-- FIXME MT: Reference -->
+in <xref target='sec_parameter_format'/>.</t>
 <t>Detailed definition of each component of the parameter value.</t>
 <t>Detailed description of the intended use of this parameter type, and an
 indication of whether and under what circumstances multiple instances of this
@@ -3561,7 +4311,7 @@ containing this cause code.</t>
 accompany this cause code.</t>
 </list></t>
 <t>The initial word (32 bits) of a cause code parameter MUST conform to the
-format shown in Section 3.3.10, i.e.: <!-- FIXME MT: Reference -->
+format shown in <xref target='sec_error_chunk'/>, i.e.:
 <list style='symbols'>
 <t>first 2 bytes contain the cause code value</t>
 <t>last 2 bytes contain the length of the cause parameter.</t>
@@ -3779,6 +4529,47 @@ in the coding, testing, and updating process of this document.
 <?rfc include="reference.RFC.4821" ?>
 </references>
 <references title='Informative References'>
+<reference anchor="FALL96">
+<front>
+<title>Simulation-based Comparisons of Tahoe, Reno, and SACK TCP</title>
+<author initials="K." surname="Fall" fullname="K. Fall"><organization/></author>
+<author initials="S." surname="Floyd" fullname="S. Floyd"><organization/></author>
+<date year="1996" month="July"/>
+</front>
+<seriesInfo name='SIGCOM' value='99'/>
+<seriesInfo name='V.' value='26'/>
+<seriesInfo name='N.' value='3'/>
+<seriesInfo name='pp' value='5-21'/>
+</reference>
+<reference anchor="SAVAGE99">
+<front>
+<title>TCP Congestion Control with a Misbehaving Receiver</title>
+<author initials="S." surname="Savage" fullname="S. Savage"><organization/></author>
+<author initials="N." surname="Cardwell" fullname="N. Cardwell"><organization/></author>
+<author initials="D." surname="Wetherall" fullname="D. Wetherall"><organization/></author>
+<author initials="T." surname="Anderson" fullname="T. Anderson"><organization/></author>
+<date year="1999" month="October"/>
+</front>
+<seriesInfo name='ACM Computer Communications Review' value='29(5)'/>
+</reference>
+<reference anchor="ALLMAN99">
+<front>
+<title>On Estimating End-to-End Network Path Properties</title>
+<author initials="M." surname="Allman" fullname="M. Allman"><organization/></author>
+<author initials="V." surname="Paxson" fullname="V. Paxson"><organization/></author>
+<date year="1999"/>
+</front>
+<seriesInfo name='SIGCOM' value='99'/>
+</reference>
+<reference anchor="WILLIAMS93"
+           target='http://www.geocities.com/SiliconValley/Pines/8659/crc.htm'>
+<front>
+<title>A PAINLESS GUIDE TO CRC ERROR DETECTION ALGORITHMS</title>
+<author initials="R." surname="Williams" fullname="R. Williams"><organization/></author>
+<date year="1993" month="August"/>
+</front>
+<seriesInfo name='SIGCOM' value='99'/>
+</reference>
 <?rfc include="reference.RFC.0768" ?>
 <?rfc include="reference.RFC.0793" ?>
 <?rfc include="reference.RFC.0813" ?>
@@ -3791,6 +4582,7 @@ in the coding, testing, and updating process of this document.
 <?rfc include="reference.RFC.4895" ?>
 <?rfc include="reference.RFC.4960" ?>
 </references>
+
 <section anchor='sec_ecn'
          title='Explicit Congestion Notification'>
 <t>ECN <xref target='RFC3168'/> describes a proposed extension to IP that
@@ -3892,10 +4684,10 @@ The first byte of the message provides the eight highest coefficients.
 Within each byte, the least-significant SCTP bit gives the most-significant
 polynomial coefficient within that byte, and the most-significant SCTP bit is
 the least-significant polynomial coefficient in that byte.
-(This bit ordering is sometimes called 'mirrored' or 'reflected' [WILLIAMS93].)
+(This bit ordering is sometimes called 'mirrored' or 'reflected'
+<xref target='WILLIAMS93'/>.)
 CRC polynomials are to be transformed back into SCTP transport-level
-byte values, using a consistent mapping.</t> <!-- FIXME MT: Reference -->
-
+byte values, using a consistent mapping.</t>
 <t>The SCTP transport-level CRC value should be calculated as follows:
 <list style='symbols'>
 <t>CRC input data are assigned to a byte stream, numbered from 0 to N-1.</t>
@@ -3991,17 +4783,17 @@ an ABORT, not a port unreachable.  The stricter handling of the
 "protocol unreachable" message is due to security concerns for hosts that do
 NOT support SCTP.</t>
 <t>The following non-normative sample code is taken from an open-source
-CRC generator [WILLIAMS93], using the "mirroring" technique and yielding a
-lookup table for SCTP CRC32c with 256 entries, each 32 bits wide.
+CRC generator <xref target='WILLIAMS93'/>, using the "mirroring" technique and
+yielding a lookup table for SCTP CRC32c with 256 entries, each 32 bits wide.
 While neither especially slow nor especially fast, as software table-lookup
 CRCs go, it has the advantage of working on both big-endian and little-endian
 CPUs, using the same (host-order) lookup tables, and using only the
 predefined ntohl() and htonl() operations.
-The code is somewhat modified from [WILLIAMS93], to ensure portability between
-big-endian and little-endian architectures.
+The code is somewhat modified from <xref target='WILLIAMS93'/>, to ensure
+portability between big-endian and little-endian architectures.
 (Note that if the byte endian-ness of the target architecture is known to be
 little-endian, the final bit-reversal and byte-reversal steps can be folded
-into a single operation.)</t> <!-- FIXME MT: Refernces -->
+into a single operation.)</t>
 <figure>
 <artwork>
 <![CDATA[
