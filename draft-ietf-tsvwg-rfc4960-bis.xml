@@ -3474,12 +3474,6 @@ transmission and/or retransmission of outbound DATA chunks:
 any destination transport address if its peer's rwnd indicates
 that the peer has no buffer space (i.e., rwnd is 0;
 see <xref target='sec_processing_of_received_sack'/>).
-However, regardless of the value of rwnd (including if it is 0), the data
-sender can always have one DATA chunk in flight to the receiver if allowed by
-cwnd (see rule B, below).
-This rule allows the sender to probe for a change in rwnd that the sender
-missed due to the SACK's having been lost in transit from the data receiver to
-the data sender.
 <vspace blankLines='1'/>
 When the receiver's advertised window is zero, this probe is called a zero
 window probe.
