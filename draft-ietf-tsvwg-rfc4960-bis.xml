@@ -577,7 +577,7 @@ than 2**31 - 1 above the beginning TSN of its current send window.
 Doing so will cause problems in comparing TSNs.</t>
 <t>Transmission Sequence Numbers wrap around when they reach 2**32 - 1.
 That is, the next TSN a DATA chunk MUST use after transmitting TSN =
-2*32 - 1 is TSN = 0.</t>
+2**32 - 1 is TSN = 0.</t>
 <t>Any arithmetic done on Stream Sequence Numbers SHOULD use Serial
 Number Arithmetic as defined in <xref target="RFC1982"/> where SERIAL_BITS = 16.
 All other arithmetic and comparisons in this document use normal
@@ -2226,7 +2226,6 @@ sender of the COOKIE ECHO chunk wishes to report unrecognized parameters.</t>
 <vspace/>
 ---------------</t>
 <t>No User Data: This error cause is returned to the originator of a
-<vspace/> <!-- FIXME MT: Remove -->
 DATA chunk if a received DATA chunk has no user data.
 <figure>
 <artwork align='center'>
@@ -2941,9 +2940,9 @@ INIT [I-Tag=Tag_A
                                      (destroy temp TCB)
 COOKIE ECHO [Cookie_Z] ------\
 (Start T1-cookie timer)       \
-(Enter COOKIE-ECHOED state)    \---> (build TCB enter ESTABLISHED
+(Enter COOKIE-ECHOED state)    \---> (build TCB, enter ESTABLISHED
                                       state)
-                               /---- COOKIE-ACK
+                               /---- COOKIE ACK
                               /
 (Cancel T1-cookie timer, <---/
  enter ESTABLISHED state)
@@ -3259,7 +3258,7 @@ DATA [TSN=initial TSN_A
 </section>
 
 <section anchor='sec_handle_duplicate_cookie_ack'
-         title='Handle Duplicate COOKIE-ACK.'> <!-- FIXME MT: No full stop -->
+         title='Handle Duplicate COOKIE ACK.'> <!-- FIXME MT: No full stop -->
 <t>At any state other than COOKIE-ECHOED, an endpoint should silently
 discard a received COOKIE ACK chunk.</t>
 </section>
@@ -3333,7 +3332,7 @@ new association:
 is automatically considered to be CONFIRMED.
 <vspace blankLines='1'/></t>
 <t>For the receiver of the COOKIE ECHO, the only CONFIRMED address
-is the one to which the INIT-ACK was sent.
+is the address to which the INIT ACK was sent.
 <vspace blankLines='1'/></t>
 <t>All other addresses not covered by rules 1 and 2 are considered
 UNCONFIRMED and are subject to probing for verification.</t>
@@ -4090,9 +4089,10 @@ See <xref target='sec_fast_retransmit_on_gap_reports'/> for details.</t>
         title='Reporting a Gap using SACK'>
 <artwork align='center'>
 <![CDATA[
-Endpoint A                                    Endpoint Z {App
-sends 3 messages; strm 0} DATA [TSN=6,Strm=0,Seq=2] ----------
------> (ack delayed) (Start T3-rtx timer)
+Endpoint A                                    Endpoint Z
+{App sends 3 messages; strm 0}
+DATA [TSN=6,Strm=0,Seq=2] ---------------> (ack delayed)
+(Start T3-rtx timer)
 
 DATA [TSN=7,Strm=0,Seq=3] --------> X (lost)
 
@@ -4100,7 +4100,8 @@ DATA [TSN=8,Strm=0,Seq=4] ---------------> (gap detected,
                                             immediately send ack)
                                 /----- SACK [TSN Ack=6,Block=1,
                                /             Start=2,End=2]
-                        <-----/ (remove 6 from out-queue,
+                        <-----/
+(remove 6 from out-queue,
  and mark 7 as "1" missing report)
 ]]>
 </artwork>
@@ -4209,10 +4210,8 @@ that the rest of the message may be received.</t>
          title='Bundling'>
 <t>An endpoint bundles chunks by simply including multiple chunks in one
 outbound SCTP packet.
-The total size of the resultant IP datagram,</t>
-<!-- MT FIXME: Join paragraphs -->
-<t>including the SCTP packet and IP headers, MUST be less that or equal
-to the current Path MTU.</t>
+The total size of the resultant IP datagram, including the SCTP packet and
+IP headers, MUST be less that or equal to the current Path MTU.</t>
 <t>If its peer endpoint is multi-homed, the sending endpoint shall choose a
 size no larger than the latest MTU of the current primary path.</t>
 <t>When bundling control chunks with DATA chunks, an endpoint MUST place
@@ -4622,11 +4621,11 @@ destination transport address.</t>
 idle destination transport address(es) of its peer by sending a
 HEARTBEAT chunk periodically to the destination transport address(es).
 HEARTBEAT sending MAY begin upon reaching the ESTABLISHED state and is
-discontinued after sending either SHUTDOWN or SHUTDOWN-ACK.
-A receiver of a HEARTBEAT MUST respond to a HEARTBEAT with a HEARTBEAT-ACK
+discontinued after sending either SHUTDOWN or SHUTDOWN ACK.
+A receiver of a HEARTBEAT MUST respond to a HEARTBEAT with a HEARTBEAT ACK
 after entering the COOKIE-ECHOED state (INIT sender) or the ESTABLISHED state
 (INIT receiver), up until reaching the SHUTDOWN-SENT state (SHUTDOWN sender)
-or the SHUTDOWN- ACK-SENT state (SHUTDOWN receiver).</t>
+or the SHUTDOWN-ACK-SENT state (SHUTDOWN receiver).</t>
 <t>A destination transport address is considered "idle" if no new chunk
 that can be used for updating path RTT (usually including first transmission
 DATA, INIT, COOKIE ECHO, HEARTBEAT, etc.) and no HEARTBEAT has been sent to
@@ -5398,7 +5397,7 @@ the new value of 'Path.Max.Retrans' for the destination address.</t>
 <t>Set Protocol Parameters
 <list style='hanging' hangIndent='8'>
 <t hangText='Format:'>
-SETPROTOCOLPARAMETERS(association id, [,destination transport address,]
+SETPROTOCOLPARAMETERS(association id, [destination transport address,]
 protocol parameter list) -> result</t>
 </list>
 This primitive allows the local SCTP to customize the protocol parameters.
@@ -5455,7 +5454,7 @@ the type of payload protocol of the received data.</t>
 <list style='hanging' hangIndent='8'>
 <t hangText='Format:'>
 RECEIVE_UNACKED(data retrieval id, buffer address, buffer size, [,stream id]
-[, stream sequence number] [,partial flag] [,payload protocol-id])</t>
+[,stream sequence number] [,partial flag] [,payload protocol-id])</t>
 </list>
 <list style='symbols'>
 <t>data retrieval id -
@@ -6540,7 +6539,7 @@ being provided by layer 3.
 set to "Destination Unreachable".
 <vspace blankLines='1'/></t>
 <t>An implementation MAY ignore all ICMPv6 messages where the type field is
-not "Destination Unreachable", "Parameter Problem",, or "Packet Too Big".
+not "Destination Unreachable", "Parameter Problem", or "Packet Too Big".
 <vspace blankLines='1'/></t>
 <t>An implementation MAY ignore any ICMPv4 messages where the code does not
 indicate "Protocol Unreachable" or "Fragmentation Needed".
@@ -6564,7 +6563,7 @@ not match, silently discard the packet.
 <vspace blankLines='1'/></t>
 <t>If the ICMP message is either a v6 "Packet Too Big" or a
 v4 "Fragmentation Needed", an implementation MAY process this information as
-defined for PATH MTU discovery.
+defined for PMTU discovery.
 <vspace blankLines='1'/></t>
 <t>If the ICMP code is an "Unrecognized Next Header Type Encountered" or
 a "Protocol Unreachable", an implementation MUST treat this message as an abort
