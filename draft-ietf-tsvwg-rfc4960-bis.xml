@@ -2940,13 +2940,13 @@ INIT [I-Tag=Tag_A
 (Cancel T1-init timer) <------/              Cookie_Z, & other info]
                                      (destroy temp TCB)
 COOKIE ECHO [Cookie_Z] ------\
-(Start T1-init timer)         \
+(Start T1-cookie timer)       \
 (Enter COOKIE-ECHOED state)    \---> (build TCB enter ESTABLISHED
                                       state)
                                /---- COOKIE-ACK
                               /
-(Cancel T1-init timer, <-----/
- Enter ESTABLISHED state)
+(Cancel T1-cookie timer, <---/
+ enter ESTABLISHED state)
 {app sends 1st user data; strm 0}
 DATA [TSN=initial TSN_A
     Strm=0,Seq=0 & user data]--\
