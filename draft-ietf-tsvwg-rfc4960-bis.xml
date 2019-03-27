@@ -4445,11 +4445,12 @@ do the following:
 </list></t>
 <t>Basically, a packet loss causes cwnd to be cut in half.</t>
 
-<t>When the T3-rtx timer expires on an address, SCTP should perform slow start
+<t>When the T3-rtx timer expires on an address, SCTP SHOULD perform slow start
 by:
 <list style='empty'>
 <t>ssthresh = max(cwnd/2, 4*MTU)</t>
 <t>cwnd = 1*MTU</t>
+<t>partial_bytes_acked = 0</t>
 </list>
 and ensure that no more than one SCTP packet will be in flight for that address
 until the endpoint receives acknowledgement for successful delivery of data to
