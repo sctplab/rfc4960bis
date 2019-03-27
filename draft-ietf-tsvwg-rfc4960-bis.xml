@@ -6031,9 +6031,9 @@ allocation requests.</t>
 
 <section anchor='sec_ietf_defined_chunks_extension'
          title='IETF-Defined Chunk Extension'>
-<t>The assignment of new chunk parameter type codes is done through an
-IETF Consensus action, as defined in <xref target='RFC2434'/>.
-Documentation of the chunk parameter MUST contain the following information:
+<t>The assignment of new chunk type codes is done through an
+IETF Consensus action, as defined in <xref target='RFC8126'/>.
+Documentation of the chunk type MUST contain the following information:
 <list style='format %c)'>
 <t>A long and short name for the new chunk type.
 <vspace blankLines='1'/></t>
@@ -6314,6 +6314,7 @@ in the coding, testing, and updating process of this document.
 <?rfc include="reference.RFC.4303" ?>
 <?rfc include="reference.RFC.4306" ?>
 <?rfc include="reference.RFC.4821" ?>
+<?rfc include="reference.RFC.8126" ?>
 </references>
 <references title='Informative References'>
 <reference anchor="FALL96">
