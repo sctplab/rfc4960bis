@@ -6765,7 +6765,7 @@ unsigned long
 generate_crc32c(unsigned char *buffer, unsigned int length)
 {
   unsigned int i;
-  unsigned long crc32 = ~0L;
+  unsigned long crc32 = 0xffffffffL;
   unsigned long result;
   unsigned char byte0,byte1,byte2,byte3;
 
