@@ -4907,9 +4907,9 @@ queued DATA chunks that have not yet been sent.</t>
 <t>verify, by checking the Cumulative TSN Ack field of the chunk, that all its
 outstanding DATA chunks have been received by the SHUTDOWN sender.</t>
 </list></t>
-<t>Once an endpoint has reached the SHUTDOWN-RECEIVED state, it MUST NOT send
-a SHUTDOWN in response to a ULP request, and should discard subsequent
-SHUTDOWN chunks.</t>
+<t>Once an endpoint has reached the SHUTDOWN-RECEIVED state, it MUST ignore
+ULP shutdown requests but MUST continue responding to SHUTDOWN chunks from its
+peer.</t>
 <t>If there are still outstanding DATA chunks left, the SHUTDOWN receiver MUST
 continue to follow normal data transmission procedures defined in
 <xref target='sec_user_data_transfer'/>, until all outstanding DATA chunks are
