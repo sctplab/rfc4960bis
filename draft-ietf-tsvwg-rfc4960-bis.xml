@@ -6528,61 +6528,6 @@ The exceptions for this technique would be INIT and some SHUTDOWN-COMPLETE
 exchanges, as well as a stale COOKIE ECHO.
 These special-case exchanges must represent small packets and will minimize
 the effect of the checksum calculation.</t>
-</section>
-<section anchor='sec_icmp'
-         title='ICMP Handling'>
-<t>Whenever an ICMP message is received by an SCTP endpoint, the following
-procedures MUST be followed to ensure proper utilization of the information
-being provided by layer 3.
-<list style='format ICMP%d)'>
-<t>An implementation MAY ignore all ICMPv4 messages where the type field is not
-set to "Destination Unreachable".
-<vspace blankLines='1'/></t>
-<t>An implementation MAY ignore all ICMPv6 messages where the type field is
-not "Destination Unreachable", "Parameter Problem", or "Packet Too Big".
-<vspace blankLines='1'/></t>
-<t>An implementation MAY ignore any ICMPv4 messages where the code does not
-indicate "Protocol Unreachable" or "Fragmentation Needed".
-<vspace blankLines='1'/></t>
-<t>An implementation MAY ignore all ICMPv6 messages of type "Parameter Problem"
-if the code is not "Unrecognized Next Header Type Encountered".
-<vspace blankLines='1'/></t>
-<t>An implementation MUST use the payload of the ICMP message (v4 or v6) to
-locate the association that sent the message to which ICMP is responding.
-If the association cannot be found, an implementation SHOULD ignore the
-ICMP message.
-<vspace blankLines='1'/></t>
-<t>An implementation MUST validate that the Verification Tag contained in the
-ICMP message matches the Verification Tag of the peer.
-If the Verification Tag is not 0 and does NOT match, discard the ICMP message.
-If it is 0 and the ICMP message contains enough bytes to verify that the
-chunk type is an INIT chunk and that the Initiate Tag matches the tag of the
-peer, continue with ICMP7.
-If the ICMP message is too short or the chunk type or the Initiate Tag does
-not match, silently discard the packet.
-<vspace blankLines='1'/></t>
-<t>If the ICMP message is either a v6 "Packet Too Big" or a
-v4 "Fragmentation Needed", an implementation MAY process this information as
-defined for PMTU discovery.
-<vspace blankLines='1'/></t>
-<t>If the ICMP code is an "Unrecognized Next Header Type Encountered" or
-a "Protocol Unreachable", an implementation MUST treat this message as an abort
-with the T bit set if it does not contain an INIT chunk.
-If it does contain an INIT chunk and the association is in the
-COOKIE-WAIT state, handle the ICMP message like an ABORT.
-<vspace blankLines='1'/></t>
-<t>If the ICMPv6 code is "Destination Unreachable", the implementation MAY mark
-the destination into the unreachable state or alternatively increment the
-path error counter.</t>
-</list></t>
-<t>Note that these procedures differ from <xref target='RFC1122'/> and from its
-requirements for processing of port-unreachable messages and the requirements
-that an implementation MUST abort associations in response to a
-"protocol unreachable" message.
-Port-unreachable messages are not processed, since an implementation will send
-an ABORT, not a port unreachable.  The stricter handling of the
-"protocol unreachable" message is due to security concerns for hosts that do
-NOT support SCTP.</t>
 <t>The following non-normative sample code is taken from an open-source
 CRC generator <xref target='WILLIAMS93'/>, using the "mirroring" technique and
 yielding a lookup table for SCTP CRC32c with 256 entries, each 32 bits wide.
@@ -6829,6 +6774,61 @@ validate_crc32(unsigned char *buffer, unsigned int length)
 ]]>
 </artwork>
 </figure>
+</section>
+<section anchor='sec_icmp'
+         title='ICMP Handling'>
+<t>Whenever an ICMP message is received by an SCTP endpoint, the following
+procedures MUST be followed to ensure proper utilization of the information
+being provided by layer 3.
+<list style='format ICMP%d)'>
+<t>An implementation MAY ignore all ICMPv4 messages where the type field is not
+set to "Destination Unreachable".
+<vspace blankLines='1'/></t>
+<t>An implementation MAY ignore all ICMPv6 messages where the type field is
+not "Destination Unreachable", "Parameter Problem", or "Packet Too Big".
+<vspace blankLines='1'/></t>
+<t>An implementation MAY ignore any ICMPv4 messages where the code does not
+indicate "Protocol Unreachable" or "Fragmentation Needed".
+<vspace blankLines='1'/></t>
+<t>An implementation MAY ignore all ICMPv6 messages of type "Parameter Problem"
+if the code is not "Unrecognized Next Header Type Encountered".
+<vspace blankLines='1'/></t>
+<t>An implementation MUST use the payload of the ICMP message (v4 or v6) to
+locate the association that sent the message to which ICMP is responding.
+If the association cannot be found, an implementation SHOULD ignore the
+ICMP message.
+<vspace blankLines='1'/></t>
+<t>An implementation MUST validate that the Verification Tag contained in the
+ICMP message matches the Verification Tag of the peer.
+If the Verification Tag is not 0 and does NOT match, discard the ICMP message.
+If it is 0 and the ICMP message contains enough bytes to verify that the
+chunk type is an INIT chunk and that the Initiate Tag matches the tag of the
+peer, continue with ICMP7.
+If the ICMP message is too short or the chunk type or the Initiate Tag does
+not match, silently discard the packet.
+<vspace blankLines='1'/></t>
+<t>If the ICMP message is either a v6 "Packet Too Big" or a
+v4 "Fragmentation Needed", an implementation MAY process this information as
+defined for PMTU discovery.
+<vspace blankLines='1'/></t>
+<t>If the ICMP code is an "Unrecognized Next Header Type Encountered" or
+a "Protocol Unreachable", an implementation MUST treat this message as an abort
+with the T bit set if it does not contain an INIT chunk.
+If it does contain an INIT chunk and the association is in the
+COOKIE-WAIT state, handle the ICMP message like an ABORT.
+<vspace blankLines='1'/></t>
+<t>If the ICMPv6 code is "Destination Unreachable", the implementation MAY mark
+the destination into the unreachable state or alternatively increment the
+path error counter.</t>
+</list></t>
+<t>Note that these procedures differ from <xref target='RFC1122'/> and from its
+requirements for processing of port-unreachable messages and the requirements
+that an implementation MUST abort associations in response to a
+"protocol unreachable" message.
+Port-unreachable messages are not processed, since an implementation will send
+an ABORT, not a port unreachable.  The stricter handling of the
+"protocol unreachable" message is due to security concerns for hosts that do
+NOT support SCTP.</t>
 </section>
 </back>
 </rfc>
