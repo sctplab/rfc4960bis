@@ -4648,12 +4648,12 @@ of a given association.</t>
 <t>The endpoint should increment the respective error counter of the destination
 transport address each time a HEARTBEAT is sent to that address and not
 acknowledged within one RTO.</t>
-<t>When the value of this counter reaches the protocol parameter
-'Path.Max.Retrans', the endpoint should mark the corresponding destination
-address as inactive if it is not so marked, and may also optionally report to
-the upper layer the change of reachability of this destination address.
-After this, the endpoint should continue HEARTBEAT on this destination address
-but should stop increasing the counter.</t>
+<t>When the value of this counter exceeds the protocol parameter
+'Path.Max.Retrans', the endpoint SHOULD mark the corresponding destination
+address as inactive if it is not so marked, and MAY also optionally report to
+the upper layer the change in reachability of this destination address.
+After this, the endpoint SHOULD continue HEARTBEAT on this destination address
+but SHOULD stop increasing the counter.</t>
 <t>The sender of the HEARTBEAT chunk should include in the Heartbeat Information
 field of the chunk the current time when the packet is sent out and the
 destination address to which the packet is sent.</t>
