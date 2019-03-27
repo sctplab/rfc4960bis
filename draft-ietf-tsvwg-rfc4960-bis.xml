@@ -4421,11 +4421,11 @@ corresponding transport address.</t>
 the Cumulative TSN Ack Point, increase partial_bytes_acked by the total number
 of bytes of all new chunks acknowledged in that SACK including chunks
 acknowledged by the new Cumulative TSN Ack and by Gap Ack Blocks.</t>
-<t>When partial_bytes_acked is equal to or greater than cwnd and before the
-arrival of the SACK the sender had cwnd or more bytes of data outstanding
-(i.e., before arrival of the SACK, flightsize was greater than or equal to
-cwnd), increase cwnd by MTU, and reset partial_bytes_acked to
-(partial_bytes_acked - cwnd).</t>
+<t>(1) when partial_bytes_acked is equal to or greater than cwnd and (2) before
+the arrival of the SACK the sender had cwnd or more bytes of data outstanding
+(i.e., before the arrival of the SACK, flightsize was greater than or equal to
+cwnd), partial_bytes_acked is reset to (partial_bytes_acked - cwnd).
+Next, cwnd is increased by 1*MTU.</t>
 <t>Same as in the slow start, when the sender does not transmit DATA on a given
 transport address, the cwnd of the transport address should be adjusted to
 max(cwnd / 2, 4*MTU) per RTO.</t>
