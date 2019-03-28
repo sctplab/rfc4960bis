@@ -3989,6 +3989,11 @@ chunk) for the SACK is broken.</t>
 retransmit a chunk that timed out to an active destination transport
 address that is different from the last destination address to which
 the DATA chunk was sent.</t>
+<t>When its peer is multi-homed, an endpoint SHOULD send fast retransmissions
+to the same destination transport address to which the original data was sent.
+If the primary path has been changed and the original data was sent to the
+old primary path before the Fast Retransmit, the implementation MAY send it to
+the new primary path.</t>
 <t>Retransmissions do not affect the total outstanding data count.
 However, if the DATA chunk is retransmitted onto a different destination
 address, both the outstanding data counts on the new destination address and
