@@ -3019,8 +3019,16 @@ other endpoint.</t>
 <t>Upon receipt of an INIT in the COOKIE-WAIT state, an endpoint MUST
 respond with an INIT ACK using the same parameters it sent in its
 original INIT chunk (including its Initiate Tag, unchanged).
-When responding, the endpoint MUST send the INIT ACK back to the same
-address that the original INIT (sent by this endpoint) was sent.</t>
+When responding, the following rules MUST be applied:
+<list style='format %d)'>
+<t>The INIT ACK MUST only be sent to an address passed by the upper
+layer in the request to initialize the association.
+<vspace blankLines='1'/></t>
+<t>The INIT ACK MUST only be sent to an address reported in the
+incoming INIT.
+<vspace blankLines='1'/></t>
+<t>The INIT ACK SHOULD be sent to the source address of the received INIT.</t>
+</list></t>
 <t>Upon receipt of an INIT in the COOKIE-ECHOED state, an endpoint MUST
 respond with an INIT ACK using the same parameters it sent in its
 original INIT chunk (including its Initiate Tag, unchanged), provided
