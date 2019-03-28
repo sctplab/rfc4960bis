@@ -4374,8 +4374,8 @@ transfer, or after repairing loss detected by the retransmission timer.
 period MUST be set to min(4*MTU, max (2*MTU, 4380 bytes)).</t>
 <t>The initial cwnd after a retransmission timeout MUST be no more than
 1*MTU.</t>
-<t>The initial value of ssthresh MAY be arbitrarily high (for example,
-implementations MAY use the size of the receiver advertised window).</t>
+<t>The initial value of ssthresh SHOULD be arbitrarily high (e.g.,
+the size of the largest possible advertised window).</t>
 <t>Whenever cwnd is greater than zero, the endpoint is allowed to have cwnd
 bytes of data outstanding on that transport address.</t>
 <t>When cwnd is less than or equal to ssthresh, an SCTP endpoint MUST
