@@ -3328,8 +3328,9 @@ does not own.
 To prevent this, the following rules are applied to all addresses of the
 new association:
 <list style='format %d)'>
-<t>Any address passed to the sender of the INIT by its upper layer
-is automatically considered to be CONFIRMED.
+<t>Any addresses passed to the sender of the INIT by its upper layer
+in the request to initialize an association are automatically considered to be
+CONFIRMED.
 <vspace blankLines='1'/></t>
 <t>For the receiver of the COOKIE ECHO, the only CONFIRMED address
 is the address to which the INIT ACK was sent.
