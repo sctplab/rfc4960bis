@@ -3607,10 +3607,10 @@ receiving application consumes new data.</t>
 may be configured by the SCTP administrator, either statically or dynamically,
 in order to meet the specific timing requirement of the protocol being
 carried.</t>
-<t>An implementation MUST NOT allow the maximum delay to be configured
-to be more than 500 ms.
-In other words, an implementation MAY lower this value below 500 ms but MUST NOT
-raise it above 500 ms.</t>
+<t>An implementation MUST NOT allow the maximum delay (protocol parameter
+'SACK.Delay') to be configured to be more than 500 ms.
+In other words, an implementation MAY lower the value of SACK.Delay
+below 500 ms but MUST NOT raise it above 500 ms.</t>
 <t>Acknowledgements MUST be sent in SACK chunks unless shutdown was
 requested by the ULP, in which case an endpoint MAY send an
 acknowledgement in the SHUTDOWN chunk.
@@ -6249,18 +6249,19 @@ https    443/sctp  HTTPS    # IETF TSVWG
          title='Suggested SCTP Protocol Parameter Values'>
 <t>The following protocol parameters are RECOMMENDED:
 <list style='hanging'>
-<t hangText='RTO.Initial -'>3 seconds</t>
-<t hangText='RTO.Min -'>1 second</t>
-<t hangText='RTO.Max -'>60 seconds</t>
-<t hangText='Max.Burst -'>4</t>
-<t hangText='RTO.Alpha -'>1/8</t>
-<t hangText='RTO.Beta -'>1/4</t>
-<t hangText='Valid.Cookie.Life -'>60 seconds</t>
-<t hangText='Association.Max.Retrans -'>10 attempts</t>
-<t hangText='Path.Max.Retrans -'>5 attempts (per destination address)</t>
-<t hangText='Max.Init.Retransmits -'>8 attempts</t>
-<t hangText='HB.interval -'>30 seconds</t>
-<t hangText='HB.Max.Burst -'>1</t>
+<t hangText='RTO.Initial:'>3 seconds</t>
+<t hangText='RTO.Min:'>1 second</t>
+<t hangText='RTO.Max:'>60 seconds</t>
+<t hangText='Max.Burst:'>4</t>
+<t hangText='RTO.Alpha:'>1/8</t>
+<t hangText='RTO.Beta:'>1/4</t>
+<t hangText='Valid.Cookie.Life:'>60 seconds</t>
+<t hangText='Association.Max.Retrans:'>10 attempts</t>
+<t hangText='Path.Max.Retrans:'>5 attempts (per destination address)</t>
+<t hangText='Max.Init.Retransmits:'>8 attempts</t>
+<t hangText='HB.interval:'>30 seconds</t>
+<t hangText='HB.Max.Burst:'>1</t>
+<t hangText='SACK.Delay:'>200 milliseconds</t>
 </list></t>
 <t>IMPLEMENTATION NOTE: The SCTP implementation may allow ULP to customize some
 of these protocol parameters (see <xref target='sec_api'/>).</t>
