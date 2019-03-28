@@ -4433,10 +4433,11 @@ corresponding transport address.</t>
 <t>In practice, an implementation can achieve this goal in the following way:
 <list style='symbols'>
 <t>partial_bytes_acked is initialized to 0.</t>
-<t>Whenever cwnd is greater than ssthresh, upon each SACK arrival that advances
-the Cumulative TSN Ack Point, increase partial_bytes_acked by the total number
-of bytes of all new chunks acknowledged in that SACK including chunks
-acknowledged by the new Cumulative TSN Ack and by Gap Ack Blocks.</t>
+<t>Whenever cwnd is greater than ssthresh, upon each SACK arrival, increase
+partial_bytes_acked by the total number of bytes of all new chunks acknowledged
+in that SACK, including chunks acknowledged by the new Cumulative TSN Ack,
+by Gap Ack Blocks, and by the number of bytes of duplicated chunks reported in
+Duplicate TSNs.</t>
 <t>(1) when partial_bytes_acked is equal to or greater than cwnd and (2) before
 the arrival of the SACK the sender had cwnd or more bytes of data outstanding
 (i.e., before the arrival of the SACK, flightsize was greater than or equal to
