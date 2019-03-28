@@ -4581,10 +4581,10 @@ path currently used for data transfer SHOULD NOT increment the association
 error counter, as this could lead to association closure even if the path
 that is currently used for data transfer is available (but idle).
 If the value of this counter exceeds the limit indicated in the protocol
-parameter 'Association.Max.Retrans', the endpoint shall consider the peer
-endpoint unreachable and shall stop transmitting any more data to it
+parameter 'Association.Max.Retrans', the endpoint SHOULD consider the peer
+endpoint unreachable and SHALL stop transmitting any more data to it
 (and thus the association enters the CLOSED state).
-In addition, the endpoint MAY report the failure to the upper layer and
+In addition, the endpoint SHOULD report the failure to the upper layer and
 optionally report back all outstanding user data remaining in its outbound
 queue.
 The association is automatically closed when the peer endpoint becomes
@@ -4612,16 +4612,18 @@ When the value in the error counter exceeds the protocol parameter
 mark the destination transport address as inactive, and a
 notification SHOULD be sent to the upper layer.</t>
 <t>When an outstanding TSN is acknowledged or a HEARTBEAT sent to that
-address is acknowledged with a HEARTBEAT ACK, the endpoint shall
+address is acknowledged with a HEARTBEAT ACK, the endpoint SHOULD
 clear the error counter of the destination transport address to which
-the DATA chunk was last sent (or HEARTBEAT was sent).
+the DATA chunk was last sent (or HEARTBEAT was sent) and SHOULD also
+report to the upper layer when an inactive destination address is
+marked as active.
 When the peer endpoint is multi-homed and the last chunk sent to it was a
 retransmission to an alternate address, there exists an ambiguity as
-to whether or not the acknowledgement should be credited to the
+ to whether or not the acknowledgement could be credited to the
 address of the last chunk sent.
-However, this ambiguity does not seem to bear any significant consequence to
+However, this ambiguity does not seem to have significant consequences for
 SCTP behavior.
-If this ambiguity is undesirable, the transmitter may choose not to clear the
+If this ambiguity is undesirable, the transmitter MAY choose not to clear the
 error counter if the last chunk sent was a retransmission.</t>
 <t>Note: When configuring the SCTP endpoint, the user should avoid
 having the value of 'Association.Max.Retrans' larger than the
@@ -4673,7 +4675,7 @@ transport address each time a HEARTBEAT is sent to that address and not
 acknowledged within one RTO.</t>
 <t>When the value of this counter exceeds the protocol parameter
 'Path.Max.Retrans', the endpoint SHOULD mark the corresponding destination
-address as inactive if it is not so marked, and MAY also optionally report to
+address as inactive if it is not so marked and SHOULD also report to
 the upper layer the change in reachability of this destination address.
 After this, the endpoint SHOULD continue HEARTBEAT on this destination address
 but SHOULD stop increasing the counter.</t>
@@ -4691,10 +4693,10 @@ counts as well).</t>
 HEARTBEAT ACK that contains the Heartbeat Information TLV, together with any
 other received TLVs, copied unchanged from the received HEARTBEAT chunk.</t>
 <t>Upon the receipt of the HEARTBEAT ACK, the sender of the HEARTBEAT
-MUST clear the error counter of the destination transport address
+SHOULD clear the error counter of the destination transport address
 to which the HEARTBEAT was sent and mark the destination transport address as
 active if it is not so marked.
-The endpoint MAY optionally report to the upper layer when an inactive
+The endpoint SHOULD report to the upper layer when an inactive
 destination address is marked as active due to the reception of the latest
 HEARTBEAT ACK.
 The receiver of the HEARTBEAT ACK SHOULD also clear the association overall
@@ -4912,9 +4914,9 @@ last sequential TSN received from its peer.</t>
 followed to determine the proper timer value for T2-shutdown.
 To indicate any gaps in TSN, the endpoint may also bundle a SACK with the
 SHUTDOWN chunk in the same SCTP packet.</t>
-<t>An endpoint should limit the number of retransmissions of the SHUTDOWN chunk
+<t>An endpoint SHOULD limit the number of retransmissions of the SHUTDOWN chunk
 to the protocol parameter 'Association.Max.Retrans'.
-If this threshold is exceeded, the endpoint should destroy the TCB and MUST
+If this threshold is exceeded, the endpoint SHOULD destroy the TCB and SHOULD
 report the peer endpoint unreachable to the upper layer (and thus the
 association enters the CLOSED state).
 The reception of any packet from its peer (i.e., as the peer sends all of its
@@ -4954,9 +4956,9 @@ be set to the recommended value of 5 times 'RTO.Max'.</t>
 the SHUTDOWN receiver MUST send a SHUTDOWN ACK and start a T2- shutdown timer
 of its own, entering the SHUTDOWN-ACK-SENT state.
 If the timer expires, the endpoint must resend the SHUTDOWN ACK.</t>
-<t>The sender of the SHUTDOWN ACK should limit the number of retransmissions of
+<t>The sender of the SHUTDOWN ACK SHOULD limit the number of retransmissions of
 the SHUTDOWN ACK chunk to the protocol parameter 'Association.Max.Retrans'.
-If this threshold is exceeded, the endpoint should destroy the TCB and may
+If this threshold is exceeded, the endpoint SHOULD destroy the TCB and SHOULD
 report the peer endpoint unreachable to the upper layer (and thus the
 association enters the CLOSED state).</t>
 <t>Upon the receipt of the SHUTDOWN ACK, the SHUTDOWN sender shall stop
