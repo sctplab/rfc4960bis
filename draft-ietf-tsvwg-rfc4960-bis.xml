@@ -3489,13 +3489,14 @@ Note that a zero window probe SHOULD only be sent when all outstanding DATA
 chunks have been cumulatively acknowledged and no DATA chunks are in flight.
 Zero window probing MUST be supported.
 <vspace blankLines='1'/>
-If the sender continues to receive new packets from the receiver
-while doing zero window probing, the unacknowledged window probes
-should not increment the error counter for the association or any
-destination transport address.
-This is because the receiver MAY keep its window closed for an indefinite time.
-Refer to <xref target='sec_acknowledgements_of_reception_of_data_chunks'/>
-on the receiver behavior when it advertises a zero window.
+If the sender continues to receive SACKs from the peer while doing
+zero window probing, the unacknowledged window probes SHOULD NOT
+increment the error counter for the association or any destination
+transport address.
+This is because the receiver could keep its window closed for an indefinite
+time.
+xref target='sec_acknowledgements_of_reception_of_data_chunks'/> describes the
+receiver behavior when it advertises a zero window.
 The sender SHOULD send the first zero window probe after 1 RTO when it detects
 that the receiver has closed its window and SHOULD increase the probe interval
 exponentially afterwards.
