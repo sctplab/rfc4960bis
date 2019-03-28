@@ -4427,9 +4427,19 @@ per RTO.</t>
 </section>
 <section anchor='sec_congestion_avoidance'
          title='Congestion Avoidance'>
-<t>When cwnd is greater than ssthresh, cwnd should be incremented by 1*MTU per
+<t>When cwnd is greater than ssthresh, cwnd SHOULD be incremented by 1*MTU per
 RTT if the sender has cwnd or more bytes of data outstanding for the
-corresponding transport address.</t>
+corresponding transport address.
+The basic guidelines for incrementing cwnd during congestion avoidance are as
+follows:
+<list style='symbols'>
+<t>SCTP MAY increment cwnd by 1*MTU.
+<vspace blankLines='1'/></t>
+<t>SCTP SHOULD increment cwnd by 1*MTU once per RTT when the sender has cwnd
+or more bytes of data outstanding for the corresponding transport address.
+<vspace blankLines='1'/></t>
+<t>SCTP MUST NOT increment cwnd by more than 1*MTU per RTT.</t>
+</list></t>
 <t>In practice, an implementation can achieve this goal in the following way:
 <list style='symbols'>
 <t>partial_bytes_acked is initialized to 0.</t>
@@ -4438,6 +4448,10 @@ partial_bytes_acked by the total number of bytes of all new chunks acknowledged
 in that SACK, including chunks acknowledged by the new Cumulative TSN Ack,
 by Gap Ack Blocks, and by the number of bytes of duplicated chunks reported in
 Duplicate TSNs.</t>
+<t>(1) when partial_bytes_acked is greater than cwnd and (2) before the arrival
+of the SACK the sender had less than cwnd bytes of data outstanding (i.e.,
+before the arrival of the SACK, flightsize was less than cwnd), reset
+partial_bytes_acked to cwnd.</t>
 <t>(1) when partial_bytes_acked is equal to or greater than cwnd and (2) before
 the arrival of the SACK the sender had cwnd or more bytes of data outstanding
 (i.e., before the arrival of the SACK, flightsize was greater than or equal to
