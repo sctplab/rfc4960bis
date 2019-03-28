@@ -4571,9 +4571,14 @@ optionally report back all outstanding user data remaining in its outbound
 queue.
 The association is automatically closed when the peer endpoint becomes
 unreachable.</t>
-<t>The counter shall be reset each time a DATA chunk sent to that peer
-endpoint is acknowledged (by the reception of a SACK) or a HEARTBEAT
-ACK is received from the peer endpoint.</t>
+<t>The counter MUST be reset each time a DATA chunk sent to that peer
+endpoint is acknowledged (by the reception of a SACK).
+When a HEARTBEAT ACK is received from the peer endpoint, the counter SHOULD
+also be reset.
+The receiver of the HEARTBEAT ACK MAY choose not to clear the counter if there
+is outstanding data on the association.
+This allows for handling the possible difference in reachability based on
+DATA chunks and HEARTBEAT chunks.</t>
 </section>
 
 <section anchor='sec_path_failure_detection'
@@ -4668,14 +4673,14 @@ counts as well).</t>
 HEARTBEAT ACK that contains the Heartbeat Information TLV, together with any
 other received TLVs, copied unchanged from the received HEARTBEAT chunk.</t>
 <t>Upon the receipt of the HEARTBEAT ACK, the sender of the HEARTBEAT
-should clear the error counter of the destination transport address
-to which the HEARTBEAT was sent, and mark the destination transport address as
+MUST clear the error counter of the destination transport address
+to which the HEARTBEAT was sent and mark the destination transport address as
 active if it is not so marked.
-The endpoint may optionally report to the upper layer when an inactive
+The endpoint MAY optionally report to the upper layer when an inactive
 destination address is marked as active due to the reception of the latest
 HEARTBEAT ACK.
-The receiver of the HEARTBEAT ACK must also clear the association overall error
-count as well (as defined in
+The receiver of the HEARTBEAT ACK SHOULD also clear the association overall
+error count (as defined in
 <xref target='sec_endpoint_failure_detection'/>).</t>
 <t>The receiver of the HEARTBEAT ACK should also perform an RTT measurement for
 that destination transport address using the time value carried in the
