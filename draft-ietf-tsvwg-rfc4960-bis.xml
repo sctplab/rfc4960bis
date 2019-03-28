@@ -5212,8 +5212,8 @@ in an unordered fashion to the peer (i.e., the U flag is set to 1 on all DATA
 chunks carrying this message).</t>
 <t>no-bundle flag -
 instructs SCTP not to bundle this user data with other outbound DATA chunks.
-SCTP MAY still bundle even when this flag is present, when faced with network
-congestion.</t>
+When faced with network congestion, SCTP may still bundle the data, even when
+this flag is present.</t>
 <t>payload protocol-id -
 a 32-bit unsigned integer that is to be passed to the peer indicating the type
 of payload protocol data being transmitted.
@@ -5284,15 +5284,15 @@ Optional attributes:
 <list style='symbols'>
 <t>stream id -
 to indicate which stream to receive the data on.</t>
-<t>Stream Sequence Number -
+<t>stream sequence number -
 the Stream Sequence Number assigned by the sending SCTP peer.</t>
 <t>partial flag -
-if this returned flag is set to 1, then this Receive contains a partial
+if this returned flag is set to 1, then this primitive contains a partial
 delivery of the whole message.
-When this flag is set, the stream id and Stream Sequence Number MUST
-accompany this receive.
+When this flag is set, the stream id and stream sequence number must
+accompany this primitive.
 When this flag is set to 0, it indicates that no more deliveries will be
-received for this Stream Sequence Number.</t>
+received for this stream sequence number.</t>
 <t>payload protocol-id -
 a 32-bit unsigned integer that is received from the peer indicating the type
 of payload protocol of the received data.
@@ -5459,16 +5459,16 @@ Optional attributes:
 <t>stream id -
 this is a return value that is set to indicate which stream the data was
 sent to.</t>
-<t>Stream Sequence Number -
+<t>stream sequence number -
 this value is returned indicating the Stream Sequence Number that was
 associated with the message.</t>
 <t>partial flag -
 if this returned flag is set to 1, then this message is a partial delivery of
 the whole message.
-When this flag is set, the stream id and Stream Sequence Number MUST
-accompany this receive.
+When this flag is set, the stream id and stream sequence number must
+accompany this primitive.
 When this flag is set to 0, it indicates that no more deliveries will be
-received for this Stream Sequence Number.</t>
+received for this stream sequence number.</t>
 <t>payload protocol-id -
 The 32 bit unsigned integer that was sent to be sent to the peer indicating
 the type of payload protocol of the received data.</t>
@@ -5492,16 +5492,16 @@ Optional attributes:
 <t>stream id -
 this is a return value that is set to indicate which stream the data was sent
 to.</t>
-<t>Stream Sequence Number -
+<t>stream sequence number -
 this value is returned indicating the Stream Sequence Number that was
 associated with the message.</t>
 <t>partial flag -
 if this returned flag is set to 1, then this message is a partial delivery of
 the whole message.
-When this flag is set, the stream id and Stream Sequence Number MUST
-accompany this receive.
+When this flag is set, the stream id and stream sequence number must
+accompany this primitive.
 When this flag is set to 0, it indicates that no more deliveries will be
-received for this Stream Sequence Number.</t>
+received for this stream sequence number.</t>
 <t>payload protocol-id -
 the 32-bit unsigned integer that was sent to the peer indicating the type of
 payload protocol of the received data.</t>
