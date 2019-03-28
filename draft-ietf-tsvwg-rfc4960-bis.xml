@@ -4380,8 +4380,8 @@ network to determine the available capacity.
 The slow-start algorithm is used for this purpose at the beginning of a
 transfer, or after repairing loss detected by the retransmission timer.
 <list style='symbols'>
-<t>The initial cwnd before DATA transmission or after a sufficiently long idle
-period MUST be set to min(4*MTU, max (2*MTU, 4380 bytes)).</t>
+<t>The initial cwnd before data transmission MUST be set to
+min(4*MTU, max (2*MTU, 4380 bytes)).</t>
 <t>The initial cwnd after a retransmission timeout MUST be no more than
 1*MTU, and only one packet is allowed to be in flight until successful
 acknowledgement.</t>
@@ -4420,9 +4420,11 @@ Otherwise, the duplicate SACKs will not only clock out new data, but also will
 adversely clock out more new data than what has just left the network, during
 a time of possible congestion.</t>
 <t><list style='symbols'>
-<t>When the endpoint does not transmit data on a given transport address,
-the cwnd of the transport address should be adjusted to max(cwnd/2, 4*MTU)
-per RTO.</t>
+<t>While the endpoint does not transmit data on a given transport address,
+the cwnd of the transport address SHOULD be adjusted to max(cwnd/2, 4*MTU)
+once per RTO.
+Before the first cwnd adjustment, the ssthresh of the transport address SHOULD
+be set to the cwnd.</t>
 </list></t>
 </section>
 <section anchor='sec_congestion_avoidance'
