@@ -4374,7 +4374,8 @@ transfer, or after repairing loss detected by the retransmission timer.
 <t>The initial cwnd before DATA transmission or after a sufficiently long idle
 period MUST be set to min(4*MTU, max (2*MTU, 4380 bytes)).</t>
 <t>The initial cwnd after a retransmission timeout MUST be no more than
-1*MTU.</t>
+1*MTU, and only one packet is allowed to be in flight until successful
+acknowledgement.</t>
 <t>The initial value of ssthresh SHOULD be arbitrarily high (e.g.,
 the size of the largest possible advertised window).</t>
 <t>Whenever cwnd is greater than zero, the endpoint is allowed to have cwnd
