@@ -3602,7 +3602,14 @@ However, an SCTP transmitter MUST NOT be more aggressive than the following
 algorithms allow.</t>
 <t>An SCTP receiver MUST NOT generate more than one SACK for every
 incoming packet, other than to update the offered window as the
-receiving application consumes new data.</t>
+receiving application consumes new data.
+When the window opens up, an SCTP receiver SHOULD send additional SACK chunks
+to update the window even if no new data is received.
+The receiver MUST avoid sending a large number of window updates -- in
+particular, large bursts of them.
+One way to achieve this is to send a window update only if the window can be
+increased by at least a quarter of the receive buffer size of the
+association.</t>
 <t>IMPLEMENTATION NOTE: The maximum delay for generating an acknowledgement
 may be configured by the SCTP administrator, either statically or dynamically,
 in order to meet the specific timing requirement of the protocol being
