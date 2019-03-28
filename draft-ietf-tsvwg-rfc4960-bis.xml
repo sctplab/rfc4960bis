@@ -760,12 +760,12 @@ Chunk Types are encoded such that the highest-order 2 bits specify the action
 that must be taken if the processing endpoint does not recognize the Chunk Type.
 <list style='hanging' hangIndent='5'>
 <t hangText='00 -'>
-Stop processing this SCTP packet and discard it, do not process any further
-chunks within it.
+Stop processing this SCTP packet;
+discard the unrecognized chunk and all further chunks.
 <vspace blankLines='1'/></t>
 <t hangText='01 -'>
-Stop processing this SCTP packet and discard it, do not process any further
-chunks within it, and report the unrecognized chunk in an
+Stop processing this SCTP packet, discard the unrecognized chunk and all
+further chunks, and report the unrecognized chunk in an
 'Unrecognized Chunk Type'.
 <vspace blankLines='1'/></t>
 <t hangText='10 -'>
@@ -5840,14 +5840,13 @@ or terminating the association as a result, based on local policy.</t>
 fragment of a fragmented SCTP packet and unambiguously determine whether it
 corresponds to an INIT chunk (for further information, please refer to
 <xref target='RFC1858'/>).
-Accordingly, we stress the requirements, stated in
+ Accordingly, we stress the requirements, as stated in
 <xref target='sec_sctp_common_header_field_desriptions'/>, that
-(1) an INIT chunk MUST NOT be bundled with any other chunk in a packet, and
+(1) an INIT chunk MUST NOT be bundled with any other chunk in a packet and
 (2) a packet containing an INIT chunk MUST have a zero Verification Tag.
-Furthermore, we require that the receiver of an INIT chunk MUST enforce these
-rules by silently discarding an arriving packet with an INIT chunk that is
-bundled with other chunks or has a non-zero verification tag and contains an
-INIT-chunk.</t>
+The receiver of an INIT chunk MUST silently discard the INIT chunk and all
+further chunks if the INIT chunk is bundled with other chunks or the packet
+has a non-zero Verification Tag.</t>
 </section>
 
 <section anchor='sec_protection_of_non_sctp_capable_hosts'
