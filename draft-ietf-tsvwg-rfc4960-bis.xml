@@ -4060,12 +4060,12 @@ are an implementation decision and are not specified within this document.</t>
          title='Stream Identifier and Stream Sequence Number'>
 <t>Every DATA chunk MUST carry a valid stream identifier.
 If an endpoint receives a DATA chunk with an invalid stream identifier, it
-shall acknowledge the reception of the DATA chunk following the
+SHOULD acknowledge the reception of the DATA chunk following the
 normal procedure, immediately send an ERROR chunk with cause set to
-"Invalid Stream Identifier" (see Section 3.3.10), and discard the
-DATA chunk. <!-- MT FIME: Reference -->
-The endpoint may bundle the ERROR chunk in the same packet as the SACK as long
-as the ERROR follows the SACK.</t>
+"Invalid Stream Identifier" (see <xref target='sec_error_chunk'/>),
+and discard the DATA chunk.
+The endpoint MAY bundle the ERROR chunk and the SACK chunk in the same
+packet.</t>
 <t>The Stream Sequence Number in all the streams MUST start from 0 when
 the association is established.
 Also, when the Stream Sequence Number reaches the value 65535 the next
