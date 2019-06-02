@@ -4579,6 +4579,13 @@ resets to 0.</t>
 the effect of TCP Fast Recovery is achieved automatically with no adjustment
 to the congestion control window size.</t>
 </section>
+<section title='Making Changes to Differentiated Services Code Points'>
+<t>SCTP implementations MAY allow an application to configure the
+Differentiated Services Code Point (DSCP) used for sending packets.
+If a DSCP change might result in outgoing packets being queued in
+different queues, the congestion control parameters for all affected
+destination addresses MUST be reset to their initial values.</t>
+</section>
 </section>
 <section anchor='sec_path_mtu_discovery'
          title='Path MTU Discovery'>
@@ -5476,8 +5483,8 @@ This primitive allows the local SCTP to customize the protocol parameters.
 local handle to the SCTP association.</t>
 <t>protocol parameter list -
 the specific names and values of the protocol parameters
-(e.g., Association.Max.Retrans; see <xref target='sec_parameter_values'/>)
-that the SCTP user wishes to customize.</t>
+(e.g., Association.Max.Retrans (see <xref target='sec_parameter_values'/>),
+or other parameters like the DSCP) that the SCTP user wishes to customize.</t>
 </list>
 Optional attributes:
 <list style='symbols'>
