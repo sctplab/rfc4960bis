@@ -3987,13 +3987,16 @@ path (see <xref target='sec_handle_address_parameters'/> and
 <t>By default, an endpoint SHOULD always transmit to the primary path,
 unless the SCTP user explicitly specifies the destination transport
 address (and possibly source transport address) to use.</t>
-<t>An endpoint SHOULD transmit reply chunks (e.g., SACK, HEARTBEAT ACK, etc.)
-to the same destination transport address from which it received the DATA or
-control chunk to which it is replying.
-This rule should also be followed if the endpoint is bundling DATA chunks
-together with the reply chunk.</t>
-<t>However, when acknowledging multiple DATA chunks received in packets
-from different source addresses in a single SACK, the SACK chunk may
+<t>An endpoint SHOULD transmit reply chunks (e.g., INIT ACK, COOKIE ACK,
+HEARTBEAT ACK) in response to control chunks to the same destination
+transport address from which it received the control chunk to which
+it is replying.</t>
+<t>The selection of the destination transport address for packets
+containing SACK chunks is implementation dependent.
+However, an endpoint SHOULD NOT vary the destination transport address of
+a SACK when it receives DATA chunks coming from the same source address.</t>
+<t>When acknowledging multiple DATA chunks received in packets
+from different source addresses in a single SACK, the SACK chunk MAY
 be transmitted to one of the destination transport addresses from
 which the DATA or control chunks being acknowledged were received.</t>
 <t>When a receiver of a duplicate DATA chunk sends a SACK to a multi-
