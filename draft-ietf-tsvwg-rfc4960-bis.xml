@@ -6862,8 +6862,8 @@ set to "Destination Unreachable".
 <t>An implementation MAY ignore all ICMPv6 messages where the type field is
 not "Destination Unreachable", "Parameter Problem", or "Packet Too Big".
 <vspace blankLines='1'/></t>
-<t>An implementation MAY ignore any ICMPv4 messages where the code does not
-indicate "Protocol Unreachable" or "Fragmentation Needed".
+<t>An implementation SHOULD ignore any ICMP messages where the code indicates
+"Port Unreachable".
 <vspace blankLines='1'/></t>
 <t>An implementation MAY ignore all ICMPv6 messages of type "Parameter Problem"
 if the code is not "Unrecognized Next Header Type Encountered".
@@ -6892,8 +6892,8 @@ with the T bit set if it does not contain an INIT chunk.
 If it does contain an INIT chunk and the association is in the
 COOKIE-WAIT state, handle the ICMP message like an ABORT.
 <vspace blankLines='1'/></t>
-<t>If the ICMPv6 code is "Destination Unreachable", the implementation MAY mark
-the destination into the unreachable state or alternatively increment the
+<t>If the ICMP type is "Destination Unreachable", the implementation MAY move
+the destination to the unreachable state or, alternatively, increment the
 path error counter.</t>
 </list></t>
 <t>Note that these procedures differ from <xref target='RFC1122'/> and from its
