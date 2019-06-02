@@ -3536,12 +3536,18 @@ for retransmission (limited by the current cwnd).
 <vspace blankLines='1'/></t>
 <t>When the time comes for the sender to transmit new DATA chunks, the protocol
 parameter Max.Burst SHOULD be used to limit the number of packets sent.
-The limit MAY be applied by adjusting cwnd as follows:
-<vspace blankLines='1'/>
-if((flightsize + Max.Burst*MTU) &lt; cwnd) cwnd = flightsize + Max.Burst*MTU
-<vspace blankLines='1'/>
-Or it MAY be applied by strictly limiting the number of packets emitted by
+The limit MAY be applied by adjusting cwnd temporarily, as follows:
+<!-- FIXME MT: This doesn't render correctly when generating HTML -->
+<figure suppress-title='true'>
+<artwork align='center'>
+if ((flightsize + Max.Burst * MTU) &lt; cwnd)
+    cwnd = flightsize + Max.Burst * MTU;
+</artwork>
+</figure>
+Or, it MAY be applied by strictly limiting the number of packets emitted by
 the output routine.
+When calculating the number of packets to transmit, and particularly when
+using the formula above, cwnd SHOULD NOT be changed permanently.
 <vspace blankLines='1'/></t>
 <t>Then, the sender can send out as many new DATA chunks as rule A and rule B
 allow.</t>
