@@ -6290,7 +6290,7 @@ https    443/sctp  HTTPS    # IETF TSVWG
          title='Suggested SCTP Protocol Parameter Values'>
 <t>The following protocol parameters are RECOMMENDED:
 <list style='hanging'>
-<t hangText='RTO.Initial:'>3 seconds</t>
+<t hangText='RTO.Initial:'>1 second</t>
 <t hangText='RTO.Min:'>1 second</t>
 <t hangText='RTO.Max:'>60 seconds</t>
 <t hangText='Max.Burst:'>4</t>
