@@ -196,13 +196,17 @@ A unit of information within an SCTP packet, consisting of a chunk header
 and chunk-specific content.
 <vspace blankLines='1'/></t>
 <t hangText='Congestion window (cwnd):'>
-An SCTP variable that limits the data, in number of bytes, a sender can send
-to a particular destination transport address before receiving an
-acknowledgement.
+An SCTP variable that limits outstanding data, in number of bytes,
+that a sender can send to a particular destination transport address before
+receiving an acknowledgement.
 <vspace blankLines='1'/></t>
 <t hangText='Cumulative TSN Ack Point:'>
 The TSN of the last DATA chunk acknowledged via the Cumulative TSN Ack
 field of a SACK.
+<vspace blankLines='1'/></t>
+<t hangText='Flightsize:'>
+The amount of bytes of outstanding data to a particular destination transport
+address at any given time.
 <vspace blankLines='1'/></t>
 <t hangText='Idle destination address:'>
 An address that has not had user messages sent to it within some length
@@ -232,6 +236,12 @@ Most significant byte first, a.k.a., big endian.
 <t hangText='Ordered Message:'>
 A user message that is delivered in order with respect to all previous user
 messages sent within the stream on which the message was sent.
+<vspace blankLines='1'/></t>
+<t hangText='Outstanding data (or "data outstanding" or "data in flight"):'>
+The total amount of the DATA chunks associated with outstanding TSNs.
+A retransmitted DATA chunk is counted once in outstanding data.
+A DATA chunk that is classified as lost but that has not yet been
+retransmitted is not in outstanding data.
 <vspace blankLines='1'/></t>
 <t hangText='Outstanding TSN (at an SCTP endpoint):'>
 A TSN (and the associated DATA chunk) that has been sent by the endpoint
@@ -3521,8 +3531,8 @@ transport address if it has cwnd or more bytes of data outstanding to that
 transport address.
 <vspace blankLines='1'/></t>
 <t>When the time comes for the sender to transmit, before sending new
-DATA chunks, the sender MUST first transmit any outstanding DATA
-chunks that are marked for retransmission (limited by the current cwnd).
+DATA chunks, the sender MUST first transmit any DATA chunks that are marked
+for retransmission (limited by the current cwnd).
 <vspace blankLines='1'/></t>
 <t>When the time comes for the sender to transmit new DATA chunks, the protocol
 parameter Max.Burst SHOULD be used to limit the number of packets sent.
