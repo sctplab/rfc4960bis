@@ -5301,7 +5301,7 @@ placed in all outgoing IP datagrams.</t>
 <t hangText='Format:'>
 RECEIVE(association id, buffer address, buffer size [,stream id])
 -> byte count [,transport address] [,stream id] [,stream sequence number]
-[,partial flag] [,delivery number] [,payload protocol-id]</t>
+[,partial flag] [,payload protocol-id]</t>
 </list>
 This primitive shall read the first user message in the SCTP in-queue
 into the buffer specified by ULP, if there is one available.
