@@ -6894,7 +6894,9 @@ COOKIE-WAIT state, handle the ICMP message like an ABORT.
 <vspace blankLines='1'/></t>
 <t>If the ICMP type is "Destination Unreachable", the implementation MAY move
 the destination to the unreachable state or, alternatively, increment the
-path error counter.</t>
+path error counter.
+SCTP MAY provide information to the upper layer indicating the reception of
+ICMP messages when reporting a network status change.</t>
 </list></t>
 <t>Note that these procedures differ from <xref target='RFC1122'/> and from its
 requirements for processing of port-unreachable messages and the requirements
