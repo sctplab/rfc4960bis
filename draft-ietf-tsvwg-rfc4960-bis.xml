@@ -3505,7 +3505,7 @@ increment the error counter for the association or any destination
 transport address.
 This is because the receiver could keep its window closed for an indefinite
 time.
-xref target='sec_acknowledgements_of_reception_of_data_chunks'/> describes the
+<xref target='sec_acknowledgements_of_reception_of_data_chunks'/> describes the
 receiver behavior when it advertises a zero window.
 The sender SHOULD send the first zero window probe after 1 RTO when it detects
 that the receiver has closed its window and SHOULD increase the probe interval
