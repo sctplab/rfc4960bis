@@ -3527,8 +3527,11 @@ due to the SACK having been lost in transit from the data receiver to the data
 sender.
 <vspace blankLines='1'/></t>
 <t>At any given time, the sender MUST NOT transmit new data to a given
-transport address if it has cwnd or more bytes of data outstanding to that
-transport address.
+transport address if it has cwnd + (PMTU - 1) or more bytes of data outstanding
+to that transport address.
+If data is available, the sender SHOULD exceed cwnd by up to (PMTU - 1) bytes
+on a new data transmission if the flightsize does not currently reach cwnd.
+The breach of cwnd MUST constitute one packet only.
 <vspace blankLines='1'/></t>
 <t>When the time comes for the sender to transmit, before sending new
 DATA chunks, the sender MUST first transmit any DATA chunks that are marked
@@ -4414,7 +4417,9 @@ acknowledgement.</t>
 <t>The initial value of ssthresh SHOULD be arbitrarily high (e.g.,
 the size of the largest possible advertised window).</t>
 <t>Whenever cwnd is greater than zero, the endpoint is allowed to have cwnd
-bytes of data outstanding on that transport address.</t>
+bytes of data outstanding on that transport address.
+A limited overbooking as described in
+<xref target='sec_transmission_of_data_chunks'/> B) SHOULD be supported.</t>
 <t>When cwnd is less than or equal to ssthresh, an SCTP endpoint MUST
 use the slow-start algorithm to increase cwnd only if the current
 congestion window is being fully utilized, an incoming SACK advances the
