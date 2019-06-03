@@ -3490,10 +3490,11 @@ transmission and/or retransmission of outbound DATA chunks:
 <list style='format %C)'>
 <t>At any given time, the data sender MUST NOT transmit new data to
 any destination transport address if its peer's rwnd indicates
-that the peer has no buffer space (i.e., rwnd is 0;
+that the peer has no buffer space (i.e., rwnd is smaller than the size of the
+next DATA chunk;
 see <xref target='sec_processing_of_received_sack'/>).
 <vspace blankLines='1'/>
-When the receiver's advertised window is zero, this probe is called a zero
+When the receiver has no buffer space, this probe is called a zero
 window probe.
 Note that a zero window probe SHOULD only be sent when all outstanding DATA
 chunks have been cumulatively acknowledged and no DATA chunks are in flight.
