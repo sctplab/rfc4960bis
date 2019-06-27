@@ -6449,20 +6449,22 @@ in the coding, testing, and updating process of this document.
 <?rfc include="reference.RFC.4086" ?>
 <?rfc include="reference.RFC.4895" ?>
 <?rfc include="reference.RFC.4960" ?>
+<?rfc include="reference.RFC.8311" ?>
 </references>
 
 <section anchor='sec_ecn'
          title='Explicit Congestion Notification'>
-<t>ECN <xref target='RFC3168'/> describes a proposed extension to IP that
-details a method to become aware of congestion outside of datagram loss.
+<t>ECN as specified in <xref target='RFC3168'/>
+(updated by <xref target='RFC8311'/>) describes an extension to IP that
+details a method for becoming aware of congestion outside of datagram loss.
 This is an optional feature that an implementation MAY choose to add to SCTP.
 This appendix details the minor differences implementers will need to be aware
 of if they choose to implement this feature.
-In general, <xref target='RFC3168'/> should be followed with the following
-exceptions.</t>
+In general, <xref target='RFC3168'/> (updated by <xref target='RFC8311'/>)
+SHOULD be followed, with the following exceptions.</t>
 <t>Negotiation:</t>
-<t><xref target='RFC3168'/> details negotiation of ECN during the
-SYN and SYN-ACK stages of a TCP connection.
+<t><xref target='RFC3168'/> (updated by <xref target='RFC8311'/>) details
+the negotiation of ECN during the SYN and SYN-ACK stages of a TCP connection.
 The sender of the SYN sets 2 bits in the TCP flags, and the sender of the
 SYN-ACK sets only 1 bit.
 The reasoning behind this is to ensure that both sides are truly ECN capable.
@@ -6481,9 +6483,10 @@ This TLV contains no parameters, and thus has the following format:</t>
 </figure>
 <t>ECN-Echo:</t>
 
-<t><xref target='RFC3168'/> details a specific bit for a receiver to send back
+<t><xref target='RFC3168'/> (updated by <xref target='RFC8311'/>)
+details a specific bit for a receiver to send back
 in its TCP acknowledgements to notify the sender of the
-Congestion Experienced (CE) bit having arrived from the network.
+Congestion Experienced (CE) bit that the CE bit has arrived from the network.
 For SCTP, this same indication is made by including the ECNE chunk.
 This chunk contains one data element, i.e., the lowest TSN associated with the
 IP datagram marked with the CE bit, and looks as follows:</t>
@@ -6500,7 +6503,8 @@ IP datagram marked with the CE bit, and looks as follows:</t>
 </figure>
 <t>Note: The ECNE is considered a Control chunk.</t>
 <t>CWR:</t>
-<t><xref target='RFC3168'/> details a specific bit for a sender to send in
+<t><xref target='RFC3168'/> (updated by <xref target='RFC8311'/>)
+details a specific bit for a sender to send in
 the header of its next outbound TCP segment to indicate to its peer that it has
 reduced its congestion window.
 This is termed the CWR bit.
