@@ -873,18 +873,17 @@ The Parameter Length does not include any padding bytes.
 <t hangText='Chunk Parameter Value: variable length'>
 <vspace blankLines='1'/>
 The Parameter Value field contains the actual information to be transferred in
-the parameter. <!-- FIXME MT: Why not terminate here?--> 
-<vspace blankLines='1'/>
-The total length of a parameter (including Type, Parameter Length,
+the parameter.</t>
+</list></t>
+<t>The total length of a parameter (including Type, Parameter Length,
 and Value fields) MUST be a multiple of 4 bytes.
 If the length of the parameter is not a multiple of 4 bytes, the sender pads the
 parameter at the end (i.e., after the Parameter Value field) with all zero
 bytes.
 The length of the padding is not included in the Parameter Length field.
 A sender MUST NOT pad with more than 3 bytes.
-The receiver MUST ignore the padding bytes.
-<vspace blankLines='1'/>
-The Parameter Types are encoded such that the highest-order 2 bits specify the
+The receiver MUST ignore the padding bytes.</t>
+<t>The Parameter Types are encoded such that the highest-order 2 bits specify the
 action that must be taken if the processing endpoint does not recognize the
 Parameter Type.
 <list style='hanging' hangIndent='5'>
@@ -905,7 +904,6 @@ Skip this parameter and continue processing.
 Skip this parameter and continue processing but report the unrecognized
 parameter in an 'Unrecognized Parameter', as described in
 <xref target='sec_reporting_of_unreconginzed_parameters'/>.</t>
-</list></t>
 </list></t>
 <t>Please note that in all four cases, an INIT ACK or COOKIE ECHO chunk is sent.
 In the 00 or 01 case, the processing of the parameters after the unknown
