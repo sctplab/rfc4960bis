@@ -597,10 +597,8 @@ arithmetic.</t>
 <section title='Changes from RFC 4960'>
 <t>SCTP was originally defined in <xref target="RFC4960"/>, which this document
 obsoletes, if approved.
-In this current revision no changes other than formatting changes are
-present.</t>
-<!--Readers interested in the details of the various changes
-that this document incorporates are asked to consult [RFC4460].-->
+Readers interested in the details of the various changes that this document
+incorporates are asked to consult <xref target="RFC8540"/>.</t>
 </section>
 </section>
 
@@ -6413,6 +6411,7 @@ in the coding, testing, and updating process of this document.
 <?rfc include="reference.RFC.4960" ?>
 <?rfc include="reference.RFC.7053" ?>
 <?rfc include="reference.RFC.8311" ?>
+<?rfc include="reference.RFC.8540" ?>
 </references>
 
 <section anchor='sec_ecn'
