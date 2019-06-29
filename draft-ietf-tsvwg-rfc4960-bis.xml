@@ -4416,7 +4416,7 @@ use the slow-start algorithm to increase cwnd only if the current
 congestion window is being fully utilized, an incoming SACK advances the
 Cumulative TSN Ack Point, and the data sender is not in Fast Recovery.
 Only when these three conditions are met can the cwnd be increased;
-otherwise, the cwnd MUST not be increased.
+otherwise, the cwnd MUST NOT be increased.
 If these conditions are met, then cwnd MUST be increased by, at most, the
 lesser of
 1) the total size of the previously outstanding DATA chunk(s) acknowledged, and
