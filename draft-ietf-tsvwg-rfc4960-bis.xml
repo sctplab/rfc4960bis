@@ -3249,7 +3249,7 @@ DATA [TSN=initial TSN_A
 </section>
 
 <section anchor='sec_handle_duplicate_cookie_ack'
-         title='Handle Duplicate COOKIE ACK.'> <!-- FIXME MT: No full stop -->
+         title='Handle Duplicate COOKIE ACK'>
 <t>At any state other than COOKIE-ECHOED, an endpoint should silently
 discard a received COOKIE ACK chunk.</t>
 </section>
