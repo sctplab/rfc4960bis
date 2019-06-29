@@ -1573,6 +1573,9 @@ its value.</t>
 <t>The SACK also contains zero or more Gap Ack Blocks.
 Each Gap Ack Block acknowledges a subsequence of TSNs received following a break
 in the sequence of received TSNs.
+The Gap Ack Blocks SHOULD be isolated.
+This means that the TSN just before each Gap Ack Block and the TSN just after
+each Gap Ack Block have not been received.
 By definition, all TSNs acknowledged by Gap Ack Blocks are greater than the
 value of the Cumulative TSN Ack.
 <figure>
@@ -1641,6 +1644,10 @@ All DATA chunks with TSNs greater than or equal to (Cumulative TSN Ack +
 Gap Ack Block Start) and less than or equal to (Cumulative TSN Ack +
 Gap Ack Block End) of each Gap Ack Block are assumed to have been received
 correctly.
+Gap Ack Blocks SHOULD be isolated.
+This means that the DATA chunks with TSNs equal to (Cumulative TSN Ack +
+Gap Ack Block Start - 1) and (Cumulative TSN Ack + Gap Ack Block End + 1)
+have not been received.
 <vspace blankLines='1'/></t>
 <t hangText='Gap Ack Block Start: 16 bits (unsigned integer)'>
 <vspace blankLines='1'/>
