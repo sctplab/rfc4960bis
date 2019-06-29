@@ -2387,7 +2387,7 @@ bundled with one or more DATA chunks in the same packet.
 </artwork>
 </figure>
 <list style='hanging'>
-<t hangText='Chunk Flags: 8 bit'> <!-- FIXME MT: bits? -->
+<t hangText='Chunk Flags: 8 bits'>
 <vspace blankLines='1'/>
 Set to 0 on transmit and ignored on receipt.
 <vspace blankLines='1'/></t>
