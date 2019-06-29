@@ -6164,59 +6164,15 @@ SCTP.</t>
 </section>
 <section anchor='sec_port_number_registry'
          title='Port Numbers Registry'>
-<t>SCTP services may use contact port numbers to provide service to unknown
+<t>SCTP services can use contact port numbers to provide service to unknown
 callers, as in TCP and UDP.
-IANA is therefore requested to open the existing Port Numbers registry for
-SCTP using the following rules, which we intend to mesh well with existing
-Port Numbers registration procedures.
-An IESG-appointed Expert Reviewer supports IANA in evaluating SCTP port
+IANA is therefore requested to open the existing "Service Name and Transport
+Protocol Port Number Registry" for SCTP using the following rules, which we
+intend to mesh well with existing port-number registration procedures.
+An IESG-appointed expert reviewer supports IANA in evaluating SCTP port
 allocation requests, according to the procedure defined in
-<xref target='RFC2434'/>.</t>
-<t>Port numbers are divided into three ranges.
-The Well Known Ports are those from 0 through 1023, the Registered Ports are
-those from 1024 through 49151, and the Dynamic and/or Private Ports are those
-from 49152 through 65535.
-Well Known and Registered Ports are intended for use by server applications
-that desire a default contact point on a system.
-On most systems, Well Known Ports can only be used by system (or root) processes
-or by programs executed by privileged users, while Registered Ports can be used
-by ordinary user processes or programs executed by ordinary users.
-Dynamic and/or Private Ports are intended for temporary use, including
-client-side ports, out-of-band negotiated ports, and application testing prior
-to registration of a dedicated port; they MUST NOT be registered.</t>
-<t>The Port Numbers registry should accept registrations for SCTP ports
-in the Well Known Ports and Registered Ports ranges.
-Well Known and Registered Ports SHOULD NOT be used without registration.
-Although in some cases -- such as porting an application from TCP to SCTP --
-it may seem natural to use an SCTP port before registration completes, we
-emphasize that IANA will not guarantee registration of particular Well Known
-and Registered Ports.
-Registrations should be requested as early as possible.</t>
-<t>Each port registration SHALL include the following information:
-<list style='symbols'>
-<t>A short port name, consisting entirely of letters (A-Z and a-z),
-digits (0-9), and punctuation characters from "-_+./*" (not including the
-quotes).</t>
-<t>The port number that is requested for registration.</t>
-<t>A short English phrase describing the port's purpose.</t>
-<t>Name and contact information for the person or entity performing the
-registration, and possibly a reference to a document defining the port's use.
-Registrations coming from IETF working groups need only name the working group,
-but indicating a contact person is recommended.</t>
-</list></t>
-<t>Registrants are encouraged to follow these guidelines when submitting
-a registration.
-<list style='symbols'>
-<t>A port name SHOULD NOT be registered for more than one SCTP port number.
-<vspace blankLines='1'/></t>
-<t>A port name registered for TCP MAY be registered for SCTP as well.
-Any such registration SHOULD use the same port number as the existing TCP
-registration.
-<vspace blankLines='1'/></t>
-<t>Concrete intent to use a port SHOULD precede port registration. For example,
-existing TCP ports SHOULD NOT be registered in advance of any intent to use
-those ports for SCTP.</t>
-</list></t>
+<xref target='RFC8126'/>.
+The details of this process are defined in <xref target='RFC6335'/>.</t>
 <t>This document registers the following ports.
 (These registrations should be considered models to follow for future allocation
 requests.)</t>
@@ -6368,6 +6324,7 @@ in the coding, testing, and updating process of this document.
 <?rfc include="reference.RFC.4303" ?>
 <?rfc include="reference.RFC.4306" ?>
 <?rfc include="reference.RFC.4821" ?>
+<?rfc include="reference.RFC.6335" ?>
 <?rfc include="reference.RFC.8126" ?>
 </references>
 <references title='Informative References'>
