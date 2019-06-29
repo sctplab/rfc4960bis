@@ -309,14 +309,13 @@ Ssthresh is in number of bytes.
 A unidirectional logical channel established from one to
 another associated SCTP endpoint, within which all user messages
 are delivered in sequence except for those submitted to the
-unordered delivery service.</t>
-</list></t>
-<!-- FIXME MT: This is broken -->
-<t>Note: The relationship between stream numbers in opposite directions
+unordered delivery service.
+<vspace blankLines='1'/>
+Note: The relationship between stream numbers in opposite directions
 is strictly a matter of how the applications use them. It is the
 responsibility of the SCTP user to create and manage these
-correlations if they are so desired.</t>
-<t><list style='hanging'>
+correlations if they are so desired.
+<vspace blankLines='1'/></t>
 <t hangText='Stream Sequence Number:'>
 A 16-bit sequence number used internally by SCTP to ensure sequenced delivery
 of the user messages within a given stream.
