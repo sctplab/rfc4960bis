@@ -9,7 +9,7 @@
 <rfc category="std"
      ipr="pre5378Trust200902"
      obsoletes="4960"
-     docName="draft-ietf-tsvwg-rfc4960-bis-02-to-be">
+     docName="draft-ietf-tsvwg-rfc4960-bis-02">
 <front>
 
 <title>Stream Control Transmission Protocol</title>
@@ -6403,8 +6403,6 @@ in the coding, testing, and updating process of this document.
 <?rfc include="reference.RFC.2104" ?>
 <?rfc include="reference.RFC.2196" ?>
 <?rfc include="reference.RFC.2522" ?>
-<?rfc include="reference.RFC.2960" ?> <!-- FIXME MT: Unused -->
-<?rfc include="reference.RFC.3309" ?> <!-- FIXME MT: Unused -->
 <?rfc include="reference.RFC.3168" ?>
 <?rfc include="reference.RFC.4086" ?>
 <?rfc include="reference.RFC.4895" ?>
