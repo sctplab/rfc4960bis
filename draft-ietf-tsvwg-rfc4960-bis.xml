@@ -2771,13 +2771,8 @@ which packets to the peer could be transmitted.</t>
 using the above rules, the endpoint shall select one of the transport addresses
 as the initial primary path.</t>
 <t>Note: The INIT ACK MUST be sent to the source address of the INIT.</t>
-<t>The sender of INIT may include a 'Supported Address Types' parameter
-in the INIT to indicate what types of address are acceptable.
-When this parameter is present, the receiver of INIT (initiate) MUST either
-use one of the address types indicated in the Supported Address Types parameter
-when responding to the INIT, or abort the association with an
-"Unresolvable Address" error cause if it is unwilling or incapable of using any
-of the address types indicated by its peer.</t>
+<t>The sender of INIT chunks MAY include a 'Supported Address Types' parameter
+in the INIT to indicate what types of addresses are acceptable.</t>
 <t>IMPLEMENTATION NOTE: In the case that the receiver of an INIT ACK
 fails to resolve the address parameter due to an unsupported type, it
 can abort the initiation process and then attempt a reinitiation by
