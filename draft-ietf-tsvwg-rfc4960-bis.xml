@@ -2255,12 +2255,10 @@ DATA chunk if a received DATA chunk has no user data.
 <t hangText='TSN value: 32 bits (unsigned integer)'>
 <vspace blankLines='1'/>
 The TSN value field contains the TSN of the DATA chunk received with no user
-data field.
-<vspace blankLines='1'/>
-This cause code is normally returned in an ABORT chunk
-(see <xref target='sec_acknowledgements_of_reception_of_data_chunks'/>).</t>
-<!-- FIXME MT: Why is this indented -->
+data field.</t>
 </list></t>
+<t>This cause code is normally returned in an ABORT chunk
+(see <xref target='sec_acknowledgements_of_reception_of_data_chunks'/>).</t>
 </section>
 
 <section anchor='sec_cookie_received_while_shutting_down_cause'
