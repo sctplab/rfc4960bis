@@ -1131,11 +1131,9 @@ in any combination.</t>
 The ECN Capable field is reserved for future use of Explicit Congestion
 Notification.</t>
 <t>Note 3:
-An INIT chunk MUST NOT contain more than one Host Name Address parameter.
-Moreover, the sender of the INIT MUST NOT combine any other address types with
-the Host Name Address in the INIT.
-The receiver of INIT MUST ignore any other address types if the Host Name
-Address parameter is present in the received INIT chunk.</t>
+An INIT chunk MUST NOT contain the Host Name Address parameter.
+The receiver of an INIT chunk containing a Host Name Address parameter MUST
+send an ABORT and MAY include an "Unresolvable Address" error cause.</t>
 <t>Note 4:
 This parameter, when present, specifies all the address types the sending
 endpoint can support.
@@ -1310,11 +1308,8 @@ The receiver MAY choose to ignore the suggested cookie life-span increase for
 its own security reasons.</t>
 </list></t>
 <t>Host Name Address (11)</t>
-<t>The sender of INIT uses this parameter to pass its Host Name (in place of
-its IP addresses) to its peer.
-The peer is responsible for resolving the name.
-Using this parameter might make it more likely for the association to work
-across a NAT box.</t>
+<t>The sender of an INIT chunk MUST NOT include this parameter.
+The usage of the Host Name Address parameter is deprecated.</t>
 <t>
 <figure>
 <artwork align='center'>
@@ -1360,7 +1355,9 @@ support.</t>
 <t hangText='Address Type: 16 bits (unsigned integer)'>
 <vspace blankLines='1'/>
 This is filled with the type value of the corresponding address
-TLV (e.g., IPv4 = 5, IPv6 = 6, Host name = 11).</t>
+TLV (e.g., IPv4 = 5, IPv6 = 6).
+The value indicating the Host Name Address parameter (Host name = 11)
+MUST NOT be used.</t>
 </list></t>
 </section>
 </section>
@@ -1481,11 +1478,9 @@ can be IPv4 and/or IPv6 in any combination.</t>
 The ECN Capable field is reserved for future use of Explicit Congestion
 Notification.</t>
 <t>Note 3:
-The INIT ACK chunks MUST NOT contain more than one Host Name Address parameter.
-Moreover, the sender of the INIT ACK MUST NOT combine any other address types
-with the Host Name Address in the INIT ACK.
-The receiver of the INIT ACK MUST ignore any other address types if the
-Host Name Address parameter is present.</t>
+An INIT ACK chunk MUST NOT contain the Host Name Address parameter.
+The receiver of INIT ACK chunks containing a Host Name Address parameter
+MUST send an ABORT and MAY include an "Unresolvable Address" error cause.</t>
 <t>IMPLEMENTATION NOTE:
 An implementation MUST be prepared to receive an INIT ACK that is quite large
 (more than 1500 bytes) due to the variable size of the State Cookie AND the
@@ -2747,39 +2742,10 @@ which the chunk arrives and record it, in combination with the
 SCTP source port number, as the only destination transport address
 for this peer.
 <vspace blankLines='1'/></t>
-<t>If there is a Host Name parameter present in the received INIT or INIT ACK
-chunk, the endpoint shall resolve that host name to a list of IP address(es)
-and derive the transport address(es) of this peer by combining the resolved
-IP address(es) with the SCTP source port.
-<vspace blankLines='1'/>
-The endpoint MUST ignore any other IP Address parameters if they are also
-present in the received INIT or INIT ACK chunk.
-<vspace blankLines='1'/>
-The time at which the receiver of an INIT resolves the host name has potential
-security implications to SCTP.
-If the receiver of an INIT resolves the host name upon the reception of the
-chunk, and the mechanism the receiver uses to resolve the host name
-involves potential long delay (e.g., DNS query), the receiver may open itself
-up to resource attacks for the period of time while it is waiting for the
-name resolution results before it can build the State Cookie and release
-local resources.
-<vspace blankLines='1'/>
-Therefore, in cases where the name translation involves potential long delay,
-the receiver of the INIT MUST postpone the name resolution till the reception
-of the COOKIE ECHO chunk from the peer.
-In such a case, the receiver of the INIT SHOULD build the State Cookie using
-the received Host Name (instead of destination transport addresses) and send
-the INIT ACK to the source IP address from which the INIT was received.
-<vspace blankLines='1'/>
-The receiver of an INIT ACK shall always immediately attempt to resolve the
-name upon the reception of the chunk.
-<vspace blankLines='1'/>
-The receiver of the INIT or INIT ACK MUST NOT send user data (piggy-backed
-or stand-alone) to its peer until the host name is successfully resolved.
-<vspace blankLines='1'/>
-If the name resolution is not successful, the endpoint MUST immediately send
-an ABORT with "Unresolvable Address" error cause to its peer.
-The ABORT shall be sent to the source IP address from which the last peer
+<t>If there is a Host Name Address parameter present in the received INIT or
+INIT ACK chunk, the endpoint MUST immediately send an ABORT and MAY include an
+"Unresolvable Address" error cause to its peer.
+The ABORT SHALL be sent to the source IP address from which the last peer
 packet was received.
 <vspace blankLines='1'/></t>
 <t>If there are only IPv4/IPv6 addresses present in the received INIT or
@@ -5819,21 +5785,11 @@ use of a Verification Tag to prevent insertion of extraneous packets into the
 flow of an established association.</t>
 <t>The IP Authentication Header and Encapsulating Security Payload might be
 useful in reducing the risk of certain kinds of denial-of-service attacks.</t>
-<t>The use of the host name feature in the INIT chunk could be used to flood a
-target DNS server.
-A large backlog of DNS queries, resolving the host name received in the
-INIT chunk to IP addresses, could be accomplished by sending INITs to multiple
-hosts in a given domain.
-In addition, an attacker could use the host name feature in an indirect attack
-on a third party by sending large numbers of INITs to random hosts containing
-the host name of the target.
-In addition to the strain on DNS resources, this could also result in large
-numbers of INIT ACKs being sent to the target.
-One method to protect against this type of attack is to verify that the IP
-addresses received from DNS include the source IP address of the original INIT.
-If the list of IP addresses received from DNS does not include the source IP
-address of the INIT, the endpoint MAY silently discard the INIT.
-This last option will not protect against the attack against the DNS.</t>
+<t>Support for the Host Name Address parameter has been removed from the
+protocol.
+Endpoints receiving INIT or INIT ACK chunks containing the Host Name Address
+parameter MUST send an ABORT chunk in response and MAY include an
+"Unresolvable Address" error cause.</t>
 </section>
 
 <section title='Blind Masquerade'>
