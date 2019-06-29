@@ -178,7 +178,7 @@ combinations that may be generated from each endpoint's lists.</t>
 <section anchor='sec_key_terms'
          title='Key Terms'>
 <t>Some of the language used to describe SCTP has been introduced in the
-previous sections.  This section provides a consolidated list of the
+previous sections. This section provides a consolidated list of the
 key terms and their definitions.</t>
 
 <t><list style='hanging'>
@@ -313,7 +313,7 @@ unordered delivery service.</t>
 </list></t>
 <!-- FIXME MT: This is broken -->
 <t>Note: The relationship between stream numbers in opposite directions
-is strictly a matter of how the applications use them.  It is the
+is strictly a matter of how the applications use them. It is the
 responsibility of the SCTP user to create and manage these
 correlations if they are so desired.</t>
 <t><list style='hanging'>
@@ -503,7 +503,7 @@ stream delivery.</t>
 for packet retransmission when timely acknowledgement has not been
 received.
 Packet retransmission is conditioned by congestion avoidance procedures
-similar to those used for TCP.  See <xref target='sec_user_data_transfer'/> and
+similar to those used for TCP. See <xref target='sec_user_data_transfer'/> and
 <xref target='sec_congestion_control'/> for a detailed description of the
 protocol procedures associated with this function.</t>
 </section>
@@ -1011,7 +1011,7 @@ user message, as summarized in the following table:</t>
 <c>1</c><c>1</c><c>Unfragmented message</c>
 </texttable>
 <t>When a user message is fragmented into multiple chunks, the TSNs are
-used by the receiver to reassemble the message.  This means that the
+used by the receiver to reassemble the message. This means that the
 TSNs for each fragment of a fragmented user message MUST be strictly
 sequential.</t>
 <t><list style='hanging'>
@@ -1902,7 +1902,7 @@ Set to 0 on transmit and ignored on receipt.
 <vspace blankLines='1'/></t>
 <t hangText='Length: 16 bits (unsigned integer)'>
 <vspace blankLines='1'/>
-Indicates the length of the parameter.  Set to 8.
+Indicates the length of the parameter. Set to 8.
 <vspace blankLines='1'/></t>
 <t hangText='Cumulative TSN Ack: 32 bits (unsigned integer)'>
 <vspace blankLines='1'/>
@@ -2639,7 +2639,7 @@ for data transfer on both ends
 SCTP endpoint "A" tries to set up an association with SCTP endpoint "Z" and
 "Z" accepts the new association):
 <list style='format %C)'>
-<t>"A" first sends an INIT chunk to "Z".  In the INIT, "A" must provide its
+<t>"A" first sends an INIT chunk to "Z". In the INIT, "A" must provide its
 Verification Tag (Tag_A) in the Initiate Tag field.
 Tag_A SHOULD be a random number in the range of 1 to 4294967295
 (see <xref target='sec_selection_of_tag_value'/> for Tag value selection).
@@ -2859,7 +2859,7 @@ and the resultant MAC.</t>
 SHOULD delete the TCB and any other local resource related to the new
 association, so as to prevent resource attacks.</t>
 <t>The hashing method used to generate the MAC is strictly a private
-matter for the receiver of the INIT chunk.  The use of a MAC is
+matter for the receiver of the INIT chunk. The use of a MAC is
 mandatory to prevent denial-of-service attacks.
 The secret key SHOULD be random (<xref target='RFC4086'/> provides some
 information on randomness guidelines);
@@ -3171,7 +3171,7 @@ discarded.</t>
 
 <t>Action
 <list style='format %C)'>
-<t>In this case, the peer may have restarted.  When the endpoint
+<t>In this case, the peer may have restarted. When the endpoint
 recognizes this potential 'restart', the existing session is
 treated the same as if it received an ABORT followed by a new
 COOKIE ECHO with the following exceptions:
@@ -5005,7 +5005,7 @@ have been received, then a SACK chunk MUST also be sent.</t>
 <t>The sender of the SHUTDOWN MAY also start an overall guard timer
 'T5-shutdown-guard' to bound the overall time for the shutdown sequence.
 At the expiration of this timer, the sender SHOULD abort the association by
-sending an ABORT chunk.  If the 'T5-shutdown- guard' timer is used, it SHOULD
+sending an ABORT chunk. If the 'T5-shutdown- guard' timer is used, it SHOULD
 be set to the recommended value of 5 times 'RTO.Max'.</t>
 <t>If the receiver of the SHUTDOWN has no more outstanding DATA chunks,
 the SHUTDOWN receiver MUST send a SHUTDOWN ACK and start a T2- shutdown timer
@@ -6537,7 +6537,7 @@ x^32+x^28+x^27+x^26+x^25+x^23+x^22+x^20+x^19+x^18+ x^14+x^13+x^11+x^10+x^9+x^8+x
 The CRC is computed using a procedure similar to
 ETHERNET CRC <xref target='ITU.V42.1994'/>, modified to reflect
 transport-level usage.</t>
-<t>CRC computation uses polynomial division.  A message bit-string M is
+<t>CRC computation uses polynomial division. A message bit-string M is
 transformed to a polynomial, M(X), and the CRC is calculated from M(X) using
 polynomial arithmetic.</t>
 <t>When CRCs are used at the link layer, the polynomial is derived from
@@ -6913,7 +6913,7 @@ requirements for processing of port-unreachable messages and the requirements
 that an implementation MUST abort associations in response to a
 "protocol unreachable" message.
 Port-unreachable messages are not processed, since an implementation will send
-an ABORT, not a port unreachable.  The stricter handling of the
+an ABORT, not a port unreachable. The stricter handling of the
 "protocol unreachable" message is due to security concerns for hosts that do
 NOT support SCTP.</t>
 </section>
