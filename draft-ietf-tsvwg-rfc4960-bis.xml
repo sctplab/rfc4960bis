@@ -4880,7 +4880,7 @@ action.
 An endpoint MUST ignore the SHUTDOWN COMPLETE if it is not in the
 SHUTDOWN-ACK-SENT state.</t>
 </list><vspace blankLines='1'/></t>
-<t hangText='D) Rules for packet carrying a COOKIE ECHO'> <!-- FIXME MT: Missing :-->
+<t hangText='D) Rules for packet carrying a COOKIE ECHO:'>
 <list style='symbols'>
 <t>When sending a COOKIE ECHO, the endpoint MUST use the value of the
 Initiate Tag received in the INIT ACK.
@@ -4888,7 +4888,7 @@ Initiate Tag received in the INIT ACK.
 <t>The receiver of a COOKIE ECHO follows the procedures in
 <xref target='sec_assoc_initialization'/>.</t>
 </list><vspace blankLines='1'/></t>
-<t hangText='E) Rules for packet carrying a SHUTDOWN ACK'> <!-- FIXME MT: Missing :-->
+<t hangText='E) Rules for packet carrying a SHUTDOWN ACK:'>
 <list style='symbols'>
 <t>If the receiver is in COOKIE-ECHOED or COOKIE-WAIT state the procedures
 in <xref target='sec_handle_out_of_the_blue_packets'/> SHOULD be followed;
