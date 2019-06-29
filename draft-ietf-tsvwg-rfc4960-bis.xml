@@ -6061,23 +6061,46 @@ allocation requests.</t>
 
 <section anchor='sec_ietf_defined_chunks_extension'
          title='IETF-Defined Chunk Extension'>
-<t>The assignment of new chunk type codes is done through an
-IETF Consensus action, as defined in <xref target='RFC8126'/>.
-Documentation of the chunk type MUST contain the following information:
+<t>The assignment of new chunk type codes is done through an IETF
+Review action, as defined in <xref target='RFC8126'/>.
+Documentation for a new chunk MUST contain the following information:
 <list style='format %c)'>
 <t>A long and short name for the new chunk type.
 <vspace blankLines='1'/></t>
 <t>A detailed description of the structure of the chunk, which MUST conform to
-the basic structure defined in
-<xref target='sec_chunk_field_descriptions'/>.
+the basic structure defined in <xref target='sec_chunk_field_descriptions'/>.
 <vspace blankLines='1'/></t>
 <t>A detailed definition and description of intended use of each field within
 the chunk, including the chunk flags if any.
+Defined chunk flags will be used as initial entries in the chunk flags table
+for the new chunk type.
 <vspace blankLines='1'/></t>
 <t>A detailed procedural description of the use of the new chunk type within
 the operation of the protocol.</t>
 </list></t>
 <t>The last chunk type (255) is reserved for future extension if necessary.</t>
+<t>For each new chunk type, IANA creates a registration table for the
+chunk flags of that type.
+The procedure for registering particular chunk flags is described in
+<xref target='sec_ietf_chunk_flags_registration'/>.</t>
+</section>
+<section anchor='sec_ietf_chunk_flags_registration'
+         title='IETF Chunk Flags Registration'>
+<t>The assignment of new chunk flags is done through an RFC Required action,
+as defined in <xref target='RFC8126'/>.
+Documentation for the chunk flags MUST contain the following information:
+<list style='format %c)'>
+<t>A name for the new chunk flag.
+<vspace blankLines='1'/></t>
+<t>A detailed procedural description of the use of the new chunk flag within
+the operation of the protocol.
+It MUST be considered that implementations not supporting the flag will send '0'
+on transmit and just ignore it on receipt.
+<vspace blankLines='1'/></t>
+</list></t>
+<t>IANA selects a chunk flags value.
+This MUST be one of 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, or 0x80, which
+MUST be unique within the chunk flag values for the specific chunk type.</t>
 </section>
 
 <section anchor='sec_ietf_defined_chunk_parameter_extension'
