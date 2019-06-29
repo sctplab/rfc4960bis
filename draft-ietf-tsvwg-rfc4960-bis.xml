@@ -695,7 +695,7 @@ For details see <xref target='sec_handle_out_of_the_blue_packets'/> and
 <xref target='sec_verification_tag'/>.</t>
 </list></t>
 </list></t>
-<!-- MT FIXME: The following is a stray sentence. -->
+<!-- FIXME MT: The following is a stray sentence. -->
 <t>An INIT chunk MUST be the only chunk in the SCTP packet carrying it.</t>
 <t><list style='hanging'>
 <t hangText="Checksum: 32 bits (unsigned integer)">
