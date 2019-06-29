@@ -4571,14 +4571,6 @@ reduce the cwnd further due to a subsequent Fast Retransmit).</t>
 new DATA chunks and advances the Cumulative TSN Ack Point, the cwnd adjustment
 rules defined in <xref target='sec_slow_start'/> and
 <xref target='sec_congestion_avoidance'/> must be applied first.</t>
-<t>A straightforward implementation of the above keeps a counter for each
-TSN hole reported by a SACK.
-The counter increments for each consecutive SACK reporting the TSN hole.
-After reaching 3 and starting the Fast-Retransmit procedure, the counter
-resets to 0.</t>
-<t>Because cwnd in SCTP indirectly bounds the number of outstanding TSN's,
-the effect of TCP Fast Recovery is achieved automatically with no adjustment
-to the congestion control window size.</t>
 </section>
 <section title='Making Changes to Differentiated Services Code Points'>
 <t>SCTP implementations MAY allow an application to configure the
