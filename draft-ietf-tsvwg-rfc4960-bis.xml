@@ -3563,6 +3563,8 @@ adjusted according to the timer rules defined in
 <xref target='sec_handle_t3_rtx_expiration'/>.</t>
 <t>Note: The data sender SHOULD NOT use a TSN that is more than 2**31 - 1 above
 the beginning TSN of the current send window.</t>
+<t>Note: For each stream, the data sender SHOULD NOT have more than 2**16 - 1
+ordered user messages in the current send window.</t>
 <t>Whenever the sender of a DATA chunk can benefit from the corresponding
 SACK chunk being sent back without delay, the sender MAY set the I bit in the
 DATA chunk header.
