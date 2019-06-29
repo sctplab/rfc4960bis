@@ -954,7 +954,7 @@ chunk.</t>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|   Type = 0    | Reserved|U|B|E|    Length                     |
+|   Type = 0    |  Res  |I|U|B|E|    Length                     |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                              TSN                              |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -969,9 +969,15 @@ chunk.</t>
 </artwork>
 </figure>
 <list style='hanging'>
-<t hangText='Reserved: 5 bits'>
+<t hangText='Res: 4 bits'>
 <vspace blankLines='1'/>
 Should be set to all '0's and ignored by the receiver.
+<vspace blankLines='1'/></t>
+<t hangText='I bit: 1 bit'>
+<vspace blankLines='1'/>
+The (I)mmediate bit MAY be set by the sender whenever the sender of a DATA chunk
+can benefit from the corresponding SACK chunk being sent back without delay.
+See Section 4 of <xref target='RFC7053'/> for a discussion of the benefits.
 <vspace blankLines='1'/></t>
 <t hangText='U bit: 1 bit'>
 <vspace blankLines='1'/>
@@ -3550,6 +3556,21 @@ adjusted according to the timer rules defined in
 <xref target='sec_handle_t3_rtx_expiration'/>.</t>
 <t>Note: The data sender SHOULD NOT use a TSN that is more than 2**31 - 1 above
 the beginning TSN of the current send window.</t>
+<t>Whenever the sender of a DATA chunk can benefit from the corresponding
+SACK chunk being sent back without delay, the sender MAY set the I bit in the
+DATA chunk header.
+Please note that why the sender has set the I bit is irrelevant to the
+receiver.</t>
+<t>Reasons for setting the I bit include, but are not limited to, the
+following (see Section 4 of <xref target='RFC7053'/> for a discussion of the
+benefits):
+<list style='symbols'>
+<t>The application requests that the I bit of the last DATA chunk of
+a user message be set when providing the user message to the SCTP
+implementation (see <xref target='sec_ulp_to_sctp'/>).</t>
+<t>The sender is in the SHUTDOWN-PENDING state.</t>
+<t>The sending of a DATA chunk fills the congestion or receiver window.</t>
+</list>/</t>
 </section>
 
 <section anchor='sec_acknowledgements_of_reception_of_data_chunks'
@@ -3611,8 +3632,11 @@ Cumulative TSN Ack field are reported in the Gap Ack Block fields.
 The SCTP endpoint MUST report as many Gap Ack Blocks as can fit in a single SACK
 chunk limited by the current path MTU.</t>
 <t>Note: The SHUTDOWN chunk does not contain Gap Ack Block fields.
-Therefore, the endpoint should use a SACK instead of the SHUTDOWN
+Therefore, the endpoint SHOULD use a SACK instead of the SHUTDOWN
 chunk to acknowledge DATA chunks received out of order.</t>
+<t>Upon receipt of an SCTP packet containing a DATA chunk with the I bit set,
+the receiver SHOULD NOT delay the sending of the corresponding SACK chunk, i.e.,
+the receiver SHOULD immediately respond with the corresponding SACK chunk.</t>
 <t>When a packet arrives with duplicate DATA chunk(s) and with no new
 DATA chunk(s), the endpoint MUST immediately send a SACK with no
 delay.
@@ -5184,7 +5208,8 @@ reason of the abort to be passed to the peer.</t>
 <t hangText='Format:'>
 SEND(association id, buffer address, byte count [,context] [,stream id]
 [,life time] [,destination transport address] [,unordered flag]
-[,no-bundle flag] [,payload protocol-id] ) -> result</t>
+[,no-bundle flag] [,payload protocol-id] [,sack-immediately flag] )
+-> result</t>
 </list>
 This is the main method to send user data via SCTP.
 <vspace/>
@@ -5237,6 +5262,9 @@ this flag is present.</t>
 a 32-bit unsigned integer that is to be passed to the peer indicating the type
 of payload protocol data being transmitted.
 This value is passed as opaque data by SCTP.</t>
+<t>sack-immediately flag -
+set the I bit on the last DATA chunk used for the user message to be
+transmitted.</t>
 </list></t>
 
 <t>Set Primary
@@ -6380,6 +6408,7 @@ in the coding, testing, and updating process of this document.
 <?rfc include="reference.RFC.4086" ?>
 <?rfc include="reference.RFC.4895" ?>
 <?rfc include="reference.RFC.4960" ?>
+<?rfc include="reference.RFC.7053" ?>
 <?rfc include="reference.RFC.8311" ?>
 </references>
 
