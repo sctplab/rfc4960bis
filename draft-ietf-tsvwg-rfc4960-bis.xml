@@ -1864,19 +1864,18 @@ The T bit is set to 0 if the sender filled in the Verification Tag
 expected by the peer.
 If the Verification Tag is reflected, the T bit MUST be set to 1.
 Reflecting means that the sent Verification Tag is the same as the received one.
-<vspace blankLines='1'/>
-Note: Special rules apply to this chunk for verification;
-please see <xref target='sec_exceptions_in_verification_tag_rules'/> for
-details.</t> <!-- FIXME MT: Why is this indented? -->
+<vspace blankLines='1'/></t>
 </list>
 <vspace blankLines='1'/></t>
 <t hangText='Length: 16 bits (unsigned integer)'>
 <vspace blankLines='1'/>
 Set to the size of the chunk in bytes, including the chunk header and all the
-Error Cause fields present.
-<vspace blankLines='1'/>
-See <xref target='sec_error_chunk'/> for Error Cause definitions.</t> <!-- FIXME MT: Indented? -->
+Error Cause fields present.</t>
 </list></t>
+<t>See <xref target='sec_error_chunk'/> for Error Cause definitions.</t>
+<t>Note: Special rules apply to this chunk for verification;
+please see <xref target='sec_exceptions_in_verification_tag_rules'/> for
+details.</t>
 </section>
 
 <section anchor='sec_shutdown_chunk'
