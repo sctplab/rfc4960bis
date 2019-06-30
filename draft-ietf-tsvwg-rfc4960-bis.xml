@@ -4566,7 +4566,7 @@ destination addresses MUST be reset to their initial values.</t>
 </section>
 <section anchor='sec_path_mtu_discovery'
          title='Path MTU Discovery'>
-<t><xref target='RFC4821'/>, <xref target='RFC1981'/>, and
+<t><xref target='RFC4821'/>, <xref target='RFC8201'/>, and
 <xref target='RFC1191'/> specify "Packetization Layer Path MTU Discovery",
 whereby an endpoint maintains an estimate of the maximum transmission unit (MTU)
 along a given Internet path and refrains from sending packets along that path
@@ -6326,7 +6326,6 @@ in the coding, testing, and updating process of this document.
 <?rfc include="reference.RFC.1122" ?>
 <?rfc include="reference.RFC.1123" ?>
 <?rfc include="reference.RFC.1191" ?>
-<?rfc include="reference.RFC.1981" ?>
 <?rfc include="reference.RFC.1982" ?>
 <?rfc include="reference.RFC.2119" ?>
 <?rfc include="reference.RFC.2434" ?>
@@ -6341,6 +6340,7 @@ in the coding, testing, and updating process of this document.
 <?rfc include="reference.RFC.6335" ?>
 <?rfc include="reference.RFC.8126" ?>
 <?rfc include="reference.RFC.8174" ?>
+<?rfc include="reference.RFC.8201" ?>
 </references>
 <references title='Informative References'>
 <reference anchor="FALL96">
