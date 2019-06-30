@@ -201,8 +201,8 @@ that a sender can send to a particular destination transport address before
 receiving an acknowledgement.
 <vspace blankLines='1'/></t>
 <t hangText='Cumulative TSN Ack Point:'>
-The TSN of the last DATA chunk acknowledged via the Cumulative TSN Ack
-field of a SACK.
+The Transmission Sequence Number (TSN) of the last DATA chunk acknowledged via
+the Cumulative TSN Ack field of a SACK.
 <vspace blankLines='1'/></t>
 <t hangText='Flightsize:'>
 The amount of bytes of outstanding data to a particular destination transport
