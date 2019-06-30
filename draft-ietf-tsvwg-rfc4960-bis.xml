@@ -692,11 +692,7 @@ the Verification Tag copied from the packet with the SHUTDOWN ACK chunk.
 from the packet that caused the ABORT to be sent.
 For details see <xref target='sec_handle_out_of_the_blue_packets'/> and
 <xref target='sec_verification_tag'/>.</t>
-</list></t>
-</list></t>
-<!-- FIXME MT: The following is a stray sentence. -->
-<t>An INIT chunk MUST be the only chunk in the SCTP packet carrying it.</t>
-<t><list style='hanging'>
+</list><vspace blankLines='1'/></t>
 <t hangText="Checksum: 32 bits (unsigned integer)">
 <vspace blankLines='1'/>
 This field contains the checksum of this SCTP packet.
