@@ -3475,7 +3475,7 @@ Also note that the cwnd SHOULD be adjusted according to
 Zero window probing does not affect the calculation of cwnd.
 <vspace blankLines='1'/>
 The sender MUST also have an algorithm for sending new DATA chunks to avoid
-silly window syndrome (SWS) as described in <xref target='RFC0813'/>.
+silly window syndrome (SWS) as described in <xref target='RFC1122'/>.
 The algorithm can be similar to the one described in Section 4.2.3.4 of
 <xref target='RFC1122'/>.
 <vspace blankLines='1'/>
@@ -3584,7 +3584,7 @@ The dropped DATA chunk(s) MUST NOT be included in the SACK, as they were
 not accepted.
 The receiver MUST also have an algorithm for advertising its receive window
 to avoid receiver silly window syndrome (SWS), as described in
-<xref target='RFC0813'/>.
+<xref target='RFC1122'/>.
 The algorithm can be similar to the one described in Section 4.2.3.3 of
 <xref target='RFC1122'/>.</t>
 <t>The guidelines on delayed acknowledgement algorithm specified in
@@ -6383,7 +6383,6 @@ in the coding, testing, and updating process of this document.
 </front>
 <seriesInfo name='SIGCOM' value='99'/>
 </reference>
-<?rfc include="reference.RFC.0813" ?>
 <?rfc include="reference.RFC.1858" ?>
 <?rfc include="reference.RFC.2104" ?>
 <?rfc include="reference.RFC.2196" ?>
