@@ -3588,7 +3588,7 @@ to avoid receiver silly window syndrome (SWS), as described in
 The algorithm can be similar to the one described in Section 4.2.3.3 of
 <xref target='RFC1122'/>.</t>
 <t>The guidelines on delayed acknowledgement algorithm specified in
-Section 4.2 of <xref target='RFC2581'/> SHOULD be followed.
+Section 4.2 of <xref target='RFC5681'/> SHOULD be followed.
 Specifically, an acknowledgement SHOULD be generated for at least every
 second packet (not every second DATA chunk) received, and SHOULD be generated
 within 200 ms of the arrival of any unacknowledged DATA chunk.
@@ -4278,8 +4278,8 @@ algorithms should show no impact on the protocol performance.</t>
 are met, an implementation is always allowed to adopt a more conservative
 congestion control algorithm than the one defined below.</t>
 <t>The congestion control algorithms used by SCTP are based on
-<xref target='RFC2581'/>.
-This section describes how the algorithms defined in <xref target='RFC2581'/>
+<xref target='RFC5681'/>.
+This section describes how the algorithms defined in <xref target='RFC5681'/>
 are adapted for use in SCTP.
 We first list differences in protocol designs between TCP and SCTP, and then
 describe SCTP's congestion control scheme.
@@ -6329,13 +6329,13 @@ in the coding, testing, and updating process of this document.
 <?rfc include="reference.RFC.1982" ?>
 <?rfc include="reference.RFC.2119" ?>
 <?rfc include="reference.RFC.2434" ?>
-<?rfc include="reference.RFC.2581" ?>
 <?rfc include="reference.RFC.3873" ?>
 <?rfc include="reference.RFC.4291" ?>
 <?rfc include="reference.RFC.4301" ?>
 <?rfc include="reference.RFC.4303" ?>
 <?rfc include="reference.RFC.4306" ?>
 <?rfc include="reference.RFC.4821" ?>
+<?rfc include="reference.RFC.5681" ?>
 <?rfc include="reference.RFC.6335" ?>
 <?rfc include="reference.RFC.8126" ?>
 <?rfc include="reference.RFC.8174" ?>
