@@ -5740,7 +5740,7 @@ threat.</t>
 <t>Whenever ESP is in use, application-level encryption is not generally
 required.</t>
 <t>Regardless of where confidentiality is provided, the Internet Key
-Exchange Protocol version 2 (IKEv2) <xref target='RFC4306'/> SHOULD be used for
+Exchange Protocol version 2 (IKEv2) <xref target='RFC7296'/> SHOULD be used for
 key management.</t>
 <t>Operators should consult <xref target='RFC4301'/> for more information on the
 security services available at and immediately above the Internet Protocol
@@ -6333,10 +6333,10 @@ in the coding, testing, and updating process of this document.
 <?rfc include="reference.RFC.4291" ?>
 <?rfc include="reference.RFC.4301" ?>
 <?rfc include="reference.RFC.4303" ?>
-<?rfc include="reference.RFC.4306" ?>
 <?rfc include="reference.RFC.4821" ?>
 <?rfc include="reference.RFC.5681" ?>
 <?rfc include="reference.RFC.6335" ?>
+<?rfc include="reference.RFC.7296" ?>
 <?rfc include="reference.RFC.8126" ?>
 <?rfc include="reference.RFC.8174" ?>
 <?rfc include="reference.RFC.8200" ?>
