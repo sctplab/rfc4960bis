@@ -1245,7 +1245,7 @@ It is binary encoded.</t>
 <list style='hanging'>
 <t hangText='IPv6 Address: 128 bits (unsigned integer)'>
 <vspace blankLines='1'/>
-Contains an IPv6 <xref target='RFC2460'/> address of the sending endpoint.
+Contains an IPv6 <xref target='RFC8200'/> address of the sending endpoint.
 It is binary encoded.
 <vspace blankLines='1'/>
 Note:
@@ -6329,7 +6329,6 @@ in the coding, testing, and updating process of this document.
 <?rfc include="reference.RFC.1982" ?>
 <?rfc include="reference.RFC.2119" ?>
 <?rfc include="reference.RFC.2434" ?>
-<?rfc include="reference.RFC.2460" ?>
 <?rfc include="reference.RFC.2581" ?>
 <?rfc include="reference.RFC.3873" ?>
 <?rfc include="reference.RFC.4291" ?>
@@ -6340,6 +6339,7 @@ in the coding, testing, and updating process of this document.
 <?rfc include="reference.RFC.6335" ?>
 <?rfc include="reference.RFC.8126" ?>
 <?rfc include="reference.RFC.8174" ?>
+<?rfc include="reference.RFC.8200" ?>
 <?rfc include="reference.RFC.8201" ?>
 </references>
 <references title='Informative References'>
