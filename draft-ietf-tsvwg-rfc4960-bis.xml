@@ -1247,36 +1247,32 @@ It is binary encoded.</t>
 <vspace blankLines='1'/>
 Contains an IPv6 <xref target='RFC2460'/> address of the sending endpoint.
 It is binary encoded.
-<vspace blankLines='1'/><!-- FIXME MT: Identation correct? -->
+<vspace blankLines='1'/>
 Note:
 A sender MUST NOT use an IPv4-mapped IPv6 address <xref target='RFC4291'/>,
-but should instead use an IPv4 Address parameter for an IPv4 address.
-<vspace blankLines='1'/>
-Combined with the Source Port Number in the SCTP common header, the value
+but should instead use an IPv4 Address parameter for an IPv4 address.</t>
+</list></t>
+<t>Combined with the Source Port Number in the SCTP common header, the value
 passed in an IPv4 or IPv6 Address parameter indicates a transport address the
 sender of the INIT will support for the association being initiated.
 That is, during the life time of this association, this IP address can appear
 in the source address field of an IP datagram sent from the sender of the INIT,
 and can be used as a destination address of an IP datagram sent from the
-receiver of the INIT.
-<vspace blankLines='1'/>
-More than one IP Address parameter can be included in an INIT chunk when the
+receiver of the INIT.</t>
+<t>More than one IP Address parameter can be included in an INIT chunk when the
 INIT sender is multi-homed.
 Moreover, a multi-homed endpoint may have access to different types of network;
 thus, more than one address type can be present in one INIT chunk, i.e.,
-IPv4 and IPv6 addresses are allowed in the same INIT chunk.
-<vspace blankLines='1'/>
-If the INIT contains at least one IP Address parameter, then the source address
+IPv4 and IPv6 addresses are allowed in the same INIT chunk.</t>
+<t>If the INIT contains at least one IP Address parameter, then the source address
 of the IP datagram containing the INIT chunk and any additional address(es)
 provided within the INIT can be used as destinations by the endpoint receiving
 the INIT.
 If the INIT does not contain any IP Address parameters, the endpoint receiving
 the INIT MUST use the source address associated with the received IP datagram
-as its sole destination address for the association.
-<vspace blankLines='1'/>
-Note that not using any IP Address parameters in the INIT and INIT ACK is an
+as its sole destination address for the association.</t>
+<t>Note that not using any IP Address parameters in the INIT and INIT ACK is an
 alternative to make an association more likely to work across a NAT box.</t>
-</list></t>
 <t>Cookie Preservative (9)</t>
 <t>The sender of the INIT shall use this parameter to suggest to the
 receiver of the INIT for a longer life-span of the State Cookie.</t>
