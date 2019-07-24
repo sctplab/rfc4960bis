@@ -2743,7 +2743,7 @@ for this peer.
 <t>If there is a Host Name Address parameter present in the received INIT or
 INIT ACK chunk, the endpoint MUST immediately send an ABORT and MAY include an
 "Unresolvable Address" error cause to its peer.
-The ABORT SHALL be sent to the source IP address from which the last peer
+The ABORT SHOULD be sent to the source IP address from which the last peer
 packet was received.
 <vspace blankLines='1'/></t>
 <t>If there are only IPv4/IPv6 addresses present in the received INIT or
