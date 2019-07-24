@@ -115,8 +115,8 @@ In both of these cases, the head-of-line blocking offered by TCP causes
 unnecessary delay.
 <vspace blankLines='1'/></t>
 <t>The stream-oriented nature of TCP is often an inconvenience.
-Applications must add their own record marking to delineate their
-messages, and must make explicit use of the push facility to
+Applications add their own record marking to delineate their
+messages, and make explicit use of the push facility to
 ensure that a complete message is transferred in a reasonable
 time.
 <vspace blankLines='1'/></t>
@@ -282,9 +282,9 @@ On a multi-homed host, an SCTP endpoint is represented to its peers as
 a combination of a set of eligible destination transport addresses
 to which SCTP packets can be sent and a set of eligible source
 transport addresses from which SCTP packets can be received.
-All transport addresses used by an SCTP endpoint must use the same
+All transport addresses used by an SCTP endpoint MUST use the same
 port number, but can use multiple IP addresses.
-A transport address used by an SCTP endpoint must not be used by another SCTP
+A transport address used by an SCTP endpoint MUST NOT be used by another SCTP
 endpoint.
 In other words, a transport address is unique to an SCTP endpoint.
 <vspace blankLines='1'/></t>
@@ -571,7 +571,7 @@ be performed as separate items.</t>
 Number space is finite, though very large.
 This space ranges from 0 to 2**32 - 1.
 Since the space is finite, all arithmetic dealing with Transmission Sequence
-Numbers must be performed modulo 2**32.
+Numbers MUST be performed modulo 2**32.
 This unsigned arithmetic preserves the relationship of sequence numbers as
 they cycle from 2**32 - 1 to 0 again.
 There are some subtleties to computer modulo arithmetic, so great care should
@@ -761,7 +761,7 @@ The values of Chunk Types are defined as follows:
 </list>
 <vspace blankLines='1'/>
 Chunk Types are encoded such that the highest-order 2 bits specify the action
-that must be taken if the processing endpoint does not recognize the Chunk Type.
+that is taken if the processing endpoint does not recognize the Chunk Type.
 <list style='hanging' hangIndent='5'>
 <t hangText='00 -'>
 Stop processing this SCTP packet;
@@ -880,7 +880,7 @@ The length of the padding is not included in the Parameter Length field.
 A sender MUST NOT pad with more than 3 bytes.
 The receiver MUST ignore the padding bytes.</t>
 <t>The Parameter Types are encoded such that the highest-order 2 bits specify the
-action that must be taken if the processing endpoint does not recognize the
+action that is taken if the processing endpoint does not recognize the
 Parameter Type.
 <list style='hanging' hangIndent='5'>
 <t hangText='00 -'>
@@ -1051,7 +1051,7 @@ This value is passed to SCTP by its upper layer and sent to its peer.
 This identifier is not used by SCTP but can be used by certain network entities,
 as well as by the peer application, to identify the type of information being
 carried in this DATA chunk.
-This field must be sent even in fragmented DATA chunks (to make sure it is
+This field MUST be sent even in fragmented DATA chunks (to make sure it is
 available for agents in the middle of the network).
 Note that this field is NOT touched by an SCTP implementation; therefore, its
 byte order is NOT necessarily big endian.
@@ -1325,7 +1325,7 @@ Section 2.1 <xref target='RFC1123'/>.
 The method for resolving the host name is out of scope of SCTP.
 <vspace blankLines='1'/>
 Note:
-At least one null terminator is included in the Host Name string and must be
+At least one null terminator is included in the Host Name string and MUST be
 included in the length.</t>
 </list></t>
 <t>Supported Address Types (12)</t>
@@ -2384,7 +2384,7 @@ chunk header and the size of the cookie.
 <vspace blankLines='1'/></t>
 <t hangText='Cookie: variable size'>
 <vspace blankLines='1'/>
-This field must contain the exact cookie received in the State Cookie parameter
+This field MUST contain the exact cookie received in the State Cookie parameter
 from the previous INIT ACK.
 <vspace blankLines='1'/>
 An implementation SHOULD make the cookie as small as possible to ensure
@@ -2611,7 +2611,7 @@ requests from its SCTP user.</t>
 <section anchor='sec_assoc_initialization'
          title='Association Initialization'>
 <t>Before the first data transmission can take place from one SCTP
-endpoint ("A") to another SCTP endpoint ("Z"), the two endpoints must
+endpoint ("A") to another SCTP endpoint ("Z"), the two endpoints MUST
 complete an initialization process in order to set up an SCTP
 association between them.</t>
 <t>The SCTP user at an endpoint should use the ASSOCIATE primitive to
@@ -2632,7 +2632,7 @@ for data transfer on both ends
 SCTP endpoint "A" tries to set up an association with SCTP endpoint "Z" and
 "Z" accepts the new association):
 <list style='format %C)'>
-<t>"A" first sends an INIT chunk to "Z". In the INIT, "A" must provide its
+<t>"A" first sends an INIT chunk to "Z". In the INIT, "A" MUST provide its
 Verification Tag (Tag_A) in the Initiate Tag field.
 Tag_A SHOULD be a random number in the range of 1 to 4294967295
 (see <xref target='sec_selection_of_tag_value'/> for Tag value selection).
@@ -2642,7 +2642,7 @@ state.
 <t>"Z" shall respond immediately with an INIT ACK chunk.
 The destination IP address of the INIT ACK MUST be set to the source IP address
 of the INIT to which this INIT ACK is responding.
-In the response, besides filling in other parameters, "Z" must set the
+In the response, besides filling in other parameters, "Z" MUST set the
 Verification Tag field to Tag_A, and also provide its own
 Verification Tag (Tag_Z) in the Initiate Tag field.
 <vspace blankLines='1'/>
@@ -3542,7 +3542,7 @@ If the timer for that address is already running, the sender MUST restart
 the timer if the earliest (i.e., lowest TSN) outstanding DATA chunk sent to
 that address is being retransmitted.
 Otherwise, the data sender MUST NOT restart the timer.</t>
-<t>When starting or restarting the T3-rtx timer, the timer value must be
+<t>When starting or restarting the T3-rtx timer, the timer value SHOULD be
 adjusted according to the timer rules defined in
 <xref target='sec_retransmission_timer_rules'/> and
 <xref target='sec_handle_t3_rtx_expiration'/>.</t>
@@ -3740,14 +3740,14 @@ of transmitting the SACK, has left of its total receive buffer space
 (as specified in the INIT/INIT ACK).
 Using a_rwnd, Cumulative TSN Ack, and Gap Ack Blocks, the data sender can
 develop a representation of the peer's receive buffer space.</t>
-<t>One of the problems the data sender must take into account when
+<t>One of the problems the data sender takes into account when
 processing a SACK is that a SACK can be received out of order.
 That is, a SACK sent by the data receiver can pass an earlier SACK and be
 received first by the data sender.
 If a SACK is received out of order, the data sender can develop an incorrect
 view of the peer's receive buffer space.</t>
 <t>Since there is no explicit identifier that can be used to detect out-of-order
-SACKs, the data sender must use heuristics to determine if a SACK is new.</t>
+SACKs, the data sender uses heuristics to determine if a SACK is new.</t>
 <t>An endpoint SHOULD use the following rules to calculate the rwnd,
 using the a_rwnd value, the Cumulative TSN Ack, and Gap Ack Blocks in
 a received SACK.
@@ -4066,7 +4066,7 @@ they are reordered.</t>
 required for a particular DATA chunk transmitted within the stream by
 setting the U flag of the DATA chunk to 1.</t>
 <t>When an endpoint receives a DATA chunk with the U flag set to 1, it
-must bypass the ordering mechanism and immediately deliver the data
+bypasses the ordering mechanism and immediately deliver the data
 to the upper layer (after reassembly if the user data is fragmented
 by the data sender).</t>
 <t>This provides an effective way of transmitting "out-of-band" data in
@@ -4194,7 +4194,7 @@ The association Path MTU is the smallest Path MTU of all destination
 addresses.</t>
 
 <t>Note: Once a message is fragmented, it cannot be re-fragmented.
-Instead, if the PMTU has been reduced, then IP fragmentation must be used.
+Instead, if the PMTU has been reduced, then IP fragmentation MUST be used.
 Please see <xref target='sec_path_mtu_discovery'/> for details of
 PMTU discovery.</t>
 
@@ -4242,8 +4242,8 @@ size no larger than the latest MTU of the current primary path.</t>
 control chunks first in the outbound SCTP packet.
 The transmitter MUST transmit DATA chunks within an SCTP packet in increasing
 order of TSN.</t>
-<t>Note: Since control chunks must be placed first in a packet and since
-DATA chunks must be transmitted before SHUTDOWN or SHUTDOWN ACK
+<t>Note: Since control chunks are placed first in a packet and since
+DATA chunks are transmitted before SHUTDOWN or SHUTDOWN ACK
 chunks, DATA chunks cannot be bundled with SHUTDOWN or SHUTDOWN ACK
 chunks.</t>
 <t>Partial chunks MUST NOT be placed in an SCTP packet.
@@ -4267,9 +4267,9 @@ For some applications, it may be likely that adequate resources will be
 allocated to SCTP traffic to ensure prompt delivery of time-critical
 data -- thus, it would appear to be unlikely, during normal
 operations, that transmissions encounter severe congestion conditions.
-However, SCTP must operate under adverse operational conditions, which can
+However, SCTP operates under adverse operational conditions, which can
 develop upon partial network failures or unexpected traffic surges.
-In such situations, SCTP must follow correct congestion control steps to
+In such situations, SCTP follows correct congestion control steps to
 recover from congestion quickly in order to get data delivered as soon as
 possible.
 In the absence of network congestion, these preventive congestion control
@@ -4425,7 +4425,7 @@ Cumulative TSN Ack Point an endpoint can still use them to clock out new data.
 That is, the data newly acknowledged by the SACK diminishes the amount of data
 now in flight to less than cwnd, and so the current, unchanged value of cwnd
 now allows new data to be sent.
-On the other hand, the increase of cwnd must be tied to the
+On the other hand, the increase of cwnd MUST be tied to the
 Cumulative TSN Ack Point advancement as specified above.
 Otherwise, the duplicate SACKs will not only clock out new data, but also will
 adversely clock out more new data than what has just left the network, during
@@ -4554,7 +4554,7 @@ reduce the cwnd further due to a subsequent Fast Retransmit).</t>
 <t>Note: Before the above adjustments, if the received SACK also acknowledges
 new DATA chunks and advances the Cumulative TSN Ack Point, the cwnd adjustment
 rules defined in <xref target='sec_slow_start'/> and
-<xref target='sec_congestion_avoidance'/> must be applied first.</t>
+<xref target='sec_congestion_avoidance'/> MUST be applied first.</t>
 </section>
 <section title='Making Changes to Differentiated Services Code Points'>
 <t>SCTP implementations MAY allow an application to configure the
@@ -4751,7 +4751,7 @@ of lost ABORT messages takes longer as well.
 If a peer endpoint ABORTs the association for any reason and the ABORT chunk is
 lost, the local endpoint will only discover the lost ABORT by sending a
 DATA chunk or HEARTBEAT chunk (thus causing the peer to send another ABORT).
-This must be considered when tuning the HEARTBEAT timer.
+This is to be considered when tuning the HEARTBEAT timer.
 If the HEARTBEAT is disabled, only sending DATA to the association will discover
 a lost ABORT from the peer.</t>
 </section>
@@ -4783,7 +4783,7 @@ described in <xref target='sec_normal_establishment'/>.
 Otherwise,</t>
 <t>If the packet contains a SHUTDOWN ACK chunk, the receiver should respond to
 the sender of the OOTB packet with a SHUTDOWN COMPLETE.
-When sending the SHUTDOWN COMPLETE, the receiver of the OOTB packet must fill
+When sending the SHUTDOWN COMPLETE, the receiver of the OOTB packet MUST fill
 in the Verification Tag field of the outbound packet with the Verification Tag
 received in the SHUTDOWN ACK and set the T bit in the Chunk Flags to indicate
 that the Verification Tag is reflected.
@@ -4934,7 +4934,7 @@ the far end if necessary to fill gaps.</t>
 a SHUTDOWN chunk to its peer including in the Cumulative TSN Ack field the last
 sequential TSN it has received from the peer.
 It shall then start the T2-shutdown timer and enter the SHUTDOWN-SENT state.
-If the timer expires, the endpoint must resend the SHUTDOWN with the updated
+If the timer expires, the endpoint MUST resend the SHUTDOWN with the updated
 last sequential TSN received from its peer.</t>
 <t>The rules in <xref target='sec_management_of_retransission_timer'/> MUST be
 followed to determine the proper timer value for T2-shutdown.
@@ -4981,7 +4981,7 @@ be set to the recommended value of 5 times 'RTO.Max'.</t>
 <t>If the receiver of the SHUTDOWN has no more outstanding DATA chunks,
 the SHUTDOWN receiver MUST send a SHUTDOWN ACK and start a T2- shutdown timer
 of its own, entering the SHUTDOWN-ACK-SENT state.
-If the timer expires, the endpoint must resend the SHUTDOWN ACK.</t>
+If the timer expires, the endpoint MUST resend the SHUTDOWN ACK.</t>
 <t>The sender of the SHUTDOWN ACK SHOULD limit the number of retransmissions of
 the SHUTDOWN ACK chunk to the protocol parameter 'Association.Max.Retrans'.
 If this threshold is exceeded, the endpoint SHOULD destroy the TCB and SHOULD
@@ -5040,8 +5040,9 @@ used as a guideline for implementing SCTP.
 The following functional description of ULP interface primitives is shown for
 illustrative purposes.
 Different SCTP implementations may have different ULP interfaces.
-However, all SCTPs must provide a certain minimum set of services to guarantee
-that all SCTP implementations can support the same protocol hierarchy.</t>
+However, all SCTPs aer expected to provide a certain minimum set of services to
+guarantee that all SCTP implementations can support the same protocol
+hierarchy.</t>
 
 <section anchor='sec_ulp_to_sctp'
          title='ULP-to-SCTP'>
@@ -5049,8 +5050,8 @@ that all SCTP implementations can support the same protocol hierarchy.</t>
 The notation used is similar to most procedure or function calls in high-level
 languages.</t>
 <t>The ULP primitives described below specify the basic functions that
-SCTP must perform to support inter-process communication.
-Individual implementations must define their own exact format, and may provide
+SCTP performs to support inter-process communication.
+Individual implementations define their own exact format, and may provide
 combinations or subsets of the basic functions in single calls.</t>
 <t><list style='format %C)'>
 <t>Initialize
@@ -5322,8 +5323,8 @@ the Stream Sequence Number assigned by the sending SCTP peer.</t>
 <t>partial flag -
 if this returned flag is set to 1, then this primitive contains a partial
 delivery of the whole message.
-When this flag is set, the stream id and stream sequence number must
-accompany this primitive.
+When this flag is set, the stream id and stream sequence number
+accompanies this primitive.
 When this flag is set to 0, it indicates that no more deliveries will be
 received for this stream sequence number.</t>
 <t>payload protocol-id -
@@ -5498,8 +5499,8 @@ associated with the message.</t>
 <t>partial flag -
 if this returned flag is set to 1, then this message is a partial delivery of
 the whole message.
-When this flag is set, the stream id and stream sequence number must
-accompany this primitive.
+When this flag is set, the stream id and stream sequence number
+accompanies this primitive.
 When this flag is set to 0, it indicates that no more deliveries will be
 received for this stream sequence number.</t>
 <t>payload protocol-id -
@@ -5531,8 +5532,8 @@ associated with the message.</t>
 <t>partial flag -
 if this returned flag is set to 1, then this message is a partial delivery of
 the whole message.
-When this flag is set, the stream id and stream sequence number must
-accompany this primitive.
+When this flag is set, the stream id and stream sequence number
+accompanies this primitive.
 When this flag is set to 0, it indicates that no more deliveries will be
 received for this stream sequence number.</t>
 <t>payload protocol-id -
@@ -5830,7 +5831,7 @@ SCTP protects against insertion of extraneous packets into the flow of an
 established association by use of the Verification Tag.</t>
 <t>Logging of received INIT requests and abnormalities such as unexpected
 INIT ACKs might be considered as a way to detect patterns of hostile activity.
-However, the potential usefulness of such logging must be weighed against the
+However, the potential usefulness of such logging has to be weighed against the
 increased SCTP startup processing it implies, rendering the SCTP node more
 vulnerable to flooding attacks.
 Logging is pointless without the establishment of operating procedures to
@@ -6143,7 +6144,7 @@ parameter type may be found within the same chunk.
          title='IETF-Defined Additional Error Causes'>
 <t>Additional cause codes may be allocated in the range 11 to 65535
 through a Specification Required action as defined in <xref target='RFC8126'/>.
-Provided documentation must include the following information:
+Provided documentation MUST include the following information:
 <list style='format %c)'>
 <t>Name of the error condition.
 <vspace blankLines='1'/></t>
@@ -6491,7 +6492,7 @@ Since SCTP is a transport-level protocol, it cannot know the actual
 serial-media bit ordering.
 Moreover, different links in the path between SCTP endpoints may use different
 link-level bit orders.</t>
-<t>A convention must therefore be established for mapping SCTP transport
+<t>A convention therefore is established for mapping SCTP transport
 messages to polynomials for purposes of CRC computation.
 The bit-ordering for mapping SCTP messages to polynomials is that bytes are
 taken most-significant first, but within each byte, bits are taken
@@ -6555,7 +6556,7 @@ against the Verification Tag, prior to performing a checksum, as invalid tags
 will result in the same action as a bad checksum in most cases.
 The exceptions for this technique would be INIT and some SHUTDOWN-COMPLETE
 exchanges, as well as a stale COOKIE ECHO.
-These special-case exchanges must represent small packets and will minimize
+These special-case exchanges represent small packets and will minimize
 the effect of the checksum calculation.</t>
 <t>The following non-normative sample code is taken from an open-source
 CRC generator <xref target='WILLIAMS93'/>, using the "mirroring" technique and
