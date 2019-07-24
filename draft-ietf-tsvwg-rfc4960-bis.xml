@@ -993,7 +993,7 @@ user message.
 The (E)nding fragment bit, if set, indicates the last fragment of
 a user message.</t>
 </list></t>
-<t>An unfragmented user message shall have both the B and E bits set to '1'.
+<t>An unfragmented user message MUST have both the B and E bits set to '1'.
 Setting both B and E bits to '0' indicates a middle fragment of a multi-fragment
 user message, as summarized in the following table:</t>
 <texttable anchor='table_fragment_description_flags'
@@ -1274,7 +1274,7 @@ as its sole destination address for the association.</t>
 <t>Note that not using any IP Address parameters in the INIT and INIT ACK is an
 alternative to make an association more likely to work across a NAT box.</t>
 <t>Cookie Preservative (9)</t>
-<t>The sender of the INIT shall use this parameter to suggest to the
+<t>The sender of the INIT SHOULD use this parameter to suggest to the
 receiver of the INIT for a longer life-span of the State Cookie.</t>
 <t>
 <figure>
@@ -2639,7 +2639,7 @@ Tag_A SHOULD be a random number in the range of 1 to 4294967295
 After sending the INIT, "A" starts the T1-init timer and enters the COOKIE-WAIT
 state.
 <vspace blankLines='1'/></t>
-<t>"Z" shall respond immediately with an INIT ACK chunk.
+<t>"Z" responds immediately with an INIT ACK chunk.
 The destination IP address of the INIT ACK MUST be set to the source IP address
 of the INIT to which this INIT ACK is responding.
 In the response, besides filling in other parameters, "Z" MUST set the
@@ -2654,9 +2654,9 @@ Note: After sending out INIT ACK with the State Cookie parameter,
 association.
 Otherwise, "Z" will be vulnerable to resource attacks.
 <vspace blankLines='1'/></t>
-<t>Upon reception of the INIT ACK from "Z", "A" shall stop the T1-init timer
+<t>Upon reception of the INIT ACK from "Z", "A" stops the T1-init timer
 and leave the COOKIE-WAIT state.
-"A" shall then send the State Cookie received in the INIT ACK chunk in a
+"A" then sends the State Cookie received in the INIT ACK chunk in a
 COOKIE ECHO chunk, start the T1-cookie timer, and enter the COOKIE-ECHOED
 state.
 <vspace blankLines='1'/>
@@ -2685,7 +2685,7 @@ association with a Communication Up notification
 They MUST be the only chunks present in the SCTP packets that carry them.</t>
 <t>An endpoint MUST send the INIT ACK to the IP address from which it
 received the INIT.</t>
-<t>Note: T1-init timer and T1-cookie timer shall follow the same rules
+<t>Note: T1-init timer and T1-cookie timer SHOULD follow the same rules
 given in <xref target='sec_management_of_retransission_timer'/>.</t>
 <t>If an endpoint receives an INIT, INIT ACK, or COOKIE ECHO chunk but decides
 not to establish the new association due to missing mandatory parameters in the
@@ -2726,16 +2726,16 @@ report any shortage to the upper layer.
 The upper layer can then choose to abort the association if the resource
 shortage is unacceptable.</t>
 <t>After the association is initialized, the valid outbound stream identifier
-range for either endpoint shall be 0 to min(local OS, remote MIS)-1.</t>
+range for either endpoint MUST be 0 to min(local OS, remote MIS)-1.</t>
 </section>
 <section anchor='sec_handle_address_parameters'
          title='Handle Address Parameters'>
-<t>During the association initialization, an endpoint shall use the
+<t>During the association initialization, an endpoint uses the
 following rules to discover and collect the destination transport address(es)
 of its peer.
 <list style='format %C)'>
 <t>If there are no address parameters present in the received INIT or
-INIT ACK chunk, the endpoint shall take the source IP address from
+INIT ACK chunk, the endpoint MUST take the source IP address from
 which the chunk arrives and record it, in combination with the
 SCTP source port number, as the only destination transport address
 for this peer.
@@ -2766,7 +2766,7 @@ control the source IP address that is used for transmitting), an endpoint
 might need to include in its INIT or INIT ACK all possible IP addresses from
 which packets to the peer could be transmitted.</t>
 <t>After all transport addresses are derived from the INIT or INIT ACK chunk
-using the above rules, the endpoint shall select one of the transport addresses
+using the above rules, the endpoint selects one of the transport addresses
 as the initial primary path.</t>
 <t>Note: The INIT ACK MUST be sent to the source address of the INIT.</t>
 <t>The sender of INIT chunks MAY include a 'Supported Address Types' parameter
@@ -2836,9 +2836,9 @@ chunk with a State Cookie parameter, it MUST immediately send a
 COOKIE ECHO chunk to its peer with the received State Cookie.
 The sender MAY also add any pending DATA chunks to the packet after the
 COOKIE ECHO chunk.</t>
-<t>The endpoint shall also start the T1-cookie timer after sending out
+<t>The endpoint MUST also start the T1-cookie timer after sending out
 the COOKIE ECHO chunk.
-If the timer expires, the endpoint shall retransmit the COOKIE ECHO chunk and
+If the timer expires, the endpoint MUST retransmit the COOKIE ECHO chunk and
 restart the T1-cookie timer.
 This is repeated until either a COOKIE ACK is received or
 'Max.Init.Retransmits' (see <xref target='sec_parameter_values'/>) is reached
@@ -2849,7 +2849,7 @@ enters the CLOSED state).</t>
 <section anchor='sec_state_coockie_authentication'
          title='State Cookie Authentication'>
 <t>When an endpoint receives a COOKIE ECHO chunk from another endpoint
-with which it has no association, it shall take the following actions:
+with which it has no association, it takes the following actions:
 <list style='format %d)'>
 <t>Compute a MAC using the TCB data carried in the State Cookie and
 the secret key (note the timestamp in the State Cookie MAY be used to
@@ -2939,8 +2939,8 @@ SACK [TSN Ack=init TSN_Z,      /---- DATA
 </figure>
 <t>If the T1-init timer expires at "A" after the INIT or COOKIE ECHO chunks
 are sent, the same INIT or COOKIE ECHO chunk with the same Initiate Tag
-(i.e., Tag_A) or State Cookie shall be retransmitted and the timer restarted.
-This shall be repeated Max.Init.Retransmits times before "A" considers "Z"
+(i.e., Tag_A) or State Cookie is retransmitted and the timer restarted.
+This is repeated Max.Init.Retransmits times before "A" considers "Z"
 unreachable and reports the failure to its upper layer (and thus the
 association enters the CLOSED state).</t>
 <t>When retransmitting the INIT, the endpoint MUST follow the rules
@@ -2954,7 +2954,7 @@ the proper timer value.</t>
 <t>During the life time of an association (in one of the possible states),
 an endpoint may receive from its peer endpoint one of the setup chunks (INIT,
 INIT ACK, COOKIE ECHO, and COOKIE ACK).
-The receiver shall treat such a setup chunk as a duplicate and process it
+The receiver treats such a setup chunk as a duplicate and process it
 as described in this section.</t>
 <t>Note: An endpoint will not receive the chunk unless the chunk was sent to
 an SCTP transport address and is from an SCTP transport address associated
@@ -2977,7 +2977,7 @@ association or a past association that is no longer in existence,
 <t>The peer never received the COOKIE ACK and is retransmitting its
 COOKIE ECHO.</t>
 </list></t>
-<t>The rules in the following sections shall be applied in order to identify
+<t>The rules in the following sections are applied in order to identify
 and correctly handle these cases.</t>
 
 <section anchor='sec:init_received_in_cookie_wait_or_cookie_echoed_state'
@@ -3012,11 +3012,11 @@ association.</t>
 <t>When responding in either state (COOKIE-WAIT or COOKIE-ECHOED) with
 an INIT ACK, the original parameters are combined with those from the
 newly received INIT chunk.
-The endpoint shall also generate a State Cookie with the INIT ACK.
+The endpoint MUST also generate a State Cookie with the INIT ACK.
 The endpoint uses the parameters sent in its INIT to calculate the
 State Cookie.</t>
 <t>After that, the endpoint MUST NOT change its state, the T1-init timer
-shall be left running, and the corresponding TCB MUST NOT be destroyed.
+MUST be left running, and the corresponding TCB MUST NOT be destroyed.
 The normal procedures for handling State Cookies when a
 TCB exists will resolve the duplicate INITs to a single association.</t>
 <t>For an endpoint that is in the COOKIE-ECHOED state, it MUST populate
@@ -3028,7 +3028,7 @@ for a description of the Tie-Tags).</t>
 <section anchor='sec_unexpected_init_in_states_other_than_closed_cookie_echoed'
          title='Unexpected INIT in States Other than CLOSED, COOKIE-ECHOED, COOKIE-WAIT, and SHUTDOWN-ACK-SENT'>
 <t>Unless otherwise stated, upon receipt of an unexpected INIT for this
-association, the endpoint shall generate an INIT ACK with a State Cookie.
+association, the endpoint MUST generate an INIT ACK with a State Cookie.
 Before responding, the endpoint MUST check to see if the unexpected INIT adds
 new addresses to the association.
 If new addresses are added to the association, the endpoint MUST respond with
@@ -3041,7 +3041,7 @@ association.
 If no new addresses are added, when responding to the INIT in the outbound
 INIT ACK, the endpoint MUST copy its current Tie-Tags to a reserved place
 within the State Cookie and the association's TCB.
-We shall refer to these locations inside the cookie as the Peer's-Tie-Tag and
+We refer to these locations inside the cookie as the Peer's-Tie-Tag and
 the Local-Tie-Tag.
 We will refer to the copy within an association's TCB as the Local Tag and
 Peer's Tag.
@@ -3052,7 +3052,7 @@ And the INIT ACK MUST contain a new Initiate Tag
 Other parameters for the endpoint SHOULD be copied from the existing
 parameters of the association (e.g., number of outbound streams) into the
 INIT ACK and cookie.</t>
-<t>After sending out the INIT ACK or ABORT, the endpoint shall take no further
+<t>After sending out the INIT ACK or ABORT, the endpoint MUST take no further
 actions; i.e., the existing association, including its current state, and the
 corresponding TCB MUST NOT be changed.</t>
 <t>Note: Only when a TCB exists and the association is not in a COOKIE-WAIT
@@ -3073,7 +3073,7 @@ INIT chunk.</t>
          title='Handle a COOKIE ECHO when a TCB Exists'>
 <t>When a COOKIE ECHO chunk is received by an endpoint in any state for an
 existing association (i.e., not in the CLOSED state) the following rules
-shall be applied:
+are applied:
 <list style='format %d)'>
 <t>Compute a MAC as described in step 1 of
 <xref target='sec_state_coockie_authentication'/>,
@@ -3145,7 +3145,7 @@ All the congestion control parameters (e.g., cwnd, ssthresh)
 related to this peer MUST be reset to their initial values
 (see <xref target='sec_processing_of_received_sack'/>).
 <vspace blankLines='1'/>
-After this, the endpoint shall enter the ESTABLISHED state.
+After this, the endpoint enters the ESTABLISHED state.
 <vspace blankLines='1'/>
 If the endpoint is in the SHUTDOWN-ACK-SENT state and recognizes that the peer
 has restarted (Action A), it MUST NOT set up a new association but instead
@@ -3979,7 +3979,7 @@ rule R1 indicates to do so.</t>
 <t>An SCTP endpoint is considered multi-homed if there are more than one
 transport address that can be used as a destination address to reach that
 endpoint.</t>
-<t>Moreover, the ULP of an endpoint shall select one of the multiple
+<t>Moreover, the ULP of an endpoint selects one of the multiple
 destination addresses of a multi-homed peer endpoint as the primary
 path (see <xref target='sec_handle_address_parameters'/> and
 <xref target='sec_ulp_to_sctp'/> for details).</t>
@@ -4016,7 +4016,7 @@ the new primary path.</t>
 <t>Retransmissions do not affect the total outstanding data count.
 However, if the DATA chunk is retransmitted onto a different destination
 address, both the outstanding data counts on the new destination address and
-the old destination address to which the data chunk was last sent shall be
+the old destination address to which the data chunk was last sent is
 adjusted accordingly.</t>
 <section anchor='sec_failover_from_an_inavtive_destination_address'
          title='Failover from an Inactive Destination Address'>
@@ -4086,7 +4086,7 @@ U flag set to 1.</t>
 </section>
 <section anchor='sec_report_gaps_in_received_data_tsns'
          title='Report Gaps in Received DATA TSNs'>
-<t>Upon the reception of a new DATA chunk, an endpoint shall examine the
+<t>Upon the reception of a new DATA chunk, an endpoint examines the
 continuity of the TSNs received.
 If the endpoint detects a gap in the received DATA chunk sequence, it SHOULD
 send a SACK with Gap Ack Blocks immediately.
@@ -4188,7 +4188,7 @@ current Path MTU (P-MTU).</t>
 in <xref target='sec_ulp_to_sctp'/> would need to return an error to the
 upper layer.</t>
 
-<t>If its peer is multi-homed, the endpoint shall choose a size no larger than
+<t>If its peer is multi-homed, the endpoint SHOULD choose a size no larger than
 the association Path MTU.
 The association Path MTU is the smallest Path MTU of all destination
 addresses.</t>
@@ -4221,7 +4221,7 @@ and the B/E bits of all other DATA chunks in the series to '00'.</t>
 <t>An endpoint MUST recognize fragmented DATA chunks by examining the B/E bits
 in each of the received DATA chunks, and queue the fragmented DATA chunks for
 reassembly.
-Once the user message is reassembled, SCTP shall pass the reassembled user
+Once the user message is reassembled, SCTP passes the reassembled user
 message to the specific stream for possible reordering and final
 dispatching.</t>
 <t>Note: If the data receiver runs out of buffer space while still waiting for
@@ -4236,7 +4236,7 @@ that the rest of the message may be received.</t>
 outbound SCTP packet.
 The total size of the resultant IP datagram, including the SCTP packet and
 IP headers, MUST be less that or equal to the current Path MTU.</t>
-<t>If its peer endpoint is multi-homed, the sending endpoint shall choose a
+<t>If its peer endpoint is multi-homed, the sending endpoint SHOULD choose a
 size no larger than the latest MTU of the current primary path.</t>
 <t>When bundling control chunks with DATA chunks, an endpoint MUST place
 control chunks first in the outbound SCTP packet.
@@ -4519,7 +4519,7 @@ If an endpoint is in Fast Recovery and a SACK arrives that advances the
 Cumulative TSN Ack Point, the miss indications are incremented for all TSNs
 reported missing in the SACK.</t>
 <t>When the third consecutive miss indication is received for a TSN(s),
-the data sender shall do the following:
+the data sender does the following:
 <list style='format %d)'>
 <t>Mark the DATA chunk(s) with three miss indications for retransmission.</t>
 <t>If not in Fast Recovery, adjust the ssthresh and cwnd of the destination
@@ -4799,8 +4799,8 @@ When sending the ABORT, the receiver of the OOTB packet MUST fill in the
 Verification Tag field of the outbound packet with the value found in the
 Verification Tag field of the OOTB packet and set the T bit in the Chunk Flags
 to indicate that the Verification Tag is reflected.
-After sending this ABORT, the receiver of the OOTB packet shall discard the
-OOTB packet and take no further action.</t>
+After sending this ABORT, the receiver of the OOTB packet MUST discard the
+OOTB packet and MUST NOT take any further action.</t>
 </list></t>
 </section>
 
@@ -4818,7 +4818,7 @@ of the INIT or INIT ACK received from its peer.</t>
 <t>When receiving an SCTP packet, the endpoint MUST ensure that the value in
 the Verification Tag field of the received SCTP packet matches its own tag.
 If the received Verification Tag value does not match the receiver's own tag
-value, the receiver shall silently discard the packet and shall not process it
+value, the receiver MUST silently discard the packet and MUST NOT process it
 any further except for those cases listed in
 <xref target='sec_exceptions_in_verification_tag_rules'/> below.</t>
 
@@ -4858,7 +4858,7 @@ be set.
 Only where no TCB exists should the sender use the Verification Tag from the
 SHUTDOWN ACK, and MUST set the T bit.
 <vspace blankLines='1'/></t>
-<t>The receiver of a SHUTDOWN COMPLETE shall accept the packet if the
+<t>The receiver of a SHUTDOWN COMPLETE accepts the packet if the
 Verification Tag field of the packet matches its own tag and the T bit is not
 set OR if it is set to its peer's tag and the T bit is set in the Chunk Flags.
 Otherwise, the receiver MUST silently discard the packet and take no further
@@ -4930,10 +4930,10 @@ enters the SHUTDOWN-PENDING state and remains there until all outstanding data
 has been acknowledged by its peer.
 The endpoint accepts no new data from its upper layer, but retransmits data to
 the far end if necessary to fill gaps.</t>
-<t>Once all its outstanding data has been acknowledged, the endpoint shall send
+<t>Once all its outstanding data has been acknowledged, the endpoint sends
 a SHUTDOWN chunk to its peer including in the Cumulative TSN Ack field the last
 sequential TSN it has received from the peer.
-It shall then start the T2-shutdown timer and enter the SHUTDOWN-SENT state.
+It SHOULD then start the T2-shutdown timer and enter the SHUTDOWN-SENT state.
 If the timer expires, the endpoint MUST resend the SHUTDOWN with the updated
 last sequential TSN received from its peer.</t>
 <t>The rules in <xref target='sec_management_of_retransission_timer'/> MUST be
@@ -4949,7 +4949,7 @@ The reception of any packet from its peer (i.e., as the peer sends all of its
 queued DATA chunks) should clear the endpoint's retransmission count and restart
 the T2-shutdown timer, giving its peer ample opportunity to transmit all of its
 queued DATA chunks that have not yet been sent.</t>
-<t>Upon reception of the SHUTDOWN, the peer endpoint shall
+<t>Upon reception of the SHUTDOWN, the peer endpoint does the following:
 <list style='symbols'>
 <t>enter the SHUTDOWN-RECEIVED state,
 <vspace blankLines='1'/></t>
@@ -4987,7 +4987,7 @@ the SHUTDOWN ACK chunk to the protocol parameter 'Association.Max.Retrans'.
 If this threshold is exceeded, the endpoint SHOULD destroy the TCB and SHOULD
 report the peer endpoint unreachable to the upper layer (and thus the
 association enters the CLOSED state).</t>
-<t>Upon the receipt of the SHUTDOWN ACK, the SHUTDOWN sender shall stop
+<t>Upon the receipt of the SHUTDOWN ACK, the SHUTDOWN sender MUST stop
 the T2-shutdown timer, send a SHUTDOWN COMPLETE chunk to its peer, and remove
 all record of the association.</t>
 <t>Upon reception of the SHUTDOWN COMPLETE chunk, the endpoint will verify that
@@ -5022,19 +5022,19 @@ retransmitted and thus start a new association.</t>
 <t>If a SHUTDOWN is received in the COOKIE-WAIT or COOKIE ECHOED state,
 the SHUTDOWN chunk SHOULD be silently discarded.</t>
 <t>If an endpoint is in the SHUTDOWN-SENT state and receives a SHUTDOWN chunk
-from its peer, the endpoint shall respond immediately with a SHUTDOWN ACK to its
+from its peer, the endpoint SHOULD respond immediately with a SHUTDOWN ACK to its
 peer, and move into the SHUTDOWN-ACK-SENT state restarting its T2-shutdown
 timer.</t>
 <t>If an endpoint is in the SHUTDOWN-ACK-SENT state and receives a SHUTDOWN ACK,
-it shall stop the T2-shutdown timer, send a SHUTDOWN COMPLETE chunk to its peer,
+it MUST stop the T2-shutdown timer, send a SHUTDOWN COMPLETE chunk to its peer,
 and remove all record of the association.</t>
 </section>
 </section>
 
 <section anchor='sec_api'
          title='Interface with Upper Layer'>
-<t>The Upper Layer Protocols (ULPs) shall request services by passing primitives
-to SCTP and shall receive notifications from SCTP for various events.</t>
+<t>The Upper Layer Protocols (ULPs) request services by passing primitives
+to SCTP and receive notifications from SCTP for various events.</t>
 <t>The primitives and notifications described in this section should be
 used as a guideline for implementing SCTP.
 The following functional description of ULP interface primitives is shown for
@@ -5099,7 +5099,7 @@ outbound stream count) -> association id [,destination transport addr list]
 This primitive allows the upper layer to initiate an association to a specific
 peer endpoint.
 <vspace/>
-The peer endpoint shall be specified by one of the transport
+The peer endpoint is specified by one of the transport
 addresses that defines the endpoint (see <xref target='sec_key_terms'/>).
 If the local SCTP instance has not been initialized, the ASSOCIATE is considered
 an error.
@@ -5124,7 +5124,7 @@ blocking function call, the ASSOCIATE primitive can return
 association parameters in addition to the association id upon
 successful establishment.
 If ASSOCIATE primitive is implemented as a non-blocking call, only the
-association id shall be returned and association parameters shall be passed
+association id is returned and association parameters are passed
 using the COMMUNICATION UP notification.
 <vspace/>
 Mandatory attributes:
@@ -5154,7 +5154,7 @@ The association will be terminated only after the peer acknowledges all the
 SCTP packets sent.
 A success code will be returned on successful termination of the association.
 If attempting to terminate the association results in a failure, an error code
-shall be returned.
+is returned.
 <vspace/>
 Mandatory attributes:
 <list style='symbols'>
@@ -5176,7 +5176,7 @@ Any locally queued user data will be discarded, and an ABORT chunk is sent to
 the peer.
 A success code will be returned on successful abort of the association.
 If attempting to abort the association results in a failure, an error code
-shall be returned.
+is returned.
 <vspace/>
 Mandatory attributes:
 <list style='symbols'>
@@ -5263,10 +5263,10 @@ SETPRIMARY(association id, destination transport address,
 Instructs the local SCTP to use the specified destination transport address as
 the primary path for sending packets.
 <vspace/>
-The result of attempting this operation shall be returned.
+The result of attempting this operation is returned.
 If the specified destination transport address is not present in the
 "destination transport address list" returned earlier in an associate
-command or communication up notification, an error shall be returned.
+command or communication up notification, an error is returned.
 <vspace/>
 Mandatory attributes:
 <list style='symbols'>
@@ -5292,7 +5292,7 @@ RECEIVE(association id, buffer address, buffer size [,stream id])
 -> byte count [,transport address] [,stream id] [,stream sequence number]
 [,partial flag] [,payload protocol-id]</t>
 </list>
-This primitive shall read the first user message in the SCTP in-queue
+This primitive reads the first user message in the SCTP in-queue
 into the buffer specified by ULP, if there is one available.
 The size of the message read, in bytes, will be returned.
 It may, depending on the specific implementation, also return other
@@ -5370,7 +5370,7 @@ CHANGE HEARTBEAT(association id, destination transport address, new state
 Instructs the local endpoint to enable or disable heartbeat on the
 specified destination transport address.
 <vspace/>
-The result of attempting this operation shall be returned.
+The result of attempting this operation is returned.
 <vspace/>
 Note: Even when enabled, heartbeat will not take place if the destination
 transport address is not idle.
@@ -5564,7 +5564,7 @@ socket or error channel.</t>
 <t><list style='format %C)'>
 <t>DATA ARRIVE notification
 <vspace/>
-SCTP shall invoke this notification on the ULP when a user message is
+SCTP invokes this notification on the ULP when a user message is
 successfully received and ready for retrieval.
 <vspace/>
 The following may optionally be passed with the notification:
@@ -5574,7 +5574,7 @@ The following may optionally be passed with the notification:
 </list></t>
 <t>SEND FAILURE notification
 <vspace/>
-If a message cannot be delivered, SCTP shall invoke this notification
+If a message cannot be delivered, SCTP invokes this notification
 on the ULP.
 <vspace/>
 The following may optionally be passed with the notification:
@@ -5591,9 +5591,9 @@ in <xref target='sec_ulp_to_sctp'/>).</t>
 <vspace/>
 When a destination transport address is marked inactive (e.g., when SCTP
 detects a failure) or marked active (e.g., when SCTP detects a recovery),
-SCTP shall invoke this notification on the ULP.
+SCTP invokes this notification on the ULP.
 <vspace/>
-The following shall be passed with the notification:
+The following is passed with the notification:
 <list style='symbols'>
 <t>association id - local handle to the SCTP association.</t>
 <t>destination transport address - this indicates the destination
@@ -5611,7 +5611,7 @@ result of the ASSOCIATE primitive itself.
 In that case, COMMUNICATION UP notification is optional at the association
 initiator's side.
 <vspace/>
-The following shall be passed with the notification:
+The following is passed with the notification:
 <list style='symbols'>
 <t>association id -  local handle to the SCTP association.</t>
 <t>status -  This indicates what type of event has occurred.</t>
@@ -5626,10 +5626,10 @@ with this association (this may not be the same number as
 <t>COMMUNICATION LOST notification
 <vspace/>
 When SCTP loses communication to an endpoint completely (e.g., via Heartbeats)
-or detects that the endpoint has performed an abort operation, it shall invoke
+or detects that the endpoint has performed an abort operation, it invokes
 this notification on the ULP.
 <vspace/>
-The following shall be passed with the notification:
+The following is passed with the notification:
 <list style='symbols'>
 <t>association id -  local handle to the SCTP association.</t>
 <t>status -  this indicates what type of event has occurred;
