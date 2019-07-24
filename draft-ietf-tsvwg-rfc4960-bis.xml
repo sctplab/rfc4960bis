@@ -129,7 +129,7 @@ as SYN attacks.</t>
 <t>Transport of PSTN signaling across the IP network is an application
 for which all of these limitations of TCP are relevant.
 While this application directly motivated the development of SCTP, other
-applications may find SCTP a good match to their requirements.</t>
+applications might find SCTP a good match to their requirements.</t>
 </section>
 
 <section title='Architectural View of SCTP'>
@@ -151,7 +151,7 @@ transport addresses (i.e., multiple IP addresses in combination with an SCTP
 port) through which that endpoint can be reached and from which it will
 originate SCTP packets.
 The association spans transfers over all of the possible source/destination
-combinations that may be generated from each endpoint's lists.</t>
+combinations that can be generated from each endpoint's lists.</t>
 <figure anchor='fig_association'
         title='An SCTP Association'>
 <artwork align='center'>
@@ -187,7 +187,7 @@ A transport address on a peer endpoint that a transmitting endpoint considers
 available for receiving user messages.
 <vspace blankLines='1'/></t>
 <t hangText='Bundling:'>
-An optional multiplexing operation, whereby more than one user message may
+An optional multiplexing operation, whereby more than one user message might
 be carried in the same SCTP packet.
 Each user message occupies its own DATA chunk.
 <vspace blankLines='1'/></t>
@@ -452,7 +452,7 @@ the SCTP layer.
 ungraceful close procedures.</t>
 
 <t>SCTP does not support a half-open state (like TCP) wherein one side
-may continue sending data while the other end is closed.
+continues sending data while the other end is closed.
 When either endpoint performs a shutdown, the association on each peer will
 stop accepting new data from its user and only deliver data in queue at
 the time of the graceful close (see <xref target='sec_assoc_termination'/>).</t>
@@ -474,8 +474,8 @@ Internally, SCTP assigns a Stream Sequence Number to each message passed to
 it by the SCTP user.
 On the receiving side, SCTP ensures that messages are delivered to the SCTP
 user in sequence within a given stream.
-However, while one stream may be blocked waiting for the next in-sequence
-user message, delivery from other streams may proceed.</t>
+However, while one stream might be blocked waiting for the next in-sequence
+user message, delivery from other streams might proceed.</t>
 <t>SCTP provides a mechanism for bypassing the sequenced delivery
 service.
 User messages sent using this mechanism are delivered to the SCTP user as
@@ -511,7 +511,7 @@ protocol procedures associated with this function.</t>
 <t>As described in <xref target='sec_sctp_packet_format'/>, the SCTP packet
 as delivered to the lower layer consists of a common header followed by one
 or more chunks.
-Each chunk may contain either user data or SCTP control information.
+Each chunk might contain either user data or SCTP control information.
 The SCTP user has the option to request bundling of more than one
 user message into a single SCTP packet.
 The chunk bundling function of SCTP is responsible for assembly of the
@@ -519,7 +519,7 @@ complete SCTP packet and its disassembly at the receiving end.</t>
 <t>During times of congestion, an SCTP implementation MAY still perform
 bundling even if the user has requested that SCTP not bundle.
 The user's disabling of bundling only affects SCTP implementations that
-may delay a small period of time before transmission (to attempt to
+might delay a small period of time before transmission (to attempt to
 encourage bundling).
 When the user layer disables bundling, this small delay is prohibited but
 not bundling that is performed during congestion or retransmission.</t>
@@ -688,7 +688,7 @@ initialization, with the following exceptions:
 <t>A packet containing a SHUTDOWN COMPLETE chunk with the T bit set MUST have
 the Verification Tag copied from the packet with the SHUTDOWN ACK chunk.
 <vspace blankLines='1'/></t>
-<t>A packet containing an ABORT chunk may have the verification tag copied
+<t>A packet containing an ABORT chunk MAY have the verification tag copied
 from the packet that caused the ABORT to be sent.
 For details see <xref target='sec_handle_out_of_the_blue_packets'/> and
 <xref target='sec_verification_tag'/>.</t>
@@ -1261,7 +1261,7 @@ and can be used as a destination address of an IP datagram sent from the
 receiver of the INIT.</t>
 <t>More than one IP Address parameter can be included in an INIT chunk when the
 INIT sender is multi-homed.
-Moreover, a multi-homed endpoint may have access to different types of network;
+Moreover, a multi-homed endpoint might have access to different types of network;
 thus, more than one address type can be present in one INIT chunk, i.e.,
 IPv4 and IPv6 addresses are allowed in the same INIT chunk.</t>
 <t>If the INIT contains at least one IP Address parameter, then the source address
@@ -1495,7 +1495,7 @@ INIT ACK a valid transport address supported by the sender of the INIT ACK
 for the life time of the association being initiated.</t>
 <t>If the INIT ACK contains at least one IP Address parameter, then the source
 address of the IP datagram containing the INIT ACK and any additional
-address(es) provided within the INIT ACK may be used as destinations by the
+address(es) provided within the INIT ACK MAY be used as destinations by the
 receiver of the INIT ACK.
 If the INIT ACK does not contain any IP Address parameters, the receiver of the
 INIT ACK MUST use the source address associated with the received IP datagram
@@ -1824,7 +1824,7 @@ Request to which this Heartbeat Acknowledgement is responding.
          title='Abort Association (ABORT) (6)'>
 <t>The ABORT chunk is sent to the peer of an association to close the
 association.
-The ABORT chunk may contain Cause Parameters to inform the receiver about the
+The ABORT chunk MAY contain Cause Parameters to inform the receiver about the
 reason of the abort.
 DATA chunks MUST NOT be bundled with ABORT.
 Control chunks (except for INIT, INIT ACK, and SHUTDOWN COMPLETE) MAY be
@@ -1942,7 +1942,7 @@ Set to 0 on transmit and ignored on receipt.</t>
 <t>An endpoint sends this chunk to its peer endpoint to notify it of
 certain error conditions.
 It contains one or more error causes.
-An Operation Error is not considered fatal in and of itself, but may be
+An Operation Error is not considered fatal in and of itself, but MAY be
 used with an ABORT chunk to report a fatal condition.
 It has the following parameters:
 <figure>
@@ -2463,7 +2463,7 @@ received one.</t>
 <t>During the life time of an SCTP association, the SCTP endpoint's
 association progresses from one state to another in response to
 various events.
-The events that may potentially advance an association's state include:
+The events that might potentially advance an association's state include:
 <list style='symbols'>
 <t>SCTP user primitive calls, e.g., [ASSOCIATE], [SHUTDOWN], [ABORT],</t>
 <t>Reception of INIT, COOKIE ECHO, ABORT, SHUTDOWN, etc., control chunks, or</t>
@@ -2617,7 +2617,7 @@ association between them.</t>
 <t>The SCTP user at an endpoint should use the ASSOCIATE primitive to
 initialize an SCTP association to another SCTP endpoint.</t>
 <t>IMPLEMENTATION NOTE: From an SCTP user's point of view, an
-association may be implicitly opened, without an ASSOCIATE primitive
+association might be implicitly opened, without an ASSOCIATE primitive
 (see <xref target='sec_ulp_to_sctp'/> B) being invoked, by the initiating
 endpoint's sending of the first user data to the destination endpoint.
 The initiating SCTP will assume default values for all mandatory and
@@ -2667,17 +2667,17 @@ is returned the sender MUST NOT send any other packets to the peer.
 <t>Upon reception of the COOKIE ECHO chunk, endpoint "Z" will reply
 with a COOKIE ACK chunk after building a TCB and moving to the
 ESTABLISHED state.
-A COOKIE ACK chunk may be bundled with any pending DATA chunks
+A COOKIE ACK chunk MAY be bundled with any pending DATA chunks
 (and/or SACK chunks), but the COOKIE ACK chunk MUST be the first chunk in
 the packet.
 <vspace blankLines='1'/>
-IMPLEMENTATION NOTE: An implementation may choose to send the
+IMPLEMENTATION NOTE: An implementation can choose to send the
 Communication Up notification to the SCTP user upon reception of a
 valid COOKIE ECHO chunk.
 <vspace blankLines='1'/></t>
 <t>Upon reception of the COOKIE ACK, endpoint "A" will move from the
 COOKIE-ECHOED state to the ESTABLISHED state, stopping the T1-cookie timer.
-It may also notify its ULP about the successful establishment of the
+It might also notify its ULP about the successful establishment of the
 association with a Communication Up notification
 (see <xref target='sec_api'/>).</t>
 </list></t>
@@ -2952,7 +2952,7 @@ the proper timer value.</t>
 <section anchor='sec_handle_duplicate_or_unexpected_chunks'
          title='Handle Duplicate or Unexpected INIT, INIT ACK, COOKIE ECHO, and COOKIE ACK'>
 <t>During the life time of an association (in one of the possible states),
-an endpoint may receive from its peer endpoint one of the setup chunks (INIT,
+an endpoint MAY receive from its peer endpoint one of the setup chunks (INIT,
 INIT ACK, COOKIE ECHO, and COOKIE ACK).
 The receiver treats such a setup chunk as a duplicate and process it
 as described in this section.</t>
@@ -3130,7 +3130,7 @@ discarded.</t>
 
 <t>Action
 <list style='format %C)'>
-<t>In this case, the peer may have restarted. When the endpoint
+<t>In this case, the peer might have restarted. When the endpoint
 recognizes this potential 'restart', the existing session is
 treated the same as if it received an ABORT followed by a new
 COOKIE ECHO with the following exceptions:
@@ -3152,14 +3152,14 @@ has restarted (Action A), it MUST NOT set up a new association but instead
 resend the SHUTDOWN ACK and send an ERROR chunk with a
 "Cookie Received While Shutting Down" error cause to its peer.
 <vspace blankLines='1'/></t>
-<t>In this case, both sides may be attempting to start an association
+<t>In this case, both sides might be attempting to start an association
 at about the same time, but the peer endpoint started its INIT
 after responding to the local endpoint's INIT.
-Thus, it may have picked a new Verification Tag, not being aware of the
+Thus, it might have picked a new Verification Tag, not being aware of the
 previous tag it had sent this endpoint.
 The endpoint should stay in or enter the ESTABLISHED state, but it MUST update
 its peer's Verification Tag from the State Cookie, stop any init or
-cookie timers that may be running, and send a COOKIE ACK.
+cookie timers that might be running, and send a COOKIE ACK.
 <vspace blankLines='1'/></t>
 <t>In this case, the local endpoint's cookie has arrived late.
 Before it arrived, the local endpoint sent an INIT and received an INIT ACK
@@ -3170,7 +3170,7 @@ The endpoint SHOULD NOT change states and should leave any timers running.
 <vspace blankLines='1'/></t>
 <t>When both local and remote tags match, the endpoint should enter the
 ESTABLISHED state, if it is in the COOKIE-ECHOED state.
-It should stop any cookie timer that may be running and send a COOKIE ACK.</t>
+It should stop any cookie timer that is running and send a COOKIE ACK.</t>
 </list></t>
 <t>Note: The "peer's Verification Tag" is the tag received in the Initiate Tag
 field of the INIT or INIT ACK chunk.</t>
@@ -3258,7 +3258,7 @@ should first examine if an association is in the process of being set up, i.e.,
 the association is in the COOKIE-ECHOED state.
 In all cases, if the association is not in the COOKIE-ECHOED state, the
 ERROR chunk should be silently discarded.</t>
-<t>If the association is in the COOKIE-ECHOED state, the endpoint may elect
+<t>If the association is in the COOKIE-ECHOED state, the endpoint MAY elect
 one of the following three alternatives.
 <list style='format %d)'>
 <t>Send a new INIT chunk to the endpoint to generate a new State Cookie and
@@ -3300,7 +3300,7 @@ and then reestablishes an association to the same peer.</t>
 addresses.
 In the predominant case, these lists accurately represent the addresses
 owned by each peer.
-However, it is possible that a misbehaving peer may supply addresses that it
+However, it is possible that a misbehaving peer might supply addresses that it
 does not own.
 To prevent this, the following rules are applied to all addresses of the
 new association:
@@ -3328,7 +3328,7 @@ is now considered CONFIRMED and available for normal data transfer.
 These probing procedures are started when an association moves to the
 ESTABLISHED state and are ended when all paths are confirmed.</t>
 
-<t>In each RTO, a probe may be sent on an active UNCONFIRMED path in an
+<t>In each RTO, a probe MAY be sent on an active UNCONFIRMED path in an
 attempt to move it to the CONFIRMED state.
 If during this probing the path becomes inactive, this rate is lowered to the
 normal HEARTBEAT rate.
@@ -3427,7 +3427,7 @@ path MTU into multiple DATA chunks.
 The data receiver will normally reassemble the fragmented message from DATA
 chunks before delivery to the user (see <xref target='sec_frag_reass'/>
 for details).</t>
-<t>Multiple DATA and control chunks may be bundled by the sender into a single
+<t>Multiple DATA and control chunks MAY be bundled by the sender into a single
 SCTP packet for transmission, as long as the final size of the packet does not
 exceed the current path MTU.
 The receiver will unbundle the packet back into the original chunks.
@@ -3519,8 +3519,8 @@ allow.</t>
 single packet.
 Furthermore, DATA chunks being retransmitted MAY be bundled with new
 DATA chunks, as long as the resulting packet size does not exceed the path MTU.
-A ULP may request that no bundling is performed, but this should only turn off
-any delays that an SCTP implementation may be using to increase bundling
+A ULP might request that no bundling is performed, but this should only turn off
+any delays that an SCTP implementation might be using to increase bundling
 efficiency.
 It does not in itself stop all bundling from occurring (i.e., in case of
 congestion or retransmission).</t>
@@ -3592,7 +3592,7 @@ Section 4.2 of <xref target='RFC5681'/> SHOULD be followed.
 Specifically, an acknowledgement SHOULD be generated for at least every
 second packet (not every second DATA chunk) received, and SHOULD be generated
 within 200 ms of the arrival of any unacknowledged DATA chunk.
-In some situations, it may be beneficial for an SCTP transmitter to be
+In some situations, it might be beneficial for an SCTP transmitter to be
 more conservative than the algorithms detailed in this document allow.
 However, an SCTP transmitter MUST NOT be more aggressive than the following
 algorithms allow.</t>
@@ -3607,7 +3607,7 @@ One way to achieve this is to send a window update only if the window can be
 increased by at least a quarter of the receive buffer size of the
 association.</t>
 <t>IMPLEMENTATION NOTE: The maximum delay for generating an acknowledgement
-may be configured by the SCTP administrator, either statically or dynamically,
+MAY be configured by the SCTP administrator, either statically or dynamically,
 in order to meet the specific timing requirement of the protocol being
 carried.</t>
 <t>An implementation MUST NOT allow the maximum delay (protocol parameter
@@ -3678,14 +3678,14 @@ The data receiver SHOULD take into account that the data sender will not
 retransmit DATA chunks that are acked via the Cumulative TSN Ack (i.e., will
 drop from its retransmit queue).</t>
 </list></t>
-<t>Under certain circumstances, the data receiver may need to drop DATA
+<t>Under certain circumstances, the data receiver might need to drop DATA
 chunks that it has received but hasn't released from its receive
 buffers (i.e., delivered to the ULP).
-These DATA chunks may have been acked in Gap Ack Blocks.
-For example, the data receiver may be holding data in its receive buffers
+These DATA chunks might have been acked in Gap Ack Blocks.
+For example, the data receiver might be holding data in its receive buffers
 while reassembling a fragmented user message from its peer when it runs out of
 receive buffer space.
-It may drop these DATA chunks even though it has acknowledged them in
+It might drop these DATA chunks even though it has acknowledged them in
 Gap Ack Blocks.
 If a data receiver drops DATA chunks, it MUST NOT include them in Gap Ack Blocks
 in subsequent SACKs until they are received again via retransmission.
@@ -3861,7 +3861,7 @@ rounded up to RTO.Min seconds.
 The reason for this rule is that RTOs that do not have a high minimum value are
 susceptible to unnecessary timeouts <xref target='ALLMAN99'/>.
 <vspace blankLines='1'/></t>
-<t>A maximum value may be placed on RTO provided it is at least
+<t>A maximum value MAY be placed on RTO provided it is at least
 RTO.max seconds.</t>
 </list></t>
 <t>There is no requirement for the clock granularity G used for computing
@@ -3932,13 +3932,13 @@ with rules defined in <xref target='sec_congestion_control_sub'/> and set
 the cwnd &lt;- MTU.</t>
 <t>For the destination address for which the timer expires, set
 RTO &lt;- RTO * 2 ("back off the timer").
-The maximum value discussed in rule C7 above (RTO.max) may be used to provide
+The maximum value discussed in rule C7 above (RTO.max) MAY be used to provide
 an upper bound to this doubling operation.</t>
 <t>Determine how many of the earliest (i.e., lowest TSN) outstanding
 DATA chunks for the address for which the T3-rtx has expired will fit into a
 single packet, subject to the MTU constraint for the path corresponding to the
 destination transport address to which the retransmission is being sent
-(this may be different from the address for which the timer expires;
+(this might be different from the address for which the timer expires;
 see <xref target='sec_multi_homed_sctp_endpoints'/>).
 Call this value K.
 Bundle and retransmit those K DATA chunks in a single packet to the destination
@@ -3947,14 +3947,14 @@ endpoint.</t>
 the retransmission is sent, if rule R1 above indicates to do so.
 The RTO to be used for starting T3-rtx should be the one for the destination
 address to which the retransmission is sent, which, when the receiver is
-multi-homed, may be different from the destination address for which the
+multi-homed, might be different from the destination address for which the
 timer expired (see <xref target='sec_multi_homed_sctp_endpoints'/> below).</t>
 </list></t>
 <t>After retransmitting, once a new RTT measurement is obtained (which can
 happen only when new data has been sent and acknowledged, per rule C5,
 or for a measurement made from a HEARTBEAT;
 see <xref target='sec_path_heartbeat'/>), the computation in rule C3 is
-performed, including the computation of RTO, which may result in "collapsing"
+performed, including the computation of RTO, which might result in "collapsing"
 RTO back down after it has been subject to doubling (rule E2).</t>
 <t>Note: Any DATA chunks that were sent to the address for which the
 T3-rtx timer expired but did not fit in one MTU (rule E3 above) should be
@@ -4020,7 +4020,7 @@ the old destination address to which the data chunk was last sent is
 adjusted accordingly.</t>
 <section anchor='sec_failover_from_an_inavtive_destination_address'
          title='Failover from an Inactive Destination Address'>
-<t>Some of the transport addresses of a multi-homed SCTP endpoint may become
+<t>Some of the transport addresses of a multi-homed SCTP endpoint might become
 inactive due to either the occurrence of certain error conditions
 (see <xref target='sec_path_failure_detection'/>) or adjustments from the
 SCTP user.</t>
@@ -4074,7 +4074,7 @@ a given stream.
 Also, a stream can be used as an "unordered" stream by simply setting the
 U flag to 1 in all DATA chunks sent through that stream.</t>
 <t>IMPLEMENTATION NOTE: When sending an unordered DATA chunk, an implementation
-may choose to place the DATA chunk in an outbound packet that is at the head of
+might choose to place the DATA chunk in an outbound packet that is at the head of
 the outbound transmission queue if possible.</t>
 <t>The 'Stream Sequence Number' field in a DATA chunk with U flag set to
 1 has no significance.
@@ -4180,7 +4180,7 @@ If an implementation does not support fragmentation of outbound user messages,
 the endpoint MUST return an error to its upper layer and not attempt to send
 the user message.</t>
 <t>Note: If an implementation that supports fragmentation makes available to
-its upper layer a mechanism to turn off fragmentation, it may do so.
+its upper layer a mechanism to turn off fragmentation, it might do so.
 However, in so doing, it MUST react just like an implementation that does
 NOT support fragmentation, i.e., it MUST reject sends that exceed the
 current Path MTU (P-MTU).</t>
@@ -4228,7 +4228,7 @@ dispatching.</t>
 more fragments to complete the reassembly of the message, it should dispatch
 part of its inbound message through a partial delivery API
 (see <xref target='sec_api'/>), freeing some of its receive buffer space so
-that the rest of the message may be received.</t>
+that the rest of the message can be received.</t>
 </section>
 <section anchor='sec_bundling'
          title='Bundling'>
@@ -4263,7 +4263,7 @@ any other chunks.</t>
 <section anchor='sec_congestion_control'
          title='Congestion Control'>
 <t>Congestion control is one of the basic functions in SCTP.
-For some applications, it may be likely that adequate resources will be
+For some applications, it might be likely that adequate resources will be
 allocated to SCTP traffic to ensure prompt delivery of time-critical
 data -- thus, it would appear to be unlikely, during normal
 operations, that transmissions encounter severe congestion conditions.
@@ -4309,20 +4309,20 @@ Recovery than non-SACK TCP.
 As an example, see <xref target='FALL96'/>.</t>
 <t>The biggest difference between SCTP and TCP, however, is multi- homing.
 SCTP is designed to establish robust communication associations between
-two endpoints each of which may be reachable by more than one transport address.
-Potentially different addresses may lead to different data paths between the
+two endpoints each of which might be reachable by more than one transport address.
+Potentially different addresses might lead to different data paths between the
 two endpoints;
-thus, ideally one may need a separate set of congestion control parameters for
+thus, ideally one needs a separate set of congestion control parameters for
 each of the paths.
 The treatment here of congestion control for multi-homed receivers is new with
-SCTP and may require refinement in the future.
+SCTP and might require refinement in the future.
 The current algorithms make the following assumptions:
 <list style='symbols'>
 <t>The sender usually uses the same destination address until being instructed
-by the upper layer to do otherwise; however, SCTP may change to an alternate
+by the upper layer to do otherwise; however, SCTP MAY change to an alternate
 destination in the event an address is marked inactive
 (see <xref target='sec_path_failure_detection'/>).
-Also, SCTP may retransmit to a different transport address than the original
+Also, SCTP MAY retransmit to a different transport address than the original
 transmission.
 <vspace blankLines='1'/></t>
 <t>The sender keeps a separate congestion control parameter set for each of
@@ -4352,7 +4352,7 @@ Although this does not affect cwnd, it might affect rwnd calculation.</t>
 endpoint to control the amount of data being injected into the network.
 The congestion control in SCTP is employed in regard to the association, not
 to an individual stream.
-In some situations, it may be beneficial for an SCTP sender to be more
+In some situations, it might be beneficial for an SCTP sender to be more
 conservative than the algorithms allow;
 however, an SCTP sender MUST NOT be more aggressive than the following
 algorithms allow.</t>
@@ -4420,7 +4420,7 @@ addresses to which it transmitted the acknowledged data.
 However, if the received SACK does not advance the Cumulative TSN Ack Point,
 the endpoint MUST NOT adjust the cwnd of any of the destination addresses.</t>
 <t>Because an endpoint's cwnd is not tied to its Cumulative TSN Ack Point,
-as duplicate SACKs come in, even though they may not advance the
+as duplicate SACKs come in, even though they might not advance the
 Cumulative TSN Ack Point an endpoint can still use them to clock out new data.
 That is, the data newly acknowledged by the SACK diminishes the amount of data
 now in flight to less than cwnd, and so the current, unchanged value of cwnd
@@ -4655,7 +4655,7 @@ error counter if the last chunk sent was a retransmission.</t>
 having the value of 'Association.Max.Retrans' larger than the
 summation of the 'Path.Max.Retrans' of all the destination addresses
 for the remote endpoint.
-Otherwise, all the destination addresses may become inactive while the endpoint
+Otherwise, all the destination addresses might become inactive while the endpoint
 still considers the peer endpoint reachable.
 When this condition occurs, how SCTP chooses to function is implementation
 specific.</t>
@@ -4894,7 +4894,7 @@ on either end of the association is discarded and not delivered to the peer.
 A shutdown of an association is considered a graceful close where all data in
 queue by either endpoint is delivered to the respective peers.
 However, in the case of a shutdown, SCTP does not support a half-open state
-(like TCP) wherein one side may continue sending data while the other end is
+(like TCP) wherein one side might continue sending data while the other end is
 closed.
 When either endpoint performs a shutdown, the association on each peer will
 stop accepting new data from its user and only deliver data in queue at the time
@@ -4938,7 +4938,7 @@ If the timer expires, the endpoint MUST resend the SHUTDOWN with the updated
 last sequential TSN received from its peer.</t>
 <t>The rules in <xref target='sec_management_of_retransission_timer'/> MUST be
 followed to determine the proper timer value for T2-shutdown.
-To indicate any gaps in TSN, the endpoint may also bundle a SACK with the
+To indicate any gaps in TSN, the endpoint MAY also bundle a SACK with the
 SHUTDOWN chunk in the same SCTP packet.</t>
 <t>An endpoint SHOULD limit the number of retransmissions of the SHUTDOWN chunk
 to the protocol parameter 'Association.Max.Retrans'.
@@ -5039,7 +5039,7 @@ to SCTP and receive notifications from SCTP for various events.</t>
 used as a guideline for implementing SCTP.
 The following functional description of ULP interface primitives is shown for
 illustrative purposes.
-Different SCTP implementations may have different ULP interfaces.
+Different SCTP implementations can have different ULP interfaces.
 However, all SCTPs aer expected to provide a certain minimum set of services to
 guarantee that all SCTP implementations can support the same protocol
 hierarchy.</t>
@@ -5051,7 +5051,7 @@ The notation used is similar to most procedure or function calls in high-level
 languages.</t>
 <t>The ULP primitives described below specify the basic functions that
 SCTP performs to support inter-process communication.
-Individual implementations define their own exact format, and may provide
+Individual implementations define their own exact format, and provide
 combinations or subsets of the basic functions in single calls.</t>
 <t><list style='format %C)'>
 <t>Initialize
@@ -5074,7 +5074,7 @@ Mandatory attributes:
 </list>
 Optional attributes:
 <vspace/>
-The following types of attributes may be passed along with the primitive:
+The following types of attributes can be passed along with the primitive:
 <list style='symbols'>
 <t>local port -
 SCTP port number, if ULP wants it to be specified.</t>
@@ -5109,7 +5109,7 @@ will be returned on successful establishment of the association.
 If SCTP is not able to open an SCTP association with the peer endpoint,
 an error is returned.
 <vspace/>
-Other association parameters may be returned, including the complete
+Other association parameters can be returned, including the complete
 destination transport addresses of the peer as well as the outbound
 stream count of the local endpoint.
 One of the transport addresses from the returned destination addresses will
@@ -5227,7 +5227,7 @@ However, the user data will be transmitted if SCTP has attempted to transmit
 a chunk before the life time expired.
 <vspace/>
 IMPLEMENTATION NOTE: In order to better support the data life time
-option, the transmitter may hold back the assigning of the TSN number
+option, the transmitter can hold back the assigning of the TSN number
 to an outbound DATA chunk to the last moment.
 And, for implementation simplicity, once a TSN number has been assigned the
 sender should consider the send of this DATA chunk as committed,
@@ -5243,7 +5243,7 @@ in an unordered fashion to the peer (i.e., the U flag is set to 1 on all DATA
 chunks carrying this message).</t>
 <t>no-bundle flag -
 instructs SCTP not to bundle this user data with other outbound DATA chunks.
-When faced with network congestion, SCTP may still bundle the data, even when
+When faced with network congestion, SCTP might still bundle the data, even when
 this flag is present.</t>
 <t>payload protocol-id -
 a 32-bit unsigned integer that is to be passed to the peer indicating the type
@@ -5281,7 +5281,7 @@ local SCTP endpoint.</t>
 Optional attributes:
 <list style='symbols'>
 <t>source transport address -
-optionally, some implementations may allow you to set the default source address
+optionally, some implementations can allow you to set the default source address
 placed in all outgoing IP datagrams.</t>
 </list></t>
 
@@ -5295,11 +5295,11 @@ RECEIVE(association id, buffer address, buffer size [,stream id])
 This primitive reads the first user message in the SCTP in-queue
 into the buffer specified by ULP, if there is one available.
 The size of the message read, in bytes, will be returned.
-It may, depending on the specific implementation, also return other
+It might, depending on the specific implementation, also return other
 information such as the sender's address, the stream id on which it
 is received, whether there are more messages available for retrieval,
 etc.
-For ordered messages, their Stream Sequence Number may also be returned.
+For ordered messages, their Stream Sequence Number might also be returned.
 <vspace/>
 Depending upon the implementation, if this primitive is invoked when no message
 is available the implementation should return an indication of this condition
@@ -5471,7 +5471,7 @@ or other parameters like the DSCP) that the SCTP user wishes to customize.</t>
 Optional attributes:
 <list style='symbols'>
 <t>destination transport address -
-some of the protocol parameters may be set on a per destination transport
+some of the protocol parameters might be set on a per destination transport
 address basis.</t>
 </list></t>
 <t>Receive Unsent Message
@@ -5559,7 +5559,7 @@ SCTP instance is to be destroyed.</t>
 provides a means for the SCTP to asynchronously signal the ULP process.
 When SCTP does signal a ULP process, certain information is passed to
 the ULP.</t>
-<t>IMPLEMENTATION NOTE: In some cases, this may be done through a separate
+<t>IMPLEMENTATION NOTE: In some cases, this might be done through a separate
 socket or error channel.</t>
 <t><list style='format %C)'>
 <t>DATA ARRIVE notification
@@ -5567,7 +5567,7 @@ socket or error channel.</t>
 SCTP invokes this notification on the ULP when a user message is
 successfully received and ready for retrieval.
 <vspace/>
-The following may optionally be passed with the notification:
+The following might optionally be passed with the notification:
 <list style='symbols'>
 <t>association id - local handle to the SCTP association.</t>
 <t>stream id - to indicate which stream the data is received on.</t>
@@ -5577,7 +5577,7 @@ The following may optionally be passed with the notification:
 If a message cannot be delivered, SCTP invokes this notification
 on the ULP.
 <vspace/>
-The following may optionally be passed with the notification:
+The following might optionally be passed with the notification:
 <list style='symbols'>
 <t>association id - local handle to the SCTP association.</t>
 <t>data retrieval id - an identification used to retrieve unsent and
@@ -5620,7 +5620,7 @@ of the peer.</t>
 <t>outbound stream count -  the maximum number of streams allowed to be used in
 this association by the ULP.</t>
 <t>inbound stream count -  the number of streams the peer endpoint has requested
-with this association (this may not be the same number as
+with this association (this might not be the same number as
 'outbound stream count').</t>
 </list></t>
 <t>COMMUNICATION LOST notification
@@ -5633,10 +5633,10 @@ The following is passed with the notification:
 <list style='symbols'>
 <t>association id -  local handle to the SCTP association.</t>
 <t>status -  this indicates what type of event has occurred;
-the status may indicate that a failure OR a normal termination event occurred
+the status might indicate that a failure OR a normal termination event occurred
 in response to a shutdown or abort request.</t>
 </list>
-The following may be passed with the notification:
+The following might be passed with the notification:
 <list style='symbols'>
 <t>data retrieval id -  an identification used to retrieve unsent and
 unacknowledged data.</t>
@@ -5658,7 +5658,7 @@ information received through the ERROR chunk.</t>
 </list></t>
 <t>RESTART notification
 <vspace/>
-When SCTP detects that the peer has restarted, it may send this notification
+When SCTP detects that the peer has restarted, it might send this notification
 to its ULP.
 <vspace/>
 The following can be passed with the notification:
@@ -5694,7 +5694,7 @@ between two networked endpoints, SCTP has the following security objectives.
 
 <section anchor='sctp_responses_to_potential_threats'
          title='SCTP Responses to Potential Threats'>
-<t>SCTP may potentially be used in a wide variety of risk situations.
+<t>SCTP could potentially be used in a wide variety of risk situations.
 It is important for operators of systems running SCTP to analyze
 their particular situations and decide on the appropriate counter-measures.</t>
 <t>Operators of systems running SCTP should consult <xref target='RFC2196'/> for
@@ -5752,7 +5752,7 @@ layer.</t>
 
 <t>A blind attack is one where the attacker is unable to intercept or otherwise
 see the content of data flows passing to and from the target SCTP node.
-Blind denial-of-service attacks may take the form of flooding, masquerade,
+Blind denial-of-service attacks can take the form of flooding, masquerade,
 or improper monopolization of services.</t>
 
 <section title='Flooding'>
@@ -5761,7 +5761,7 @@ or improper monopolization of services.</t>
 behavior at target systems through resource exhaustion, interference
 with legitimate transactions, and exploitation of buffer-related
 software bugs.
-Flooding may be directed either at the SCTP node or at resources in the
+Flooding can be directed either at the SCTP node or at resources in the
 intervening IP Access Links or the Internet.
 Where the latter entities are the target, flooding will manifest itself as loss
 of network services, including potentially the breach of any firewalls in
@@ -5807,9 +5807,9 @@ parameter MUST send an ABORT chunk in response and MAY include an
 <list style='symbols'>
 <t>by tying up resources at the target SCTP node to which the impersonated node
 has limited access.
-For example, the target node may by policy permit a maximum of one
+For example, the target node can by policy permit a maximum of one
 SCTP association with the impersonated SCTP node.
-The masquerading attacker may attempt to establish an association purporting to
+The masquerading attacker can attempt to establish an association purporting to
 come from the impersonated node so that the latter cannot do so when it requires
 it.
 <vspace blankLines='1'/></t>
@@ -5894,7 +5894,7 @@ packet in response, due to the inclusion of multiple ERROR parameters,
 MAY (at its discretion) elect to omit some or all of the ERROR parameters to
 reduce the size of the INIT ACK.
 Due to a combination of the size of the COOKIE parameter and the number of
-addresses a receiver of an INIT may be indicating to a peer, it is always
+addresses a receiver of an INIT can be indicated to a peer, it is always
 possible that the INIT ACK will be larger than the original INIT.
 An SCTP implementation SHOULD attempt to make the INIT ACK as small as possible
 to reduce the possibility of byte amplification attacks.</t>
@@ -5914,7 +5914,7 @@ within the TCB for an implementation.
 This section is for illustrative purposes and should not be deemed as
 requirements on an implementation or as an exhaustive list of all parameters
 inside an SCTP TCB.
-Each implementation may need its own additional parameters for optimization.</t>
+Each implementation might need its own additional parameters for optimization.</t>
 
 <section anchor='sec_parameters_necessary_for_the_sctp_instance'
          title='Parameters Necessary for the SCTP Instance'>
@@ -5922,9 +5922,9 @@ Each implementation may need its own additional parameters for optimization.</t>
 <t hangText='Associations:'>
 A list of current associations and mappings to the data consumers for each
 association.
-This may be in the form of a hash table or other implementation-dependent
+This might be in the form of a hash table or other implementation-dependent
 structure.
-The data consumers may be process identification information such as file
+The data consumers might be process identification information such as file
 descriptors, named pipe pointer, or table pointers dependent on how SCTP is
 implemented.</t>
 <t hangText='Secret Key:'>
@@ -5962,7 +5962,7 @@ Normally, this information is hashed or keyed for quick lookup and access
 of the TCB.</t>
 <t hangText='Primary Path:'>
 This is the current primary destination transport address of the peer endpoint.
-It may also specify a source transport address on this endpoint.</t>
+It might also specify a source transport address on this endpoint.</t>
 <t hangText='Overall Error Count:'>
 The overall association error count.</t>
 <t hangText='Overall Error Threshold:'>
@@ -5984,7 +5984,7 @@ An array of bits or bytes indicating which out-of- order TSNs have been
 received (relative to the Last Rcvd TSN).
 If no gaps exist, i.e., no out-of- order packets have been received, this
 array will be set to all zero.
-This structure may be in the form of a circular buffer or bit array.</t>
+This structure might be in the form of a circular buffer or bit array.</t>
 <t hangText='Ack State:'>
 This flag indicates if the next received packet is to be responded to with
 a SACK.
@@ -6134,7 +6134,7 @@ in <xref target='sec_parameter_format'/>.
 <vspace blankLines='1'/></t>
 <t>Detailed description of the intended use of this parameter type, and an
 indication of whether and under what circumstances multiple instances of this
-parameter type may be found within the same chunk.
+parameter type might be found within the same chunk.
 <vspace blankLines='1'/></t>
 <t>Each parameter type MUST be unique across all chunks.</t>
 </list></t>
@@ -6142,7 +6142,7 @@ parameter type may be found within the same chunk.
 
 <section anchor='sec_ietf_defined_additional_error_causes'
          title='IETF-Defined Additional Error Causes'>
-<t>Additional cause codes may be allocated in the range 11 to 65535
+<t>Additional cause codes can be allocated in the range 11 to 65535
 through a Specification Required action as defined in <xref target='RFC8126'/>.
 Provided documentation MUST include the following information:
 <list style='format %c)'>
@@ -6262,7 +6262,7 @@ https    443/sctp  HTTPS    # IETF TSVWG
 <t hangText='HB.Max.Burst:'>1</t>
 <t hangText='SACK.Delay:'>200 milliseconds</t>
 </list></t>
-<t>IMPLEMENTATION NOTE: The SCTP implementation may allow ULP to customize some
+<t>IMPLEMENTATION NOTE: The SCTP implementation might allow ULP to customize some
 of these protocol parameters (see <xref target='sec_api'/>).</t>
 <t>Note: RTO.Min SHOULD be set as recommended above.</t>
 </section>
@@ -6490,7 +6490,7 @@ on-the-wire bit ordering: the first bit 'on the wire' is the high-
 order coefficient.
 Since SCTP is a transport-level protocol, it cannot know the actual
 serial-media bit ordering.
-Moreover, different links in the path between SCTP endpoints may use different
+Moreover, different links in the path between SCTP endpoints can use different
 link-level bit orders.</t>
 <t>A convention therefore is established for mapping SCTP transport
 messages to polynomials for purposes of CRC computation.
@@ -6550,8 +6550,8 @@ That equivalence is the intent of this document.</t>
 found in the literature, sometimes with no restriction on the long-division
 algorithm.
 The choice of formulation in this document is to permit non-SCTP usage, where
-the same CRC algorithm may be used to protect messages shorter than 64 bits.</t>
-<t>There may be a computational advantage in validating the association
+the same CRC algorithm can be used to protect messages shorter than 64 bits.</t>
+<t>There can be a computational advantage in validating the association
 against the Verification Tag, prior to performing a checksum, as invalid tags
 will result in the same action as a bad checksum in most cases.
 The exceptions for this technique would be INIT and some SHUTDOWN-COMPLETE
