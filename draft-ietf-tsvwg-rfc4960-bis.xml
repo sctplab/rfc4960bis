@@ -9,7 +9,7 @@
 <rfc category="std"
      ipr="pre5378Trust200902"
      obsoletes="4960"
-     docName="draft-ietf-tsvwg-rfc4960-bis-04-to-be">
+     docName="draft-ietf-tsvwg-rfc4960-bis-04">
 <front>
 
 <title>Stream Control Transmission Protocol</title>
@@ -3670,7 +3670,7 @@ send more data.
 The data receiver SHOULD NOT increment a_rwnd unless it has released bytes
 from its receive buffer.
 For example, if the receiver is holding fragmented DATA chunks in a reassembly
-queue, it SHOULD not increment a_rwnd.
+queue, it SHOULD NOT increment a_rwnd.
 <vspace blankLines='1'/></t>
 <t>When sending a SACK, the data receiver SHOULD place the current
 value of a_rwnd into the a_rwnd field.
