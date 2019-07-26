@@ -6401,7 +6401,7 @@ in the coding, testing, and updating process of this document.
 <t>ECN as specified in <xref target='RFC3168'/>
 (updated by <xref target='RFC8311'/>) describes an extension to IP that
 details a method for becoming aware of congestion outside of datagram loss.
-This is an optional feature that an implementation MAY choose to add to SCTP.
+This is a feature that an implementation MAY choose to add to SCTP.
 This appendix details the minor differences implementers will need to be aware
 of if they choose to implement this feature.
 In general, <xref target='RFC3168'/> (updated by <xref target='RFC8311'/>)
