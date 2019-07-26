@@ -2657,10 +2657,10 @@ Otherwise, "Z" will be vulnerable to resource attacks.
 <t>Upon reception of the INIT ACK from "Z", "A" stops the T1-init timer
 and leave the COOKIE-WAIT state.
 "A" then sends the State Cookie received in the INIT ACK chunk in a
-COOKIE ECHO chunk, start the T1-cookie timer, and enter the COOKIE-ECHOED
+COOKIE ECHO chunk, starts the T1-cookie timer, and enters the COOKIE-ECHOED
 state.
 <vspace blankLines='1'/>
-Note: The COOKIE ECHO chunk can be bundled with any pending outbound DATA
+Note: The COOKIE ECHO chunk MAY be bundled with any pending outbound DATA
 chunks, but it MUST be the first chunk in the packet and until the COOKIE ACK
 is returned the sender MUST NOT send any other packets to the peer.
 <vspace blankLines='1'/></t>
@@ -2677,7 +2677,7 @@ valid COOKIE ECHO chunk.
 <vspace blankLines='1'/></t>
 <t>Upon reception of the COOKIE ACK, endpoint "A" will move from the
 COOKIE-ECHOED state to the ESTABLISHED state, stopping the T1-cookie timer.
-It might also notify its ULP about the successful establishment of the
+It can also notify its ULP about the successful establishment of the
 association with a Communication Up notification
 (see <xref target='sec_api'/>).</t>
 </list></t>
@@ -2952,7 +2952,7 @@ the proper timer value.</t>
 <section anchor='sec_handle_duplicate_or_unexpected_chunks'
          title='Handle Duplicate or Unexpected INIT, INIT ACK, COOKIE ECHO, and COOKIE ACK'>
 <t>During the life time of an association (in one of the possible states),
-an endpoint MAY receive from its peer endpoint one of the setup chunks (INIT,
+an endpoint can receive from its peer endpoint one of the setup chunks (INIT,
 INIT ACK, COOKIE ECHO, and COOKIE ACK).
 The receiver treats such a setup chunk as a duplicate and process it
 as described in this section.</t>
@@ -3519,7 +3519,7 @@ allow.</t>
 single packet.
 Furthermore, DATA chunks being retransmitted MAY be bundled with new
 DATA chunks, as long as the resulting packet size does not exceed the path MTU.
-A ULP might request that no bundling is performed, but this might only turn off
+A ULP can request that no bundling is performed, but this only turns off
 any delays that an SCTP implementation might be using to increase bundling
 efficiency.
 It does not in itself stop all bundling from occurring (i.e., in case of
@@ -3678,14 +3678,14 @@ The data receiver SHOULD take into account that the data sender will not
 retransmit DATA chunks that are acked via the Cumulative TSN Ack (i.e., will
 drop from its retransmit queue).</t>
 </list></t>
-<t>Under certain circumstances, the data receiver might need to drop DATA
+<t>Under certain circumstances, the data receiver MAY drop DATA
 chunks that it has received but hasn't released from its receive
 buffers (i.e., delivered to the ULP).
 These DATA chunks might have been acked in Gap Ack Blocks.
 For example, the data receiver might be holding data in its receive buffers
 while reassembling a fragmented user message from its peer when it runs out of
 receive buffer space.
-It might drop these DATA chunks even though it has acknowledged them in
+It MAY drop these DATA chunks even though it has acknowledged them in
 Gap Ack Blocks.
 If a data receiver drops DATA chunks, it MUST NOT include them in Gap Ack Blocks
 in subsequent SACKs until they are received again via retransmission.
@@ -4074,7 +4074,7 @@ a given stream.
 Also, a stream can be used as an "unordered" stream by simply setting the
 U flag to 1 in all DATA chunks sent through that stream.</t>
 <t>IMPLEMENTATION NOTE: When sending an unordered DATA chunk, an implementation
-might choose to place the DATA chunk in an outbound packet that is at the head of
+MAY choose to place the DATA chunk in an outbound packet that is at the head of
 the outbound transmission queue if possible.</t>
 <t>The 'Stream Sequence Number' field in a DATA chunk with U flag set to
 1 has no significance.
@@ -5893,7 +5893,7 @@ packet in response, due to the inclusion of multiple ERROR parameters,
 MAY (at its discretion) elect to omit some or all of the ERROR parameters to
 reduce the size of the INIT ACK.
 Due to a combination of the size of the COOKIE parameter and the number of
-addresses a receiver of an INIT can be indicated to a peer, it is always
+addresses a receiver of an INIT indicates to a peer, it is always
 possible that the INIT ACK will be larger than the original INIT.
 An SCTP implementation SHOULD attempt to make the INIT ACK as small as possible
 to reduce the possibility of byte amplification attacks.</t>
@@ -6133,7 +6133,7 @@ in <xref target='sec_parameter_format'/>.
 <vspace blankLines='1'/></t>
 <t>Detailed description of the intended use of this parameter type, and an
 indication of whether and under what circumstances multiple instances of this
-parameter type might be found within the same chunk.
+parameter type can be found within the same chunk.
 <vspace blankLines='1'/></t>
 <t>Each parameter type MUST be unique across all chunks.</t>
 </list></t>
@@ -6261,9 +6261,9 @@ https    443/sctp  HTTPS    # IETF TSVWG
 <t hangText='HB.Max.Burst:'>1</t>
 <t hangText='SACK.Delay:'>200 milliseconds</t>
 </list></t>
-<t>IMPLEMENTATION NOTE: The SCTP implementation might allow ULP to customize some
+<t>IMPLEMENTATION NOTE: The SCTP implementation can allow ULP to customize some
 of these protocol parameters (see <xref target='sec_api'/>).</t>
-<t>Note: RTO.Min SHOULD be set as described above.</t>
+<t>Note: RTO.Min SHOULD be set as described above in this section.</t>
 </section>
 
 <section anchor='sec_acknowledgements'
