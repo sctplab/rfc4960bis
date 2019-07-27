@@ -5100,7 +5100,7 @@ the local eligible address list.</t>
 <t>Associate
 <list style='hanging' hangIndent='8'>
 <t hangText='Format:'>
-ASSOCIATE(local SCTP instance name, destination transport addr list,
+ASSOCIATE(local SCTP instance name, initial destination transport addr list,
 outbound stream count) -> association id [,destination transport addr list]
 [,outbound stream count]</t>
 </list>
