@@ -5100,14 +5100,14 @@ the local eligible address list.</t>
 <t>Associate
 <list style='hanging' hangIndent='8'>
 <t hangText='Format:'>
-ASSOCIATE(local SCTP instance name, destination transport addr,
+ASSOCIATE(local SCTP instance name, destination transport addr list,
 outbound stream count) -> association id [,destination transport addr list]
 [,outbound stream count]</t>
 </list>
 This primitive allows the upper layer to initiate an association to a specific
 peer endpoint.
 <vspace/>
-The peer endpoint is specified by one of the transport
+The peer endpoint is specified by one or more of the transport
 addresses that defines the endpoint (see <xref target='sec_key_terms'/>).
 If the local SCTP instance has not been initialized, the ASSOCIATE is considered
 an error.
