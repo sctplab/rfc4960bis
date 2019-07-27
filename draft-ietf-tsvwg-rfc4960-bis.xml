@@ -2689,7 +2689,7 @@ received the INIT.</t>
 given in <xref target='sec_management_of_retransission_timer'/>.
 If the application provided multiple IP addresses of the peer, there SHOULD
 be a T1-init and T1-cookie timer for each address of the peer. Retransmissions
-of INIT chunks and COOKIE ECHO chunk SHOULD user all addresses of the peer
+of INIT chunks and COOKIE ECHO chunk SHOULD use all addresses of the peer
 similar to retransmissions of DATA chunks.</t>
 <t>If an endpoint receives an INIT, INIT ACK, or COOKIE ECHO chunk but decides
 not to establish the new association due to missing mandatory parameters in the
