@@ -2686,7 +2686,11 @@ They MUST be the only chunks present in the SCTP packets that carry them.</t>
 <t>An endpoint MUST send the INIT ACK to the IP address from which it
 received the INIT.</t>
 <t>Note: T1-init timer and T1-cookie timer SHOULD follow the same rules
-given in <xref target='sec_management_of_retransission_timer'/>.</t>
+given in <xref target='sec_management_of_retransission_timer'/>.
+If the application provided multiple IP addresses of the peer, there SHOULD
+be a T1-init and T1-cookie timer for each address of the peer. Retransmissions
+of INIT chunks and COOKIE ECHO chunk SHOULD user all addresses of the peer
+similar to retransmissions of DATA chunks.</t>
 <t>If an endpoint receives an INIT, INIT ACK, or COOKIE ECHO chunk but decides
 not to establish the new association due to missing mandatory parameters in the
 received INIT or INIT ACK, invalid parameter values, or lack of local resources,
@@ -5043,6 +5047,10 @@ Different SCTP implementations can have different ULP interfaces.
 However, all SCTPs aer expected to provide a certain minimum set of services to
 guarantee that all SCTP implementations can support the same protocol
 hierarchy.</t>
+<t>Please note that this section is informational only.</t>
+<t><xref target='RFC6458'/> and the Socket API Considerations section of
+<xref target='RFC7053'/> define an extension of the socket API for SCTP as
+described in this document.</t>
 
 <section anchor='sec_ulp_to_sctp'
          title='ULP-to-SCTP'>
@@ -6391,6 +6399,7 @@ in the coding, testing, and updating process of this document.
 <?rfc include="reference.RFC.4086" ?>
 <?rfc include="reference.RFC.4895" ?>
 <?rfc include="reference.RFC.4960" ?>
+<?rfc include="reference.RFC.6458" ?>
 <?rfc include="reference.RFC.7053" ?>
 <?rfc include="reference.RFC.8311" ?>
 <?rfc include="reference.RFC.8540" ?>
