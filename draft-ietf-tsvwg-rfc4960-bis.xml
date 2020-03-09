@@ -5417,6 +5417,10 @@ Mandatory attributes:
 local handle to the SCTP association.</t>
 <t>destination transport address -
 the transport address of the association on which a heartbeat is issued.</t>
+</list>
+Optional attributes:
+<list style='symbols'>
+<t>None.</t>
 </list></t>
 
 <t>Get SRTT Report
@@ -5436,6 +5440,10 @@ local handle to the SCTP association.</t>
 <t>destination transport address -
 the transport address of the association on which the SRTT measurement is to
 be reported.</t>
+</list>
+Optional attributes:
+<list style='symbols'>
+<t>None.</t>
 </list></t>
 
 <t>Set Failure Threshold
@@ -5456,6 +5464,10 @@ the transport address of the association on which the failure detection
 threshold is to be set.</t>
 <t>failure threshold -
 the new value of 'Path.Max.Retrans' for the destination address.</t>
+</list>
+Optional attributes:
+<list style='symbols'>
+<t>None.</t>
 </list></t>
 <t>Set Protocol Parameters
 <list style='hanging' hangIndent='8'>
@@ -5465,7 +5477,7 @@ protocol parameter list) -> result</t>
 </list>
 This primitive allows the local SCTP to customize the protocol parameters.
 <vspace/>
-   Mandatory attributes:
+Mandatory attributes:
 <list style='symbols'>
 <t>association id -
 local handle to the SCTP association.</t>
@@ -5486,6 +5498,8 @@ address basis.</t>
 RECEIVE_UNSENT(data retrieval id, buffer address, buffer size [,stream id]
 [, stream sequence number] [,partial flag] [,payload protocol-id])</t>
 </list>
+<vspace/>
+Mandatory attributes:
 <list style='symbols'>
 <t>data retrieval id -
 the identification passed to the ULP in the failure notification.</t>
@@ -5519,6 +5533,8 @@ the type of payload protocol of the received data.</t>
 RECEIVE_UNACKED(data retrieval id, buffer address, buffer size, [,stream id]
 [,stream sequence number] [,partial flag] [,payload protocol-id])</t>
 </list>
+<vspace/>
+Mandatory attributes:
 <list style='symbols'>
 <t>data retrieval id -
 the identification passed to the ULP in the failure notification.</t>
@@ -5551,10 +5567,16 @@ payload protocol of the received data.</t>
 <t hangText='Format:'>
 DESTROY(local SCTP instance name)</t>
 </list>
+<vspace/>
+Mandatory attributes:
 <list style='symbols'>
 <t>local SCTP instance name - this is the value that was passed to
 the application in the initialize primitive and it indicates which
 SCTP instance is to be destroyed.</t>
+</list>
+Optional attributes:
+<list style='symbols'>
+<t>None.</t>
 </list></t>
 </list></t>
 </section>
