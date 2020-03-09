@@ -4311,7 +4311,7 @@ sent within the congestion window.
 SCTP SACK leads to different implementations of Fast Retransmit and Fast
 Recovery than non-SACK TCP.
 As an example, see <xref target='FALL96'/>.</t>
-<t>The biggest difference between SCTP and TCP, however, is multi- homing.
+<t>The biggest difference between SCTP and TCP, however, is multi-homing.
 SCTP is designed to establish robust communication associations between
 two endpoints each of which might be reachable by more than one transport address.
 Potentially different addresses might lead to different data paths between the
@@ -4980,10 +4980,10 @@ have been received, then a SACK chunk MUST also be sent.</t>
 <t>The sender of the SHUTDOWN MAY also start an overall guard timer
 'T5-shutdown-guard' to bound the overall time for the shutdown sequence.
 At the expiration of this timer, the sender SHOULD abort the association by
-sending an ABORT chunk. If the 'T5-shutdown- guard' timer is used, it SHOULD
+sending an ABORT chunk. If the 'T5-shutdown-guard' timer is used, it SHOULD
 be set to the RECOMMENDED value of 5 times 'RTO.Max'.</t>
 <t>If the receiver of the SHUTDOWN has no more outstanding DATA chunks,
-the SHUTDOWN receiver MUST send a SHUTDOWN ACK and start a T2- shutdown timer
+the SHUTDOWN receiver MUST send a SHUTDOWN ACK and start a T2-shutdown timer
 of its own, entering the SHUTDOWN-ACK-SENT state.
 If the timer expires, the endpoint MUST resend the SHUTDOWN ACK.</t>
 <t>The sender of the SHUTDOWN ACK SHOULD limit the number of retransmissions of
