@@ -4187,7 +4187,7 @@ the user message.</t>
 its upper layer a mechanism to turn off fragmentation, it might do so.
 However, in so doing, it MUST react just like an implementation that does
 NOT support fragmentation, i.e., it MUST reject sends that exceed the
-current Path MTU (P-MTU).</t>
+current Path MTU (PMTU).</t>
 <t>IMPLEMENTATION NOTE: In this error case, the Send primitive discussed
 in <xref target='sec_ulp_to_sctp'/> would need to return an error to the
 upper layer.</t>
