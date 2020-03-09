@@ -5195,7 +5195,6 @@ Optional attributes:
 <list style='symbols'>
 <t>Upper Layer Abort Reason -
 reason of the abort to be passed to the peer.</t>
-<t>None.</t> <!-- MT: stray none -->
 </list></t>
 
 <t>Send
