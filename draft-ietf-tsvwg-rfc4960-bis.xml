@@ -2655,7 +2655,7 @@ association.
 Otherwise, "Z" will be vulnerable to resource attacks.
 <vspace blankLines='1'/></t>
 <t>Upon reception of the INIT ACK from "Z", "A" stops the T1-init timer
-and leave the COOKIE-WAIT state.
+and leaves the COOKIE-WAIT state.
 "A" then sends the State Cookie received in the INIT ACK chunk in a
 COOKIE ECHO chunk, starts the T1-cookie timer, and enters the COOKIE-ECHOED
 state.
@@ -2664,7 +2664,7 @@ Note: The COOKIE ECHO chunk MAY be bundled with any pending outbound DATA
 chunks, but it MUST be the first chunk in the packet and until the COOKIE ACK
 is returned the sender MUST NOT send any other packets to the peer.
 <vspace blankLines='1'/></t>
-<t>Upon reception of the COOKIE ECHO chunk, endpoint "Z" will reply
+<t>Upon reception of the COOKIE ECHO chunk, endpoint "Z" replies
 with a COOKIE ACK chunk after building a TCB and moving to the
 ESTABLISHED state.
 A COOKIE ACK chunk MAY be bundled with any pending DATA chunks
@@ -2675,7 +2675,7 @@ IMPLEMENTATION NOTE: An implementation can choose to send the
 Communication Up notification to the SCTP user upon reception of a
 valid COOKIE ECHO chunk.
 <vspace blankLines='1'/></t>
-<t>Upon reception of the COOKIE ACK, endpoint "A" will move from the
+<t>Upon reception of the COOKIE ACK, endpoint "A" moves from the
 COOKIE-ECHOED state to the ESTABLISHED state, stopping the T1-cookie timer.
 It can also notify its ULP about the successful establishment of the
 association with a Communication Up notification
@@ -4994,7 +4994,7 @@ association enters the CLOSED state).</t>
 <t>Upon the receipt of the SHUTDOWN ACK, the SHUTDOWN sender MUST stop
 the T2-shutdown timer, send a SHUTDOWN COMPLETE chunk to its peer, and remove
 all record of the association.</t>
-<t>Upon reception of the SHUTDOWN COMPLETE chunk, the endpoint will verify that
+<t>Upon reception of the SHUTDOWN COMPLETE chunk, the endpoint verifies that
 it is in the SHUTDOWN-ACK-SENT state;
 if it is not, the chunk SHOULD be discarded.
 If the endpoint is in the SHUTDOWN-ACK-SENT state, the endpoint SHOULD stop
