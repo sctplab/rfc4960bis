@@ -634,7 +634,7 @@ A chunk contains either control information or user data.</t>
 size, except for the INIT, INIT ACK, and SHUTDOWN COMPLETE chunks.
 These chunks MUST NOT be bundled with any other chunk in a packet.
 See <xref target='sec_bundling'/> for more details on chunk bundling.</t>
-<t>If a user data message doesn't fit into one SCTP packet it can be
+<t>If a user data message does not fit into one SCTP packet it can be
 fragmented into multiple chunks using the procedure defined in
 <xref target='sec_frag_reass'/>.</t>
 <t>All integer fields in an SCTP packet MUST be transmitted in network
@@ -1157,7 +1157,7 @@ This value MUST be placed into the Verification Tag field of every SCTP packet
 that the receiver of the INIT transmits within this association.
 <vspace blankLines='1'/>
 The Initiate Tag is allowed to have any value except 0.
-See <xref target='sec_selection_of_tag_value'/> for more on the selection of 
+See <xref target='sec_selection_of_tag_value'/> for more on the selection of
 the tag value.
 <vspace blankLines='1'/>
 If the value of the Initiate Tag in a received INIT chunk is found to be 0,
@@ -2605,7 +2605,7 @@ data and leave this state when all data in queue is transmitted.</t>
 requests from its SCTP user.</t>
 </list></t>
 <t>The CLOSED state is used to indicate that an association is not created
-(i.e., doesn't exist).</t>
+(i.e., does not exist).</t>
 </section>
 
 <section anchor='sec_assoc_initialization'
@@ -2765,7 +2765,7 @@ established association (or one in the process of being established) if the
 use of any of the valid address parameters contained within the chunk would
 identify an existing TCB.</t>
 </list></t>
-<t>IMPLEMENTATION NOTE: In some cases (e.g., when the implementation doesn't
+<t>IMPLEMENTATION NOTE: In some cases (e.g., when the implementation does not
 control the source IP address that is used for transmitting), an endpoint
 might need to include in its INIT or INIT ACK all possible IP addresses from
 which packets to the peer could be transmitted.</t>
@@ -3504,7 +3504,7 @@ for retransmission (limited by the current cwnd).
 <t>When the time comes for the sender to transmit new DATA chunks, the protocol
 parameter Max.Burst SHOULD be used to limit the number of packets sent.
 The limit MAY be applied by adjusting cwnd temporarily, as follows:
-<!-- FIXME MT: This doesn't render correctly when generating HTML -->
+<!-- FIXME MT: This does not render correctly when generating HTML -->
 <figure suppress-title='true'>
 <artwork align='center'>
 if ((flightsize + Max.Burst * MTU) &lt; cwnd)
@@ -3683,7 +3683,7 @@ retransmit DATA chunks that are acked via the Cumulative TSN Ack (i.e., will
 drop from its retransmit queue).</t>
 </list></t>
 <t>Under certain circumstances, the data receiver MAY drop DATA
-chunks that it has received but hasn't released from its receive
+chunks that it has received but has not released from its receive
 buffers (i.e., delivered to the ULP).
 These DATA chunks might have been acked in Gap Ack Blocks.
 For example, the data receiver might be holding data in its receive buffers
@@ -4095,7 +4095,7 @@ continuity of the TSNs received.
 If the endpoint detects a gap in the received DATA chunk sequence, it SHOULD
 send a SACK with Gap Ack Blocks immediately.
 The data receiver continues sending a SACK after receipt of each SCTP packet
-that doesn't fill the gap.</t>
+that does not fill the gap.</t>
 <t>Based on the Gap Ack Block from the received SACK, the endpoint can
 calculate the missing DATA chunks and make decisions on whether to
 retransmit them (see <xref target='sec_processing_of_received_sack'/>
