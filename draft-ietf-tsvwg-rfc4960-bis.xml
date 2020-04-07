@@ -9,7 +9,7 @@
 <rfc category="std"
      ipr="pre5378Trust200902"
      obsoletes="4960"
-     docName="draft-ietf-tsvwg-rfc4960-bis-06-to-be">
+     docName="draft-ietf-tsvwg-rfc4960-bis-06">
 <front>
 
 <title>Stream Control Transmission Protocol</title>
@@ -4570,15 +4570,16 @@ destination addresses MUST be reset to their initial values.</t>
 </section>
 <section anchor='sec_path_mtu_discovery'
          title='Path MTU Discovery'>
-<t><xref target='RFC4821'/>, <xref target='RFC8201'/>, and
-<xref target='RFC1191'/> specify "Packetization Layer Path MTU Discovery",
+<t><xref target='I-D.ietf-tsvwg-datagram-plpmtud'/>,
+<xref target='RFC8201'/>, and <xref target='RFC1191'/> specify
+"Packetization Layer Path MTU Discovery",
 whereby an endpoint maintains an estimate of the maximum transmission unit (MTU)
 along a given Internet path and refrains from sending packets along that path
 that exceed the MTU, other than occasional attempts to probe for a change in
 the Path MTU (PMTU).
-<xref target='RFC4821'/> is thorough in its discussion of the MTU discovery
-mechanism and strategies for determining the current end-to-end MTU
-setting as well as detecting changes in this value.</t>
+<xref target='I-D.ietf-tsvwg-datagram-plpmtud'/> is thorough in its
+discussion of the MTU discovery mechanism and strategies for determining the
+current end-to-end MTU setting as well as detecting changes in this value.</t>
 <t>An endpoint SHOULD apply these techniques, and SHOULD do so on a
 per-destination-address basis.</t>
 <t>There are two important SCTP-specific points regarding Path MTU discovery:
@@ -6361,7 +6362,6 @@ in the coding, testing, and updating process of this document.
 <?rfc include="reference.RFC.4291" ?>
 <?rfc include="reference.RFC.4301" ?>
 <?rfc include="reference.RFC.4303" ?>
-<?rfc include="reference.RFC.4821" ?>
 <?rfc include="reference.RFC.5681" ?>
 <?rfc include="reference.RFC.6335" ?>
 <?rfc include="reference.RFC.7296" ?>
@@ -6369,6 +6369,7 @@ in the coding, testing, and updating process of this document.
 <?rfc include="reference.RFC.8174" ?>
 <?rfc include="reference.RFC.8200" ?>
 <?rfc include="reference.RFC.8201" ?>
+<?rfc include="reference.I-D.ietf-tsvwg-datagram-plpmtud" ?>
 </references>
 <references title='Informative References'>
 <reference anchor="FALL96">
