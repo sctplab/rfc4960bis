@@ -5140,8 +5140,8 @@ Mandatory attributes:
 <list style='symbols'>
 <t>local SCTP instance name -
 obtained from the INITIALIZE operation.</t>
-<t>destination transport addr -
-specified as one of the transport addresses of the peer endpoint with which
+<t>initial destination transport addr list -
+a non-empty list of transport addresses of the peer endpoint with which
 the association is to be established.</t>
 <t>outbound stream count -
 the number of outbound streams the ULP would like to open towards this
