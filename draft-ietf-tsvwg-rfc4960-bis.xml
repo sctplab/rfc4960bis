@@ -4011,7 +4011,7 @@ chunk) for the SACK is broken.</t>
 <t>Furthermore, when its peer is multi-homed, an endpoint SHOULD try to
 retransmit a chunk that timed out to an active destination transport
 address that is different from the last destination address to which
-the DATA chunk was sent.</t>
+the chunk was sent.</t>
 <t>When its peer is multi-homed, an endpoint SHOULD send fast retransmissions
 to the same destination transport address to which the original data was sent.
 If the primary path has been changed and the original data was sent to the
