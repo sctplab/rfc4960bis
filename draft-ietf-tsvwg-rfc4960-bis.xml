@@ -10,6 +10,14 @@
      ipr="pre5378Trust200902"
      obsoletes="4960"
      docName="draft-ietf-tsvwg-rfc4960-bis-07-to-be">
+
+<!--
+* ToDo:
+*
+* Address Gorry's comment sent on 7.4.2020 on TSVWG
+*
+-->
+
 <front>
 
 <title>Stream Control Transmission Protocol</title>
