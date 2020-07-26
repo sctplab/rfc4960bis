@@ -3725,7 +3725,10 @@ SACK [TSN Ack=6,block=0] -------------> (cancel T3-rtx timer)
 <t>If an endpoint receives a DATA chunk with no user data (i.e., the
 Length field is set to 16), it MUST send an ABORT with error cause
 set to "No User Data".</t>
-<t>An endpoint SHOULD NOT send a DATA chunk with no user data part.</t>
+<t>An endpoint SHOULD NOT send a DATA chunk with no user data part.
+This avoids the need to be able to return a zero-length user
+message in the API, especially in the socket API as specified in
+<xref target='RFC6458'/> for details.</t>
 
 <section anchor='sec_processing_of_received_sack'
          title='Processing a Received SACK'>
@@ -4160,8 +4163,8 @@ If it is not, the receiver MUST treat the packet as an invalid SCTP packet.</t>
 </list></t>
 <t>The default procedure for handling invalid SCTP packets is to silently
 discard them.</t>
-<t>Any hardware implementation SHOULD be done in a way that is verifiable by
-the software.</t>
+<t>Any hardware implementation SHOULD permit alternative verification of the
+CRC in software.</t>
 </section>
 <section anchor='sec_frag_reass'
          title='Fragmentation and Reassembly'>
