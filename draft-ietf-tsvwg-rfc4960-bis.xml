@@ -826,8 +826,7 @@ that is taken if the processing endpoint does not recognize the Chunk Type.</t>
 </tbody>
 </table>
 <t>Note: The ECNE and CWR chunk types are reserved for future use of Explicit
-Congestion Notification (ECN);
-see <xref target='sec_ecn'/>.</t>
+Congestion Notification (ECN).</t>
 </dd>
 <dt>Chunk Flags: 8 bits</dt>
 <dd>
@@ -6674,76 +6673,6 @@ in the coding, testing, and updating process of this document.
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8311.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8540.xml"/>
 </references>
-
-<section anchor='sec_ecn'>
-<name>Explicit Congestion Notification</name>
-
-<t>ECN as specified in <xref target='RFC3168'/>
-(updated by <xref target='RFC8311'/>) describes an extension to IP that
-details a method for becoming aware of congestion outside of datagram loss.
-This is a feature that an implementation MAY choose to add to SCTP.
-This appendix details the minor differences implementers will need to be aware
-of if they choose to implement this feature.
-In general, <xref target='RFC3168'/> (updated by <xref target='RFC8311'/>)
-SHOULD be followed, with the following exceptions.</t>
-<t>Negotiation:</t>
-<t><xref target='RFC3168'/> (updated by <xref target='RFC8311'/>) details
-the negotiation of ECN during the SYN and SYN-ACK stages of a TCP connection.
-The sender of the SYN sets 2 bits in the TCP flags, and the sender of the
-SYN-ACK sets only 1 bit.
-The reasoning behind this is to ensure that both sides are truly ECN capable.
-For SCTP, this is not necessary.
-To indicate that an endpoint is ECN capable, an endpoint SHOULD add to
-the INIT and or INIT ACK chunk the TLV reserved for ECN.
-This TLV contains no parameters, and thus has the following format:</t>
-<artwork align='center'>
- 0                   1                   2                   3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|   Parameter Type = 32768      |     Parameter Length = 4      |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-</artwork>
-<t>ECN-Echo:</t>
-
-<t><xref target='RFC3168'/> (updated by <xref target='RFC8311'/>)
-details a specific bit for a receiver to send back
-in its TCP acknowledgements to notify the sender of the
-Congestion Experienced (CE) bit that the CE bit has arrived from the network.
-For SCTP, this same indication is made by including the ECNE chunk.
-This chunk contains one data element, i.e., the lowest TSN associated with the
-IP datagram marked with the CE bit, and looks as follows:</t>
-<artwork align='center'>
- 0                   1                   2                   3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-| Chunk Type=12 | Flags=00000000|    Chunk Length = 8           |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                      Lowest TSN Number                        |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-</artwork>
-<t>Note: The ECNE is considered a Control chunk.</t>
-<t>CWR:</t>
-<t><xref target='RFC3168'/> (updated by <xref target='RFC8311'/>)
-details a specific bit for a sender to send in
-the header of its next outbound TCP segment to indicate to its peer that it has
-reduced its congestion window.
-This is termed the CWR bit.
-For SCTP, the same indication is made by including the CWR chunk.
-This chunk contains one data element, i.e., the TSN number that was sent
-in the ECNE chunk.
-This element represents the lowest TSN number in the datagram that was
-originally marked with the CE bit.</t>
-<artwork align='center'>
- 0                   1                   2                   3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-| Chunk Type=13 | Flags=00000000|    Chunk Length = 8           |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                      Lowest TSN Number                        |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-</artwork>
-<t>Note: The CWR is considered a Control chunk.</t>
-</section>
 
 <section anchor='sec_crc32c'>
 <name>CRC32c Checksum Calculation</name>
