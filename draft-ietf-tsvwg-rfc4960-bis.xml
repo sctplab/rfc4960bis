@@ -6546,50 +6546,160 @@ of these protocol parameters (see <xref target='sec_api'/>).</t>
 <name>Acknowledgements</name>
 
 <t>An undertaking represented by this updated document is not a small
-feat and represents the summation of the initial authors of RFC 2960:
-Q.&nbsp;Xie, K.&nbsp;Morneault, C.&nbsp;Sharp, H.&nbsp;Schwarzbauer,
-T.&nbsp;Taylor, I.&nbsp;Rytina, M.&nbsp;Kalla, L.&nbsp;Zhang,
+feat and represents the summation of the initial co-authors of
+<xref target="RFC2960"/>:
+<contact fullname="Q. Xie"/>,
+<contact fullname="K. Morneault"/>,
+<contact fullname="C. Sharp"/>,
+<contact fullname="H. Schwarzbauer"/>,
+<contact fullname="T. Taylor"/>,
+<contact fullname="I. Rytina"/>,
+<contact fullname="M. Kalla"/>,
+<contact fullname="L. Zhang"/>,
 and V.&nbsp;Paxson.</t>
-<t>Add to that, the comments from everyone who contributed to the original
-RFC:</t>
-<t>Mark Allman, R.J.&nbsp;Atkinson, Richard Band, Scott Bradner, Steve Bellovin,
-Peter Butler, Ram Dantu, R.&nbsp;Ezhirpavai, Mike Fisk, Sally Floyd,
-Atsushi Fukumoto, Matt Holdrege, Henry Houh, Christian Huitema, Gary Lehecka,
-Jonathan Lee, David Lehmann, John Loughney, Daniel Luan, Barry Nagelberg,
-Thomas Narten, Erik Nordmark, Lyndon Ong, Shyamal Prasad, Kelvin Porter,
-Heinz Prantner, Jarno Rajahalme, Raymond E.&nbsp;Reeves, Renee Revis,
-Ivan Arias Rodriguez, A.&nbsp;Sankar, Greg Sidebottom, Brian Wyld,
-La Monte Yarroll, and many others for their invaluable comments.</t>
-<t>Then, add the authors of the SCTP implementor's guide,
-I.&nbsp;Arias-Rodriguez, K.&nbsp;Poon, A.&nbsp;Caro, and M.&nbsp;Tuexen.</t>
+<t>Add to that, the comments from everyone who contributed to
+<xref target="RFC2960"/>:
+<contact fullname="Mark Allman"/>,
+<contact fullname="R. J. Atkinson"/>,
+<contact fullname="Richard Band"/>,
+<contact fullname="Scott Bradner"/>,
+<contact fullname="Steve Bellovin"/>,
+<contact fullname="Peter Butler"/>,
+<contact fullname="Ram Dantu"/>,
+<contact fullname="R. Ezhirpavai"/>,
+<contact fullname="Mike Fisk"/>,
+<contact fullname="Sally Floyd"/>,
+<contact fullname="Atsushi Fukumoto"/>,
+<contact fullname="Matt Holdrege"/>,
+<contact fullname="Henry Houh"/>,
+<contact fullname="Christian Huitema"/>,
+<contact fullname="Gary Lehecka"/>,
+<contact fullname="Jonathan Lee"/>,
+<contact fullname="David Lehmann"/>,
+<contact fullname="John Loughney"/>,
+<contact fullname="Daniel Luan"/>,
+<contact fullname="Barry Nagelberg"/>,
+<contact fullname="Thomas Narten"/>,
+<contact fullname="Erik Nordmark"/>,
+<contact fullname="Lyndon Ong"/>,
+<contact fullname="Shyamal Prasad"/>,
+<contact fullname="Kelvin Porter"/>,
+<contact fullname="Heinz Prantner"/>,
+<contact fullname="Jarno Rajahalme"/>,
+<contact fullname="Raymond E. Reeves"/>,
+<contact fullname="Renee Revis"/>,
+<contact fullname="Ivan Arias Rodriguez"/>,
+<contact fullname="A. Sankar"/>,
+<contact fullname="Greg Sidebottom"/>,
+<contact fullname="Brian Wyld"/>,
+<contact fullname="La Monte Yarroll"/>,
+and many others for their invaluable comments.</t>
+
+<t>Then, add the co-authors of <xref target="RFC4460"/>:
+<contact fullname="I. Arias-Rodriguez"/>,
+<contact fullname="K. Poon"/>,
+and <contact fullname="A. Caro."/></t>
 <t>Then add to these the efforts of all the subsequent seven
-SCTP interoperability tests and those who commented on RFC 4460 as shown in
-its acknowledgements:</t>
-<t>Barry Zuckerman, La Monte Yarroll, Qiaobing Xie, Wang Xiaopeng,
-Jonathan Wood, Jeff Waskow, Mike Turner, John Townsend, Sabina Torrente,
-Cliff Thomas, Yuji Suzuki, Manoj Solanki, Sverre Slotte, Keyur Shah, Jan Rovins,
-Ben Robinson, Renee Revis, Ian Periam, RC Monee, Sanjay Rao,
-Sujith Radhakrishnan, Heinz Prantner, Biren Patel, Nathalie Mouellic,
-Mitch Miers, Bernward Meyknecht, Stan McClellan, Oliver Mayor,
-Tomas Orti Martin, Sandeep Mahajan, David Lehmann, Jonathan Lee,
-Philippe Langlois, Karl Knutson, Joe Keller, Gareth Keily, Andreas Jungmaier,
-Janardhan Iyengar, Mutsuya Irie, John Hebert, Kausar Hassan, Fred Hasle,
-Dan Harrison, Jon Grim, Laurent Glaude, Steven Furniss, Atsushi Fukumoto,
-Ken Fujita, Steve Dimig, Thomas Curran, Serkan Cil, Melissa Campbell,
-Peter Butler, Rob Brennan, Harsh Bhondwe, Brian Bidulock, Caitlin Bestler,
-Jon Berger, Robby Benedyk, Stephen Baucke, Sandeep Balani,
-and Ronnie Sellar.</t>
-<t>A special thanks to Mark Allman, who should actually be a co-author
-for his work on the max-burst, but managed to wiggle out due to a
-technicality.
-Also, we would like to acknowledge Lyndon Ong and Phil Conrad for their
-valuable input and many contributions.</t>
-<t>And finally, you have this document, and those who have commented
-upon that including Alfred Hoenes and Ronnie Sellars.</t>
-<t>My thanks cannot be adequately expressed to all of you who have participated
+SCTP interoperability tests and those who commented on <xref target="RFC4460"/>
+as shown in its acknowledgements:
+<contact fullname="Barry Zuckerman"/>,
+<contact fullname="La Monte Yarroll"/>,
+<contact fullname="Qiaobing Xie"/>,
+<contact fullname="Wang Xiaopeng"/>,
+<contact fullname="Jonathan Wood"/>,
+<contact fullname="Jeff Waskow"/>,
+<contact fullname="Mike Turner"/>,
+<contact fullname="John Townsend"/>,
+<contact fullname="Sabina Torrente"/>,
+<contact fullname="Cliff Thomas"/>,
+<contact fullname="Yuji Suzuki"/>,
+<contact fullname="Manoj Solanki"/>,
+<contact fullname="Sverre Slotte"/>,
+<contact fullname="Keyur Shah"/>,
+<contact fullname="Jan Rovins"/>,
+<contact fullname="Ben Robinson"/>,
+<contact fullname="Renee Revis"/>,
+<contact fullname="Ian Periam"/>,
+<contact fullname="RC Monee"/>,
+<contact fullname="Sanjay Rao"/>,
+<contact fullname="Sujith Radhakrishnan"/>,
+<contact fullname="Heinz Prantner"/>,
+<contact fullname="Biren Patel"/>,
+<contact fullname="Nathalie Mouellic"/>,
+<contact fullname="Mitch Miers"/>,
+<contact fullname="Bernward Meyknecht"/>,
+<contact fullname="Stan McClellan"/>,
+<contact fullname="Oliver Mayor"/>,
+<contact fullname="Tomas Orti Martin"/>,
+<contact fullname="Sandeep Mahajan"/>,
+<contact fullname="David Lehmann"/>,
+<contact fullname="Jonathan Lee"/>,
+<contact fullname="Philippe Langlois"/>,
+<contact fullname="Karl Knutson"/>,
+<contact fullname="Joe Keller"/>,
+<contact fullname="Gareth Keily"/>,
+<contact fullname="Andreas Jungmaier"/>,
+<contact fullname="Janardhan Iyengar"/>,
+<contact fullname="Mutsuya Irie"/>,
+<contact fullname="John Hebert"/>,
+<contact fullname="Kausar Hassan"/>,
+<contact fullname="Fred Hasle"/>,
+<contact fullname="Dan Harrison"/>,
+<contact fullname="Jon Grim"/>,
+<contact fullname="Laurent Glaude"/>,
+<contact fullname="Steven Furniss"/>,
+<contact fullname="Atsushi Fukumoto"/>,
+<contact fullname="Ken Fujita"/>,
+<contact fullname="Steve Dimig"/>,
+<contact fullname="Thomas Curran"/>,
+<contact fullname="Serkan Cil"/>,
+<contact fullname="Melissa Campbell"/>,
+<contact fullname="Peter Butler"/>,
+<contact fullname="Rob Brennan"/>,
+<contact fullname="Harsh Bhondwe"/>,
+<contact fullname="Brian Bidulock"/>,
+<contact fullname="Caitlin Bestler"/>,
+<contact fullname="Jon Berger"/>,
+<contact fullname="Robby Benedyk"/>,
+<contact fullname="Stephen Baucke"/>,
+<contact fullname="Sandeep Balani"/>,
+and <contact fullname="Ronnie Sellar"/>.</t>
+<t>A special thanks to <contact fullname="Mark Allman"/>, who should actually
+be a co-author for his work on the max-burst, but managed to wiggle out due to a
+technicality.</t>
+<t>Also, we would like to acknowledge <contact fullname="Lyndon Ong"/> and
+<contact fullname="Phil Conrad"/> for their valuable input and many
+contributions.</t>
+<t>Furthermore, you have <xref target="RFC4960"/>, and those who have commented
+upon that including <contact fullname="Alfred Hönes"/> and
+<contact fullname="Ronnie Sellars"/>.</t>
+
+<t>Then, add the co-author of <xref target="RFC8540"/>:
+<contact fullname="Maksim Proshin"/>.</t>
+<t>And people who have commented on <xref target="RFC8540"/>:
+<contact fullname="Pontus Andersson"/>,
+<contact fullname="Eric W. Biederman"/>,
+<contact fullname="Cedric Bonnet"/>,
+<contact fullname="Spencer Dawkins"/>,
+<contact fullname="Gorry Fairhurst"/>,
+<contact fullname="Benjamin Kaduk"/>,
+<contact fullname="Mirja Kühlewind"/>,
+<contact fullname="Peter Lei"/>,
+<contact fullname="Gyula Marosi"/>,
+<contact fullname="Lionel Morand"/>,
+<contact fullname="Jeff Morriss"/>,
+<contact fullname="Tom Petch"/>,
+<contact fullname="Kacheong Poon"/>,
+<contact fullname="Julien Pourtet"/>,
+<contact fullname="Irene Rüngeler"/>,
+<contact fullname="Michael Welzl"/>,
+and <contact fullname="Qiaobing Xie"/>.</t>
+<t>And finally the people who have provided comments for this document including
+<contact fullname="Maksim Proshin"/>
+and <contact fullname="Gorry Fairhurst"/>.</t>
+<t>Our thanks cannot be adequately expressed to all of you who have participated
 in the coding, testing, and updating process of this document.
- All I can say is, Thank You!</t>
-<t>Randall Stewart - Editor</t>
+ All we can say is, Thank You!</t>
 </section>
 
 </middle>
@@ -6664,13 +6774,13 @@ in the coding, testing, and updating process of this document.
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2104.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2196.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2522.xml"/>
-<xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3168.xml"/>
+<xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2960.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4086.xml"/>
+<xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4460.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4895.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4960.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6458.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7053.xml"/>
-<xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8311.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8540.xml"/>
 </references>
 
