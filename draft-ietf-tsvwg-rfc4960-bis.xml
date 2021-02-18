@@ -3758,9 +3758,7 @@ endpoint subtracts the data size of the chunk from the rwnd of that peer.</t></l
 <li><t>Any time a DATA chunk is marked for retransmission, either via T3-rtx timer
 expiration (<xref target='sec_handle_t3_rtx_expiration'/>) or
 via Fast Retransmit (<xref target='sec_fast_retransmit_on_gap_reports'/>),
-add the data size of those chunks to the rwnd.</t>
-<t>Note: If the implementation is maintaining a timer on each DATA chunk, then
-only DATA chunks whose timer expired would be marked for retransmission.</t></li>
+add the data size of those chunks to the rwnd.</t></li>
 <li><t>Any time a SACK arrives, the endpoint performs the following:</t>
 <ol type='%i)'>
 <li><t>If Cumulative TSN Ack is less than the Cumulative TSN Ack Point,
@@ -6271,6 +6269,11 @@ next sequence number to be sent on the stream.</t>
 <dd>
 <t>A reassembly queue.</t>
 </dd>
+<dt>Receive Buffer:</dt>
+<dd>
+<t>A buffer to store received user data which is not yet delivered to the
+upper layer.</t>
+</dd>
 <dt>Local Transport Address List:</dt>
 <dd>
 <t>The list of local IP addresses bound in to this association.</t>
@@ -6726,6 +6729,7 @@ upon that including <contact fullname="Alfred Hönes"/> and
 and <contact fullname="Qiaobing Xie"/>.</t>
 <t>And finally the people who have provided comments for this document including
 <contact fullname="Gorry Fairhurst"/>,
+<contact fullname="Claudio Porfiri"/>,
 <contact fullname="Maksim Proshin"/>,
 and <contact fullname="Timo Völker"/>.</t>
 <t>Our thanks cannot be adequately expressed to all of you who have participated
