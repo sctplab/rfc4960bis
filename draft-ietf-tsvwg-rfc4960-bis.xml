@@ -236,7 +236,7 @@ of time, normally the HEARTBEAT interval or greater.</t>
 <t>An address that is considered inactive due to errors and unavailable to
 transport user messages.</t>
 </dd>
-<dt>Message = user message:</dt>
+<dt>Message (or user message):</dt>
 <dd>
 <t>Data submitted to SCTP by the Upper Layer Protocol (ULP).</t>
 </dd>
@@ -279,6 +279,17 @@ but for which it has not yet received an acknowledgement.</t>
 destination transport address of its peer SCTP endpoint.
 Sending to different destination transport addresses does not necessarily
 guarantee getting separate paths.</t>
+</dd>
+<dt>Path Maximum DATA Chunk Size (PMDCS):</dt>
+<dd>
+<t>The maximum size (including the DATA chunk header) of a DATA chunk which fits
+into an SCTP packet not exceeding the PMTU of a particular destination address.</t>
+</dd>
+<dt>Path Maximum Transmission Unit (PMTU):</dt>
+<dd>
+<t>The maximum size (including the SCTP common header and all chunks including
+their paddings) of an SCTP packet which can be which can be sent to a particular
+destination address without using IP level fragmentation.</t>
 </dd>
 <dt>Primary Path:</dt>
 <dd>
@@ -3439,8 +3450,9 @@ transmission and/or retransmission of outbound DATA chunks:</t>
 <t>At any given time, the data sender MUST NOT transmit new data to
 any destination transport address if its peer's rwnd indicates
 that the peer has no buffer space (i.e., rwnd is smaller than the size of the
-next DATA chunk; see <xref target='sec_processing_of_received_sack'/>).</t>
-<t>When the receiver has no buffer space, this probe is called a zero
+next DATA chunk; see <xref target='sec_processing_of_received_sack'/>),
+except stated otherwise.</t>
+<t>When the receiver has no buffer space, a probe being sent is called a zero
 window probe.
 A zero window probe SHOULD only be sent when all outstanding DATA
 chunks have been cumulatively acknowledged and no DATA chunks are in flight.
@@ -3472,9 +3484,9 @@ sender.</t>
 </li>
 <li>
 <t>At any given time, the sender MUST NOT transmit new data to a given
-transport address if it has cwnd + (PMTU - 1) or more bytes of data outstanding
+transport address if it has cwnd + (PMDCS - 1) or more bytes of data outstanding
 to that transport address.
-If data is available, the sender SHOULD exceed cwnd by up to (PMTU - 1) bytes
+If data is available, the sender SHOULD exceed cwnd by up to (PMDCS - 1) bytes
 on a new data transmission if the flightsize does not currently reach cwnd.
 The breach of cwnd MUST constitute one packet only.</t>
 </li>
@@ -3486,8 +3498,8 @@ for retransmission (limited by the current cwnd).</t>
 protocol parameter 'Max.Burst' SHOULD be used to limit the number of packets sent.
 The limit MAY be applied by adjusting cwnd temporarily, as follows:</t>
 <sourcecode>
-if ((flightsize + Max.Burst * PMTU) &lt; cwnd)
-    cwnd = flightsize + Max.Burst * PMTU;
+if ((flightsize + Max.Burst * PMDCS) &lt; cwnd)
+    cwnd = flightsize + Max.Burst * PMDCS;
 </sourcecode>
 <t>Or, it MAY be applied by strictly limiting the number of packets emitted by
 the output routine.
@@ -3907,7 +3919,7 @@ do the following:</t>
 <ol type='E%d)'>
 <li><t>For the destination address for which the timer expires, adjust its ssthresh
 with rules defined in <xref target='sec_congestion_control_sub'/> and set
-the cwnd = PMTU.</t></li>
+the cwnd = PMDCS.</t></li>
 <li><t>For the destination address for which the timer expires, set
 RTO = RTO * 2 ("back off the timer").
 The maximum value discussed in rule C7 above ('RTO.max') MAY be used to provide
@@ -4371,8 +4383,10 @@ which is used during congestion avoidance phase to facilitate cwnd
 adjustment.</t>
 <t>Unlike TCP, an SCTP sender MUST keep a set of these control variables
 cwnd, ssthresh, and partial_bytes_acked for EACH destination address
-of its peer (when its peer is multi-homed).
-Only one rwnd is kept for the whole association (no matter if the peer is
+of its peer (when its peer is multi-homed). When doing accounting for a
+DATA chunk related to one of these variables, the length of the DATA chunk
+including the padding SHOULD be used.</t>
+<t>Only one rwnd is kept for the whole association (no matter if the peer is
 multi-homed or has a single address).</t>
 
 <section anchor='sec_slow_start'>
@@ -4385,9 +4399,11 @@ The slow-start algorithm is used for this purpose at the beginning of a
 transfer, or after repairing loss detected by the retransmission timer.</t>
 <ul>
 <li><t>The initial cwnd before data transmission MUST be set to
-min(4 * PMTU, max(2 * PMTU, 4380)) bytes.</t></li>
+min(4 * PMDCS, max(2 * PMDCS, 4404)) bytes if the peer address is an IPV4 address
+and to min(4 * PMDCS, max(2 * PMDCS, 4344)) bytes if the peer address is an
+IPV6 address.</t></li>
 <li><t>The initial cwnd after a retransmission timeout MUST be no more than
-PMTU, and only one packet is allowed to be in flight until successful
+PMDCS, and only one packet is allowed to be in flight until successful
 acknowledgement.</t></li>
 <li><t>The initial value of ssthresh SHOULD be arbitrarily high (e.g.,
 the size of the largest possible advertised window).</t></li>
@@ -4404,7 +4420,7 @@ otherwise, the cwnd MUST NOT be increased.
 If these conditions are met, then cwnd MUST be increased by, at most, the
 lesser of
 1) the total size of the previously outstanding DATA chunk(s) acknowledged, and
-2) the destination's PMTU.
+2) the destination's PMDCS.
 This upper bound protects against the ACK-Splitting attack outlined in
 <xref target='SAVAGE99'/>.</t></li>
 </ul>
@@ -4427,7 +4443,7 @@ adversely clock out more new data than what has just left the network, during
 a time of possible congestion.</t>
 <ul>
 <li><t>While the endpoint does not transmit data on a given transport address,
-the cwnd of the transport address SHOULD be adjusted to max(cwnd / 2, 4 * PMTU)
+the cwnd of the transport address SHOULD be adjusted to max(cwnd / 2, 4 * PMDCS)
 once per RTO.
 Before the first cwnd adjustment, the ssthresh of the transport address SHOULD
 be set to the cwnd.</t></li>
@@ -4437,25 +4453,25 @@ be set to the cwnd.</t></li>
 <section anchor='sec_congestion_avoidance'>
 <name>Congestion Avoidance</name>
 
-<t>When cwnd is greater than ssthresh, cwnd SHOULD be incremented by PMTU per
+<t>When cwnd is greater than ssthresh, cwnd SHOULD be incremented by PMDCS per
 RTT if the sender has cwnd or more bytes of data outstanding for the
 corresponding transport address.
 The basic recommendations for incrementing cwnd during congestion avoidance
 are as follows:</t>
 <ul>
-<li><t>SCTP MAY increment cwnd by PMTU.</t></li>
-<li><t>SCTP SHOULD increment cwnd by PMTU once per RTT when the sender has cwnd
+<li><t>SCTP MAY increment cwnd by PMDCS.</t></li>
+<li><t>SCTP SHOULD increment cwnd by PMDCS once per RTT when the sender has cwnd
 or more bytes of data outstanding for the corresponding transport address.</t></li>
-<li><t>SCTP MUST NOT increment cwnd by more than PMTU per RTT.</t></li>
+<li><t>SCTP MUST NOT increment cwnd by more than PMDCS per RTT.</t></li>
 </ul>
 <t>In practice, an implementation can achieve this goal in the following way:</t>
 <ul>
 <li><t>partial_bytes_acked is initialized to 0.</t></li>
 <li><t>Whenever cwnd is greater than ssthresh, upon each SACK arrival, increase
-partial_bytes_acked by the total number of bytes of all new chunks acknowledged
-in that SACK, including chunks acknowledged by the new Cumulative TSN Ack,
-by Gap Ack Blocks, and by the number of bytes of duplicated chunks reported in
-Duplicate TSNs.</t></li>
+partial_bytes_acked by the total number of bytes (including the chunk header and
+the padding) of all new DATA chunks acknowledged in that SACK, including chunks
+acknowledged by the new Cumulative TSN Ack, by Gap Ack Blocks, and by the
+number of bytes of duplicated chunks reported in Duplicate TSNs.</t></li>
 <li><t>(1) when partial_bytes_acked is greater than cwnd and (2) before the arrival
 of the SACK the sender had less than cwnd bytes of data outstanding (i.e.,
 before the arrival of the SACK, flightsize was less than cwnd), reset
@@ -4464,10 +4480,10 @@ partial_bytes_acked to cwnd.</t></li>
 the arrival of the SACK the sender had cwnd or more bytes of data outstanding
 (i.e., before the arrival of the SACK, flightsize was greater than or equal to
 cwnd), partial_bytes_acked is reset to (partial_bytes_acked - cwnd).
-Next, cwnd is increased by PMTU.</t></li>
+Next, cwnd is increased by PMDCS.</t></li>
 <li><t>Same as in the slow start, when the sender does not transmit DATA on a given
 transport address, the cwnd of the transport address SHOULD be adjusted to
-max(cwnd / 2, 4 * PMTU) per RTO.</t></li>
+max(cwnd / 2, 4 * PMDCS) per RTO.</t></li>
 <li><t>When all of the data transmitted by the sender has been acknowledged by the
 receiver, partial_bytes_acked is initialized to 0.</t></li>
 </ul>
@@ -4480,7 +4496,7 @@ receiver, partial_bytes_acked is initialized to 0.</t></li>
 (see <xref target='sec_fast_retransmit_on_gap_reports'/>), an endpoint SHOULD
 do the following:</t>
 <sourcecode>
-ssthresh = max(cwnd / 2, 4 * PMTU)
+ssthresh = max(cwnd / 2, 4 * PMDCS)
 cwnd = ssthresh
 partial_bytes_acked = 0
 </sourcecode>
@@ -4489,8 +4505,8 @@ partial_bytes_acked = 0
 <t>When the T3-rtx timer expires on an address, SCTP SHOULD perform slow start
 by:</t>
 <sourcecode>
-ssthresh = max(cwnd / 2, 4 * PMTU)
-cwnd = PMTU
+ssthresh = max(cwnd / 2, 4 * PMDCS)
+cwnd = PMDCS
 partial_bytes_acked = 0
 </sourcecode>
 <t>and ensure that no more than one SCTP packet will be in flight for that address
