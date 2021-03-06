@@ -216,6 +216,11 @@ and chunk-specific content.</t>
 that a sender can send to a particular destination transport address before
 receiving an acknowledgement.</t>
 </dd>
+<dt>Control chunk:</dt>
+<dd>
+<t>A chunk not being used for transmitting user data, i.e. every chunk which
+is not a DATA chunk.</t>
+</dd>
 <dt>Cumulative TSN Ack Point:</dt>
 <dd>
 <t>The Transmission Sequence Number (TSN) of the last DATA chunk acknowledged via
