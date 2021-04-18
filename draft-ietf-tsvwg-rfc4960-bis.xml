@@ -199,6 +199,11 @@ key terms and their definitions.</t>
 <t>A transport address on a peer endpoint that a transmitting endpoint considers
 available for receiving user messages.</t>
 </dd>
+<dt>Association Maximum DATA Chunk Size (AMDCS):</dt>
+<dd>
+<t>The smallest Path Maximum DATA Chunk Size (PMDCS) of all destination
+addresses.</t>
+</dd>
 <dt>Bundling:</dt>
 <dd>
 <t>An optional multiplexing operation, whereby more than one user message might
@@ -293,7 +298,7 @@ into an SCTP packet not exceeding the PMTU of a particular destination address.<
 <dt>Path Maximum Transmission Unit (PMTU):</dt>
 <dd>
 <t>The maximum size (including the SCTP common header and all chunks including
-their paddings) of an SCTP packet which can be which can be sent to a particular
+their paddings) of an SCTP packet which can be sent to a particular
 destination address without using IP level fragmentation.</t>
 </dd>
 <dt>Primary Path:</dt>
@@ -3425,8 +3430,9 @@ A data receiver will transmit SACK chunks.</t>
 <t>The following applies:</t>
 <ol type='%d)'>
 <li><t>When converting user messages into DATA chunks, an endpoint
-will fragment user messages into multiple DATA chunks such that the resulting
-SCTP packet size does not need to exceed the current association PMTU.
+MUST fragment user messages into multiple DATA chunks. The size of
+each DATA chunk SHOULD be smaller than or equal to the Association Maximum DATA
+Chunk Size (AMDCS).
 The data receiver will normally reassemble the fragmented message from DATA
 chunks before delivery to the user (see <xref target='sec_frag_reass'/>
 for details).</t></li>
@@ -4197,10 +4203,8 @@ the current PMTU.</t>
 in <xref target='sec_ulp_to_sctp'/> would need to return an error to the
 upper layer.</t>
 
-<t>If its peer is multi-homed, the endpoint SHOULD choose a size no larger than
-the association PMTU.
-The association PMTU is defined as the smallest PMTU of all destination
-addresses.</t>
+<t>If its peer is multi-homed, the endpoint SHOULD choose a DATA chunk size
+smaller than or equal to the AMDCS.</t>
 
 <t>Once a user message is fragmented, it cannot be re-fragmented.
 Instead, if the PMTU has been reduced, then IP fragmentation MUST be used.
@@ -4213,9 +4217,9 @@ The implementation MUST also take into account the space required for a SACK
 chunk if bundling a SACK chunk with the DATA chunk.</t>
 <t>Fragmentation takes the following steps:</t>
 <ol type='%d)'>
-<li><t>The data sender MUST break the user message into a series of DATA chunks
-such that the size of the SCTP packets is smaller than or equal to the
-association PMTU.</t></li>
+<li><t>The data sender MUST break the user message into a series of DATA chunks.
+The sender SHOULD choose the size of the DATA chunks is smaller than or equal
+to the AMDCS.</t></li>
 <li><t>The transmitter MUST then assign, in sequence, a separate TSN to each of the
 DATA chunks in the series.
 The transmitter assigns the same SSN to each of the DATA chunks.
@@ -4402,9 +4406,9 @@ The slow-start algorithm is used for this purpose at the beginning of a
 transfer, or after repairing loss detected by the retransmission timer.</t>
 <ul>
 <li><t>The initial cwnd before data transmission MUST be set to
-min(4 * PMDCS, max(2 * PMDCS, 4404)) bytes if the peer address is an IPV4 address
+min(4 * PMDCS, max(2 * PMDCS, 4404)) bytes if the peer address is an IPv4 address
 and to min(4 * PMDCS, max(2 * PMDCS, 4344)) bytes if the peer address is an
-IPV6 address.</t></li>
+IPv6 address.</t></li>
 <li><t>The initial cwnd after a retransmission timeout MUST be no more than
 PMDCS, and only one packet is allowed to be in flight until successful
 acknowledgement.</t></li>
@@ -4605,10 +4609,10 @@ per-destination-address basis.</t>
 <li><t>SCTP associations can span multiple addresses.
 An endpoint MUST maintain separate PMTU estimates for each destination address
 of its peer.</t></li>
-<li><t>The sender SHOULD track an association PMTU that will be the
-smallest PMTU discovered for all of the peer's destination addresses.
-When fragmenting messages into multiple parts this association PMTU SHOULD
-be used to calculate the size of each fragment.
+<li><t>The sender SHOULD track an AMDCS that will be the
+smallest PMDCS discovered for all of the peer's destination addresses.
+When fragmenting messages into multiple parts this AMDCS SHOULD
+be used to calculate the size of each DATA chunk.
 This will allow retransmissions to be seamlessly sent to an alternate address
 without encountering IP fragmentation.</t></li>
 </ol>
@@ -5127,7 +5131,7 @@ used as a guideline for implementing SCTP.
 The following functional description of ULP interface primitives is shown for
 illustrative purposes.
 Different SCTP implementations can have different ULP interfaces.
-However, all SCTP implementation are expected to provide a certain minimum set
+However, all SCTP implementations are expected to provide a certain minimum set
 of services to guarantee that all SCTP implementations can support the same
 protocol hierarchy.</t>
 <t>Please note that this section is informational only.</t>
@@ -6276,16 +6280,16 @@ next sequence number to be sent on the stream.</t>
 </dd>
 <dt>Receive Buffer:</dt>
 <dd>
-<t>A buffer to store received user data which is not yet delivered to the
+<t>A buffer to store received user data which has not been delivered to the
 upper layer.</t>
 </dd>
 <dt>Local Transport Address List:</dt>
 <dd>
 <t>The list of local IP addresses bound in to this association.</t>
 </dd>
-<dt>Association PMTU:</dt>
+<dt>Maximum DATA Chunk Size:</dt>
 <dd>
-<t>The smallest PMTU discovered for all of the peer's transport addresses.</t>
+<t>The smallest Path Maximum DATA Chunk Size of all destination addresses.</t>
 </dd>
 </dl>
 </section>
@@ -6339,6 +6343,10 @@ etc.</t>
 <dt>PMTU:</dt>
 <dd>
 <t>The current known PMTU.</t>
+</dd>
+<dt>PMDCS:</dt>
+<dd>
+<t>The current known PMDCS.</t>
 </dd>
 <dt>Per Destination Timer:</dt>
 <dd>
