@@ -12,6 +12,13 @@
      version="3"
      tocDepth="4">
 
+<!--
+ToDo:
+* Don't send ABORT in response to INIT/INIT-ACK intiate tag 0
+* Add ABC support
+* Address Magnus' comments
+-->
+
 <front>
 <title>Stream Control Transmission Protocol</title>
 <seriesInfo name="Internet-Draft" value="draft-ietf-tsvwg-rfc4960-bis-12-to-be"/>
@@ -360,6 +367,10 @@ perform slow start or congestion avoidance on a particular destination
 transport address.
 Ssthresh is in number of bytes.</t>
 </dd>
+<dt>State Cookie:</dt>
+<dd>
+<t>A container of all information needed to establish an association.</t>
+</dd>
 <dt>Stream:</dt>
 <dd>
 <t>A unidirectional logical channel established from one to
@@ -558,6 +569,8 @@ soon as they are received.</t>
 
 <t>When needed, SCTP fragments user messages to ensure that the size of the SCTP
 packet passed to the lower layer does not exceed the PMTU.
+Once a user message has been fragmented, this fragmentation cannot be changed
+anymore.
 On receipt, fragments are reassembled into complete messages before
 being passed to the SCTP user.</t>
 </section>
@@ -571,6 +584,8 @@ The TSN is independent of any Stream Sequence Number assigned at the
 stream level.
 The receiving end acknowledges all TSNs received, even if there are gaps in the
 sequence.
+If a user data fragment or unfragmented message needs to be retransmitted,
+the TSN assigned to it is used.
 In this way, reliable delivery is kept functionally separate from sequenced
 stream delivery.</t>
 <t>The acknowledgement and congestion avoidance function is responsible
@@ -652,24 +667,24 @@ be performed as separate items.</t>
 
 <t>It is essential to remember that the actual Transmission Sequence
 Number space is finite, though very large.
-This space ranges from 0 to 2**32 - 1.
+This space ranges from 0 to 2<sup>32</sup> - 1.
 Since the space is finite, all arithmetic dealing with Transmission Sequence
-Numbers MUST be performed modulo 2**32.
+Numbers MUST be performed modulo 2<sup>32</sup>.
 This unsigned arithmetic preserves the relationship of sequence numbers as
-they cycle from 2**32 - 1 to 0 again.
+they cycle from 2<sup>32</sup> - 1 to 0 again.
 There are some subtleties to computer modulo arithmetic, so great care has to
 be taken in programming the comparison of such values.
-When referring to TSNs, the symbol "=&lt;" means
-"less than or equal"(modulo 2**32).</t>
+When referring to TSNs, the symbol "&lt;=" means
+"less than or equal"(modulo 2<sup>32</sup>).</t>
 <t>Comparisons and arithmetic on TSNs in this document SHOULD use Serial
 Number Arithmetic as defined in <xref target="RFC1982"/>
 where SERIAL_BITS = 32.</t>
 <t>An endpoint SHOULD NOT transmit a DATA chunk with a TSN that is more
-than 2**31 - 1 above the beginning TSN of its current send window.
+than 2<sup>31</sup> - 1 above the beginning TSN of its current send window.
 Doing so will cause problems in comparing TSNs.</t>
-<t>Transmission Sequence Numbers wrap around when they reach 2**32 - 1.
+<t>Transmission Sequence Numbers wrap around when they reach 2<sup>32</sup> - 1.
 That is, the next TSN a DATA chunk MUST use after transmitting TSN =
-2**32 - 1 is TSN = 0.</t>
+2<sup>32</sup> - 1 is TSN = 0.</t>
 <t>Any arithmetic done on Stream Sequence Numbers SHOULD use Serial
 Number Arithmetic as defined in <xref target="RFC1982"/> where SERIAL_BITS = 16.
 All other arithmetic and comparisons in this document use normal
@@ -1053,27 +1068,6 @@ user message.</t>
 <t>The (E)nding fragment bit, if set, indicates the last fragment of
 a user message.</t>
 </dd>
-</dl>
-<t>An unfragmented user message MUST have both the B and E bits set to '1'.
-Setting both B and E bits to '0' indicates a middle fragment of a multi-fragment
-user message, as summarized in the following table:</t>
-<table anchor='table_fragment_description_flags'>
-<name>Fragment Description Flags</name>
-<thead>
-<tr><td align='center'>B</td><td align='center'>E</td><td align='center'>Description</td></tr>
-</thead>
-<tbody>
-<tr><td align='center'>1</td><td align='center'>0</td><td align='center'>First piece of a fragmented user message</td></tr>
-<tr><td align='center'>0</td><td align='center'>0</td><td align='center'>Middle piece of a fragmented user message</td></tr>
-<tr><td align='center'>0</td><td align='center'>1</td><td align='center'>Last piece of a fragmented user message</td></tr>
-<tr><td align='center'>1</td><td align='center'>1</td><td align='center'>Unfragmented message</td></tr>
-</tbody>
-</table>
-<t>When a user message is fragmented into multiple chunks, the TSNs are
-used by the receiver to reassemble the message. This means that the
-TSNs for each fragment of a fragmented user message MUST be strictly
-sequential.</t>
-<dl newline="true">
 <dt>Length: 16 bits (unsigned integer)</dt>
 <dd>
 <t>This field indicates the length of the DATA chunk in bytes from
@@ -1082,12 +1076,12 @@ excluding any padding.
 A DATA chunk with one byte of user data will have Length set to 17
 (indicating 17 bytes).</t>
 <t>A DATA chunk with a User Data field of length L will have the Length field set
-to (16 + L) (indicating 16+L bytes) where L MUST be greater than 0.</t>
+to (16 + L) (indicating 16 + L bytes) where L MUST be greater than 0.</t>
 </dd>
 <dt>TSN: 32 bits (unsigned integer)</dt>
 <dd>
 <t>This value represents the TSN for this DATA chunk.
-The valid range of TSN is from 0 to 4294967295 (2**32 - 1).
+The valid range of TSN is from 0 to 4294967295 (2<sup>32</sup> - 1).
 TSN wraps back to 0 after reaching 4294967295.</t>
 </dd>
 <dt>Stream Identifier S: 16 bits (unsigned integer)</dt>
@@ -1127,6 +1121,27 @@ Any padding MUST NOT be included in the Length field.
 A sender MUST never add more than 3 bytes of padding.</t>
 </dd>
 </dl>
+<t>An unfragmented user message MUST have both the B and E bits set to '1'.
+Setting both B and E bits to '0' indicates a middle fragment of a multi-fragment
+user message, as summarized in the following table:</t>
+<table anchor='table_fragment_description_flags'>
+<name>Fragment Description Flags</name>
+<thead>
+<tr><td align='center'>B</td><td align='center'>E</td><td align='center'>Description</td></tr>
+</thead>
+<tbody>
+<tr><td align='center'>1</td><td align='center'>0</td><td align='center'>First piece of a fragmented user message</td></tr>
+<tr><td align='center'>0</td><td align='center'>0</td><td align='center'>Middle piece of a fragmented user message</td></tr>
+<tr><td align='center'>0</td><td align='center'>1</td><td align='center'>Last piece of a fragmented user message</td></tr>
+<tr><td align='center'>1</td><td align='center'>1</td><td align='center'>Unfragmented message</td></tr>
+</tbody>
+</table>
+<t>When a user message is fragmented into multiple chunks, the TSNs are
+used by the receiver to reassemble the message. This means that the
+TSNs for each fragment of a fragmented user message MUST be strictly
+sequential.</t>
+<t>Note: The extension described in <xref target='RFC8260'/> can be used
+to mitigate the head of line blocking when transferring large user messages.</t>
 </section>
 
 <section anchor='sec_init_chunk'>
@@ -1527,7 +1542,7 @@ The valid range is from 0 to 4294967295.
 This field MAY be set to the value of the Initiate Tag field.</t>
 </dd>
 </dl>
-<t>IMPLEMENTATION NOTE:
+<t>Implementation Note:
 An implementation MUST be prepared to receive an INIT ACK that is quite large
 (more than 1500 bytes) due to the variable size of the State Cookie AND the
 variable address list.
@@ -1671,8 +1686,8 @@ value of the Cumulative TSN Ack.</t>
 </dd>
 <dt>Cumulative TSN Ack: 32 bits (unsigned integer)</dt>
 <dd>
-<t>This parameter contains the TSN of the last DATA chunk received in sequence
-before a gap.
+<t>The largest TSN, such that all TSNs smaller than or equal to it have been
+received and the next one has not been received.
 In the case where no DATA chunk has been received, this value is set to the
 peer's Initial TSN minus one.</t>
 </dd>
@@ -1834,7 +1849,8 @@ message (see <xref target='sec_heartbeat_ack_chunk'/>).
 Note also that the HEARTBEAT message is both for reachability checking and for
 path verification (see <xref target='sec_path_verifiation'/>).
 When a HEARTBEAT chunk is being used for path verification purposes, it MUST
-hold a 64-bit random nonce.</t>
+hold a random nonce of length 64-bit or longer (<xref target='RFC4086'/>
+provides some information on randomness guidelines).</t>
 </dd>
 </dl>
 </section>
@@ -1966,18 +1982,20 @@ This chunk has the following format.</t>
 </dd>
 <dt>Cumulative TSN Ack: 32 bits (unsigned integer)</dt>
 <dd>
-<t>This parameter contains the TSN of the last chunk received in sequence before
-any gaps.</t>
+<t>The largest TSN, such that all TSNs smaller than or equal to it have been
+received and the next one has not been received.</t>
 </dd>
 </dl>
-<t>Note: Since the SHUTDOWN message does not contain Gap Ack Blocks,
+<t>Note: Since the SHUTDOWN chunk does not contain Gap Ack Blocks,
 it cannot be used to acknowledge TSNs received out of order.
-In a SACK, lack of Gap Ack Blocks that were previously included indicates that
-the data receiver reneged on the associated DATA chunks.</t>
-<t>Since SHUTDOWN does not contain Gap Ack Blocks, the receiver of the SHUTDOWN
-MUST NOT interpret the lack of a Gap Ack Block as a renege.
+In a SACK chunk, lack of Gap Ack Blocks that were previously included indicates
+that the data receiver reneged on the associated DATA chunks.</t>
+<t>Since the SHUTDOWN chunk does not contain Gap Ack Blocks, the receiver of
+the SHUTDOWN chunk MUST NOT interpret the lack of a Gap Ack Block as a renege.
 (See <xref target='sec_acknowledgements_of_reception_of_data_chunks'/> for
 information on reneging.)</t>
+<t>The sender of the SHUTDOWN chunk MAY bundle a SACK chunk to indicate any
+gaps in the received TSNs.</t>
 </section>
 
 <section anchor='sec_shutdown_ack_chunk'>
@@ -2274,14 +2292,13 @@ DATA chunk if a received DATA chunk has no user data.</t>
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |     Cause Code=9              |      Cause Length=8           |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-/                  TSN value                                    /
-\                                                               \
+|                              TSN                              |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
 <dl newline="true">
-<dt>TSN value: 32 bits (unsigned integer)</dt>
+<dt>TSN: 32 bits (unsigned integer)</dt>
 <dd>
-<t>The TSN value field contains the TSN of the DATA chunk received with no user
+<t>This parameter contains the TSN of the DATA chunk received with no user
 data field.</t>
 </dd>
 </dl>
@@ -2638,7 +2655,7 @@ complete an initialization process in order to set up an SCTP
 association between them.</t>
 <t>The SCTP user at an endpoint can use the ASSOCIATE primitive to
 initialize an SCTP association to another SCTP endpoint.</t>
-<t>IMPLEMENTATION NOTE: From an SCTP user's point of view, an
+<t>Implementation Note: From an SCTP user's point of view, an
 association might be implicitly opened, without an ASSOCIATE primitive
 (see <xref target='sec_associate'/>) being invoked, by the initiating
 endpoint's sending of the first user data to the destination endpoint.
@@ -2687,7 +2704,7 @@ ESTABLISHED state.
 A COOKIE ACK chunk MAY be bundled with any pending DATA chunks
 (and/or SACK chunks), but the COOKIE ACK chunk MUST be the first chunk in
 the packet.</t>
-<t>IMPLEMENTATION NOTE: An implementation can choose to send the
+<t>Implementation Note: An implementation can choose to send the
 Communication Up notification to the SCTP user upon reception of a
 valid COOKIE ECHO chunk.</t></li>
 <li><t>Upon reception of the COOKIE ACK, endpoint "A" moves from the
@@ -2727,7 +2744,7 @@ Subsequent acknowledgements SHOULD be done as described in
 <t>When the TCB is created, each endpoint MUST set its internal
 Cumulative TSN Ack Point to the value of its transmitted Initial TSN
 minus one.</t>
-<t>IMPLEMENTATION NOTE: The IP addresses and SCTP port are generally
+<t>Implementation Note: The IP addresses and SCTP port are generally
 used as the key to find the TCB within an SCTP instance.</t>
 
 <section anchor='sec_handle_stream_parameters'>
@@ -2779,7 +2796,7 @@ established association (or one in the process of being established) if the
 use of any of the valid address parameters contained within the chunk would
 identify an existing TCB.</t></li>
 </ol>
-<t>IMPLEMENTATION NOTE: In some cases (e.g., when the implementation does not
+<t>Implementation Note: In some cases (e.g., when the implementation does not
 control the source IP address that is used for transmitting), an endpoint
 might need to include in its INIT or INIT ACK all possible IP addresses from
 which packets to the peer could be transmitted.</t>
@@ -2789,7 +2806,7 @@ as the initial primary path.</t>
 <t>The INIT ACK MUST be sent to the source address of the INIT.</t>
 <t>The sender of INIT chunks MAY include a 'Supported Address Types' parameter
 in the INIT to indicate what types of addresses are acceptable.</t>
-<t>IMPLEMENTATION NOTE: In the case that the receiver of an INIT ACK
+<t>Implementation Note: In the case that the receiver of an INIT ACK
 fails to resolve the address parameter due to an unsupported type, it
 can abort the initiation process and then attempt a reinitiation by
 using a 'Supported Address Types' parameter in the new INIT to indicate what
@@ -3289,7 +3306,7 @@ State Cookie life times making the endpoint more subject to a replay attack.</t>
 <section anchor='sec_selection_of_tag_value'>
 <name>Selection of Tag Value</name>
 
-<t>Initiate Tag values SHOULD be selected from the range of 1 to 2**32 - 1.
+<t>Initiate Tag values SHOULD be selected from the range of 1 to 2<sup>32</sup> - 1.
 It is very important that the Initiate Tag value be randomized to
 help protect against "man in the middle" and "sequence number"
 attacks.
@@ -3430,9 +3447,9 @@ A data receiver will transmit SACK chunks.</t>
 <t>The following applies:</t>
 <ol type='%d)'>
 <li><t>When converting user messages into DATA chunks, an endpoint
-MUST fragment user messages into multiple DATA chunks. The size of
-each DATA chunk SHOULD be smaller than or equal to the Association Maximum DATA
-Chunk Size (AMDCS).
+MUST fragment large user messages into multiple DATA chunks.
+The size of each DATA chunk SHOULD be smaller than or equal to the
+Association Maximum DATA Chunk Size (AMDCS).
 The data receiver will normally reassemble the fragmented message from DATA
 chunks before delivery to the user (see <xref target='sec_frag_reass'/>
 for details).</t></li>
@@ -3553,9 +3570,9 @@ Otherwise, the data sender MUST NOT restart the timer.</t>
 adjusted according to the timer rules defined in
 <xref target='sec_retransmission_timer_rules'/> and
 <xref target='sec_handle_t3_rtx_expiration'/>.</t>
-<t>The data sender SHOULD NOT use a TSN that is more than 2**31 - 1 above
+<t>The data sender SHOULD NOT use a TSN that is more than 2<sup>31</sup> - 1 above
 the beginning TSN of the current send window.</t>
-<t>For each stream, the data sender SHOULD NOT have more than 2**16 - 1
+<t>For each stream, the data sender SHOULD NOT have more than 2<sup>16</sup> - 1
 ordered user messages in the current send window.</t>
 <t>Whenever the sender of a DATA chunk can benefit from the corresponding
 SACK chunk being sent back without delay, the sender MAY set the I bit in the
@@ -3614,7 +3631,7 @@ particular, large bursts of them.
 One way to achieve this is to send a window update only if the window can be
 increased by at least a quarter of the receive buffer size of the
 association.</t>
-<t>IMPLEMENTATION NOTE: The maximum delay for generating an acknowledgement
+<t>Implementation Note: The maximum delay for generating an acknowledgement
 MAY be configured by the SCTP administrator, either statically or dynamically,
 in order to meet the specific timing requirement of the protocol being
 carried.</t>
@@ -3867,6 +3884,7 @@ RTT measurements and the different state variables, other than:</t>
 </ol>
 <t>Experience <xref target='ALLMAN99'/> has shown that finer clock granularities
 (less than 100 msec) perform somewhat better than more coarse granularities.</t>
+<t>See <xref target='sec_parameter_values'/> for suggested parameter values.</t>
 
 </section>
 
@@ -4053,10 +4071,13 @@ normal procedure, immediately send an ERROR chunk with cause set to
 and discard the DATA chunk.
 The endpoint MAY bundle the ERROR chunk and the SACK chunk in the same
 packet.</t>
-<t>The Stream Sequence Number in all the streams MUST start from 0 when
+<t>The Stream Sequence Number in all the outgoing streams MUST start from 0 when
 the association is established.
-Also, when the Stream Sequence Number reaches the value 65535 the next
-Stream Sequence Number MUST be set to 0.</t>
+The Stream Sequence Number of an outgoing stream MUST be incremented by 1 for
+each ordered user message sent on that outgoing stream.
+In particular, when the Stream Sequence Number reaches the value 65535 the
+next Stream Sequence Number MUST be set to 0.
+For unordered user messages the Stream Sequence Number MUST NOT be changed.</t>
 </section>
 
 <section anchor='sec_ordered_and_unordered_delivery'>
@@ -4079,7 +4100,7 @@ by the data sender).</t>
 a given stream.
 Also, a stream can be used as an "unordered" stream by simply setting the
 U flag to 1 in all DATA chunks sent through that stream.</t>
-<t>IMPLEMENTATION NOTE: When sending an unordered DATA chunk, an implementation
+<t>Implementation Note: When sending an unordered DATA chunk, an implementation
 MAY choose to place the DATA chunk in an outbound packet that is at the head of
 the outbound transmission queue if possible.</t>
 <t>The 'Stream Sequence Number' field in a DATA chunk with U flag set to
@@ -4199,7 +4220,7 @@ An implementation that disables fragmentation MUST react just like an
 implementation that does NOT support fragmentation, i.e., it MUST
 reject send calls that would result in sending SCTP packets that exceed
 the current PMTU.</t>
-<t>IMPLEMENTATION NOTE: In this error case, the SEND primitive discussed
+<t>Implementation Note: In this error case, the SEND primitive discussed
 in <xref target='sec_ulp_to_sctp'/> would need to return an error to the
 upper layer.</t>
 
@@ -4222,7 +4243,8 @@ The sender SHOULD choose the size of the DATA chunks is smaller than or equal
 to the AMDCS.</t></li>
 <li><t>The transmitter MUST then assign, in sequence, a separate TSN to each of the
 DATA chunks in the series.
-The transmitter assigns the same SSN to each of the DATA chunks.
+The transmitter assigns the same Stream Sequence Number to each of the
+DATA chunks.
 If the user indicates that the user message is to be delivered using unordered
 delivery, then the U flag of each DATA chunk of the user message MUST be set
 to 1.</t></li>
@@ -4289,7 +4311,7 @@ recover from congestion quickly in order to get data delivered as soon as
 possible.
 In the absence of network congestion, these preventive congestion control
 algorithms are expected to show no impact on the protocol performance.</t>
-<t>IMPLEMENTATION NOTE: As far as its specific performance requirements
+<t>Implementation Note: As far as its specific performance requirements
 are met, an implementation is always allowed to adopt a more conservative
 congestion control algorithm than the one defined below.</t>
 <t>The congestion control algorithms used by SCTP are based on
@@ -4734,7 +4756,7 @@ but SHOULD stop increasing the counter.</t>
 <t>The sender of the HEARTBEAT chunk SHOULD include in the Heartbeat Information
 field of the chunk the current time when the packet is sent out and the
 destination address to which the packet is sent.</t>
-<t>IMPLEMENTATION NOTE: An alternative implementation of the heartbeat
+<t>Implementation Note: An alternative implementation of the heartbeat
 mechanism that can be used is to increment the error counter variable every time
 a HEARTBEAT is sent to a destination.
 Whenever a HEARTBEAT ACK arrives, the sender SHOULD clear the error counter of
@@ -4979,7 +5001,7 @@ If the timer expires, the endpoint MUST resend the SHUTDOWN with the updated
 last sequential TSN received from its peer.</t>
 <t>The rules in <xref target='sec_management_of_retransission_timer'/> MUST be
 followed to determine the proper timer value for T2-shutdown.
-To indicate any gaps in TSN, the endpoint MAY also bundle a SACK with the
+To indicate any gaps in TSN, the endpoint MAY also bundle a SACK chunk with the
 SHUTDOWN chunk in the same SCTP packet.</t>
 <t>An endpoint SHOULD limit the number of retransmissions of the SHUTDOWN chunk
 to the protocol parameter 'Association.Max.Retrans'.
@@ -4990,29 +5012,29 @@ The reception of any packet from its peer (i.e., as the peer sends all of its
 queued DATA chunks) SHOULD clear the endpoint's retransmission count and restart
 the T2-shutdown timer, giving its peer ample opportunity to transmit all of its
 queued DATA chunks that have not yet been sent.</t>
-<t>Upon reception of the SHUTDOWN, the peer endpoint does the following:</t>
+<t>Upon reception of the SHUTDOWN chunk, the peer endpoint does the following:</t>
 <ul>
 <li><t>enter the SHUTDOWN-RECEIVED state,</t></li>
 <li><t>stop accepting new data from its SCTP user, and</t></li>
 <li><t>verify, by checking the Cumulative TSN Ack field of the chunk, that all its
-outstanding DATA chunks have been received by the SHUTDOWN sender.</t></li>
+outstanding DATA chunks have been received by the SHUTDOWN chunk sender.</t></li>
 </ul>
 <t>Once an endpoint has reached the SHUTDOWN-RECEIVED state, it MUST ignore
 ULP shutdown requests but MUST continue responding to SHUTDOWN chunks from its
 peer.</t>
-<t>If there are still outstanding DATA chunks left, the SHUTDOWN receiver MUST
-continue to follow normal data transmission procedures defined in
+<t>If there are still outstanding DATA chunks left, the SHUTDOWN chunk receiver
+MUST continue to follow normal data transmission procedures defined in
 <xref target='sec_user_data_transfer'/>, until all outstanding DATA chunks are
-acknowledged; however, the SHUTDOWN receiver MUST NOT accept new data from its
-SCTP user.</t>
-<t>While in the SHUTDOWN-SENT state, the SHUTDOWN sender MUST immediately
+acknowledged; however, the SHUTDOWN chunk receiver MUST NOT accept new data
+from its SCTP user.</t>
+<t>While in the SHUTDOWN-SENT state, the SHUTDOWN chunk sender MUST immediately
 respond to each received packet containing one or more DATA chunks with a
 SHUTDOWN chunk and restart the T2-shutdown timer.
 If a SHUTDOWN chunk by itself cannot acknowledge all of the received DATA chunks
 (i.e., there are TSNs that can be acknowledged that are larger than the
 cumulative TSN, and thus gaps exist in the TSN sequence), or if duplicate TSNs
 have been received, then a SACK chunk MUST also be sent.</t>
-<t>The sender of the SHUTDOWN MAY also start an overall guard timer
+<t>The sender of the SHUTDOWN chunk MAY also start an overall guard timer
 'T5-shutdown-guard' to bound the overall time for the shutdown sequence.
 At the expiration of this timer, the sender SHOULD abort the association by
 sending an ABORT chunk. If the 'T5-shutdown-guard' timer is used, it SHOULD
@@ -5178,7 +5200,7 @@ the host are used by the local endpoint.</t></dd>
 </dl>
 </dd>
 </dl>
-<t>IMPLEMENTATION NOTE: If this optional attribute is supported by an
+<t>Implementation Note: If this optional attribute is supported by an
 implementation, it will be the responsibility of the implementation
 to enforce that the IP source address field of any SCTP packets sent
 out by this endpoint contains one of the IP addresses indicated in
@@ -5212,7 +5234,7 @@ SCTP packets to this peer.
 The returned "destination transport addr list" can be used by the ULP to change
 the default primary path or to force sending a packet to a specific
 transport address.</t>
-<t>IMPLEMENTATION NOTE: If ASSOCIATE primitive is implemented as a
+<t>Implementation Note: If ASSOCIATE primitive is implemented as a
 blocking function call, the ASSOCIATE primitive can return
 association parameters in addition to the association id upon
 successful establishment.
@@ -5334,7 +5356,7 @@ SCTP notifies the ULP if the data cannot be initiated to transport (i.e., sent
 to the destination via SCTP's SEND primitive) within the life time variable.
 However, the user data will be transmitted if SCTP has attempted to transmit
 a chunk before the life time expired.</t>
-<t>IMPLEMENTATION NOTE: In order to better support the data life time
+<t>Implementation Note: In order to better support the data life time
 option, the transmitter can hold back the assigning of the TSN number
 to an outbound DATA chunk to the last moment.
 And, for implementation simplicity, once a TSN number has been assigned the
@@ -5760,7 +5782,7 @@ SCTP instance is to be destroyed.</t></dd>
 provides a means for the SCTP to asynchronously signal the ULP process.
 When SCTP does signal a ULP process, certain information is passed to
 the ULP.</t>
-<t>IMPLEMENTATION NOTE: In some cases, this might be done through a separate
+<t>Implementation Note: In some cases, this might be done through a separate
 socket or error channel.</t>
 
 <section>
@@ -5814,7 +5836,7 @@ transport address of the peer endpoint affected by the change.</t></dd>
 <name>COMMUNICATION UP Notification</name>
 <t>This notification is used when SCTP becomes ready to send or receive
 user messages, or when a lost communication to an endpoint is restored.</t>
-<t>IMPLEMENTATION NOTE: If the ASSOCIATE primitive is implemented as a
+<t>Implementation Note: If the ASSOCIATE primitive is implemented as a
 blocking function call, the association parameters are returned as a
 result of the ASSOCIATE primitive itself.
 In that case, COMMUNICATION UP notification is optional at the association
@@ -5961,6 +5983,7 @@ signaling data payload, not to the SCTP or lower-layer protocol overheads.
 If that is true, encryption of the SCTP user data only might be considered.
 As with the supplementary checksum service, user data encryption MAY be
 performed by the SCTP user application.
+<xref target='RFC6083'/> MAY be used for this.
 Alternately, the user application MAY use an implementation-specific API to
 request that the IP Encapsulating Security Payload (ESP)
 <xref target='RFC4303'/> be used to provide confidentiality and integrity.</t>
@@ -6583,7 +6606,7 @@ https    443/sctp  HTTPS    # IETF TSVWG
 <dt>HB.Max.Burst:</dt><dd><t>1</t></dd>
 <dt>SACK.Delay:</dt><dd><t>200 milliseconds</t></dd>
 </dl>
-<t>IMPLEMENTATION NOTE: The SCTP implementation can allow ULP to customize some
+<t>Implementation Note: The SCTP implementation can allow ULP to customize some
 of these protocol parameters (see <xref target='sec_api'/>).</t>
 <t>'RTO.Min' SHOULD be set as described above in this section.</t>
 </section>
@@ -6829,8 +6852,10 @@ in the coding, testing, and updating process of this document.
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4460.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4895.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4960.xml"/>
+<xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6083.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6458.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7053.xml"/>
+<xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8260.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8540.xml"/>
 </references>
 
@@ -6892,7 +6917,7 @@ of x^0 gives bit 0 of byte 3.
 The resulting 4-byte transport-level sequence is the 32-bit SCTP checksum
 value.</t></li>
 </ul>
-<t>IMPLEMENTATION NOTE: Standards documents, textbooks, and vendor
+<t>Implementation Note: Standards documents, textbooks, and vendor
 literature on CRCs often follow an alternative formulation, in which the
 register used to hold the remainder of the long-division algorithm is
 initialized to zero rather than all-1s, and instead the first 32 bits of the
