@@ -12,12 +12,6 @@
      version="3"
      tocDepth="4">
 
-<!--
-ToDo:
-* Add ABC support
-* Address Magnus' comments
--->
-
 <front>
 <title>Stream Control Transmission Protocol</title>
 <seriesInfo name="Internet-Draft" value="draft-ietf-tsvwg-rfc4960-bis-12-to-be"/>
@@ -4445,11 +4439,16 @@ Cumulative TSN Ack Point, and the data sender is not in Fast Recovery.
 Only when these three conditions are met can the cwnd be increased;
 otherwise, the cwnd MUST NOT be increased.
 If these conditions are met, then cwnd MUST be increased by, at most, the
-lesser of
-1) the total size of the previously outstanding DATA chunk(s) acknowledged, and
-2) the destination's PMDCS.
-This upper bound protects against the ACK-Splitting attack outlined in
-<xref target='SAVAGE99'/>.</t></li>
+lesser of</t>
+<ol>
+<li><t>the total size of the previously outstanding DATA chunk(s) acknowledged, and</t></li>
+<li><t>L times the destination's PMDCS.</t></li>
+</ol>
+<t>The first upper bound protects against the ACK-Splitting attack outlined in
+<xref target='SAVAGE99'/>.
+The positive integer L SHOULD be 1, MAY be 2, and MUST NOT be more than 2.
+See <xref target='RFC3465'/> for details.
+</t></li>
 </ul>
 <t>In instances where its peer endpoint is multi-homed, if an endpoint
 receives a SACK that advances its Cumulative TSN Ack Point, then it
@@ -6846,6 +6845,7 @@ in the coding, testing, and updating process of this document.
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2196.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2522.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2960.xml"/>
+<xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3465.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4086.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4460.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4895.xml"/>
