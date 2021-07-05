@@ -14,7 +14,6 @@
 
 <!--
 ToDo:
-* Don't send ABORT in response to INIT/INIT-ACK intiate tag 0
 * Add ABC support
 * Address Magnus' comments
 -->
@@ -1234,8 +1233,7 @@ that the receiver of the INIT transmits within this association.</t>
 See <xref target='sec_selection_of_tag_value'/> for more on the selection of
 the tag value.</t>
 <t>If the value of the Initiate Tag in a received INIT chunk is found to be 0,
-the receiver MUST treat it as an error and close the association by
-transmitting an ABORT.</t>
+the receiver MUST treat it as an error and silently discard the packet.</t>
 </dd>
 <dt>Advertised Receiver Window Credit (a_rwnd): 32 bits (unsigned integer)</dt>
 <dd>
@@ -1504,7 +1502,7 @@ See <xref target='sec_selection_of_tag_value'/> for more on the selection of
 the Initiate Tag value.</t>
 <t>If the value of the Initiate Tag in a received INIT ACK chunk is found to be 0,
 the receiver MUST destroy the association discarding its TCB.
-The receiver MAY send an ABORT for debugging purpose.</t>
+The receiver MAY send an ABORT with the T-bit set for debugging purpose.</t>
 </dd>
 <dt>Advertised Receiver Window Credit (a_rwnd): 32 bits (unsigned integer)</dt>
 <dd>
