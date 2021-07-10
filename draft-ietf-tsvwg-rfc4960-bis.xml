@@ -1133,6 +1133,7 @@ user message, as summarized in the following table:</t>
 used by the receiver to reassemble the message. This means that the
 TSNs for each fragment of a fragmented user message MUST be strictly
 sequential.</t>
+<t>The TSNs of DATA chunks sent out SHOULD be strictly sequential.</t>
 <t>Note: The extension described in <xref target='RFC8260'/> can be used
 to mitigate the head of line blocking when transferring large user messages.</t>
 </section>
@@ -3460,6 +3461,10 @@ fragmented data.</t>
 <section anchor='sec_transmission_of_data_chunks'>
 <name>Transmission of DATA Chunks</name>
 
+<t>This section specifies the rules for sending DATA chunks.
+In particular, it defines zero window probing, which is required to
+avoid the indefinte stalling of an association in case of a loss of
+packets containing SACK chunks performing window updates.</t>
 <t>This document is specified as if there is a single retransmission timer
 per destination transport address, but implementations MAY have a
 retransmission timer for each DATA chunk.</t>
@@ -3591,7 +3596,7 @@ DATA chunk when the DATA chunk received is inside its receive window.</t>
 <t>When the receiver's advertised window is 0, the receiver MUST drop
 any new incoming DATA chunk with a TSN larger than the largest TSN
 received so far.
-If the new incoming DATA chunk holds a TSN value less than the largest
+Also, if the new incoming DATA chunk holds a TSN value less than the largest
 TSN received so far, then the receiver SHOULD drop the largest TSN held for
 reordering and accept the new incoming DATA chunk.
 In either case, if such a DATA chunk is dropped, the receiver MUST immediately
@@ -4221,6 +4226,8 @@ smaller than or equal to the AMDCS.</t>
 
 <t>Once a user message is fragmented, it cannot be re-fragmented.
 Instead, if the PMTU has been reduced, then IP fragmentation MUST be used.
+Therefore, an SCTP association can fail if IP fragmentation is not working on
+any path.
 Please see <xref target='sec_path_mtu_discovery'/> for details of
 PMTU discovery.</t>
 
