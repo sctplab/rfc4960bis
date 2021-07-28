@@ -6314,7 +6314,7 @@ upper layer.</t>
 <dd>
 <t>The list of local IP addresses bound in to this association.</t>
 </dd>
-<dt>Maximum DATA Chunk Size:</dt>
+<dt>Association Maximum DATA Chunk Size:</dt>
 <dd>
 <t>The smallest Path Maximum DATA Chunk Size of all destination addresses.</t>
 </dd>
