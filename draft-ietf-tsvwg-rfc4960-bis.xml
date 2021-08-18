@@ -709,8 +709,8 @@ have been incorporated in this document:</t>
 <li><t>Describe the packet size handling more precise by introducing PMTU,
        PMDCS and AMDCS.</t></li>
 <li><t>Add the definition of control chunk.</t></li>
-<li><t>Improve the error handling by avoiding the sending of SCTP packets with a
-       verification tag of 0 and not containing an INIT chunk.</t></li>
+<li><t>Improve the description of the handling of INIT chunks with invalid
+       mandatory parameters.</t></li>
 <li><t>Allow using L > 1 for ABC during slow start.</t></li>
 <li><t>Explicitly describe the reinitialization of the congestion controller on
        route changes.</t></li>
@@ -1258,7 +1258,7 @@ that the receiver of the INIT chunk transmits within this association.</t>
 See <xref target='sec_selection_of_tag_value'/> for more on the selection of
 the tag value.</t>
 <t>If the value of the Initiate Tag in a received INIT chunk is found to be 0,
-the receiver MUST treat it as an error and silently discard the packet.</t>
+the receiver MUST silently discard the packet.</t>
 </dd>
 <dt>Advertised Receiver Window Credit (a_rwnd): 32 bits (unsigned integer)</dt>
 <dd>
@@ -1273,8 +1273,10 @@ however, an endpoint MAY change the value of a_rwnd it sends in SACK chunks.</t>
 <t>Defines the number of outbound streams the sender of this INIT chunk wishes
 to create in this association.
 The value of 0 MUST NOT be used.</t>
-<t>A receiver of an INIT chunk with the OS value set to 0 SHOULD abort the
-association.</t>
+<t>A receiver of an INIT chunk with the OS value set to 0 MUST discard the
+packet and SHOULD send a packet in response containing an ABORT chunk and using
+the Initiate Tag as the Verification Tag.
+Any existing association MUST NOT be affected.</t>
 </dd>
 <dt>Number of Inbound Streams (MIS): 16 bits (unsigned integer)</dt>
 <dd>
@@ -1284,8 +1286,10 @@ The value 0 MUST NOT be used.</t>
 <t>Note: There is no negotiation of the actual number of streams but instead the
 two endpoints will use the min(requested, offered).
 See <xref target='sec_handle_stream_parameters'/> for details.</t>
-<t>A receiver of an INIT chunk with the MIS value of 0 SHOULD abort the
-association.</t>
+<t>A receiver of an INIT chunk with the MIS value set to 0 MUST discard the
+packet and SHOULD send a packet in response containing an ABORT chunk and using
+the Initiate Tag as the Verification Tag.
+Any existing association MUST NOT be affected.</t>
 </dd>
 <dt>Initial TSN (I-TSN): 32 bits (unsigned integer)</dt>
 <dd>
@@ -6851,7 +6855,8 @@ and <contact fullname="Qiaobing Xie"/>.</t>
 <contact fullname="Claudio Porfiri"/>,
 <contact fullname="Maksim Proshin"/>,
 <contact fullname="Timo Völker"/>,
-and <contact fullname="Magnus Westerlund"/>.</t>
+<contact fullname="Magnus Westerlund"/>,
+and <contact fullname="Zhouming".</t> <!-- FIXME: complete name? -->
 <t>Our thanks cannot be adequately expressed to all of you who have participated
 in the coding, testing, and updating process of this document.
  All we can say is, Thank You!</t>
