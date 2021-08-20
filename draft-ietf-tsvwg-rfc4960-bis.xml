@@ -6753,7 +6753,8 @@ and many others for their invaluable comments.</t>
 <t>Then, add the co-authors of <xref target="RFC4460"/>:
 <contact fullname="I. Arias-Rodriguez"/>,
 <contact fullname="K. Poon"/>,
-and <contact fullname="A. Caro."/></t>
+and
+<contact fullname="A. Caro."/></t>
 <t>Then add to these the efforts of all the subsequent seven
 SCTP interoperability tests and those who commented on <xref target="RFC4460"/>
 as shown in its acknowledgements:
@@ -6818,7 +6819,8 @@ as shown in its acknowledgements:
 <contact fullname="Robby Benedyk"/>,
 <contact fullname="Stephen Baucke"/>,
 <contact fullname="Sandeep Balani"/>,
-and <contact fullname="Ronnie Sellar"/>.</t>
+and
+<contact fullname="Ronnie Sellar"/>.</t>
 <t>A special thanks to <contact fullname="Mark Allman"/>, who should actually
 be a co-author for his work on the max-burst, but managed to wiggle out due to a
 technicality.</t>
@@ -6848,7 +6850,8 @@ upon that including <contact fullname="Alfred Hönes"/> and
 <contact fullname="Julien Pourtet"/>,
 <contact fullname="Irene Rüngeler"/>,
 <contact fullname="Michael Welzl"/>,
-and <contact fullname="Qiaobing Xie"/>.</t>
+and
+<contact fullname="Qiaobing Xie"/>.</t>
 <t>And finally the people who have provided comments for this document including
 <contact fullname="Gorry Fairhurst"/>,
 <contact fullname="Marcelo Ricardo Leitner"/>,
@@ -6856,7 +6859,8 @@ and <contact fullname="Qiaobing Xie"/>.</t>
 <contact fullname="Maksim Proshin"/>,
 <contact fullname="Timo Völker"/>,
 <contact fullname="Magnus Westerlund"/>,
-and <contact fullname="Zhouming".</t> <!-- FIXME: complete name? -->
+and
+<contact fullname="Zhouming".</t> <!-- FIXME: complete name? -->
 <t>Our thanks cannot be adequately expressed to all of you who have participated
 in the coding, testing, and updating process of this document.
  All we can say is, Thank You!</t>
