@@ -1532,9 +1532,12 @@ that the receiver of the INIT ACK chunk transmits within this association.</t>
 <t>The Initiate Tag MUST NOT take the value 0.
 See <xref target='sec_selection_of_tag_value'/> for more on the selection of
 the Initiate Tag value.</t>
-<t>If the value of the Initiate Tag in a received INIT ACK chunk is found to be 0,
-the receiver MUST destroy the association discarding its TCB.
-The receiver MAY send an ABORT chunk with the T-bit set for debugging purpose.</t>
+<t>If an endpoint in the COOKIE-WAIT state receives an INIT ACK chunk with the
+Initiate Tag set to 0, it MUST destroy the TCB and SHOULD send an ABORT chunk
+with the T bit set.
+If such an INIT-ACK chunk is received in any state other than CLOSED or
+COOKIE-WAIT, it SHOULD be discarded silently
+(see <xref target='sec_unexpected_init_ack'/>).</t>
 </dd>
 <dt>Advertised Receiver Window Credit (a_rwnd): 32 bits (unsigned integer)</dt>
 <dd>
@@ -1550,20 +1553,26 @@ however, an endpoint MAY change the value of a_rwnd it sends in SACK chunks.</t>
 wishes to create in this association.
 The value of 0 MUST NOT be used, and the value MUST NOT be greater than the
 MIS value sent in the INIT chunk.</t>
-<t>A receiver of an INIT ACK chunk with the OS value set to 0 SHOULD destroy the
-association discarding its TCB.</t>
+<t>If an endpoint in the COOKIE-WAIT state receives an INIT ACK chunk with the
+OS value set to 0, it MUST destroy the TCB and SHOULD send an ABORT chunk.
+If such an INIT-ACK chunk is received in any state other than CLOSED or
+COOKIE-WAIT, it SHOULD be discarded silently
+(see <xref target='sec_unexpected_init_ack'/>).</t>
 </dd>
 <dt>Number of Inbound Streams (MIS): 16 bits (unsigned integer)</dt>
 <dd>
-<t>Defines the maximum number of streams the sender of this INIT ACK chunk allows
-the peer end to create in this association.
+<t>Defines the maximum number of streams the sender of this INIT ACK chunk
+allows the peer end to create in this association.
 The value 0 MUST NOT be used.</t>
 <t>Note:
 There is no negotiation of the actual number of streams but instead the two
 endpoints will use the min(requested, offered).
 See <xref target='sec_handle_stream_parameters'/> for details.</t>
-<t>A receiver of an INIT ACK chunk with the MIS value set to 0 SHOULD destroy
-the association discarding its TCB.</t>
+<t>If an endpoint in the COOKIE-WAIT state receives an INIT ACK chunk with the
+MIS value set to 0, it MUST destroy the TCB and SHOULD send an ABORT chunk.
+If such an INIT-ACK chunk is received in any state other than CLOSED or
+COOKIE-WAIT, it SHOULD be discarded silently
+(see <xref target='sec_unexpected_init_ack'/>).</t>
 </dd>
 <dt>Initial TSN (I-TSN): 32 bits (unsigned integer)</dt>
 <dd>
@@ -3142,7 +3151,7 @@ the Tie-Tags MUST be set to 0 (indicating that no previous TCB existed).</t>
 <name>Unexpected INIT ACK Chunk</name>
 
 <t>If an INIT ACK chunk is received by an endpoint in any state other than the
-COOKIE-WAIT state, the endpoint SHOULD discard the INIT ACK chunk.
+COOKIE-WAIT or CLOSED state, the endpoint SHOULD discard the INIT ACK chunk.
 An unexpected INIT ACK chunk usually indicates the processing of an old or
 duplicated INIT chunk.</t>
 </section>
