@@ -2779,8 +2779,8 @@ The Verification Tag field in the common header of the outbound SCTP packet
 containing the ABORT chunk MUST be set to the Initiate Tag value of the
 received INIT or INIT ACK chunk this ABORT chunk is responding to.</t>
 <t>Note that a COOKIE ECHO chunk that does not pass the integrity check
-is not considered an 'invalid parameter' and requires special handling;
-see <xref target='sec_state_coockie_authentication'/>.</t>
+is not considered an 'invalid mandatory parameter' and requires special
+handling; see <xref target='sec_state_coockie_authentication'/>.</t>
 <t>After the reception of the first DATA chunk in an association the
 endpoint MUST immediately respond with a SACK chunk to acknowledge the DATA
 chunk.
