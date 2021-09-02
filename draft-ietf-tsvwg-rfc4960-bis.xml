@@ -7,14 +7,14 @@
      submissionType="IETF"
      consensus="true"
      category="std"
-     docName="draft-ietf-tsvwg-rfc4960-bis-14-to-be"
+     docName="draft-ietf-tsvwg-rfc4960-bis-14"
      obsoletes="4960"
      version="3"
      tocDepth="4">
 
 <front>
 <title>Stream Control Transmission Protocol</title>
-<seriesInfo name="Internet-Draft" value="draft-ietf-tsvwg-rfc4960-bis-14-to-be"/>
+<seriesInfo name="Internet-Draft" value="draft-ietf-tsvwg-rfc4960-bis-14"/>
 
 <!-- *************** RANDALL STEWART *************** -->
 <author initials="R. R." surname="Stewart" fullname="Randall R. Stewart">
