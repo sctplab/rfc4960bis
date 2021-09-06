@@ -65,9 +65,9 @@
 <abstract>
 <t>This document obsoletes RFC 4960, if approved.
 It describes the Stream Control Transmission Protocol (SCTP).
-SCTP is designed to transport Public Switched Telephone Network (PSTN)
-signaling messages over IP networks, but is capable of broader applications.</t>
-
+SCTP was originally designed to transport Public Switched Telephone
+Network (PSTN) signaling messages over IP networks.
+It is also suited to be used for other applications, for example WebRTC.</t>
 <t>SCTP is a reliable transport protocol operating on top of a
 connectionless packet network such as IP.
 It offers the following services to its users:</t>
@@ -138,7 +138,8 @@ as SYN attacks.</t></li>
 <t>Transport of PSTN signaling across the IP network is an application
 for which all of these limitations of TCP are relevant.
 While this application directly motivated the development of SCTP, other
-applications might find SCTP a good match to their requirements.</t>
+applications might find SCTP a good match to their requirements.
+One example for this are datachannels in the WebRTC infrastructure.</t>
 </section>
 
 <section>
@@ -6506,12 +6507,16 @@ This can be to determine if the sending of a HEARTBEAT chunk is needed.</t>
 <section anchor='sec_iana'>
 <name>IANA Considerations</name>
 
-<t>SCTP defines three registries that IANA maintains:</t>
+<t>This document defines five registries that IANA maintains:</t>
 <ul>
 <li><t>through definition of additional chunk types,</t></li>
-<li><t>through definition of additional parameter types, or</t></li>
-<li><t>through definition of additional cause codes within ERROR chunks.</t></li>
+<li><t>through definition of additional chunk flags,</t></li>
+<li><t>through definition of additional parameter types,</t></li>
+<li><t>through definition of additional cause codes within ERROR chunks, or</t></li>
+<li><t>through definition of additional payload protocol identifiers.</t></li>
 </ul>
+<t>IANA is requested to update the reference of the above five registries
+exclusively to this document</t>
 <t>SCTP requires that the IANA Port Numbers registry be opened for SCTP port
 registrations, <xref target='sec_port_number_registry'/> describes how.
 An IESG-appointed Expert Reviewer supports IANA in evaluating SCTP port
