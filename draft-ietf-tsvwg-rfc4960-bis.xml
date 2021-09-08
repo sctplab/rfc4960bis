@@ -6516,7 +6516,7 @@ This can be to determine if the sending of a HEARTBEAT chunk is needed.</t>
 <li><t>through definition of additional payload protocol identifiers.</t></li>
 </ul>
 <t>IANA is requested to update the reference of the above five registries
-exclusively to this document</t>
+exclusively to this document.</t>
 <t>SCTP requires that the IANA Port Numbers registry be opened for SCTP port
 registrations, <xref target='sec_port_number_registry'/> describes how.
 An IESG-appointed Expert Reviewer supports IANA in evaluating SCTP port
