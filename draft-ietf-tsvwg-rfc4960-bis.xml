@@ -8,7 +8,7 @@
      consensus="true"
      category="std"
      docName="draft-ietf-tsvwg-rfc4960-bis-15-to-be"
-     obsoletes="4960"
+     obsoletes="4960,6096,7053"
      version="3"
      tocDepth="4">
 
@@ -64,8 +64,11 @@
 
 <abstract>
 <t>This document obsoletes RFC 4960, if approved.
-It describes the Stream Control Transmission Protocol (SCTP).
-SCTP was originally designed to transport Public Switched Telephone
+It describes the Stream Control Transmission Protocol (SCTP) and incorporates
+the specification of the chunk flags registry from RFC 6096 and the
+specification of the I bit of DATA chunks from RFC 7053.
+Therefore, RFC 6096 and RFC 7053 are also obsoleted by this document, if approved.</t>
+<t>SCTP was originally designed to transport Public Switched Telephone
 Network (PSTN) signaling messages over IP networks.
 It is also suited to be used for other applications, for example WebRTC.</t>
 <t>SCTP is a reliable transport protocol operating on top of a
@@ -107,8 +110,12 @@ Stream Control Transmission Protocol (SCTP), the services it offers,
 and the basic concepts needed to understand the detailed description
 of the protocol.</t>
 
-<t>This document obsoletes <xref target="RFC4960"/>, if approved.</t>
-
+<t>This document obsoletes <xref target="RFC4960"/>, if approved.
+In addition to that, it incorporates the specification of the chunk flags
+registry from RFC 6096 and the specification of the I bit of DATA chunks
+from RFC 7053.
+Therefore, RFC 6096 and RFC 7053 are also obsoleted by this document,
+if approved.</t>
 <section>
 <name>Motivation</name>
 
@@ -901,7 +908,7 @@ on receipt.</t>
 <dd>
 <t>This value represents the size of the chunk in bytes, including the Chunk Type,
 Chunk Flags, Chunk Length, and Chunk Value fields.
-Therefore, if the Chunk Value field is zero-length, the Length field will be
+, if the Chunk Value field is zero-length, the Length field will be
 set to 4.
 The Chunk Length field does not count any chunk padding.
 However, it does include padding of any variable-length parameter except the
@@ -1075,7 +1082,7 @@ See Section 4 of <xref target='RFC7053'/> for a discussion of the benefits.</t>
 <dd>
 <t>The (U)nordered bit, if set to '1', indicates that this is an unordered
 DATA chunk, and there is no Stream Sequence Number assigned to this DATA chunk.
-Therefore, the receiver MUST ignore the Stream Sequence Number field.</t>
+, the receiver MUST ignore the Stream Sequence Number field.</t>
 <t>After reassembly (if necessary), unordered DATA chunks MUST be dispatched to
 the upper layer by the receiver without any attempt to reorder.</t>
 <t>If an unordered user message is fragmented, each fragment of the message MUST
@@ -1129,7 +1136,7 @@ as well as by the peer application, to identify the type of information being
 carried in this DATA chunk.
 This field MUST be sent even in fragmented DATA chunks (to make sure it is
 available for agents in the middle of the network).
-Note that this field is not touched by an SCTP implementation; therefore, its
+Note that this field is not touched by an SCTP implementation; , its
 byte order is not necessarily big endian.
 The upper layer is responsible for any byte order conversions to this field.</t>
 <t>The value 0 indicates that no application identifier is specified by the upper
@@ -1679,7 +1686,7 @@ last TSN received before a break in the sequence of received TSNs
 occurs;
 the next TSN value following this one has not yet been received at the endpoint
 sending the SACK chunk.
-This parameter therefore acknowledges receipt of all TSNs less than or equal to
+This parameter  acknowledges receipt of all TSNs less than or equal to
 its value.</t>
 <t>The handling of a_rwnd by the receiver of the SACK chunk is discussed in
 detail in <xref target='sec_processing_of_received_sack'/>.</t>
@@ -3047,7 +3054,7 @@ as described in this section.</t>
 <t>Note: An endpoint will not receive the chunk unless the chunk was sent to
 an SCTP transport address and is from an SCTP transport address associated
 with this endpoint.
-Therefore, the endpoint processes such a chunk as part of its current
+, the endpoint processes such a chunk as part of its current
 association.</t>
 <t>The following scenarios can cause duplicated or unexpected chunks:</t>
 <ol type='%C)'>
@@ -3706,7 +3713,7 @@ Cumulative TSN Ack field are reported in the Gap Ack Block fields.
 The SCTP endpoint MUST report as many Gap Ack Blocks as can fit in a single SACK
 chunk such that the size of the SCTP packet does not exceed the current PMTU.</t>
 <t>The SHUTDOWN chunk does not contain Gap Ack Block fields.
-Therefore, the endpoint SHOULD use a SACK chunk instead of the SHUTDOWN
+, the endpoint SHOULD use a SACK chunk instead of the SHUTDOWN
 chunk to acknowledge DATA chunks received out of order.</t>
 <t>Upon receipt of an SCTP packet containing a DATA chunk with the I bit set,
 the receiver SHOULD NOT delay the sending of the corresponding SACK chunk, i.e.,
@@ -4288,7 +4295,7 @@ smaller than or equal to the AMDCS.</t>
 
 <t>Once a user message is fragmented, it cannot be re-fragmented.
 Instead, if the PMTU has been reduced, then IP fragmentation MUST be used.
-Therefore, an SCTP association can fail if IP fragmentation is not working on
+, an SCTP association can fail if IP fragmentation is not working on
 any path.
 Please see <xref target='sec_path_mtu_discovery'/> for details of
 PMTU discovery.</t>
@@ -6625,7 +6632,7 @@ SCTP.</t>
 
 <t>SCTP services can use contact port numbers to provide service to unknown
 callers, as in TCP and UDP.
-IANA is therefore requested to open the existing "Service Name and Transport
+IANA is  requested to open the existing "Service Name and Transport
 Protocol Port Number Registry" for SCTP using the following rules, which we
 intend to mesh well with existing port-number registration procedures.
 An IESG-appointed expert reviewer supports IANA in evaluating SCTP port
@@ -6959,6 +6966,7 @@ in the coding, testing, and updating process of this document.
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4895.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4960.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6083.xml"/>
+<xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6096.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6458.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7053.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8260.xml"/>
@@ -6986,7 +6994,7 @@ Since SCTP is a transport-level protocol, it cannot know the actual
 serial-media bit ordering.
 Moreover, different links in the path between SCTP endpoints can use different
 link-level bit orders.</t>
-<t>A convention therefore is established for mapping SCTP transport
+<t>A convention  is established for mapping SCTP transport
 messages to polynomials for purposes of CRC computation.
 The bit-ordering for mapping SCTP messages to polynomials is that bytes are
 taken most-significant first, but within each byte, bits are taken
