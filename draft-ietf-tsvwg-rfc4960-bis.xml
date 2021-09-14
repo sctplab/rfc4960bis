@@ -112,10 +112,10 @@ of the protocol.</t>
 
 <t>This document obsoletes <xref target="RFC4960"/>, if approved.
 In addition to that, it incorporates the specification of the chunk flags
-registry from RFC 6096 and the specification of the I bit of DATA chunks
-from RFC 7053.
-Therefore, RFC 6096 and RFC 7053 are also obsoleted by this document,
-if approved.</t>
+registry from <xref target="RFC6096"/> and the specification of the I bit of
+DATA chunks from <xref target="RFC7053"/>.
+Therefore, <xref target="RFC6096"/> and <xref target="RFC7053"/> are also
+obsoleted by this document, if approved.</t>
 <section>
 <name>Motivation</name>
 
@@ -6522,12 +6522,128 @@ This can be to determine if the sending of a HEARTBEAT chunk is needed.</t>
 <li><t>through definition of additional cause codes within ERROR chunks, or</t></li>
 <li><t>through definition of additional payload protocol identifiers.</t></li>
 </ul>
-<t>IANA is requested to update the reference of the above five registries
-exclusively to this document.</t>
+<t>IANA is requested to perform the following updates for the above five
+registries:</t>
+<ul>
+<li><t>In the Chunk Types Registry replace in the Reference section the
+reference to <xref target='RFC4960'/> and <xref target='RFC6096'/> by a
+reference to this document.</t>
+<t>Replace in the Notes section the reference to Section 3.2 of
+<xref target='RFC6096'/> by a reference to
+<xref target='sec_ietf_chunk_flags_registration'/> of this document.</t>
+<t>Finally replace each reference to <xref target='RFC4960'/> by a reference to
+this document for the following chunk types:</t>
+<ul>
+<li><t>Payload Data (DATA)</t></li>
+<li><t>Initiation (INIT)</t></li>
+<li><t>Initiation Acknowledgement (INIT ACK)</t></li>
+<li><t>Selective Acknowledgement (SACK)</t></li>
+<li><t>Heartbeat Request (HEARTBEAT)</t></li>
+<li><t>Heartbeat Acknowledgement (HEARTBEAT ACK)</t></li>
+<li><t>Abort (ABORT)</t></li>
+<li><t>Shutdown (SHUTDOWN)</t></li>
+<li><t>Shutdown Acknowledgement (SHUTDOWN ACK)</t></li>
+<li><t>Operation Error (ERROR)</t></li>
+<li><t>State Cookie (COOKIE ECHO)</t></li>
+<li><t>Cookie Acknowledgement (COOKIE ACK)</t></li>
+<li><t>Reserved for Explicit Congestion Notification Echo (ECNE)</t></li>
+<li><t>Reserved for Congestion Window Reduced (CWR)</t></li>
+<li><t>Shutdown Complete (SHUTDOWN COMPLETE)</t></li>
+<li><t>Reserved for IETF-defined Chunk Extensions</t></li>
+</ul>
+</li>
+<li><t>In the Chunk Parameter Types Registry replace in the Reference section
+the reference to <xref target='RFC4960'/> by a reference to this document.</t>
+<t>Replace each reference to <xref target='RFC4960'/> by a reference to
+this document for the following chunk parameter types:</t>
+<ul>
+<li><t>Heartbeat Info</t></li>
+<li><t>IPv4 Address</t></li>
+<li><t>IPv6 Address</t></li>
+<li><t>State Cookie</t></li>
+<li><t>Unrecognized Parameters</t></li>
+<li><t>Cookie Preservative</t></li>
+<li><t>Host Name Address</t></li>
+<li><t>Supported Address Types</t></li>
+</ul>
+<t>Add a reference to this document for the following chunk parameter type:</t>
+<ul>
+<li><t>Reserved for ECN Capable (0x8000)</t></li>
+</ul>
+</li>
+<li><t>In the Chunk Flags Registry replace in the Reference section
+the reference to <xref target='RFC6096'/> by a reference to this document.</t>
+<t>Replace each reference to <xref target='RFC4960'/> by a reference to
+this document for the following DATA chunk flags:</t>
+<ul>
+<li><t>E bit</t></li>
+<li><t>B bit</t></li>
+<li><t>U bit</t></li>
+</ul>
+<t>Replace each reference to <xref target='RFC4960'/> by a reference to
+this document for the following ABORT chunk flags:</t>
+<ul>
+<li><t>T bit</t></li>
+</ul>
+<t>Replace each reference to <xref target='RFC4960'/> by a reference to
+this document for the following SHUTDOWN COMPLETE chunk flags:</t>
+<ul>
+<li><t>T bit</t></li>
+</ul>
+</li>
+<li><t>In the Error Cause Codes Registry replace in the Reference section
+the reference to <xref target='RFC6096'/> by a reference to this document.</t>
+<t>Replace each reference to <xref target='RFC4960'/> by a reference to
+this document for the following cause codes:</t>
+<ul>
+<li><t>Invalid Stream Identifier</t></li>
+<li><t>Missing Mandatory Parameter</t></li>
+<li><t>Stale Cookie Error</t></li>
+<li><t>Out of Resource</t></li>
+<li><t>Unresolvable Address</t></li>
+<li><t>Unrecognized Chunk Type</t></li>
+<li><t>Invalid Mandatory Parameter</t></li>
+<li><t>Unrecognized Parameters</t></li>
+<li><t>No User Data</t></li>
+<li><t>Cookie Received While Shutting Down</t></li>
+<li><t>Restart of an Association with New Addressess</t></li>
+</ul>
+<t>Replace each reference to <xref target='RFC4460'/> by a reference to
+this document for the following cause codes:</t>
+<ul>
+<li><t>User Initiated Abort</t></li>
+<li><t>Protocol Violation</t></li>
+</ul>
+</li>
+<li><t>In the SCTP Payload Protocol Identifiers Registry replace in the
+Reference section the reference to <xref target='RFC6096'/> by a reference
+to this document.</t>
+<t>Replace each reference to <xref target='RFC4960'/> by a reference to
+this document for the following SCTP payload protocol identifiers:</t>
+<ul>
+<li><t>Reserved by SCTP</t></li>
+</ul>
+</li>
+</ul>
+
 <t>SCTP requires that the IANA Port Numbers registry be opened for SCTP port
 registrations, <xref target='sec_port_number_registry'/> describes how.
 An IESG-appointed Expert Reviewer supports IANA in evaluating SCTP port
 allocation requests.</t>
+<t>IANA is requested to perform the following update for the Port Number
+registry.
+Replace each reference to <xref target='RFC4960'/> by a reference to
+this document for the following SCTP port numbers:</t>
+<ul>
+<li><t>9 (discard)</t></li>
+<li><t>20 (ftp-data)</t></li>
+<li><t>21 (ftp)</t></li>
+<li><t>22 (ssh)</t></li>
+<li><t>80 (http)</t></li>
+<li><t>179 (bgp)</t></li>
+<li><t>443 (https)</t></li>
+</ul>
+
 
 <section anchor='sec_ietf_defined_chunks_extension'>
 <name>IETF-Defined Chunk Extension</name>
@@ -6639,58 +6755,6 @@ An IESG-appointed expert reviewer supports IANA in evaluating SCTP port
 allocation requests, according to the procedure defined in
 <xref target='RFC8126'/>.
 The details of this process are defined in <xref target='RFC6335'/>.</t>
-<t>This document registers the following ports.
-(These registrations are to be considered models to follow for future allocation
-requests.)</t>
-<artwork align='center'>
-<![CDATA[
-discard    9/sctp  Discard  # IETF TSVWG
-                            # Randall Stewart <rrs@cisco.com>
-                            # [RFC4960]
-
-   The discard service, which accepts SCTP connections on port
-   9, discards all incoming application data and sends no data
-   in response.  Thus, SCTP's discard port is analogous to
-   TCP's discard port, and might be used to check the health
-   of an SCTP stack.
-
-ftp-data  20/sctp  FTP      # IETF TSVWG
-                            # Randall Stewart <rrs@cisco.com>
-                            # [RFC4960]
-
-ftp       21/sctp  FTP      # IETF TSVWG
-                            # Randall Stewart <rrs@cisco.com>
-                            # [RFC4960]
-
-   File Transfer Protocol (FTP) data (20) and control ports
-   (21).
-
-ssh       22/sctp  SSH      # IETF TSVWG
-                            # Randall Stewart <rrs@cisco.com>
-                            # [RFC4960]
-
-   The Secure Shell (SSH) remote login service, which allows
-   secure shell logins to a host.
-
-http      80/sctp  HTTP     # IETF TSVWG
-                            # Randall Stewart <rrs@cisco.com>
-                            # [RFC4960]
-
-   World Wide Web HTTP over SCTP.
-
-bgp      179/sctp  BGP      # IETF TSVWG
-                            # Randall Stewart <rrs@cisco.com>
-                            # [RFC4960]
-
-   Border Gateway Protocol over SCTP.
-
-https    443/sctp  HTTPS    # IETF TSVWG
-                            # Randall Stewart <rrs@cisco.com>
-                            # [RFC4960]
-
-   World Wide Web HTTP over TLS/SSL over SCTP.
-]]>
-</artwork>
 </section>
 </section>
 
