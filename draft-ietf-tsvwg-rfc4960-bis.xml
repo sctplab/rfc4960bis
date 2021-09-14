@@ -6644,6 +6644,27 @@ this document for the following SCTP port numbers:</t>
 <li><t>443 (https)</t></li>
 </ul>
 
+<t>Furthermore, IANA is requested to replace in the HTTP Digest Algorithm Values
+registry the reference to Appendix B of <xref target='RFC4960'/> to
+<xref target='sec_crc32c'/> of this document.</t>
+<t>IANA is also requested to replace in the ONC RPC Netids registry, each
+of the reference to <xref target='RFC4960'/> by a reference to
+this document for the following netids:</t>
+<ul>
+<li><t>sctp</t></li>
+<li><t>sctp6</t></li>
+</ul>
+<t>IANA is finally requested to replace in the IPFIX Information Elements
+registry, each of the reference to <xref target='RFC4960'/> by a reference to
+this document for the following elements with the name:</t>
+<ul>
+<li><t>sourceTransportPort</t></li>
+<li><t>destinationTransportPort</t></li>
+<li><t>collectorTransportPort</t></li>
+<li><t>exporterTransportPort</t></li>
+<li><t>postNAPTSourceTransportPort</t></li>
+<li><t>postNAPTDestinationTransportPort</t></li>
+</ul>
 
 <section anchor='sec_ietf_defined_chunks_extension'>
 <name>IETF-Defined Chunk Extension</name>
