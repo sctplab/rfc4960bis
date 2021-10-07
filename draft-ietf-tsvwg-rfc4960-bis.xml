@@ -192,6 +192,9 @@ combinations that can be generated from each endpoint's lists.</t>
 ]]>
 </artwork>
 </figure>
+<t>In addition to encapsulating SCTP packets in IPv4 or IPv6, it is also possible
+to encapsulate SCTP packets in UDP as specified in <xref target='RFC6951'/>
+or encapsulate them in DTLS as specified in <xref target='RFC8261'/>.</t>
 </section>
 
 <section anchor='sec_key_terms'>
@@ -423,13 +426,6 @@ In the case of SCTP running over IP, a transport address is defined by
 the combination of an IP address and an SCTP port number (where SCTP is the
 transport protocol).</t>
 </dd>
-<dt>Unacknowledged TSN (at an SCTP endpoint):</dt>
-<dd>
-<t>A TSN (and the associated DATA chunk) that has been received by the endpoint but
-for which an acknowledgement has not yet been sent.
-Or in the opposite case, for a packet that has been sent but no acknowledgement
-has been received.</t>
-</dd>
 <dt>Unordered Message:</dt>
 <dd>
 <t>Unordered messages are "unordered" with respect to any other message;
@@ -488,12 +484,12 @@ in the remainder of this section.</t>
 |             |                |____________________|
 |   Startup   |
 |             |         ____________________________
-|     and     |        |    User Data Fragmentation |
+|     and     |        |  User Data Fragmentation   |
 |             |        |____________________________|
-|   Takedown  |
+|  Takedown   |
 |             |         ____________________________
-|             |        |     Acknowledgement        |
-|             |        |          and               |
+|             |        |      Acknowledgement       |
+|             |        |            and             |
 |             |        |    Congestion Avoidance    |
 |             |        |____________________________|
 |             |
@@ -502,11 +498,11 @@ in the remainder of this section.</t>
 |             |        |____________________________|
 |             |
 |             |     ________________________________
-|             |    |      Packet Validation         |
+|             |    |       Packet Validation        |
 |             |    |________________________________|
 |             |
 |             |     ________________________________
-|             |    |     Path Management            |
+|             |    |        Path Management         |
 |_____________|    |________________________________|
 ]]>
 </artwork>
@@ -742,13 +738,13 @@ A chunk contains either control information or user data.</t>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                        Common Header                          |
+|                         Common Header                         |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                          Chunk #1                             |
+|                           Chunk #1                            |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                           ...                                 |
+|                              ...                              |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                          Chunk #n                             |
+|                           Chunk #n                            |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
 <t>Multiple chunks can be bundled into one SCTP packet as long as
@@ -769,9 +765,9 @@ byte order, unless otherwise stated.</t>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|     Source Port Number        |     Destination Port Number   |
+|      Source Port Number       |    Destination Port Number    |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                      Verification Tag                         |
+|                       Verification Tag                        |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                           Checksum                            |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -831,7 +827,7 @@ a Chunk Length field, and a Value field.</t>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|   Chunk Type  | Chunk  Flags  |        Chunk Length           |
+|  Chunk Type   |  Chunk Flags  |         Chunk Length          |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 \                                                               \
 /                          Chunk Value                          /
@@ -908,7 +904,7 @@ on receipt.</t>
 <dd>
 <t>This value represents the size of the chunk in bytes, including the Chunk Type,
 Chunk Flags, Chunk Length, and Chunk Value fields.
-, if the Chunk Value field is zero-length, the Length field will be
+Therefore, if the Chunk Value field is zero-length, the Length field will be
 set to 4.
 The Chunk Length field does not count any chunk padding.
 However, it does include padding of any variable-length parameter except the
@@ -946,10 +942,10 @@ defined in a Type-Length-Value format as shown below.</t>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|          Parameter Type       |       Parameter Length        |
+|        Parameter Type         |       Parameter Length        |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 \                                                               \
-/                       Parameter Value                         /
+/                        Parameter Value                        /
 \                                                               \
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
@@ -1054,7 +1050,7 @@ chunk.</t>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|   Type = 0    |  Res  |I|U|B|E|    Length                     |
+|   Type = 0    |  Res  |I|U|B|E|            Length             |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                              TSN                              |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -1070,7 +1066,7 @@ chunk.</t>
 <dl newline="true">
 <dt>Res: 4 bits</dt>
 <dd>
-<t>Set to all '0's on transmit and ignored on receipt.</t>
+<t>All set to 0 on transmit and ignored on receipt.</t>
 </dd>
 <dt>I bit: 1 bit</dt>
 <dd>
@@ -1080,13 +1076,13 @@ See Section 4 of <xref target='RFC7053'/> for a discussion of the benefits.</t>
 </dd>
 <dt>U bit: 1 bit</dt>
 <dd>
-<t>The (U)nordered bit, if set to '1', indicates that this is an unordered
+<t>The (U)nordered bit, if set to 1, indicates that this is an unordered
 DATA chunk, and there is no Stream Sequence Number assigned to this DATA chunk.
-, the receiver MUST ignore the Stream Sequence Number field.</t>
+Therefore, the receiver MUST ignore the Stream Sequence Number field.</t>
 <t>After reassembly (if necessary), unordered DATA chunks MUST be dispatched to
 the upper layer by the receiver without any attempt to reorder.</t>
 <t>If an unordered user message is fragmented, each fragment of the message MUST
-have its U bit set to '1'.</t>
+have its U bit set to 1.</t>
 </dd>
 <dt>B bit: 1 bit</dt>
 <dd>
@@ -1151,8 +1147,8 @@ Any padding MUST NOT be included in the Length field.
 A sender MUST never add more than 3 bytes of padding.</t>
 </dd>
 </dl>
-<t>An unfragmented user message MUST have both the B and E bits set to '1'.
-Setting both B and E bits to '0' indicates a middle fragment of a multi-fragment
+<t>An unfragmented user message MUST have both the B and E bits set to 1.
+Setting both B and E bits to 0 indicates a middle fragment of a multi-fragment
 user message, as summarized in the following table:</t>
 <table anchor='table_fragment_description_flags'>
 <name>Fragment Description Flags</name>
@@ -1188,9 +1184,9 @@ The format of the INIT chunk is shown below:</t>
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                         Initiate Tag                          |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|           Advertised Receiver Window Credit (a_rwnd)          |
+|          Advertised Receiver Window Credit (a_rwnd)           |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|  Number of Outbound Streams   |  Number of Inbound Streams    |
+|  Number of Outbound Streams   |   Number of Inbound Streams   |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                          Initial TSN                          |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -1271,8 +1267,13 @@ the receiver MUST silently discard the packet.</t>
 <dt>Advertised Receiver Window Credit (a_rwnd): 32 bits (unsigned integer)</dt>
 <dd>
 <t>This value represents the dedicated buffer space, in number of bytes,
-the sender of the INIT chunk has reserved in association with this window.
-During the life of the association, this buffer space SHOULD NOT be reduced
+the sender of the INIT chunk has reserved in association with this window.</t>
+<t>The value MUST NOT be smaller than 1500.</t>
+<t>A receiver of an INIT chunk with the a_rwnd value set to a value smaller than
+1500 MUST discard the packet and SHOULD send a packet in response containing
+an ABORT chunk and using the Initiate Tag as the Verification Tag.
+Any existing association MUST NOT be affected.</t>
+<t>During the life of the association, this buffer space SHOULD NOT be reduced
 (i.e., dedicated buffers ought not to be taken away from this association);
 however, an endpoint MAY change the value of a_rwnd it sends in SACK chunks.</t>
 </dd>
@@ -1308,22 +1309,22 @@ This field MAY be set to the value of the Initiate Tag field.</t>
 </dl>
 
 <section anchor='sec_optional_variable_length_parameters_in_init'>
-<name>Optional/Variable-Length Parameters in INIT chunks</name>
+<name>Optional or Variable-Length Parameters in INIT chunks</name>
 
 <t>The following parameters follow the Type-Length-Value format as defined in
 <xref target='sec_parameter_format'/>.
 Any Type-Length-Value fields MUST come after the fixed-length fields defined
 in the previous section.</t>
 
-<section>
-<name>IPv4 Address Parameter (5)</name>
+<section anchor='sec_ipv4_address_parameter'>
+<name>IPv4 Address (5)</name>
 <artwork align='center'>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|        Type = 5               |      Length = 8               |
+|           Type = 5            |          Length = 8           |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                        IPv4 Address                           |
+|                         IPv4 Address                          |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
 <dl newline="true">
@@ -1335,13 +1336,13 @@ It is binary encoded.</t>
 </dl>
 </section>
 
-<section>
-<name>IPv6 Address Parameter (6)</name>
+<section anchor='sec_ipv6_address_parameter'>
+<name>IPv6 Address (6)</name>
 <artwork align='center'>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|            Type = 6           |          Length = 20          |
+|           Type = 6            |          Length = 20          |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                                                               |
 |                         IPv6 Address                          |
@@ -1378,8 +1379,8 @@ If the INIT chunk does not contain any IP Address parameters, the endpoint
 receiving the INIT chunk MUST use the source address associated with the
 received IP datagram as its sole destination address for the association.</t>
 <t>Note that not using any IP Address parameters in the INIT and INIT ACK chunk
-is an alternative to make an association more likely to work across a
-NAT box.</t>
+is a way to make an association more likely to work in combination with Network
+Address Translation (NAT).</t>
 </section>
 
 <section>
@@ -1390,7 +1391,7 @@ receiver of the INIT chunk for a longer life-span of the State Cookie.</t>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|          Type = 9             |          Length = 8           |
+|           Type = 9            |          Length = 8           |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |         Suggested Cookie Life-Span Increment (msec.)          |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -1410,25 +1411,28 @@ its own security reasons.</t>
 </dl>
 </section>
 
-<section>
+<section anchor='sec_host_name_address_parameter'>
 <name>Host Name Address (11)</name>
-<t>The sender of an INIT chunk MUST NOT include this parameter.
-The usage of the Host Name Address parameter is deprecated.</t>
+<t>The sender of an INIT chunk or INIT ACK chunk MUST NOT include this parameter.
+The usage of the Host Name Address parameter is deprecated.
+The receiver of an INIT chunk or an INIT ACK containing a Host Name Address
+parameter MUST send an ABORT chunk and MAY include an "Unresolvable Address"
+error cause.</t>
 <artwork align='center'>
 0                   1                   2                   3
 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|          Type = 11            |          Length               |
+|           Type = 11           |            Length             |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-/                          Host Name                            /
+/                           Host Name                           /
 \                                                               \
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
 <dl newline="true">
 <dt>Host Name: variable length</dt>
 <dd>
-<t>This field contains a host name in "host name syntax" per RFC 1123
-Section 2.1 <xref target='RFC1123'/>.
+<t>This field contains a host name in "host name syntax" per Section 2.1 of
+<xref target='RFC1123'/>.
 The method for resolving the host name is out of scope of SCTP.</t>
 <t>At least one null terminator is included in the Host Name string and MUST be
 included in the length.</t>
@@ -1444,7 +1448,7 @@ it can support.</t>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|          Type = 12            |          Length               |
+|           Type = 12           |            Length             |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |        Address Type #1        |        Address Type #2        |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -1455,9 +1459,10 @@ it can support.</t>
 <dt>Address Type: 16 bits (unsigned integer)</dt>
 <dd>
 <t>This is filled with the type value of the corresponding address
-TLV (e.g., IPv4 = 5, IPv6 = 6).
-The value indicating the Host Name Address parameter (Host name = 11)
-MUST NOT be used.</t>
+TLV (e.g., 5 for indicating IPv4, 6 for indicating IPv6).
+The value indicating the Host Name Address parameter MUST NOT be used
+when sending this parameter and MUST be ignored when receiving this
+parameter.</t>
 </dd>
 </dl>
 </section>
@@ -1474,13 +1479,13 @@ The format of the INIT ACK chunk is shown below:</t>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|   Type = 2    |  Chunk Flags  |      Chunk Length             |
+|   Type = 2    |  Chunk Flags  |         Chunk Length          |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                         Initiate Tag                          |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|              Advertised Receiver Window Credit                |
+|               Advertised Receiver Window Credit               |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|  Number of Outbound Streams   |  Number of Inbound Streams    |
+|  Number of Outbound Streams   |   Number of Inbound Streams   |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                          Initial TSN                          |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -1549,9 +1554,14 @@ COOKIE-WAIT, it SHOULD be discarded silently
 </dd>
 <dt>Advertised Receiver Window Credit (a_rwnd): 32 bits (unsigned integer)</dt>
 <dd>
-<t>This value represents the dedicated buffer space, in number of bytes,
-the sender of the INIT ACK chunk has reserved in association with this window.
-During the life of the association, this buffer space SHOULD NOT be reduced
+<t>This value represents the dedicated buffer space, in number of bytes, the
+sender of the INIT ACK chunk has reserved in association with this window.</t>
+<t>The value MUST NOT be smaller than 1500.</t>
+<t>A receiver of an INIT ACK chunk with the a_rwnd value set to a value smaller
+than 1500 MUST discard the packet and SHOULD send a packet in response
+containing an ABORT chunk and using the Initiate Tag as the Verification Tag.
+Any existing association MUST NOT be affected.</t>
+<t>During the life of the association, this buffer space SHOULD NOT be reduced
 (i.e., dedicated buffers ought not to be taken away from this association);
 however, an endpoint MAY change the value of a_rwnd it sends in SACK chunks.</t>
 </dd>
@@ -1619,8 +1629,16 @@ as defined in <xref target='sec_parameter_format'/> and are described below.
 The other fields are defined the same as their counterparts in the
 INIT chunk.</t>
 
-<section anchor='sec_optional_or_variable_length_parameters'>
-<name>Optional or Variable-Length Parameters</name>
+<section anchor='sec_optional_variable_length_parameters_in_init_ack'>
+<name>Optional or Variable-Length Parameters in INIT ACK chunks</name>
+<t>The State Cookie and Unrecognized Parameters use the Type-Length-Value format
+as defined in <xref target='sec_parameter_format'/> and are described below.
+The IPv4 Address Parameter is described in <xref target='sec_ipv4_address_parameter'/>, and
+the IPv6 Address Parameter is described in <xref target='sec_ipv6_address_parameter'/>.
+The Host Name Address Parameter is described in <xref target='sec_host_name_address_parameter'/>
+and MUST NOT be included in an INIT ACK chunk.
+Any Type-Length-Value fields MUST come after the fixed-length fields defined
+in the previous section.</t>
 
 <section>
 <name>State Cookie (7)</name>
@@ -1628,7 +1646,7 @@ INIT chunk.</t>
 0                   1                   2                   3
 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|          Type = 7             |          Length               |
+|           Type = 7            |            Length             |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 /                            Cookie                             /
 \                                                               \
@@ -1655,9 +1673,9 @@ SHOULD be reported to the sender.</t>
 0                   1                   2                   3
 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|          Type = 8             |          Length               |
+|           Type = 8            |            Length             |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-/                     Unrecognized Parameter                    /
+/                    Unrecognized Parameter                     /
 \                                                               \
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
@@ -1702,7 +1720,7 @@ value of the Cumulative TSN Ack.</t>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|   Type = 3    |Chunk  Flags   |      Chunk Length             |
+|   Type = 3    |  Chunk Flags  |         Chunk Length          |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                      Cumulative TSN Ack                       |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -1710,27 +1728,27 @@ value of the Cumulative TSN Ack.</t>
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 | Number of Gap Ack Blocks = N  |  Number of Duplicate TSNs = X |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|  Gap Ack Block #1 Start       |   Gap Ack Block #1 End        |
+|    Gap Ack Block #1 Start     |     Gap Ack Block #1 End      |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 /                                                               /
 \                              ...                              \
 /                                                               /
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|   Gap Ack Block #N Start      |  Gap Ack Block #N End         |
+|    Gap Ack Block #N Start     |     Gap Ack Block #N End      |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                       Duplicate TSN 1                         |
+|                        Duplicate TSN 1                        |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 /                                                               /
 \                              ...                              \
 /                                                               /
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                       Duplicate TSN X                         |
+|                        Duplicate TSN X                        |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
 <dl newline="true">
 <dt>Chunk Flags: 8 bits</dt>
 <dd>
-<t>Set to all '0's on transmit and ignored on receipt.</t>
+<t>All set to 0 on transmit and ignored on receipt.</t>
 </dd>
 <dt>Cumulative TSN Ack: 32 bits (unsigned integer)</dt>
 <dd>
@@ -1787,39 +1805,39 @@ Gap Ack Block.</t>
 arrived at the time when it decides to send a Selective ACK,</t>
 <artwork align='center'>
 <![CDATA[
-----------
-| TSN=17 |
-----------
-|        | <- still missing
-----------
-| TSN=15 |
-----------
-| TSN=14 |
-----------
-|        | <- still missing
-----------
-| TSN=12 |
-----------
-| TSN=11 |
-----------
-| TSN=10 |
-----------
+------------
+| TSN = 17 |
+------------
+|          | <- still missing
+------------
+| TSN = 15 |
+------------
+| TSN = 14 |
+------------
+|          | <- still missing
+------------
+| TSN = 12 |
+------------
+| TSN = 11 |
+------------
+| TSN = 10 |
+------------
 ]]>
 </artwork>
 <t>then the parameter part of the SACK chunk MUST be constructed as follows
 (assuming the new a_rwnd is set to 4660 by the sender):</t>
 <artwork align='center'>
-+--------------------------------+
-|   Cumulative TSN Ack = 12      |
-+--------------------------------+
-|        a_rwnd = 4660           |
-+----------------+---------------+
-| num of block=2 | num of dup=0  |
-+----------------+---------------+
-|block #1 strt=2 |block #1 end=3 |
-+----------------+---------------+
-|block #2 strt=5 |block #2 end=5 |
-+----------------+---------------+
++-------------------+-------------------+
+|        Cumulative TSN Ack = 12        |
++-------------------+-------------------+
+|             a_rwnd = 4660             |
++-------------------+-------------------+
+| num of block = 2  |  num of dup = 0   |
++-------------------+-------------------+
+|block #1 start = 2 | block #1 end = 3  |
++-------------------+-------------------+
+|block #2 start = 5 | block #2 end = 5  |
++-------------------+-------------------+
 </artwork>
 </dd>
 <dt>Duplicate TSN: 32 bits (unsigned integer)</dt>
@@ -1849,10 +1867,10 @@ variable-length opaque data structure understood only by the sender.</t>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|   Type = 4    | Chunk  Flags  |      Heartbeat Length         |
+|   Type = 4    |  Chunk Flags  |       Heartbeat Length        |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 \                                                               \
-/            Heartbeat Information TLV (Variable-Length)        /
+/          Heartbeat Information TLV (Variable-Length)          /
 \                                                               \
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
@@ -1883,9 +1901,9 @@ in <xref target='sec_parameter_format'/>, i.e.:</t>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|    Heartbeat Info Type=1      |         HB Info Length        |
+|    Heartbeat Info Type = 1    |        HB Info Length         |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-/                  Sender-Specific Heartbeat Info               /
+/                Sender-Specific Heartbeat Info                 /
 \                                                               \
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
@@ -1917,10 +1935,10 @@ HEARTBEAT ACK chunk is responding.</t>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|   Type = 5    | Chunk  Flags  |    Heartbeat Ack Length       |
+|   Type = 5    |  Chunk Flags  |     Heartbeat Ack Length      |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 \                                                               \
-/            Heartbeat Information TLV (Variable-Length)        /
+/          Heartbeat Information TLV (Variable-Length)          /
 \                                                               \
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
@@ -1936,8 +1954,9 @@ Heartbeat Information field.</t>
 </dd>
 <dt>Heartbeat Information: variable length</dt>
 <dd>
-<t>This field MUST contain the Heartbeat Information parameter of the Heartbeat
-Request to which this Heartbeat Acknowledgement is responding.</t>
+<t>This field MUST contain the Heartbeat Information parameter (as defined in
+<xref target='sec_heartbeat_chunk'/>) of the Heartbeat Request to which this
+Heartbeat Acknowledgement is responding.</t>
 <table>
 <name>Variable Length Parameters of HEARTBEAT ACK Chunks</name>
 <thead>
@@ -1970,7 +1989,7 @@ MUST NOT respond to that ABORT chunk by sending an ABORT chunk of its own.</t>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|   Type = 6    |Reserved     |T|           Length              |
+|   Type = 6    |  Reserved   |T|            Length             |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 \                                                               \
 /                   zero or more Error Causes                   /
@@ -2016,7 +2035,7 @@ This chunk has the following format.</t>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|   Type = 7    | Chunk  Flags  |      Length = 8               |
+|   Type = 7    |  Chunk Flags  |          Length = 8           |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                      Cumulative TSN Ack                       |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -2059,7 +2078,7 @@ see <xref target='sec_shutdown_of_an_association'/> for details.</t>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|   Type = 8    |Chunk  Flags   |      Length = 4               |
+|   Type = 8    |  Chunk Flags  |          Length = 4           |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
 <dl newline="true">
@@ -2084,10 +2103,10 @@ An ERROR chunk has the following format:</t>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|   Type = 9    | Chunk  Flags  |           Length              |
+|   Type = 9    |  Chunk Flags  |            Length             |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 \                                                               \
-/                    one or more Error Causes                   /
+/                   one or more Error Causes                    /
 \                                                               \
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
@@ -2108,9 +2127,9 @@ format described in <xref target='sec_parameter_format'/>, that is:</t>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|           Cause Code          |       Cause Length            |
+|          Cause Code           |         Cause Length          |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-/                    Cause-Specific Information                 /
+/                  Cause-Specific Information                   /
 \                                                               \
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
@@ -2158,13 +2177,13 @@ Guidelines for the IETF to define new error cause values are discussed in
 <section anchor='sec_invalid_stream_identifier_cause'>
 <name>Invalid Stream Identifier (1)</name>
 
-<t>Invalid Stream Identifier: Indicates endpoint received a DATA chunk
-sent to a nonexistent stream.</t>
+<t>Indicates that the endpoint received a DATA chunk sent using a nonexistent
+stream.</t>
 <artwork align='center'>
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|     Cause Code=1              |      Cause Length=8           |
+|        Cause Code = 1         |       Cause Length = 8        |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|        Stream Identifier      |         (Reserved)            |
+|       Stream Identifier       |          (Reserved)           |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
 <dl newline="true">
@@ -2183,17 +2202,17 @@ It is set to all 0's on transmit and ignored on receipt.</t>
 <section anchor='sec_missing_mandatory_parameter_cause'>
 <name>Missing Mandatory Parameter (2)</name>
 
-<t>Missing Mandatory Parameter: Indicates that one or more mandatory TLV
+<t>Indicates that one or more mandatory TLV
 parameters are missing in a received INIT or INIT ACK chunk.</t>
 <artwork align='center'>
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|     Cause Code=2              |      Cause Length=8+N*2       |
+|        Cause Code = 2         |   Cause Length = 8 + N * 2    |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                   Number of missing params=N                  |
+|                 Number of missing params = N                  |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|   Missing Param Type #1       |   Missing Param Type #2       |
+|     Missing Param Type #1     |     Missing Param Type #2     |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|   Missing Param Type #N-1     |   Missing Param Type #N       |
+|    Missing Param Type #N-1    |     Missing Param Type #N     |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
 <dl newline="true">
@@ -2212,11 +2231,10 @@ Information field.</t>
 <section anchor='sec_stale_cookie_error_cause'>
 <name>Stale Cookie Error (3)</name>
 
-<t>Stale Cookie Error: Indicates the receipt of a valid State Cookie
-that has expired.</t>
+<t>Indicates the receipt of a valid State Cookie that has expired.</t>
 <artwork align='center'>
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|     Cause Code=3              |       Cause Length=8          |
+|        Cause Code = 3         |       Cause Length = 8        |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                 Measure of Staleness (usec.)                  |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -2224,7 +2242,7 @@ that has expired.</t>
 <dl newline="true">
 <dt>Measure of Staleness: 32 bits (unsigned integer)</dt>
 <dd>
-<t>This field contains the difference, in microseconds, between the
+<t>This field contains the difference, rounded up in microseconds, between the
 current time and the time the State Cookie expired.</t>
 <t>The sender of this error cause MAY choose to report how long past
 expiration the State Cookie is by including a non-zero value in
@@ -2238,11 +2256,11 @@ this field to the value of zero.</t>
 <section anchor='sec_out_of_resource_cause'>
 <name>Out of Resource (4)</name>
 
-<t>Out of Resource: Indicates that the sender is out of resource.
+<t>Indicates that the sender is out of resource.
 This is usually sent in combination with or within an ABORT chunk.</t>
 <artwork align='center'>
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|     Cause Code=4              |      Cause Length=4           |
+|        Cause Code = 4         |       Cause Length = 4        |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
 </section>
@@ -2250,15 +2268,14 @@ This is usually sent in combination with or within an ABORT chunk.</t>
 <section anchor='sec_unresolvable_address_cause'>
 <name>Unresolvable Address (5)</name>
 
-<t>Unresolvable Address: Indicates that the sender is not able to
-resolve the specified address parameter (e.g., type of address is not
-supported by the sender).
+<t>Indicates that the sender is not able to resolve the specified address
+parameter (e.g., type of address is not supported by the sender).
 This is usually sent in combination with or within an ABORT chunk.</t>
 <artwork align='center'>
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|     Cause Code=5              |      Cause Length             |
+|        Cause Code = 5         |         Cause Length          |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-/                  Unresolvable Address                         /
+/                     Unresolvable Address                      /
 \                                                               \
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
@@ -2275,14 +2292,14 @@ unresolvable address or host name.</t>
 <section anchor='sec_unrecognized_chunk_type_cause'>
 <name>Unrecognized Chunk Type (6)</name>
 
-<t>Unrecognized Chunk Type: This error cause is returned to the
-originator of the chunk if the receiver does not understand the chunk
-and the upper bits of the 'Chunk Type' are set to 01 or 11.</t>
+<t>This error cause is returned to the originator of the chunk if the receiver
+does not understand the chunk and the upper bits of the 'Chunk Type' are set
+to 01 or 11.</t>
 <artwork align='center'>
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|     Cause Code=6              |      Cause Length             |
+|        Cause Code = 6         |         Cause Length          |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-/                  Unrecognized Chunk                           /
+/                      Unrecognized Chunk                       /
 \                                                               \
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
@@ -2298,12 +2315,11 @@ SCTP packet complete with Chunk Type, Chunk Flags, and Chunk Length.</t>
 <section anchor='sec_invalid_mandatory_parameter_cause'>
 <name>Invalid Mandatory Parameter (7)</name>
 
-<t>Invalid Mandatory Parameter: This error cause is returned to the
-originator of an INIT or INIT ACK chunk when one of the mandatory
-parameters is set to an invalid value.</t>
+<t>This error cause is returned to the originator of an INIT or INIT ACK chunk
+when one of the mandatory parameters is set to an invalid value.</t>
 <artwork align='center'>
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|     Cause Code=7              |      Cause Length=4           |
+|        Cause Code = 7         |       Cause Length = 4        |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
 </section>
@@ -2311,14 +2327,14 @@ parameters is set to an invalid value.</t>
 <section anchor='sec_unrecongnized_parameters'>
 <name>Unrecognized Parameters (8)</name>
 
-<t>Unrecognized Parameters: This error cause is returned to the
-originator of the INIT ACK chunk if the receiver does not recognize
-one or more Optional TLV parameters in the INIT ACK chunk.</t>
+<t>This error cause is returned to the originator of the INIT ACK chunk if the
+receiver does not recognize one or more Optional TLV parameters in the
+INIT ACK chunk.</t>
 <artwork align='center'>
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|     Cause Code=8              |      Cause Length             |
+|        Cause Code = 8         |         Cause Length          |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-/                  Unrecognized Parameters                      /
+/                    Unrecognized Parameters                    /
 \                                                               \
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
@@ -2337,11 +2353,11 @@ sender of the COOKIE ECHO chunk wishes to report unrecognized parameters.</t>
 <section anchor='sec_no_user_data_cause'>
 <name>No User Data (9)</name>
 
-<t>No User Data: This error cause is returned to the originator of a
-DATA chunk if a received DATA chunk has no user data.</t>
+<t>This error cause is returned to the originator of a DATA chunk if a
+received DATA chunk has no user data.</t>
 <artwork align='center'>
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|     Cause Code=9              |      Cause Length=8           |
+|        Cause Code = 9         |       Cause Length = 8        |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                              TSN                              |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -2360,14 +2376,13 @@ data field.</t>
 <section anchor='sec_cookie_received_while_shutting_down_cause'>
 <name>Cookie Received While Shutting Down (10)</name>
 
-<t>Cookie Received While Shutting Down:
-A COOKIE ECHO chunk was received while the endpoint was in the SHUTDOWN-ACK-SENT
-state.
+<t>A COOKIE ECHO chunk was received while the endpoint was in the
+SHUTDOWN-ACK-SENT state.
 This error is usually returned in an ERROR chunk bundled with the
 retransmitted SHUTDOWN ACK chunk.</t>
 <artwork align='center'>
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|     Cause Code=10              |      Cause Length=4          |
+|        Cause Code = 10        |       Cause Length = 4        |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
 </section>
@@ -2375,8 +2390,7 @@ retransmitted SHUTDOWN ACK chunk.</t>
 <section anchor='sec_restart_with_new_addresses_cause'>
 <name>Restart of an Association with New Addresses (11)</name>
 
-<t>Restart of an association with new addresses:
-An INIT chunk was received on an existing association.
+<t>An INIT chunk was received on an existing association.
 But the INIT chunk added addresses to the association that were previously
 not part of the association.
 The new addresses are listed in the error cause.
@@ -2387,7 +2401,7 @@ INIT chunk
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|         Cause Code=11         |      Cause Length=Variable    |
+|        Cause Code = 11        |         Cause Length          |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 /                       New Address TLVs                        /
 \                                                               \
@@ -2409,9 +2423,9 @@ SCTP transparently and MAY be delivered to the upper-layer protocol at the peer.
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|         Cause Code=12         |      Cause Length=Variable    |
+|        Cause Code = 12        |         Cause Length          |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-/                    Upper Layer Abort Reason                   /
+/                   Upper Layer Abort Reason                    /
 \                                                               \
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
@@ -2431,7 +2445,7 @@ protocol violation has been detected.</t>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|         Cause Code=13         |      Cause Length=Variable    |
+|         Cause Code = 13         |        Cause Length         |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 /                    Additional Information                     /
 \                                                               \
@@ -2452,7 +2466,7 @@ bundled with one or more DATA chunks in the same packet.</t>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|   Type = 10   |Chunk  Flags   |         Length                |
+|   Type = 10   |  Chunk Flags  |            Length             |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 /                            Cookie                             /
 \                                                               \
@@ -2495,7 +2509,7 @@ chunk's in the same SCTP packet.</t>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|   Type = 11   |Chunk  Flags   |     Length = 4                |
+|   Type = 11   |  Chunk Flags  |          Length = 4           |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
 <dl newline="true">
@@ -2517,7 +2531,7 @@ see <xref target='sec_shutdown_of_an_association'/> for details.</t>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|   Type = 14   |Reserved     |T|      Length = 4               |
+|   Type = 14   |  Reserved   |T|          Length = 4           |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
 <dl newline="true">
@@ -2739,7 +2753,7 @@ Verification Tag (Tag_Z) in the Initiate Tag field.</t>
 <t>Moreover, "Z" MUST generate and send along with the INIT ACK chunk a 
 State Cookie.
 See <xref target='sec_generating_state_cookie'/> for State Cookie generation.</t>
-<t>After sending out INIT ACK chunk with the State Cookie parameter,
+<t>After sending out an INIT ACK chunk with the State Cookie parameter,
 "Z" MUST NOT allocate any resources or keep any states for the new
 association.
 Otherwise, "Z" will be vulnerable to resource attacks.</t></li>
@@ -2886,27 +2900,11 @@ indication.</t>
 <t>When sending an INIT ACK chunk as a response to an INIT chunk, the sender
 of INIT ACK chunk creates a State Cookie and sends it in the State Cookie
 parameter of the INIT ACK chunk.
-Inside this State Cookie, the sender can include a MAC
+Inside this State Cookie, the sender SHOULD include a MAC
 (see <xref target='RFC2104'/> for an example), a timestamp on when the
 State Cookie is created, and the lifespan of the State Cookie, along with all
-the information necessary for it to establish the association.</t>
-<t>The following steps SHOULD be taken to generate the State Cookie:</t>
-<ol type='%d)'>
-<li><t>Create an association TCB using information from both the
-received INIT chunk and the outgoing INIT ACK chunk,</t></li>
-<li><t>In the TCB, set the creation time to the current time of day, and the
-lifespan to the protocol parameter 'Valid.Cookie.Life'
-(see <xref target='sec_parameter_values'/>),</t></li>
-<li><t>From the TCB, identify and collect the minimal subset of information needed
-to re-create the TCB, and generate a MAC using this subset of information and
-a secret key (see <xref target='RFC2104'/> for an example of generating a MAC),
-and</t></li>
-<li><t>Generate the State Cookie by combining this subset of information
-and the resultant MAC.</t></li>
-</ol>
-<t>After sending the INIT ACK chunk with the State Cookie parameter, the sender
-SHOULD delete the TCB and any other local resource related to the new
-association, so as to prevent resource attacks.</t>
+the information necessary for it to establish the association including
+the port numbers and the verification tags.</t>
 <t>The hashing method used to generate the MAC is strictly a private
 matter for the receiver of the INIT chunk. The use of a MAC is
 mandatory to prevent denial-of-service attacks.
@@ -2943,7 +2941,7 @@ enters the CLOSED state).</t>
 <t>When an endpoint receives a COOKIE ECHO chunk from another endpoint
 with which it has no association, it takes the following actions:</t>
 <ol type='%d)'>
-<li><t>Compute a MAC using the TCB data carried in the State Cookie and
+<li><t>Compute a MAC using the information carried in the State Cookie and
 the secret key (note the timestamp in the State Cookie MAY be used to
 determine which secret key to use).
 <xref target='RFC2104'/> can be used as a guideline for generating the MAC,</t></li>
@@ -2987,7 +2985,7 @@ followed.</t>
 user message to "Z", then "Z" sends two user messages to "A" later
 (assuming no bundling or fragmentation occurs):</t>
 <figure anchor='fig_initiation_example'
-        title='INITIATION Example'>
+        title='A Setup Example'>
 <artwork align='center'>
 <![CDATA[
 Endpoint A                                          Endpoint Z
@@ -2996,11 +2994,11 @@ Endpoint A                                          Endpoint Z
 INIT [I-Tag=Tag_A
       & other info]  ------\
 (Start T1-init timer)       \
-(Enter COOKIE-WAIT state)    \---> (compose temp TCB and Cookie_Z)
+(Enter COOKIE-WAIT state)    \---> (compose Cookie_Z)
                                 /-- INIT ACK [Veri Tag=Tag_A,
                                /             I-Tag=Tag_Z,
 (Cancel T1-init timer) <------/              Cookie_Z, & other info]
-                                     (destroy temp TCB)
+
 COOKIE ECHO [Cookie_Z] ------\
 (Start T1-cookie timer)       \
 (Enter COOKIE-ECHOED state)    \---> (build TCB, enter ESTABLISHED
@@ -3054,7 +3052,7 @@ as described in this section.</t>
 <t>Note: An endpoint will not receive the chunk unless the chunk was sent to
 an SCTP transport address and is from an SCTP transport address associated
 with this endpoint.
-, the endpoint processes such a chunk as part of its current
+Therefore, the endpoint processes such a chunk as part of its current
 association.</t>
 <t>The following scenarios can cause duplicated or unexpected chunks:</t>
 <ol type='%C)'>
@@ -3150,7 +3148,8 @@ further actions;
 i.e., the existing association, including its current state, and the
 corresponding TCB MUST NOT be changed.</t>
 <t>Only when a TCB exists and the association is not in a COOKIE-WAIT
-or SHUTDOWN-ACK-SENT state are the Tie-Tags populated with a value other than 0.
+or SHUTDOWN-ACK-SENT state are the Tie-Tags populated with a random value
+other than 0.
 For a normal association INIT chunk (i.e., the endpoint is in the CLOSED state),
 the Tie-Tags MUST be set to 0 (indicating that no previous TCB existed).</t>
 </section>
@@ -3210,7 +3209,7 @@ correct action to be taken.</t></li>
 <dl spacing='compact'>
 <dt>X -</dt><dd><t>Tag does not match the existing TCB.</t></dd>
 <dt>M -</dt><dd><t>Tag matches the existing TCB.</t></dd>
-<dt>0 -</dt><dd><t>No Tie-Tag in cookie (unknown).</t></dd>
+<dt>0 -</dt><dd><t>Tag unknown (Peer's Tag not known yet / No tie-tag in cookie).</t></dd>
 <dt>A -</dt><dd><t>All cases, i.e., M, X, or 0.</t></dd>
 </dl>
 <t>For any case not shown in <xref target='table_handling_of_cookie_echo'/>,
@@ -3279,24 +3278,20 @@ Tag=Tag_A                                             Tag=Tag_Z
 INIT [I-Tag=Tag_A'
       & other info]  --------\
 (Start T1-init timer)         \
-(Enter COOKIE-WAIT state)      \---> (find an existing TCB
-                                      compose temp TCB and Cookie_Z
-                                      with Tie-Tags to previous
-                                      association)
+(Enter COOKIE-WAIT state)      \---> (find an existing TCB,
+                                      populate TieTags if needed,
+                                      compose Cookie_Z with Tie-Tags
+                                      and other info)
                                 /--- INIT ACK [Veri Tag=Tag_A',
                                /               I-Tag=Tag_Z',
-(Cancel T1-init timer) <------/                Cookie_Z[TieTags=
-                                               Tag_A,Tag_Z
-                                                & other info]
-                                     (destroy temp TCB,leave original
-                                      in place)
+(Cancel T1-init timer) <------/                Cookie_Z]
+                                     (leave original TCB in place)
 COOKIE ECHO [Veri=Tag_Z',
-             Cookie_Z
-             Tie=Tag_A,
-             Tag_Z]----------\
+             Cookie_Z]-------\
 (Start T1-init timer)         \
 (Enter COOKIE-ECHOED state)    \---> (Find existing association,
-                                      Tie-Tags match old tags,
+                                      Tie-Tags in Cookie_Z match
+                                      Tie-Tags in TCB,
                                       Tags do not match, i.e.,
                                       case X X M M above,
                                       Announce Restart to ULP
@@ -3466,10 +3461,6 @@ An incoming SACK chunk MAY be processed in COOKIE-ECHOED.
 A SACK chunk in the CLOSED state is out of the blue and SHOULD be processed
 according to the rules in <xref target='sec_handle_out_of_the_blue_packets'/>.
 A SACK chunk received in any other state SHOULD be discarded.</t>
-<t>An SCTP receiver MUST be able to receive a minimum of 1500 bytes in
-one SCTP packet.
-This means that an SCTP endpoint MUST NOT indicate less than 1500 bytes in its
-initial a_rwnd sent in the INIT or INIT ACK chunk.</t>
 <t>For transmission efficiency, SCTP defines mechanisms for bundling of
 small user messages and fragmentation of large user messages.
 The following diagram depicts the flow of user messages through SCTP.</t>
@@ -3481,19 +3472,19 @@ A data receiver will transmit SACK chunks.</t>
         title='Illustration of User Data Transfer'>
 <artwork align='center'>
 <![CDATA[
-           +--------------------------+
-           |      User Messages       |
-           +--------------------------+
+           +-------------------------+
+           |      User Messages      |
+           +-------------------------+
  SCTP user        ^  |
 ==================|==|=======================================
                   |  v (1)
-       +------------------+    +--------------------+
-       | SCTP DATA Chunks |    |SCTP Control Chunks |
-       +------------------+    +--------------------+
+       +------------------+    +---------------------+
+       | SCTP DATA Chunks |    | SCTP Control Chunks |
+       +------------------+    +---------------------+
                   ^  |             ^  |
                   |  v (2)         |  v (2)
                +--------------------------+
-               |      SCTP packets        |
+               |       SCTP packets       |
                +--------------------------+
  SCTP                      ^  |
 ===========================|==|===========================
@@ -3528,7 +3519,7 @@ fragmented data.</t>
 
 <t>This section specifies the rules for sending DATA chunks.
 In particular, it defines zero window probing, which is required to
-avoid the indefinte stalling of an association in case of a loss of
+avoid the indefinite stalling of an association in case of a loss of
 packets containing SACK chunks performing window updates.</t>
 <t>This document is specified as if there is a single retransmission timer
 per destination transport address, but implementations MAY have a
@@ -3681,8 +3672,8 @@ second packet (not every second DATA chunk) received, and SHOULD be generated
 within 200 ms of the arrival of any unacknowledged DATA chunk.
 In some situations, it might be beneficial for an SCTP transmitter to be
 more conservative than the algorithms detailed in this document allow.
-However, an SCTP transmitter MUST NOT be more aggressive than the following
-algorithms allow.</t>
+However, an SCTP transmitter MUST NOT be more aggressive in sending SACK chunks
+than the following algorithms allow.</t>
 <t>An SCTP receiver MUST NOT generate more than one SACK chunk for every
 incoming packet, other than to update the offered window as the
 receiving application consumes new data.
@@ -3713,7 +3704,7 @@ Cumulative TSN Ack field are reported in the Gap Ack Block fields.
 The SCTP endpoint MUST report as many Gap Ack Blocks as can fit in a single SACK
 chunk such that the size of the SCTP packet does not exceed the current PMTU.</t>
 <t>The SHUTDOWN chunk does not contain Gap Ack Block fields.
-, the endpoint SHOULD use a SACK chunk instead of the SHUTDOWN
+Therefore, the endpoint SHOULD use a SACK chunk instead of the SHUTDOWN
 chunk to acknowledge DATA chunks received out of order.</t>
 <t>Upon receipt of an SCTP packet containing a DATA chunk with the I bit set,
 the receiver SHOULD NOT delay the sending of the corresponding SACK chunk, i.e.,
@@ -3928,11 +3919,12 @@ adjust to changes at roughly the same rate (in terms of how many round
 trips it takes them to reflect new values) as they would if making only one
 measurement per round-trip and using 'RTO.Alpha' and 'RTO.Beta' as given in rule C3.
 However, the exact nature of these adjustments remains a research issue.</t></li>
-<li><t>Karn's algorithm: RTT measurements MUST NOT be made using packets that
+<li><t>Karn's algorithm: RTT measurements MUST NOT be made using chunks that
 were retransmitted (and thus for which it is ambiguous whether the reply was
 for the first instance of the chunk or for a later instance).</t>
-<t>RTT measurements SHOULD only be made using a chunk with TSN r if no chunk
-with TSN less than or equal to r is retransmitted since r is first sent.</t></li>
+<t>RTT measurements SHOULD only be made using a DATA chunk with TSN r, if no
+DATA chunk with TSN less than or equal to r was retransmitted since the DATA
+chunk with TSN r was sent first.</t></li>
 <li><t>Whenever RTO is computed, if it is less than 'RTO.Min' seconds then it is
 rounded up to 'RTO.Min' seconds.
 The reason for this rule is that RTOs that do not have a high minimum value are
@@ -4058,7 +4050,7 @@ rule R1 indicates to do so.</t></li>
 <section anchor='sec_multi_homed_sctp_endpoints'>
 <name>Multi-Homed SCTP Endpoints</name>
 
-<t>An SCTP endpoint is considered multi-homed if there are more than one
+<t>An SCTP endpoint is considered multi-homed if there is more than one
 transport address that can be used as a destination address to reach that
 endpoint.</t>
 <t>Moreover, the ULP of an endpoint selects one of the multiple
@@ -4245,7 +4237,7 @@ packet, as described below.</t>
 and one or more control or DATA chunks), the transmitter MUST</t>
 <ol type='%d)'>
 <li><t>fill in the proper Verification Tag in the SCTP common header and initialize
-the checksum field to '0's,</t></li>
+the checksum field to 0,</t></li>
 <li><t>calculate the CRC32c checksum of the whole packet, including the SCTP common
 header and all the chunks (refer to <xref target='sec_crc32c'/> for details of
 the CRC32c algorithm); and</t></li>
@@ -4257,7 +4249,7 @@ checksum as follows:</t>
 <ol type='%d)'>
 <li><t>Store the received CRC32c checksum value aside.</t></li>
 <li><t>Replace the 32 bits of the checksum field in the received SCTP packet with
-all '0's and calculate a CRC32c checksum value of the whole received packet.</t></li>
+0 and calculate a CRC32c checksum value of the whole received packet.</t></li>
 <li><t>Verify that the calculated CRC32c checksum is the same as the received
 CRC32c checksum.
 If it is not, the receiver MUST treat the packet as an invalid SCTP packet.</t></li>
@@ -4295,7 +4287,7 @@ smaller than or equal to the AMDCS.</t>
 
 <t>Once a user message is fragmented, it cannot be re-fragmented.
 Instead, if the PMTU has been reduced, then IP fragmentation MUST be used.
-, an SCTP association can fail if IP fragmentation is not working on
+Therefore, an SCTP association can fail if IP fragmentation is not working on
 any path.
 Please see <xref target='sec_path_mtu_discovery'/> for details of
 PMTU discovery.</t>
@@ -4575,11 +4567,11 @@ header and the padding) of all new DATA chunks acknowledged in that SACK chunk,
 including chunks acknowledged by the new Cumulative TSN Ack, by Gap Ack Blocks,
 and by the number of bytes of duplicated chunks reported in
 Duplicate TSNs.</t></li>
-<li><t>(1) when partial_bytes_acked is greater than cwnd and (2) before the arrival
+<li><t>When (1) partial_bytes_acked is greater than cwnd and (2) before the arrival
 of the SACK chunk the sender had less than cwnd bytes of data outstanding (i.e.,
 before the arrival of the SACK chunk, flightsize was less than cwnd), reset
 partial_bytes_acked to cwnd.</t></li>
-<li><t>(1) when partial_bytes_acked is equal to or greater than cwnd and (2) before
+<li><t>When (1) partial_bytes_acked is equal to or greater than cwnd and (2) before
 the arrival of the SACK chunk the sender had cwnd or more bytes of data outstanding
 (i.e., before the arrival of the SACK chunk, flightsize was greater than or equal to
 cwnd), partial_bytes_acked is reset to (partial_bytes_acked - cwnd).
@@ -4917,7 +4909,7 @@ Otherwise,</t></li>
 discard the OOTB packet and take no further action.
 Otherwise,</t></li>
 <li><t>If the packet contains an INIT chunk with a Verification Tag set
-to '0', it SHOULD be processed as described in
+to 0, it SHOULD be processed as described in
 <xref target='sec_normal_establishment'/>.
 If, for whatever reason, the INIT chunk cannot be processed normally and an
 ABORT chunk has to be sent in response, the Verification Tag of the packet
@@ -5442,8 +5434,9 @@ SEND(association id, buffer address, byte count [,context]
 <dd>
 <dl>
 <dt>context:</dt>
-<dd><t>an optional 32-bit integer that will be carried in the sending failure
-notification to the ULP if the transportation of this user message fails.</t></dd>
+<dd><t>an optional information provided that will be carried in the sending
+failure notification to the ULP if the transportation of this user message
+fails.</t></dd>
 <dt>stream id:</dt>
 <dd><t>to indicate which stream to send the data on.
 If not specified, stream 0 will be used.</t></dd>
@@ -5905,6 +5898,9 @@ on the ULP.</t>
 <dd><t>local handle to the SCTP association.</t></dd>
 <dt>data retrieval id:</dt>
 <dd><t>an identification used to retrieve unsent and unacknowledged data.</t></dd>
+<dt>mode:</dt>
+<dd><t>Indicate whether no part of the message never has been sent or if at
+least part of it has been sent but it is not completely acknowledged.</t></dd>
 <dt>cause code:</dt>
 <dd><t>indicating the reason of the failure, e.g., size too
 large, message life time expiration, etc.</t></dd>
@@ -5973,8 +5969,6 @@ in response to a shutdown or abort request.</t></dd>
 </dl>
 <t>The following might be passed with the notification:</t>
 <dl>
-<dt>data retrieval id:</dt>
-<dd><t>an identification used to retrieve unsent and unacknowledged data.</t></dd>
 <dt>last-acked:</dt>
 <dd><t>the TSN last acked by that peer endpoint.</t></dd>
 <dt>last-sent:</dt>
@@ -6700,7 +6694,7 @@ Documentation for the chunk flags MUST contain the following information:</t>
 <li><t>A name for the new chunk flag.</t></li>
 <li><t>A detailed procedural description of the use of the new chunk flag within
 the operation of the protocol.
-It MUST be considered that implementations not supporting the flag will send '0'
+It MUST be considered that implementations not supporting the flag will send 0
 on transmit and just ignore it on receipt.</t></li>
 </ol>
 <t>IANA selects a chunk flags value.
@@ -6960,6 +6954,7 @@ and
 <contact fullname="Qiaobing Xie"/>.</t>
 <t>And finally the people who have provided comments for this document including
 <contact fullname="Gorry Fairhurst"/>,
+<contact fullname="Martin Duke"/>,
 <contact fullname="Marcelo Ricardo Leitner"/>,
 <contact fullname="Claudio Porfiri"/>,
 <contact fullname="Maksim Proshin"/>,
@@ -6978,8 +6973,6 @@ in the coding, testing, and updating process of this document.
 
 <references title='Normative References'>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml2/reference.ITU.V42.1994.xml"/>
-<xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.0768.xml"/>
-<xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.0793.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.1122.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.1123.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.1191.xml"/>
@@ -6989,8 +6982,10 @@ in the coding, testing, and updating process of this document.
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4291.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4301.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4303.xml"/>
+<xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4895.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5681.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6335.xml"/>
+<xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6083.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7296.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8126.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
@@ -7040,6 +7035,8 @@ in the coding, testing, and updating process of this document.
 </front>
 <seriesInfo name='SIGCOM' value='99'/>
 </reference>
+<xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.0768.xml"/>
+<xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.0793.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.1858.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2104.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2196.xml"/>
@@ -7048,13 +7045,13 @@ in the coding, testing, and updating process of this document.
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3465.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4086.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4460.xml"/>
-<xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4895.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4960.xml"/>
-<xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6083.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6096.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6458.xml"/>
+<xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6951.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7053.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8260.xml"/>
+<xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8261.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8540.xml"/>
 </references>
 
