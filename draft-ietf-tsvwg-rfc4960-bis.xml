@@ -161,7 +161,7 @@ messages between peer SCTP users.
 It performs this service within the context of an association between
 two SCTP endpoints.
 <xref target='sec_api'/> of this document sketches the API that exists
-at the boundary between the SCTP and the SCTP user layers.</t>
+at the boundary between the SCTP and the SCTP upper layers.</t>
 <t>SCTP is connection-oriented in nature, but the SCTP association is a
 broader concept than the TCP connection.
 SCTP provides the means for each SCTP endpoint (<xref target="sec_key_terms"/>)
@@ -217,7 +217,7 @@ addresses.</t>
 </dd>
 <dt>Bundling:</dt>
 <dd>
-<t>An optional multiplexing operation, whereby more than one user message might
+<t>An optional multiplexing operation, whereby more than one user message can
 be carried in the same SCTP packet.
 Each user message occupies its own DATA chunk.</t>
 </dd>
@@ -604,18 +604,15 @@ protocol procedures associated with this function.</t>
 <t>As described in <xref target='sec_sctp_packet_format'/>, the SCTP packet
 as delivered to the lower layer consists of a common header followed by one
 or more chunks.
-Each chunk might contain either user data or SCTP control information.
-The SCTP user has the option to request bundling of more than one
-user message into a single SCTP packet.
-The chunk bundling function of SCTP is responsible for assembly of the
-complete SCTP packet and its disassembly at the receiving end.</t>
-<t>During times of congestion, an SCTP implementation MAY still perform
-bundling even if the user has requested that SCTP not bundle.
-The user's disabling of bundling only affects SCTP implementations that
-might delay a small period of time before transmission (to attempt to
-encourage bundling).
-When the user layer disables bundling, this small delay is prohibited but
-not bundling that is performed during congestion or retransmission.</t>
+Each chunk contains either user data or SCTP control information.
+An SCTP implementation supporting bundling on the sender side might
+delay the sending of user messages to allow the corresponding DATA
+chunks to be bundled.</t>
+<t>The SCTP user has the option to request that the SCTP stack does not
+delay the sending of a user message just for this purpose.
+However, even if the SCTP user has chosen this option, the SCTP might
+delay the sending due to other reasons, for example due to congestion control
+or flow control, and might also bundle multiple DATA chunks, if possible.</t>
 </section>
 
 <section>
@@ -629,7 +626,7 @@ association startup.
 Packets received without the expected Verification Tag value are discarded,
 as a protection against blind masquerade attacks and against stale SCTP
 packets from a previous association.
-The CRC32c checksum can be set by the sender of each SCTP packet to
+The CRC32c checksum is set by the sender of each SCTP packet to
 provide additional protection against data corruption in the network.
 The receiver of an SCTP packet with an invalid CRC32c checksum silently
 discards the packet.</t>
@@ -676,7 +673,7 @@ they cycle from 2<sup>32</sup> - 1 to 0 again.
 There are some subtleties to computer modulo arithmetic, so great care has to
 be taken in programming the comparison of such values.
 When referring to TSNs, the symbol "&lt;=" means
-"less than or equal"(modulo 2<sup>32</sup>).</t>
+"less than or equal" (modulo 2<sup>32</sup>).</t>
 <t>Comparisons and arithmetic on TSNs in this document SHOULD use Serial
 Number Arithmetic as defined in <xref target="RFC1982"/>
 where SERIAL_BITS = 32.</t>
@@ -747,10 +744,9 @@ A chunk contains either control information or user data.</t>
 |                           Chunk #n                            |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
-<t>Multiple chunks can be bundled into one SCTP packet as long as
-the size of the SCTP packet does not exceed the PMTU, except for
-the INIT, INIT ACK, and SHUTDOWN COMPLETE chunks.
-These chunks MUST NOT be bundled with any other chunk in a packet.
+<t>INIT, INIT ACK and SHUTDOWN COMPLETE chunks MUST NOT be bundled
+into one SCTP packet.
+All other chunks MAY be bundled up to the size indicated by the PMTU.
 See <xref target='sec_bundling'/> for more details on chunk bundling.</t>
 <t>If a user data message does not fit into one SCTP packet it can be
 fragmented into multiple chunks using the procedure defined in
@@ -950,7 +946,7 @@ defined in a Type-Length-Value format as shown below.</t>
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
 <dl newline="true">
-<dt>Chunk Parameter Type: 16 bits (unsigned integer)</dt>
+<dt>Parameter Type: 16 bits (unsigned integer)</dt>
 <dd>
 <t>The Type field is a 16-bit identifier of the type of parameter.
 It takes a value of 0 to 65534.</t>
@@ -958,7 +954,7 @@ It takes a value of 0 to 65534.</t>
 Values other than those defined in specific SCTP chunk descriptions are
 reserved for use by IETF.</t>
 </dd>
-<dt>Chunk Parameter Length: 16 bits (unsigned integer)</dt>
+<dt>Parameter Length: 16 bits (unsigned integer)</dt>
 <dd>
 <t>The Parameter Length field contains the size of the parameter in
 bytes, including the Parameter Type, Parameter Length, and Parameter Value
@@ -967,7 +963,7 @@ Thus, a parameter with a zero-length Parameter Value field would have a
 Parameter Length field of 4.
 The Parameter Length does not include any padding bytes.</t>
 </dd>
-<dt>Chunk Parameter Value: variable length</dt>
+<dt>Parameter Value: variable length</dt>
 <dd>
 <t>The Parameter Value field contains the actual information to be transferred in
 the parameter.</t>
@@ -1132,8 +1128,8 @@ as well as by the peer application, to identify the type of information being
 carried in this DATA chunk.
 This field MUST be sent even in fragmented DATA chunks (to make sure it is
 available for agents in the middle of the network).
-Note that this field is not touched by an SCTP implementation; , its
-byte order is not necessarily big endian.
+Note that this field is not touched by an SCTP implementation;
+therefore, its byte order is not necessarily big endian.
 The upper layer is responsible for any byte order conversions to this field.</t>
 <t>The value 0 indicates that no application identifier is specified by the upper
 layer for this payload data.</t>
@@ -1726,7 +1722,7 @@ value of the Cumulative TSN Ack.</t>
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |          Advertised Receiver Window Credit (a_rwnd)           |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-| Number of Gap Ack Blocks = N  |  Number of Duplicate TSNs = X |
+| Number of Gap Ack Blocks = N  |  Number of Duplicate TSNs = M |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |    Gap Ack Block #1 Start     |     Gap Ack Block #1 End      |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -1742,7 +1738,7 @@ value of the Cumulative TSN Ack.</t>
 \                              ...                              \
 /                                                               /
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                        Duplicate TSN X                        |
+|                        Duplicate TSN M                        |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
 <dl newline="true">
@@ -1780,18 +1776,14 @@ defined in the Number of Gap Ack Blocks field.
 All DATA chunks with TSNs greater than or equal to (Cumulative TSN Ack +
 Gap Ack Block Start) and less than or equal to (Cumulative TSN Ack +
 Gap Ack Block End) of each Gap Ack Block are assumed to have been received
-correctly.
-Gap Ack Blocks SHOULD be isolated.
-This means that the DATA chunks with TSNs equal to (Cumulative TSN Ack +
-Gap Ack Block Start - 1) and (Cumulative TSN Ack + Gap Ack Block End + 1)
-have not been received.</t>
+correctly.</t>
 </dd>
 <dt>Gap Ack Block Start: 16 bits (unsigned integer)</dt>
 <dd>
 <t>Indicates the Start offset TSN for this Gap Ack Block.
 To calculate the actual TSN number the Cumulative TSN Ack is added to
 this offset number.
-This calculated TSN identifies the first TSN in this Gap Ack Block that has
+This calculated TSN identifies the lowest TSN in this Gap Ack Block that has
 been received.</t>
 </dd>
 <dt>Gap Ack Block End: 16 bits (unsigned integer)</dt>
@@ -1799,8 +1791,8 @@ been received.</t>
 <t>Indicates the End offset TSN for this Gap Ack Block.
 To calculate the actual TSN number, the Cumulative TSN Ack is added to this
 offset number.
-This calculated TSN identifies the TSN of the last DATA chunk received in this
-Gap Ack Block.</t>
+This calculated TSN identifies the highest TSN in this Gap Ack Block that has
+been received.</t>
 <t>For example, assume that the receiver has the following DATA chunks newly
 arrived at the time when it decides to send a Selective ACK,</t>
 <artwork align='center'>
@@ -3382,8 +3374,7 @@ and then reestablishes an association to the same peer.</t>
 addresses.
 In the predominant case, these lists accurately represent the addresses
 owned by each peer.
-However, it is possible that a misbehaving peer might supply addresses that it
-does not own.
+However, a misbehaving peer might supply addresses that it does not own.
 To prevent this, the following rules are applied to all addresses of the
 new association:</t>
 <ol type='%d)'>
@@ -4272,12 +4263,11 @@ An endpoint that does not support fragmentation and is requested to send a
 user message such that the outbound SCTP packet size would exceed the
 current PMTU MUST return an error to its upper layer and MUST NOT attempt to
 send the user message.</t>
-<t>If an implementation that supports fragmentation makes available to
-its upper layer a mechanism to turn off fragmentation, it might do so.
-An implementation that disables fragmentation MUST react just like an
-implementation that does NOT support fragmentation, i.e., it MUST
-reject send calls that would result in sending SCTP packets that exceed
-the current PMTU.</t>
+<t>An implementation MAY make available its upper layer a mechanism to disable
+fragmentation.
+When in such a state, it MUST behave as an implementation that does not support
+fragmentation, i.e., it MUST reject send calls that would result in sending
+SCTP packets that exceed the current PMTU.</t>
 <t>Implementation Note: In this error case, the SEND primitive discussed
 in <xref target='sec_ulp_to_sctp'/> would need to return an error to the
 upper layer.</t>
@@ -4299,8 +4289,8 @@ chunk if bundling a SACK chunk with the DATA chunk.</t>
 <t>Fragmentation takes the following steps:</t>
 <ol type='%d)'>
 <li><t>The data sender MUST break the user message into a series of DATA chunks.
-The sender SHOULD choose the size of the DATA chunks is smaller than or equal
-to the AMDCS.</t></li>
+The sender SHOULD choose the size of the DATA chunks that is smaller than or
+equal to the AMDCS.</t></li>
 <li><t>The transmitter MUST then assign, in sequence, a separate TSN to each of the
 DATA chunks in the series.
 The transmitter assigns the same Stream Sequence Number to each of the
@@ -4360,17 +4350,8 @@ with any other chunks.</t>
 <name>Congestion Control</name>
 
 <t>Congestion control is one of the basic functions in SCTP.
-For some applications, it might be likely that adequate resources will be
-allocated to SCTP traffic to ensure prompt delivery of time-critical
-data -- thus, it would appear to be unlikely, during normal
-operations, that transmissions encounter severe congestion conditions.
-However, SCTP operates under adverse operational conditions, which can
-develop upon partial network failures or unexpected traffic surges.
-In such situations, SCTP follows correct congestion control steps to
-recover from congestion quickly in order to get data delivered as soon as
-possible.
-In the absence of network congestion, these preventive congestion control
-algorithms are expected to show no impact on the protocol performance.</t>
+To manage congestion, the mechanisms and algorithms in this section are to be
+employed.</t>
 <t>Implementation Note: As far as its specific performance requirements
 are met, an implementation is always allowed to adopt a more conservative
 congestion control algorithm than the one defined below.</t>
@@ -4472,9 +4453,9 @@ which is used during congestion avoidance phase to facilitate cwnd
 adjustment.</t>
 <t>Unlike TCP, an SCTP sender MUST keep a set of these control variables
 cwnd, ssthresh, and partial_bytes_acked for EACH destination address
-of its peer (when its peer is multi-homed). When doing accounting for a
-DATA chunk related to one of these variables, the length of the DATA chunk
-including the padding SHOULD be used.</t>
+of its peer (when its peer is multi-homed).
+When calculating one of these variables, the length of the DATA chunk including
+the padding SHOULD be used.</t>
 <t>Only one rwnd is kept for the whole association (no matter if the peer is
 multi-homed or has a single address).</t>
 
@@ -6231,9 +6212,11 @@ has a non-zero Verification Tag.</t>
 against attacks as for SCTP-capable ones, all SCTP stacks MUST implement the
 ICMP handling described in <xref target='sec_icmp'/>.</t>
 <t>When an SCTP stack receives a packet containing multiple control or DATA
-chunks and the processing of the packet requires the sending of
-multiple chunks in response, the sender of the response chunk(s) MUST NOT send
-more than one packet.
+chunks and the processing of the packet would result in sending multiple chunks
+in response, the sender of the response chunk(s) MUST NOT send more than one
+packet.
+This requirement protects the network for triggering a packet burst in response
+to a single packet.
 If bundling is supported, multiple response chunks that fit into a single
 packet MAY be bundled together into one single response packet.
 If bundling is not supported, then the sender MUST NOT send more than one
@@ -6955,6 +6938,7 @@ and
 <t>And finally the people who have provided comments for this document including
 <contact fullname="Gorry Fairhurst"/>,
 <contact fullname="Martin Duke"/>,
+<contact fullname="Eliot Lear"/>,
 <contact fullname="Marcelo Ricardo Leitner"/>,
 <contact fullname="Claudio Porfiri"/>,
 <contact fullname="Maksim Proshin"/>,
