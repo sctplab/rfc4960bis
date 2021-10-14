@@ -6218,7 +6218,7 @@ ICMP handling described in <xref target='sec_icmp'/>.</t>
 <t>When an SCTP stack receives a packet containing multiple control or DATA
 chunks and the processing of the packet would result in sending multiple chunks
 in response, the sender of the response chunk(s) MUST NOT send more than one
-packet.
+packet containing chunks other than DATA chunks.
 This requirement protects the network for triggering a packet burst in response
 to a single packet.
 If bundling is supported, multiple response chunks that fit into a single
