@@ -2934,8 +2934,12 @@ enters the CLOSED state).</t>
 with which it has no association, it takes the following actions:</t>
 <ol type='%d)'>
 <li><t>Compute a MAC using the information carried in the State Cookie and
-the secret key (note the timestamp in the State Cookie MAY be used to
-determine which secret key to use).
+the secret key.
+The timestamp in the State Cookie MAY be used to determine which secret key to
+use.
+If secrets are kept only for a limited amount of time and the secret key to use
+is not available anymore, the packet containing the COOKIE ECHO chunk MUST be
+silently discarded.
 <xref target='RFC2104'/> can be used as a guideline for generating the MAC,</t></li>
 <li><t>Authenticate the State Cookie as one that it previously generated
 by comparing the computed MAC against the one carried in the State Cookie.
@@ -6072,7 +6076,7 @@ threat.</t>
 required.</t>
 <t>Regardless of where confidentiality is provided, the Internet Key
 Exchange Protocol version 2 (IKEv2) <xref target='RFC7296'/> SHOULD be used for
-key management.</t>
+key management of ESP.</t>
 <t>Operators might consult <xref target='RFC4301'/> for more information on the
 security services available at and immediately above the Internet Protocol
 layer.</t>
@@ -6940,6 +6944,7 @@ and
 <contact fullname="Martin Duke"/>,
 <contact fullname="Eliot Lear"/>,
 <contact fullname="Marcelo Ricardo Leitner"/>,
+<contact fullname="David Mandelberg"/>,
 <contact fullname="Claudio Porfiri"/>,
 <contact fullname="Maksim Proshin"/>,
 <contact fullname="Timo Völker"/>,
