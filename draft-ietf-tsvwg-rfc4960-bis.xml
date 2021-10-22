@@ -712,7 +712,8 @@ have been incorporated in this document:</t>
 <li><t>Add the definition of control chunk.</t></li>
 <li><t>Improve the description of the handling of INIT chunks with invalid
        mandatory parameters.</t></li>
-<li><t>Allow using L > 1 for ABC during slow start.</t></li>
+<li><t>Allow using L > 1 for Appropriate Byte Counting (ABC) during
+       slow start.</t></li>
 <li><t>Explicitly describe the reinitialization of the congestion controller on
        route changes.</t></li>
 <li><t>Improve the terminology to make clear that this specification does not
@@ -1850,8 +1851,8 @@ After sending the SACK chunk, if it received yet one more TSN 19 it would list
 <section anchor='sec_heartbeat_chunk'>
 <name>Heartbeat Request (HEARTBEAT) (4)</name>
 
-<t>An endpoint SHOULD send a HEARTBEAT chunk to its peer endpoint to probe the
-reachability of a particular destination transport address defined in the
+<t>An endpoint SHOULD send a HEARTBEAT (HB) chunk to its peer endpoint to probe
+the reachability of a particular destination transport address defined in the
 present association.</t>
 <t>The parameter field contains the Heartbeat Information, which is a
 variable-length opaque data structure understood only by the sender.</t>
@@ -2576,99 +2577,97 @@ is labeled (A), (B).</t>
         title='State Transition Diagram of SCTP'>
 <artwork align='center'>
 <![CDATA[
-                   -----          -------- (from any state)
-                 /       \      /receive ABORT      [ABORT]
-receive INIT    |         |    |--------------  or ----------
-----------------|         v    v    delete TCB     send ABORT
-generate Cookie  \    +---------+                  delete TCB
-send INIT ACK      ---|  CLOSED |
-                      +---------+
-                       /      \
-                      /        \  [ASSOCIATE]
-                     |          |-----------------
-                     |          | create TCB
-                     |          | send INIT
-    receive valid    |          | start init timer
-    COOKIE  ECHO     |          v
-(1) -----------------|      +------------+
-    create TCB       |      | COOKIE-WAIT| (2)
-    send COOKIE ACK  |      +------------+
-                     |          |
-                     |          | receive INIT ACK
-                     |          |-------------------
-                     |          | send COOKIE ECHO
-                     |          | stop init timer
-                     |          | start cookie timer
-                     |          v
-                     |      +--------------+
-                     |      | COOKIE-ECHOED| (3)
-                     |      +--------------+
-                     |          |
-                     |          | receive COOKIE ACK
-                     |          |-------------------
-                     |          | stop cookie timer
-                     v          v
-                   +---------------+
-                   |  ESTABLISHED  |
-                   +---------------+
-                            |
-                            |
-                       /----+------------\
-   [SHUTDOWN]         /                   \
-   -------------------|                   |
-   check outstanding  |                   |
-   DATA chunks        |                   |
-                      v                   |
-                 +---------+              |
-                 |SHUTDOWN-|              | receive SHUTDOWN
-                 |PENDING  |              |------------------
-                 +---------+              | check outstanding
-                      |                   | DATA chunks
- No more outstanding  |                   |
- ---------------------|                   |
- send SHUTDOWN        |                   |
- start shutdown timer |                   |
-                      v                   v
-                 +---------+        +-----------+
-             (4) |SHUTDOWN-|        | SHUTDOWN- |  (5,6)
-                 |SENT     |        | RECEIVED  |
-                 +---------+        +-----------+
-                      |  \                |
-receive SHUTDOWN ACK  |   \               |
-----------------------|    \              |
-stop shutdown timer   |     \             |
-send SHUTDOWN COMPLETE|      \            |
-delete TCB            |       \           |
-                      |        \          | No more outstanding
-                      |         \         |---------------------
-                      |          \        | send SHUTDOWN ACK
-receive SHUTDOWN     -|-          \       | start shutdown timer
---------------------/ | \----------\      |
-send SHUTDOWN ACK     |             \     |
-start shutdown timer  |              \    |
-                      |               \   |
-                      |                |  |
-                      |                v  v
-                      |             +-----------+
-                      |             | SHUTDOWN- | (7)
-                      |             | ACK-SENT  |
-                      |             +----------+-
-                      |                   | (A)
-                      |                   | receive SHUTDOWN COMPLETE
-                      |                   |--------------------------
-                      |                   | stop shutdown timer
-                      |                   | delete TCB
-                      |                   |
-                      |                   | (B)
-                      |                   | receive SHUTDOWN ACK
-                      |                   |-----------------------
-                      |                   | stop shutdown timer
-                      |                   | send SHUTDOWN COMPLETE
-                      |                   | delete TCB
-                      |                   |
-                      \    +---------+    /
-                       \-->| CLOSED  |<--/
+                        -----          -------- (from any state)
+                      /       \      /receive ABORT      [ABORT]
+        receive INIT |         |    |--------------  or ----------
+---------------------|         v    v    delete TCB     send ABORT
+generate State Cookie \    +---------+                  delete TCB
+        send INIT ACK   ---|  CLOSED |
                            +---------+
+                             /      \
+                            /        \  [ASSOCIATE]
+                           |          |-----------------
+                           |          | create TCB
+                           |          | send INIT
+          receive valid    |          | start T1-init timer
+          COOKIE  ECHO     |          v
+      (1) -----------------|    +-----------+
+          create TCB       |    |COOKIE-WAIT| (2)
+          send COOKIE ACK  |    +-----------+
+                           |          |
+                           |          | receive INIT ACK
+                           |          |-------------------
+                           |          | send COOKIE ECHO
+                           |          | stop T1-init timer
+                           |          | start T1-cookie timer
+                           |          v
+                           |   +-------------+
+                           |   |COOKIE-ECHOED| (3)
+                           |   +-------------+
+                           |          |
+                           |          | receive COOKIE ACK
+                           |          |-------------------
+                           |          | stop T1-cookie timer
+                           v          v
+                         +---------------+
+                         |  ESTABLISHED  |
+                         +---------------+
+                                 |
+                                 |
+                        /--------+--------\
+    [SHUTDOWN]         /                   \
+    -------------------|                   |
+    check outstanding  |                   |
+    DATA chunks        |                   |
+                       v                   |
+              +----------------+           |
+              |SHUTDOWN-PENDING|           | receive SHUTDOWN
+              +----------------+           |------------------
+                                           | check outstanding
+                       |                   | DATA chunks
+No more outstanding    |                   |
+-----------------------|                   |
+send SHUTDOWN          |                   |
+start T2-shutdown timer|                   |
+                       v                   v
+                +-------------+   +-----------------+
+            (4) |SHUTDOWN-SENT|   |SHUTDOWN-RECEIVED| (5,6)
+                +-------------+   +-----------------+
+                       |  \                |
+receive SHUTDOWN ACK   |   \               |
+-----------------------|    \              |
+stop T2-shutdown timer |     \             |
+send SHUTDOWN COMPLETE |      \            |
+delete TCB             |       \           |
+                       |        \          | No more outstanding
+                       |         \         |--------------------
+                       |          \        | send SHUTDOWN ACK
+receive SHUTDOWN      -|-          \       | start T2-shutdown timer
+--------------------/  | \----------\      |
+send SHUTDOWN ACK      |             \     |
+start T2-shutdown timer|              \    |
+                       |               \   |
+                       |                |  |
+                       |                v  v
+                       |          +-----------------+
+                       |          |SHUTDOWN-ACK-SENT| (7)
+                       |          +-----------------+
+                       |                   | (A)
+                       |                   |receive SHUTDOWN COMPLETE
+                       |                   |-------------------------
+                       |                   | stop T2-shutdown timer
+                       |                   | delete TCB
+                       |                   |
+                       |                   | (B)
+                       |                   | receive SHUTDOWN ACK
+                       |                   |-----------------------
+                       |                   | stop T2-shutdown timer
+                       |                   | send SHUTDOWN COMPLETE
+                       |                   | delete TCB
+                       |                   |
+                       \    +---------+    /
+                        \-->| CLOSED  |<--/
+                            +---------+
 ]]>
 </artwork>
 </figure>
@@ -2730,8 +2729,9 @@ for data transfer on both ends
 SCTP endpoint "A" tries to set up an association with SCTP endpoint "Z" and
 "Z" accepts the new association):</t>
 <ol type='%C)'>
-<li><t>"A" first sends an INIT chunk to "Z". In the INIT chunk, "A" MUST
-provide its Verification Tag (Tag_A) in the Initiate Tag field.
+<li><t>"A" first builds a TCB and sends an INIT chunk to "Z".
+In the INIT chunk, "A" MUST provide its Verification Tag (Tag_A) in the
+Initiate Tag field.
 Tag_A SHOULD be a random number in the range of 1 to 4294967295
 (see <xref target='sec_selection_of_tag_value'/> for Tag value selection).
 After sending the INIT chunk, "A" starts the T1-init timer and enters the
@@ -3237,8 +3237,8 @@ after responding to the local endpoint's INIT chunk.
 Thus, it might have picked a new Verification Tag, not being aware of the
 previous tag it had sent this endpoint.
 The endpoint SHOULD stay in or enter the ESTABLISHED state, but it MUST update
-its peer's Verification Tag from the State Cookie, stop any init or
-cookie timers that might be running, and send a COOKIE ACK chunk.</t></li>
+its peer's Verification Tag from the State Cookie, stop any T1-init or
+T1-cookie timers that might be running, and send a COOKIE ACK chunk.</t></li>
 <li><t>In this case, the local endpoint's cookie has arrived late.
 Before it arrived, the local endpoint sent an INIT chunk and received an
 INIT ACK chunk and finally sent a COOKIE ECHO chunk with the peer's same tag
@@ -3247,7 +3247,7 @@ The cookie SHOULD be silently discarded.
 The endpoint SHOULD NOT change states and SHOULD leave any timers running.</t></li>
 <li><t>When both local and remote tags match, the endpoint SHOULD enter the
 ESTABLISHED state, if it is in the COOKIE-ECHOED state.
-It SHOULD stop any cookie timer that is running and send a COOKIE ACK chunk.</t></li>
+It SHOULD stop any T1-cookie timer that is running and send a COOKIE ACK chunk.</t></li>
 </ol>
 <t>Note: The "peer's Verification Tag" is the tag received in the Initiate Tag
 field of the INIT or INIT ACK chunk.</t>
@@ -3446,12 +3446,12 @@ and SHUTDOWN-RECEIVED states.
 The only exception to this is that DATA chunks are allowed to be bundled with
 an outbound COOKIE ECHO chunk when in the COOKIE-WAIT state.</t>
 <t>DATA chunks MUST only be received according to the rules below in
-ESTABLISHED, SHUTDOWN-PENDING, and SHUTDOWN-SENT.
+ESTABLISHED, SHUTDOWN-PENDING, and SHUTDOWN-SENT states.
 A DATA chunk received in CLOSED is out of the blue and SHOULD be handled per
 <xref target='sec_handle_out_of_the_blue_packets'/>.
 A DATA chunk received in any other state SHOULD be discarded.</t>
 <t>A SACK chunk MUST be processed in ESTABLISHED, SHUTDOWN-PENDING, and
-SHUTDOWN-RECEIVED.
+SHUTDOWN-RECEIVED states.
 An incoming SACK chunk MAY be processed in COOKIE-ECHOED.
 A SACK chunk in the CLOSED state is out of the blue and SHOULD be processed
 according to the rules in <xref target='sec_handle_out_of_the_blue_packets'/>.
@@ -4872,7 +4872,7 @@ chunks is longer, the detection of lost ABORT chunks takes longer as well.
 If a peer endpoint sends an ABORT chunk for any reason and the ABORT chunk is
 lost, the local endpoint will only discover the lost ABORT chunk by sending a
 DATA chunk or HEARTBEAT chunk (thus causing the peer to send another ABORT chunk).
-This is to be considered when tuning the HEARTBEAT timer.
+This is to be considered when tuning the heartbeat timer.
 If the sending of HEARTBEAT chunks is disabled, only sending DATA chunks to the
 association will discover a lost ABORT chunk from the peer.</t>
 </section>
@@ -5109,9 +5109,9 @@ If a SHUTDOWN chunk by itself cannot acknowledge all of the received DATA chunks
 cumulative TSN, and thus gaps exist in the TSN sequence), or if duplicate TSNs
 have been received, then a SACK chunk MUST also be sent.</t>
 <t>The sender of the SHUTDOWN chunk MAY also start an overall guard timer
-'T5-shutdown-guard' to bound the overall time for the shutdown sequence.
+T5-shutdown-guard to bound the overall time for the shutdown sequence.
 At the expiration of this timer, the sender SHOULD abort the association by
-sending an ABORT chunk. If the 'T5-shutdown-guard' timer is used, it SHOULD
+sending an ABORT chunk. If the T5-shutdown-guard timer is used, it SHOULD
 be set to the RECOMMENDED value of 5 times 'RTO.Max'.</t>
 <t>If the receiver of the SHUTDOWN chunk has no more outstanding DATA chunks,
 the SHUTDOWN chunk receiver MUST send a SHUTDOWN ACK chunk and start a
@@ -6444,8 +6444,8 @@ destination down if error count reaches this value.</t>
 </dd>
 <dt>state:</dt>
 <dd>
-<t>The current state of this destination, i.e., DOWN, UP, ALLOW-HB, NO-HEARTBEAT,
-etc.</t>
+<t>The current state of this destination, i.e., DOWN, UP, ALLOW-HEARTBEAT,
+NO-HEARTBEAT, etc.</t>
 </dd>
 <dt>PMTU:</dt>
 <dd>
@@ -6947,6 +6947,7 @@ and
 <contact fullname="David Mandelberg"/>,
 <contact fullname="Claudio Porfiri"/>,
 <contact fullname="Maksim Proshin"/>,
+<contact fullname="Ines Robles"/>,
 <contact fullname="Timo Völker"/>,
 <contact fullname="Magnus Westerlund"/>,
 and
