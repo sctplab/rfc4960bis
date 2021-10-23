@@ -261,18 +261,6 @@ transport user messages.</t>
 <dd>
 <t>Data submitted to SCTP by the Upper Layer Protocol (ULP).</t>
 </dd>
-<dt>Message Authentication Code (MAC):</dt>
-<dd>
-<t>An integrity check mechanism based on cryptographic hash functions using a
-secret key.
-Typically, message authentication codes are used between two
-parties that share a secret key in order to validate information
-transmitted between these parties.
-In SCTP, it is used by an endpoint to validate the State Cookie information
-that is returned from the peer in the COOKIE ECHO chunk.
-The term "MAC" has different meanings in different contexts.
-SCTP uses this term with the same meaning as in <xref target="RFC2104"/>.</t>
-</dd>
 <dt>Network Byte Order:</dt>
 <dd>
 <t>Most significant byte first, a.k.a., big endian.</t>
@@ -638,13 +626,13 @@ discards the packet.</t>
 <t>The sending SCTP user is able to manipulate the set of transport
 addresses used as destinations for SCTP packets through the
 primitives described in <xref target='sec_api'/>.
-The SCTP path management function chooses the destination transport address
+The SCTP path management function monitors reachability through heartbeats
+when other packet traffic is inadequate to provide this information and advises
+the SCTP user when reachability of any transport address of the peer endpoint
+changes.
+The path management function chooses the destination transport address
 for each outgoing SCTP packet based on the SCTP user's instructions and the
 currently perceived reachability status of the eligible destination set.
-The path management function monitors reachability through heartbeats
-when other packet traffic is inadequate to provide this information
-and advises the SCTP user when reachability of any transport
-address of the peer endpoint changes.
 The path management function is also responsible for reporting the eligible
 set of local transport addresses to the peer endpoint during association startup,
 and for reporting the transport addresses returned from the peer endpoint to the
@@ -2898,13 +2886,18 @@ State Cookie is created, and the lifespan of the State Cookie, along with all
 the information necessary for it to establish the association including
 the port numbers and the verification tags.</t>
 <t>The hashing method used to generate the MAC is strictly a private
-matter for the receiver of the INIT chunk. The use of a MAC is
-mandatory to prevent denial-of-service attacks.
+matter for the receiver of the INIT chunk.
+The use of a MAC is mandatory to prevent denial-of-service attacks.
+There is a tradeoff between to computational complexity and the level of
+security the MAC provides.
+Using the HMAC-SHA1 might be an acceptable compromise.
 The secret key SHOULD be random (<xref target='RFC4086'/> provides some
-information on randomness guidelines);
-it SHOULD be changed reasonably frequently, and the timestamp in the
-State Cookie MAY be used to determine which key is used to verify
-the MAC.</t>
+information on randomness guidelines).
+The secret keys need to have an appropriate size.
+When using HMAC-SHA1, secret keys of at least 160 bits are appropriate according
+to <xref target='RFC2104'/>.
+The secret key SHOULD be changed reasonably frequently, and the timestamp in the
+State Cookie MAY be used to determine which key is used to verify the MAC.</t>
 <t>An implementation SHOULD make the cookie as small as possible to
 ensure interoperability.</t>
 </section>
