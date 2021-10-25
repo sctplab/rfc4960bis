@@ -4479,9 +4479,9 @@ A limited overbooking as described in
 <xref target='sec_transmission_of_data_chunks'/> B) SHOULD be supported.</t></li>
 <li><t>When cwnd is less than or equal to ssthresh, an SCTP endpoint MUST
 use the slow-start algorithm to increase cwnd only if the current
-congestion window is being fully utilized, an incoming SACK chunk advances the
-Cumulative TSN Ack Point, and the data sender is not in Fast Recovery.
-Only when these three conditions are met can the cwnd be increased;
+congestion window is being fully utilized, and the data sender is not in
+Fast Recovery.
+Only when these two conditions are met can the cwnd be increased;
 otherwise, the cwnd MUST NOT be increased.
 If these conditions are met, then cwnd MUST be increased by, at most, the
 lesser of</t>
@@ -4493,26 +4493,11 @@ lesser of</t>
 <xref target='SAVAGE99'/>.
 The positive integer L SHOULD be 1, and MAY be larger than 1.
 See <xref target='RFC3465'/> for details of choosing L.
-</t></li>
-</ul>
+</t>
 <t>In instances where its peer endpoint is multi-homed, if an endpoint
-receives a SACK chunk that advances its Cumulative TSN Ack Point, then it
-SHOULD update its cwnd (or cwnds) apportioned to the destination
-addresses to which it transmitted the acknowledged data.
-However, if the received SACK chunk does not advance the Cumulative TSN Ack Point,
-the endpoint MUST NOT adjust the cwnd of any of the destination addresses.</t>
-<t>Because an endpoint's cwnd is not tied to its Cumulative TSN Ack Point,
-as duplicate SACK chunks come in, even though they might not advance the
-Cumulative TSN Ack Point an endpoint can still use them to clock out new data.
-That is, the data newly acknowledged by the SACK chunk diminishes the amount of
-data now in flight to less than cwnd, and so the current, unchanged value of
-cwnd now allows new data to be sent.
-On the other hand, the increase of cwnd MUST be tied to the
-Cumulative TSN Ack Point advancement as specified above.
-Otherwise, the duplicate SACK chunks will not only clock out new data, but also
-will adversely clock out more new data than what has just left the network,
-during a time of possible congestion.</t>
-<ul>
+receives a SACK chunk that results in updating the cwnd, then it SHOULD update
+its cwnd (or cwnds) apportioned to the destination addresses to which it
+transmitted the acknowledged data.</t></li>
 <li><t>While the endpoint does not transmit data on a given transport address,
 the cwnd of the transport address SHOULD be adjusted to max(cwnd / 2, 4 * PMDCS)
 once per RTO.
