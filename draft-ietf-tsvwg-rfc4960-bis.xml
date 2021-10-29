@@ -2887,8 +2887,8 @@ Inside this State Cookie, the sender SHOULD include a MAC
 State Cookie is created, and the lifespan of the State Cookie, along with all
 the information necessary for it to establish the association including
 the port numbers and the verification tags.</t>
-<t>The hashing method used to generate the MAC is strictly a private
-matter for the receiver of the INIT chunk.
+<t>The method used to generate the MAC is strictly a private matter for the
+receiver of the INIT chunk.
 The use of a MAC is mandatory to prevent denial-of-service attacks.
 There is a tradeoff between to computational complexity and the level of
 security the MAC provides.
@@ -2898,8 +2898,9 @@ information on randomness guidelines).
 The secret keys need to have an appropriate size.
 When using HMAC-SHA1, secret keys of at least 160 bits are appropriate according
 to <xref target='RFC2104'/>.
-The secret key SHOULD be changed reasonably frequently, and the timestamp in the
-State Cookie MAY be used to determine which key is used to verify the MAC.</t>
+The secret key SHOULD be changed reasonably frequently (e.g., daily), and the
+timestamp in the State Cookie MAY be used to determine which key is used to
+verify the MAC.</t>
 <t>An implementation SHOULD make the cookie as small as possible to
 ensure interoperability.</t>
 </section>
