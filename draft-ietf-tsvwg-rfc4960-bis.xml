@@ -596,11 +596,12 @@ Each chunk contains either user data or SCTP control information.
 An SCTP implementation supporting bundling on the sender side might
 delay the sending of user messages to allow the corresponding DATA
 chunks to be bundled.</t>
-<t>The SCTP user has the option to request that the SCTP stack does not
+<t>The SCTP user has the option to request that an SCTP implementation does not
 delay the sending of a user message just for this purpose.
-However, even if the SCTP user has chosen this option, the SCTP might
-delay the sending due to other reasons, for example due to congestion control
-or flow control, and might also bundle multiple DATA chunks, if possible.</t>
+However, even if the SCTP user has chosen this option, the SCTP implementation
+might delay the sending due to other reasons, for example due to congestion
+control or flow control, and might also bundle multiple DATA chunks, if
+possible.</t>
 </section>
 
 <section>
@@ -735,7 +736,8 @@ A chunk contains either control information or user data.</t>
 </artwork>
 <t>INIT, INIT ACK and SHUTDOWN COMPLETE chunks MUST NOT be bundled
 into one SCTP packet.
-All other chunks MAY be bundled up to the size indicated by the PMTU.
+All other chunks MAY be bundled to form an SCTP packet that does not exceed
+the PMTU.
 See <xref target='sec_bundling'/> for more details on chunk bundling.</t>
 <t>If a user data message does not fit into one SCTP packet it can be
 fragmented into multiple chunks using the procedure defined in
@@ -1151,7 +1153,7 @@ user message, as summarized in the following table:</t>
 used by the receiver to reassemble the message. This means that the
 TSNs for each fragment of a fragmented user message MUST be strictly
 sequential.</t>
-<t>The TSNs of DATA chunks sent out SHOULD be strictly sequential.</t>
+<t>The TSNs of DATA chunks sent SHOULD be strictly sequential.</t>
 <t>Note: The extension described in <xref target='RFC8260'/> can be used
 to mitigate the head of line blocking when transferring large user messages.</t>
 </section>
@@ -1253,7 +1255,7 @@ the receiver MUST silently discard the packet.</t>
 <dd>
 <t>This value represents the dedicated buffer space, in number of bytes,
 the sender of the INIT chunk has reserved in association with this window.</t>
-<t>The value MUST NOT be smaller than 1500.</t>
+<t>The Advertised Receiver Window Credit MUST NOT be smaller than 1500.</t>
 <t>A receiver of an INIT chunk with the a_rwnd value set to a value smaller than
 1500 MUST discard the packet and SHOULD send a packet in response containing
 an ABORT chunk and using the Initiate Tag as the Verification Tag.
@@ -1298,8 +1300,8 @@ This field MAY be set to the value of the Initiate Tag field.</t>
 
 <t>The following parameters follow the Type-Length-Value format as defined in
 <xref target='sec_parameter_format'/>.
-Any Type-Length-Value fields MUST come after the fixed-length fields defined
-in the previous section.</t>
+Any Type-Length-Value fields MUST be placed after the fixed-length fields.
+(The fixed-length fields are defined in the previous section.)</t>
 
 <section anchor='sec_ipv4_address_parameter'>
 <name>IPv4 Address (5)</name>
@@ -1541,7 +1543,7 @@ COOKIE-WAIT, it SHOULD be discarded silently
 <dd>
 <t>This value represents the dedicated buffer space, in number of bytes, the
 sender of the INIT ACK chunk has reserved in association with this window.</t>
-<t>The value MUST NOT be smaller than 1500.</t>
+<t>The Advertised Receiver Window Credit MUST NOT be smaller than 1500.</t>
 <t>A receiver of an INIT ACK chunk with the a_rwnd value set to a value smaller
 than 1500 MUST discard the packet and SHOULD send a packet in response
 containing an ABORT chunk and using the Initiate Tag as the Verification Tag.
@@ -1622,8 +1624,8 @@ The IPv4 Address Parameter is described in <xref target='sec_ipv4_address_parame
 the IPv6 Address Parameter is described in <xref target='sec_ipv6_address_parameter'/>.
 The Host Name Address Parameter is described in <xref target='sec_host_name_address_parameter'/>
 and MUST NOT be included in an INIT ACK chunk.
-Any Type-Length-Value fields MUST come after the fixed-length fields defined
-in the previous section.</t>
+Any Type-Length-Value fields MUST be placed after the fixed-length fields.
+(The fixed-length fields are defined in the previous section.)</t>
 
 <section>
 <name>State Cookie (7)</name>
@@ -2733,7 +2735,7 @@ Verification Tag (Tag_Z) in the Initiate Tag field.</t>
 <t>Moreover, "Z" MUST generate and send along with the INIT ACK chunk a 
 State Cookie.
 See <xref target='sec_generating_state_cookie'/> for State Cookie generation.</t>
-<t>After sending out an INIT ACK chunk with the State Cookie parameter,
+<t>After sending an INIT ACK chunk with the State Cookie parameter,
 "Z" MUST NOT allocate any resources or keep any states for the new
 association.
 Otherwise, "Z" will be vulnerable to resource attacks.</t></li>
@@ -2910,8 +2912,8 @@ chunk with a State Cookie parameter, it MUST immediately send a
 COOKIE ECHO chunk to its peer with the received State Cookie.
 The sender MAY also add any pending DATA chunks to the packet after the
 COOKIE ECHO chunk.</t>
-<t>The endpoint MUST also start the T1-cookie timer after sending out
-the COOKIE ECHO chunk.
+<t>The endpoint MUST also start the T1-cookie timer after sending the
+COOKIE ECHO chunk.
 If the timer expires, the endpoint MUST retransmit the COOKIE ECHO chunk and
 restart the T1-cookie timer.
 This is repeated until either a COOKIE ACK chunk is received or
@@ -3046,7 +3048,7 @@ association.</t>
 <t>The following scenarios can cause duplicated or unexpected chunks:</t>
 <ol type='%C)'>
 <li><t>The peer has crashed without being detected, restarted itself, and
-sent out a new INIT chunk trying to restore the association,</t></li>
+sent a new INIT chunk trying to restore the association,</t></li>
 <li><t>Both sides are trying to initialize the association at about the same
 time,</t></li>
 <li><t>The chunk is from a stale packet that was used to establish the present
@@ -3132,7 +3134,7 @@ And the INIT ACK chunk MUST contain a new Initiate Tag
 Other parameters for the endpoint SHOULD be copied from the existing
 parameters of the association (e.g., number of outbound streams) into the
 INIT ACK chunk and cookie.</t>
-<t>After sending out the INIT ACK or ABORT chunk, the endpoint MUST take no
+<t>After sending the INIT ACK or ABORT chunk, the endpoint MUST take no
 further actions;
 i.e., the existing association, including its current state, and the
 corresponding TCB MUST NOT be changed.</t>
@@ -3491,8 +3493,8 @@ The data receiver will normally reassemble the fragmented message from DATA
 chunks before delivery to the user (see <xref target='sec_frag_reass'/>
 for details).</t></li>
 <li><t>Multiple DATA and control chunks MAY be bundled by the sender into a single
-SCTP packet for transmission, as long as the final size of the packet does not
-exceed the current PMTU.
+SCTP packet for transmission, as long as the final size of the SCTP packet does
+not exceed the current PMTU.
 The receiver will unbundle the packet back into the original chunks.
 Control chunks MUST come before DATA chunks in the packet.</t></li>
 </ol>
@@ -3575,14 +3577,14 @@ When calculating the number of packets to transmit, and particularly when
 using the formula above, cwnd SHOULD NOT be changed permanently.</t>
 </li>
 <li>
-<t>Then, the sender can send out as many new DATA chunks as rule A and rule B
+<t>Then, the sender can send as many new DATA chunks as rule A and rule B
 allow.</t>
 </li>
 </ol>
 <t>Multiple DATA chunks committed for transmission MAY be bundled in a
 single packet.
 Furthermore, DATA chunks being retransmitted MAY be bundled with new
-DATA chunks, as long as the resulting packet size does not exceed the PMTU.
+DATA chunks, as long as the resulting SCTP packet size does not exceed the PMTU.
 A ULP can request that no bundling is performed, but this only turns off
 any delays that an SCTP implementation might be using to increase bundling
 efficiency.
@@ -3996,7 +3998,7 @@ The maximum value discussed in rule C7 above ('RTO.max') MAY be used to provide
 an upper bound to this doubling operation.</t></li>
 <li><t>Determine how many of the earliest (i.e., lowest TSN) outstanding
 DATA chunks for the address for which the T3-rtx has expired will fit into a
-single packet, subject to the PMTU corresponding to the
+single SCTP packet, subject to the PMTU corresponding to the
 destination transport address to which the retransmission is being sent
 (this might be different from the address for which the timer expires;
 see <xref target='sec_multi_homed_sctp_endpoints'/>).
@@ -4259,11 +4261,12 @@ An endpoint that does not support fragmentation and is requested to send a
 user message such that the outbound SCTP packet size would exceed the
 current PMTU MUST return an error to its upper layer and MUST NOT attempt to
 send the user message.</t>
-<t>An implementation MAY make available its upper layer a mechanism to disable
-fragmentation.
-When in such a state, it MUST behave as an implementation that does not support
-fragmentation, i.e., it MUST reject send calls that would result in sending
-SCTP packets that exceed the current PMTU.</t>
+<t>An SCTP implementation MAY provide a mechanism to the upper layer that
+disables fragmentation when sending DATA chunks.
+When fragmentation of DATA chunks is disabeled, the SCTP stack MUST behave in
+the same way an implementation that does not support fragmentation, i.e., it 
+rejects calls that would result in sending SCTP packets that exceed the
+current PMTU.</t>
 <t>Implementation Note: In this error case, the SEND primitive discussed
 in <xref target='sec_ulp_to_sctp'/> would need to return an error to the
 upper layer.</t>
@@ -4285,8 +4288,8 @@ chunk if bundling a SACK chunk with the DATA chunk.</t>
 <t>Fragmentation takes the following steps:</t>
 <ol type='%d)'>
 <li><t>The data sender MUST break the user message into a series of DATA chunks.
-The sender SHOULD choose the size of the DATA chunks that is smaller than or
-equal to the AMDCS.</t></li>
+The sender SHOULD choose a size of DATA chunks that is smaller than or equal
+to the AMDCS.</t></li>
 <li><t>The transmitter MUST then assign, in sequence, a separate TSN to each of the
 DATA chunks in the series.
 The transmitter assigns the same Stream Sequence Number to each of the
@@ -4804,7 +4807,7 @@ the upper layer the change in reachability of this destination address.
 After this, the endpoint SHOULD continue sending HEARTBEAT chunks on this
 destination address but SHOULD stop increasing the counter.</t>
 <t>The sender of the HEARTBEAT chunk SHOULD include in the Heartbeat Information
-field of the chunk the current time when the packet is sent out and the
+field of the chunk the current time when the packet is sent and the
 destination address to which the packet is sent.</t>
 <t>Implementation Note: An alternative implementation of the heartbeat
 mechanism that can be used is to increment the error counter variable every time
@@ -4985,7 +4988,7 @@ Initiate Tag received in the INIT ACK chunk.</t></li>
 <ul>
 <li><t>If the receiver is in COOKIE-ECHOED or COOKIE-WAIT state the procedures
 in <xref target='sec_handle_out_of_the_blue_packets'/> SHOULD be followed;
-in other words, it is treated as an Out Of The Blue packet.</t></li>
+in other words, it is treated as an OOTB packet.</t></li>
 </ul>
 </dd>
 </dl>
@@ -5127,7 +5130,7 @@ association.</t>
 a SHUTDOWN ACK chunk with a stand-alone SHUTDOWN COMPLETE chunk in an
 SCTP packet with the Verification Tag field of its common header set to the
 same tag that was received in the packet containing the SHUTDOWN ACK chunk.
-This is considered an Out of the Blue packet as defined in
+This is considered an OOTB packet as defined in
 <xref target='sec_handle_out_of_the_blue_packets'/>.
 The sender of the INIT chunk lets T1-init continue running and remains in the
 COOKIE-WAIT or COOKIE-ECHOED state.
@@ -5256,8 +5259,8 @@ the host are used by the local endpoint.</t></dd>
 <t>Implementation Note: If this optional attribute is supported by an
 implementation, it will be the responsibility of the implementation
 to enforce that the IP source address field of any SCTP packets sent
-out by this endpoint contains one of the IP addresses indicated in
-the local eligible address list.</t>
+by this endpoint contains one of the IP addresses indicated in the local
+eligible address list.</t>
 </section>
 
 <section anchor='sec_associate'>
@@ -6192,12 +6195,12 @@ has a non-zero Verification Tag.</t>
 <name>Protection of Non-SCTP-Capable Hosts</name>
 
 <t>To provide a non-SCTP-capable host with the same level of protection
-against attacks as for SCTP-capable ones, all SCTP stacks MUST implement the
-ICMP handling described in <xref target='sec_icmp'/>.</t>
-<t>When an SCTP stack receives a packet containing multiple control or DATA
-chunks and the processing of the packet would result in sending multiple chunks
-in response, the sender of the response chunk(s) MUST NOT send more than one
-packet containing chunks other than DATA chunks.
+against attacks as for SCTP-capable ones, all SCTP implementations MUST
+implement the ICMP handling described in <xref target='sec_icmp'/>.</t>
+<t>When an SCTP implementation receives a packet containing multiple control or
+DATA chunks and the processing of the packet would result in sending multiple
+chunks in response, the sender of the response chunk(s) MUST NOT send more than
+one packet containing chunks other than DATA chunks.
 This requirement protects the network for triggering a packet burst in response
 to a single packet.
 If bundling is supported, multiple response chunks that fit into a single
