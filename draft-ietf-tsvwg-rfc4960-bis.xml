@@ -98,7 +98,7 @@ and resistance to flooding and masquerade attacks.</t>
 <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
 "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
 "OPTIONAL" in this document are to be interpreted as described in
-BCP 14 <xref target="RFC2119"/> <xref target="RFC8174"/>  when,
+BCP 14 <xref target="RFC2119"/> <xref target="RFC8174"/> when,
 and only when, they appear in all capitals, as shown here.</t>
 </section>
 
@@ -710,6 +710,10 @@ have been incorporated in this document:</t>
 <li><t>Improve the description of sequence number generation
        (TSN and SSN).</t></li>
 <li><t>Improve the description of reneging.</t></li>
+<li><t>Don't require the change of the cumulative TSN ACK anymore for increasing
+       the congestion window.
+       This improves the consistency with the handling in congestion
+       avoidance.</t></li>
 </ul>
 </section>
 </section>
@@ -1691,7 +1695,7 @@ last TSN received before a break in the sequence of received TSNs
 occurs;
 the next TSN value following this one has not yet been received at the endpoint
 sending the SACK chunk.
-This parameter  acknowledges receipt of all TSNs less than or equal to
+This parameter acknowledges receipt of all TSNs less than or equal to
 its value.</t>
 <t>The handling of a_rwnd by the receiver of the SACK chunk is discussed in
 detail in <xref target='sec_processing_of_received_sack'/>.</t>
@@ -3427,7 +3431,7 @@ chunk to an UNCONFIRMED address.</t></li>
 be bundled with a HEARTBEAT chunk including a nonce, and the size of the
 SCTP packet MUST NOT exceed the PMTU.
 If the implementation does not support bundling or if the bundled COOKIE ECHO
-chunk plus HEARTBEAT chunk (including nonce) would result in an  SCTP packet
+chunk plus HEARTBEAT chunk (including nonce) would result in an SCTP packet
 larger than the PMTU, then the implementation MUST NOT send a COOKIE ECHO chunk
 to an UNCONFIRMED address.</t></li>
 </ul>
@@ -3793,7 +3797,7 @@ SACK [TSN Ack=6,block=0] -------------> (cancel T3-rtx timer)
 </artwork>
 </figure>
 <t>If an endpoint receives a DATA chunk with no user data (i.e., the
-Length field is set to 16), it MUST send an ABORT chunk  with a "No User Data"
+Length field is set to 16), it MUST send an ABORT chunk with a "No User Data"
 error cause.</t>
 <t>An endpoint SHOULD NOT send a DATA chunk with no user data part.
 This avoids the need to be able to return a zero-length user
@@ -3840,7 +3844,7 @@ Cumulative TSN Ack is less than the Cumulative TSN Ack Point indicates an
 out-of-order SACK chunk.</t></li>
 <li><t>Set rwnd equal to the newly received a_rwnd minus the number of bytes still
 outstanding after processing the Cumulative TSN Ack and the Gap Ack Blocks.</t></li>
-<li><t>If the SACK chunk  is missing a TSN that was previously acknowledged via
+<li><t>If the SACK chunk is missing a TSN that was previously acknowledged via
 a Gap Ack Block (e.g., the data receiver reneged on the data), then consider
 the corresponding DATA that might be possibly missing:
 Count one miss indication towards Fast Retransmit as described in
@@ -3946,7 +3950,7 @@ T3-rtx timer expirations on the corresponding destination address as discussed
 in rule E2 below.</t></li>
 <li><t>Whenever all outstanding data sent to an address have been acknowledged,
 turn off the T3-rtx timer of that address.</t></li>
-<li><t>Whenever a SACK chunk  is received that acknowledges the DATA chunk with
+<li><t>Whenever a SACK chunk is received that acknowledges the DATA chunk with
 the earliest outstanding TSN for that address, restart the T3-rtx timer for that
 address with its current RTO (if there is still outstanding data on that
 address).</t></li>
@@ -4264,10 +4268,10 @@ current PMTU MUST return an error to its upper layer and MUST NOT attempt to
 send the user message.</t>
 <t>An SCTP implementation MAY provide a mechanism to the upper layer that
 disables fragmentation when sending DATA chunks.
-When fragmentation of DATA chunks is disabeled, the SCTP stack MUST behave in
-the same way an implementation that does not support fragmentation, i.e., it 
-rejects calls that would result in sending SCTP packets that exceed the
-current PMTU.</t>
+When fragmentation of DATA chunks is disabeled, the SCTP implementation MUST
+behave in the same way an implementation that does not support fragmentation,
+i.e., it  rejects calls that would result in sending SCTP packets that exceed
+the current PMTU.</t>
 <t>Implementation Note: In this error case, the SEND primitive discussed
 in <xref target='sec_ulp_to_sctp'/> would need to return an error to the
 upper layer.</t>
@@ -6357,7 +6361,7 @@ When DATA chunks are out of order, SACK chunks are not delayed
 <dt>Inbound Streams:</dt>
 <dd>
 <t>An array of structures to track the inbound streams, normally including the
-next sequence number expected  and possibly the stream number.</t>
+next sequence number expected and possibly the stream number.</t>
 </dd>
 <dt>Outbound Streams:</dt>
 <dd>
@@ -6717,15 +6721,17 @@ format shown in <xref target='sec_error_chunk'/>, i.e.:</t>
 <section anchor='sec_payload_prototol_identifiers'>
 <name>Payload Protocol Identifiers</name>
 
-<t>Except for value 0, which is reserved by SCTP to indicate an unspecified
-payload protocol identifier in a DATA chunk, SCTP will not be responsible for
-standardizing or verifying any payload protocol identifiers;
-SCTP simply receives the identifier from the upper layer and carries it with
-the corresponding payload data.</t>
+<t>The assignment of payload protocol identifier is done using the First Come
+First Served policy as defined in <xref target='RFC8126'/>.</t>
+<t>Except for value 0, which is reserved to indicate an unspecified payload
+protocol identifier in a DATA chunk, an SCTP implementation will not be
+responsible for standardizing or verifying any payload protocol identifiers;
+An SCTP implementation simply receives the identifier from the upper layer
+and carries it with the corresponding payload data.</t>
 <t>The upper layer, i.e., the SCTP user, SHOULD standardize any specific
 protocol identifier with IANA if it is so desired.
 The use of any specific payload protocol identifier is out of the scope of
-SCTP.</t>
+this specification.</t>
 </section>
 
 <section anchor='sec_port_number_registry'>
@@ -6733,7 +6739,7 @@ SCTP.</t>
 
 <t>SCTP services can use contact port numbers to provide service to unknown
 callers, as in TCP and UDP.
-IANA is  requested to open the existing "Service Name and Transport
+IANA is requested to open the existing "Service Name and Transport
 Protocol Port Number Registry" for SCTP using the following rules, which we
 intend to mesh well with existing port-number registration procedures.
 An IESG-appointed expert reviewer supports IANA in evaluating SCTP port
@@ -7049,7 +7055,7 @@ Since SCTP is a transport-level protocol, it cannot know the actual
 serial-media bit ordering.
 Moreover, different links in the path between SCTP endpoints can use different
 link-level bit orders.</t>
-<t>A convention  is established for mapping SCTP transport
+<t>A convention is established for mapping SCTP transport
 messages to polynomials for purposes of CRC computation.
 The bit-ordering for mapping SCTP messages to polynomials is that bytes are
 taken most-significant first, but within each byte, bits are taken
