@@ -1261,9 +1261,9 @@ the receiver MUST silently discard the packet.</t>
 the sender of the INIT chunk has reserved in association with this window.</t>
 <t>The Advertised Receiver Window Credit MUST NOT be smaller than 1500.</t>
 <t>A receiver of an INIT chunk with the a_rwnd value set to a value smaller than
-1500 MUST discard the packet and SHOULD send a packet in response containing
-an ABORT chunk and using the Initiate Tag as the Verification Tag.
-Any existing association MUST NOT be affected.</t>
+1500 MUST discard the packet, SHOULD send a packet in response containing
+an ABORT chunk and using the Initiate Tag as the Verification Tag, and MUST NOT
+change the state of any existing association.</t>
 <t>During the life of the association, this buffer space SHOULD NOT be reduced
 (i.e., dedicated buffers ought not to be taken away from this association);
 however, an endpoint MAY change the value of a_rwnd it sends in SACK chunks.</t>
@@ -1274,9 +1274,9 @@ however, an endpoint MAY change the value of a_rwnd it sends in SACK chunks.</t>
 to create in this association.
 The value of 0 MUST NOT be used.</t>
 <t>A receiver of an INIT chunk with the OS value set to 0 MUST discard the
-packet and SHOULD send a packet in response containing an ABORT chunk and using
-the Initiate Tag as the Verification Tag.
-Any existing association MUST NOT be affected.</t>
+packet, SHOULD send a packet in response containing an ABORT chunk and using
+the Initiate Tag as the Verification Tag, and MUST NOT change the state of any
+existing association.</t>
 </dd>
 <dt>Number of Inbound Streams (MIS): 16 bits (unsigned integer)</dt>
 <dd>
@@ -1287,9 +1287,9 @@ The value 0 MUST NOT be used.</t>
 two endpoints will use the min(requested, offered).
 See <xref target='sec_handle_stream_parameters'/> for details.</t>
 <t>A receiver of an INIT chunk with the MIS value set to 0 MUST discard the
-packet and SHOULD send a packet in response containing an ABORT chunk and using
-the Initiate Tag as the Verification Tag.
-Any existing association MUST NOT be affected.</t>
+packet, SHOULD send a packet in response containing an ABORT chunk and using
+the Initiate Tag as the Verification Tag, and MUST NOT change the state of any
+existing association.</t>
 </dd>
 <dt>Initial TSN (I-TSN): 32 bits (unsigned integer)</dt>
 <dd>
@@ -1549,9 +1549,9 @@ COOKIE-WAIT, it SHOULD be discarded silently
 sender of the INIT ACK chunk has reserved in association with this window.</t>
 <t>The Advertised Receiver Window Credit MUST NOT be smaller than 1500.</t>
 <t>A receiver of an INIT ACK chunk with the a_rwnd value set to a value smaller
-than 1500 MUST discard the packet and SHOULD send a packet in response
-containing an ABORT chunk and using the Initiate Tag as the Verification Tag.
-Any existing association MUST NOT be affected.</t>
+than 1500 MUST discard the packet, SHOULD send a packet in response
+containing an ABORT chunk and using the Initiate Tag as the Verification Tag,
+and MUST NOT change the state of any existing association.</t>
 <t>During the life of the association, this buffer space SHOULD NOT be reduced
 (i.e., dedicated buffers ought not to be taken away from this association);
 however, an endpoint MAY change the value of a_rwnd it sends in SACK chunks.</t>
