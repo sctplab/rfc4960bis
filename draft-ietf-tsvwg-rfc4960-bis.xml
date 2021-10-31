@@ -714,6 +714,7 @@ have been incorporated in this document:</t>
        the congestion window.
        This improves the consistency with the handling in congestion
        avoidance.</t></li>
+<li><t>Improve the description of the State Cookie.</t></li>
 </ul>
 </section>
 </section>
@@ -1941,7 +1942,7 @@ Heartbeat Information field.</t>
 </dd>
 <dt>Heartbeat Information: variable length</dt>
 <dd>
-<t>This field MUST contain the Heartbeat Information parameter (as defined in
+<t>This field MUST contain the Heartbeat Info parameter (as defined in
 <xref target='sec_heartbeat_chunk'/>) of the Heartbeat Request to which this
 Heartbeat Acknowledgement is responding.</t>
 <table>
@@ -2916,15 +2917,15 @@ receiver of the INIT chunk.
 The use of a MAC is mandatory to prevent denial-of-service attacks.
 There is a tradeoff between to computational complexity and the level of
 security the MAC provides.
-Using the HMAC-SHA1 might be an acceptable compromise.
+A MAC with acceptable security properties SHOULD be used.
 The secret key SHOULD be random (<xref target='RFC4086'/> provides some
 information on randomness guidelines).
 The secret keys need to have an appropriate size.
-When using HMAC-SHA1, secret keys of at least 160 bits are appropriate according
-to <xref target='RFC2104'/>.
 The secret key SHOULD be changed reasonably frequently (e.g., daily), and the
 timestamp in the State Cookie MAY be used to determine which key is used to
 verify the MAC.</t>
+<t>Since the State Cookie is not encrypted, it MUST NOT contain information
+which is not being envisioned to be shared.</t>
 <t>An implementation SHOULD make the cookie as small as possible to
 ensure interoperability.</t>
 </section>
@@ -2976,7 +2977,7 @@ then the packet, including the COOKIE ECHO chunk and any attached DATA chunks,
 SHOULD be discarded, and the endpoint MUST transmit an ERROR chunk with a
 "Stale Cookie" error cause to the peer endpoint.</t></li>
 <li><t>If the State Cookie is valid, create an association to the sender
-of the COOKIE ECHO chunk with the information in the TCB data
+of the COOKIE ECHO chunk with the information in the State Cookie
 carried in the COOKIE ECHO chunk and enter the ESTABLISHED state.</t></li>
 <li><t>Send a COOKIE ACK chunk to the peer acknowledging receipt of the
 COOKIE ECHO chunk.
@@ -3412,11 +3413,11 @@ UNCONFIRMED and are subject to probing for verification.</t></li>
 </ol>
 <t>To probe an address for verification, an endpoint will send
 HEARTBEAT chunks including a 64-bit random nonce and a path indicator (to
-identify the address that the HEARTBEAT chunk is sent to) within the HEARTBEAT
-parameter.</t>
+identify the address that the HEARTBEAT chunk is sent to) within the Heartbeat
+Info parameter.</t>
 <t>Upon receipt of the HEARTBEAT ACK chunk, a verification is made that the
-nonce included in the HEARTBEAT parameter is the one sent to the
-address indicated inside the HEARTBEAT parameter.
+nonce included in the Heartbeat Info parameter is the one sent to the
+address indicated inside the Heartbeat Info parameter.
 When this match occurs, the address that the original HEARTBEAT was sent to
 is now considered CONFIRMED and available for normal data transfer.</t>
 <t>These probing procedures are started when an association moves to the
