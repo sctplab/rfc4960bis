@@ -2915,13 +2915,14 @@ the port numbers and the verification tags.</t>
 <t>The method used to generate the MAC is strictly a private matter for the
 receiver of the INIT chunk.
 The use of a MAC is mandatory to prevent denial-of-service attacks.
-There is a tradeoff between to computational complexity and the level of
-security the MAC provides.
+MAC algorithms can have different performance depending on the platform.
+Choosing a high performance MAC algorithm increases the resistance against
+cookie flooding attacks.
 A MAC with acceptable security properties SHOULD be used.
 The secret key SHOULD be random (<xref target='RFC4086'/> provides some
 information on randomness guidelines).
 The secret keys need to have an appropriate size.
-The secret key SHOULD be changed reasonably frequently (e.g., daily), and the
+The secret key SHOULD be changed reasonably frequently (e.g., hourly), and the
 timestamp in the State Cookie MAY be used to determine which key is used to
 verify the MAC.</t>
 <t>Since the State Cookie is not encrypted, it MUST NOT contain information
