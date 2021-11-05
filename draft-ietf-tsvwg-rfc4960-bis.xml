@@ -1696,7 +1696,7 @@ last TSN received before a break in the sequence of received TSNs
 occurs;
 the next TSN value following this one has not yet been received at the endpoint
 sending the SACK chunk.
-This parameter acknowledges receipt of all TSNs less than or equal to
+This parameter therefore acknowledges receipt of all TSNs less than or equal to
 its value.</t>
 <t>The handling of a_rwnd by the receiver of the SACK chunk is discussed in
 detail in <xref target='sec_processing_of_received_sack'/>.</t>
@@ -7079,7 +7079,7 @@ Since SCTP is a transport-level protocol, it cannot know the actual
 serial-media bit ordering.
 Moreover, different links in the path between SCTP endpoints can use different
 link-level bit orders.</t>
-<t>A convention is established for mapping SCTP transport
+<t>A convention therefore is established for mapping SCTP transport
 messages to polynomials for purposes of CRC computation.
 The bit-ordering for mapping SCTP messages to polynomials is that bytes are
 taken most-significant first, but within each byte, bits are taken
