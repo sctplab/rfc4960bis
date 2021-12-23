@@ -207,7 +207,7 @@ previous sections. This section provides a consolidated list of the
 key terms and their definitions.</t>
 
 <dl>
-<dt>Active destination transport address:</dt>
+<dt>Active Destination Transport Address:</dt>
 <dd>
 <t>A transport address on a peer endpoint that a transmitting endpoint considers
 available for receiving user messages.</t>
@@ -228,13 +228,13 @@ Each user message occupies its own DATA chunk.</t>
 <t>A unit of information within an SCTP packet, consisting of a chunk header
 and chunk-specific content.</t>
 </dd>
-<dt>Congestion window (cwnd):</dt>
+<dt>Congestion Window (cwnd):</dt>
 <dd>
 <t>An SCTP variable that limits outstanding data, in number of bytes,
 that a sender can send to a particular destination transport address before
 receiving an acknowledgement.</t>
 </dd>
-<dt>Control chunk:</dt>
+<dt>Control Chunk:</dt>
 <dd>
 <t>A chunk not being used for transmitting user data, i.e. every chunk which
 is not a DATA chunk.</t>
@@ -249,17 +249,17 @@ the Cumulative TSN Ack field of a SACK chunk.</t>
 <t>The amount of bytes of outstanding data to a particular destination transport
 address at any given time.</t>
 </dd>
-<dt>Idle destination address:</dt>
+<dt>Idle Destination Address:</dt>
 <dd>
 <t>An address that has not had user messages sent to it within some length
 of time, normally the 'HB.interval' or greater.</t>
 </dd>
-<dt>Inactive destination transport address:</dt>
+<dt>Inactive Destination Transport Address:</dt>
 <dd>
 <t>An address that is considered inactive due to errors and unavailable to
 transport user messages.</t>
 </dd>
-<dt>Message (or user message):</dt>
+<dt>Message (or User Message):</dt>
 <dd>
 <t>Data submitted to SCTP by the Upper Layer Protocol (ULP).</t>
 </dd>
@@ -272,14 +272,14 @@ transport user messages.</t>
 <t>A user message that is delivered in order with respect to all previous user
 messages sent within the stream on which the message was sent.</t>
 </dd>
-<dt>Outstanding data (or "data outstanding" or "data in flight"):</dt>
+<dt>Outstanding Data (or Data Outstanding or Data In Flight):</dt>
 <dd>
 <t>The total amount of the DATA chunks associated with outstanding TSNs.
 A retransmitted DATA chunk is counted once in outstanding data.
 A DATA chunk that is classified as lost but that has not yet been
 retransmitted is not in outstanding data.</t>
 </dd>
-<dt>Outstanding TSN (at an SCTP endpoint):</dt>
+<dt>Outstanding TSN (at an SCTP Endpoint):</dt>
 <dd>
 <t>A TSN (and the associated DATA chunk) that has been sent by the endpoint
 but for which it has not yet received an acknowledgement.</t>
@@ -328,7 +328,7 @@ receiver window of its peer, in number of bytes.
 This gives the sender an indication of the space available in the receiver's
 inbound buffer.</t>
 </dd>
-<dt>SCTP association:</dt>
+<dt>SCTP Association:</dt>
 <dd>
 <t>A protocol relationship between SCTP endpoints, composed of the two SCTP
 endpoints and protocol state information including Verification Tags and the
@@ -338,7 +338,7 @@ endpoints in the association.
 Two SCTP endpoints MUST NOT have more than one SCTP association between
 them at any given time.</t>
 </dd>
-<dt>SCTP endpoint:</dt>
+<dt>SCTP Endpoint:</dt>
 <dd>
 <t>The logical sender/receiver of SCTP packets.
 On a multi-homed host, an SCTP endpoint is represented to its peers as
@@ -351,14 +351,14 @@ A transport address used by an SCTP endpoint MUST NOT be used by another SCTP
 endpoint.
 In other words, a transport address is unique to an SCTP endpoint.</t>
 </dd>
-<dt>SCTP packet (or packet):</dt>
+<dt>SCTP Packet (or Packet):</dt>
 <dd>
 <t>The unit of data delivery across the interface between SCTP and the
 connectionless packet network (e.g., IP).
 An SCTP packet includes the common SCTP header, possible SCTP control chunks,
 and user data encapsulated within SCTP DATA chunks.</t>
 </dd>
-<dt>SCTP user application (SCTP user):</dt>
+<dt>SCTP User Application (or SCTP User):</dt>
 <dd>
 <t>The logical higher-layer application entity which uses the services of SCTP,
 also called the Upper-Layer Protocol (ULP).</t>
@@ -414,7 +414,7 @@ One TSN is attached to each chunk containing user data to permit the
 receiving SCTP endpoint to acknowledge its receipt and detect duplicate
 deliveries.</t>
 </dd>
-<dt>Transport address:</dt>
+<dt>Transport Address:</dt>
 <dd>
 <t>A transport address is traditionally defined by a network-layer address,
 a transport-layer protocol, and a transport-layer port number.
@@ -429,7 +429,7 @@ this includes both other unordered messages as well as other ordered messages.
 An unordered message might be delivered prior to or later than ordered messages
 sent on the same stream.</t>
 </dd>
-<dt>User message:</dt>
+<dt>User Message:</dt>
 <dd>
 <t>The unit of data delivery across the interface between SCTP and its user.</t>
 </dd>
