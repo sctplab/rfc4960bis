@@ -8,7 +8,7 @@
      consensus="true"
      category="std"
      docName="draft-ietf-tsvwg-rfc4960-bis-18-to-be"
-     obsoletes="4960,6096,7053"
+     obsoletes="4460,4960,6096,7053,8540"
      version="3"
      tocDepth="4">
 
@@ -67,7 +67,9 @@
 It describes the Stream Control Transmission Protocol (SCTP) and incorporates
 the specification of the chunk flags registry from RFC 6096 and the
 specification of the I bit of DATA chunks from RFC 7053.
-Therefore, RFC 6096 and RFC 7053 are also obsoleted by this document, if approved.</t>
+Therefore, RFC 6096 and RFC 7053 are also obsoleted by this document, if approved.
+In addition to that, the Errata documents RFC 4460 and RFC 8540 are also
+obsoleted by this document, if approved.</t>
 <t>SCTP was originally designed to transport Public Switched Telephone
 Network (PSTN) signaling messages over IP networks.
 It is also suited to be used for other applications, for example WebRTC.</t>
