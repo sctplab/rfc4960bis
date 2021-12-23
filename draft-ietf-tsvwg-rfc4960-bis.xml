@@ -284,6 +284,12 @@ retransmitted is not in outstanding data.</t>
 <t>A TSN (and the associated DATA chunk) that has been sent by the endpoint
 but for which it has not yet received an acknowledgement.</t>
 </dd>
+<dt>Out Of The Blue (OOTB) Packet:</dt>
+<dd>
+<t>A correctly formed packet, for which the receiver can not identify the
+association it belongs to.
+See <xref target='sec_handle_out_of_the_blue_packets'/>.</t>
+</dd>
 <dt>Path:</dt>
 <dd>
 <t>The route taken by the SCTP packets sent by one SCTP endpoint to a specific
@@ -698,7 +704,7 @@ have been incorporated in this document:</t>
 <li><t>Move the description of ICMP handling from an Appendix to the main
        text.</t></li>
 <li><t>Remove the Appendix describing ECN handling from the document.</t></li>
-<li><t>Describe the packet size handling more precise by introducing PMTU,
+<li><t>Describe the packet size handling more precisely by introducing PMTU,
        PMDCS and AMDCS.</t></li>
 <li><t>Add the definition of control chunk.</t></li>
 <li><t>Improve the description of the handling of INIT chunks with invalid
@@ -4783,9 +4789,9 @@ However, this ambiguity does not seem to have significant consequences for
 SCTP behavior.
 If this ambiguity is undesirable, the transmitter MAY choose not to clear the
 error counter if the last chunk sent was a retransmission.</t>
-<t>Note: When configuring the SCTP endpoint, the user ought avoid having the value
-of 'Association.Max.Retrans' larger than the summation of the 'Path.Max.Retrans'
-of all the destination addresses for the remote endpoint.
+<t>Note: When configuring the SCTP endpoint, the user ought to avoid having the
+value of 'Association.Max.Retrans' larger than the summation of the
+'Path.Max.Retrans' of all the destination addresses for the remote endpoint.
 Otherwise, all the destination addresses might become inactive while the endpoint
 still considers the peer endpoint reachable.
 When this condition occurs, how SCTP chooses to function is implementation
