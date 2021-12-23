@@ -5202,8 +5202,9 @@ chunk type is an INIT chunk and that the Initiate Tag matches the tag of the
 peer, continue with ICMP7.
 If the ICMP message is too short or the chunk type or the Initiate Tag does
 not match, silently discard the packet.</t></li>
-<li><t>If the ICMP message is either a v6 "Packet Too Big" or a
-v4 "Fragmentation Needed", an implementation MAY process this information as
+<li><t>If the ICMP message is either an ICMPv6 message of type "Packet Too Big"
+or an ICMPv4 message of type "Destination Unreachable" and code
+"Fragmentation Needed", an implementation SHOULD process this information as
 defined for PMTU discovery.</t></li>
 <li><t>If the ICMP code is an "Unrecognized Next Header Type Encountered" or
 a "Protocol Unreachable", an implementation MUST treat this message as an abort
@@ -6135,8 +6136,8 @@ of a four-way startup handshake, its use of a cookie to defer commitment of
 resources at the responding SCTP node until the handshake is completed, and its
 use of a Verification Tag to prevent insertion of extraneous packets into the
 flow of an established association.</t>
-<t>The IP Authentication Header and Encapsulating Security Payload might be
-useful in reducing the risk of certain kinds of denial-of-service attacks.</t>
+<t>ESP might be useful in reducing the risk of certain kinds of
+denial-of-service attacks.</t>
 <t>Support for the Host Name Address parameter has been removed from the
 protocol.
 Endpoints receiving INIT or INIT ACK chunks containing the Host Name Address
