@@ -217,6 +217,7 @@ available for receiving user messages.</t>
 <t>The smallest Path Maximum DATA Chunk Size (PMDCS) of all destination
 addresses.</t>
 </dd>
+<!-- FIXME MT -->
 <dt>Bundling Of User Messages:</dt>
 <dd>
 <t>An optional multiplexing operation, whereby more than one user message can
@@ -1029,6 +1030,7 @@ parameters and has to report them according to
 <xref target='sec_parameter_format'/>, it SHOULD bundle the ERROR chunk
 containing the "Unrecognized Parameters" error cause with the chunk sent
 in response (e.g., COOKIE ECHO).
+<!-- FIXME MT -->
 If the receiver of the INIT ACK chunk cannot bundle the COOKIE ECHO chunk with
 the ERROR chunk, the ERROR chunk MAY be sent separately but not before the
 COOKIE ACK chunk has been received.</t>
@@ -1249,6 +1251,7 @@ However, restrictive implementations MAY send back an ABORT chunk in response
 to the INIT chunk.</t>
 <t>The Chunk Flags field in INIT chunks is reserved, and all bits in it SHOULD
 be set to 0 by the sender and ignored by the receiver.
+<!-- FIXME MT -->
 The sequence of parameters within an INIT chunk can be processed in any
 order.</t>
 <dl newline="true">
@@ -1302,6 +1305,7 @@ existing association.</t>
 </dd>
 <dt>Initial TSN (I-TSN): 32 bits (unsigned integer)</dt>
 <dd>
+<!-- FIXME MT -->
 <t>Defines the initial TSN that the sender will use.
 The valid range is from 0 to 4294967295.
 This field MAY be set to the value of the Initiate Tag field.</t>
@@ -1535,6 +1539,7 @@ Notification.</t>
 An INIT ACK chunk MUST NOT contain the Host Name Address parameter.
 The receiver of INIT ACK chunks containing a Host Name Address parameter
 MUST send an ABORT chunk and MAY include an "Unresolvable Address" error cause.</t>
+<!-- FIXME MT -->
 <dl newline="true">
 <dt>Initiate Tag: 32 bits (unsigned integer)</dt>
 <dd>
@@ -1594,6 +1599,7 @@ COOKIE-WAIT, it SHOULD be discarded silently
 </dd>
 <dt>Initial TSN (I-TSN): 32 bits (unsigned integer)</dt>
 <dd>
+<!-- FIXME MT -->
 <t>Defines the initial TSN that the sender of the INIT ACK chunk will use.
 The valid range is from 0 to 4294967295.
 This field MAY be set to the value of the Initiate Tag field.</t>
@@ -1752,6 +1758,7 @@ value of the Cumulative TSN Ack.</t>
 </dd>
 <dt>Cumulative TSN Ack: 32 bits (unsigned integer)</dt>
 <dd>
+<!-- FIXME MT -->
 <t>The largest TSN, such that all TSNs smaller than or equal to it have been
 received and the next one has not been received.
 In the case where no DATA chunk has been received, this value is set to the
@@ -2047,6 +2054,7 @@ This chunk has the following format.</t>
 </dd>
 <dt>Cumulative TSN Ack: 32 bits (unsigned integer)</dt>
 <dd>
+<!-- FIXME MT -->
 <t>The largest TSN, such that all TSNs smaller than or equal to it have been
 received and the next one has not been received.</t>
 </dd>
@@ -3117,6 +3125,7 @@ address of the received packet containing the INIT chunk.</t></li>
 respond with an INIT ACK chunk using the same parameters it sent in its
 original INIT chunk (including its Initiate Tag, unchanged), provided
 that no NEW address has been added to the forming association.
+<!-- FIXME MT -->
 If the INIT chunk indicates that a new address has been added to the
 association, then the entire INIT chunk MUST be discarded, and the state of
 the existing association SHOULD NOT be changed.
@@ -3826,6 +3835,7 @@ SACK [TSN Ack=6,block=0] -------------> (cancel T3-rtx timer)
 ]]>
 </artwork>
 </figure>
+<!-- FIXME MT -->
 <t>If an endpoint receives a DATA chunk with no user data (i.e., the
 Length field is set to 16), it MUST send an ABORT chunk with a "No User Data"
 error cause.</t>
@@ -4442,6 +4452,7 @@ the destination addresses it can send to (not each source-destination pair but
 for each destination).
 The parameters SHOULD decay if the address is not used for a long enough time
 period.
+<!-- FIXME MT -->
 <xref target='RFC5681'/> specifies this period of time as a retransmission
 timeout.</t></li>
 <li><t>For each of the destination addresses, an endpoint does slow start upon
@@ -6091,8 +6102,6 @@ If ESP is used to protect confidentiality of SCTP traffic, an ESP cryptographic
 transform that includes cryptographic integrity protection MUST be used, because
 if there is a confidentiality threat there will also be a strong integrity
 threat.</t>
-<t>Whenever ESP is in use, application-level encryption is not generally
-required.</t>
 <t>Regardless of where confidentiality is provided, the Internet Key
 Exchange Protocol version 2 (IKEv2) <xref target='RFC7296'/> SHOULD be used for
 key management of ESP.</t>
@@ -6771,6 +6780,7 @@ this specification.</t>
 
 <t>SCTP services can use contact port numbers to provide service to unknown
 callers, as in TCP and UDP.
+<!-- FIXME MT -->
 IANA is requested to open the existing "Service Name and Transport
 Protocol Port Number Registry" for SCTP using the following rules, which we
 intend to mesh well with existing port-number registration procedures.
@@ -6991,9 +7001,7 @@ All we can say is, Thank You!</t>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.1191.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.1982.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
-<xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3873.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4291.xml"/>
-<xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4301.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4303.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4895.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5681.xml"/>
@@ -7056,7 +7064,9 @@ All we can say is, Thank You!</t>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2522.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2960.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3465.xml"/>
+<xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3873.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4086.xml"/>
+<xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4301.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4460.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4960.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6096.xml"/>
@@ -7157,7 +7167,9 @@ CRCs go, it has the advantage of working on both big-endian and little-endian
 CPUs, using the same (host-order) lookup tables, and using only the
 predefined ntohl() and htonl() operations.
 The code is somewhat modified from <xref target='WILLIAMS93'/>, to ensure
-portability between big-endian and little-endian architectures.
+portability between big-endian and little-endian architectures, use fixed
+sized types to allow portability between 32-bit and 64-bit platforms, and
+general C code improvements.
 (Note that if the byte endian-ness of the target architecture is known to be
 little-endian, the final bit-reversal and byte-reversal steps can be folded
 into a single operation.)</t>
@@ -7267,7 +7279,7 @@ reflect_32(uint32_t b)
 
   for (i = 0; i < 32; i++) {
     if (b & 1)
-      rw |= 1 << (31 - i);
+      rw |= 1UL << (31 - i);
     b >>= 1;
   }
   return (rw);
@@ -7373,7 +7385,8 @@ insert_crc32(unsigned char *buffer, unsigned int length)
 {
   SCTP_message *message;
   uint32_t crc32;
-  message = (SCTP_message *) buffer;
+
+  message = (SCTP_message *)buffer;
   message->common_header.checksum = 0UL;
   crc32 = generate_crc32c(buffer,length);
   /* and insert it into the message */
