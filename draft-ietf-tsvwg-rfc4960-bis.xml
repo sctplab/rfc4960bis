@@ -148,7 +148,7 @@ as SYN attacks.</t></li>
 for which all of these limitations of TCP are relevant.
 While this application directly motivated the development of SCTP, other
 applications might find SCTP a good match to their requirements.
-One example for this are datachannels in the WebRTC infrastructure.</t>
+One example of this is the use of datachannels in the WebRTC infrastructure.</t>
 </section>
 
 <section>
@@ -217,7 +217,7 @@ available for receiving user messages.</t>
 <t>The smallest Path Maximum DATA Chunk Size (PMDCS) of all destination
 addresses.</t>
 </dd>
-<dt>Bundling:</dt>
+<dt>Bundling Of User Messages:</dt>
 <dd>
 <t>An optional multiplexing operation, whereby more than one user message can
 be carried in the same SCTP packet.
@@ -246,7 +246,7 @@ the Cumulative TSN Ack field of a SACK chunk.</t>
 </dd>
 <dt>Flightsize:</dt>
 <dd>
-<t>The amount of bytes of outstanding data to a particular destination transport
+<t>The number of bytes of outstanding data to a particular destination transport
 address at any given time.</t>
 </dd>
 <dt>Idle Destination Address:</dt>
@@ -274,7 +274,7 @@ messages sent within the stream on which the message was sent.</t>
 </dd>
 <dt>Outstanding Data (or Data Outstanding or Data In Flight):</dt>
 <dd>
-<t>The total amount of the DATA chunks associated with outstanding TSNs.
+<t>The total size of the DATA chunks associated with outstanding TSNs.
 A retransmitted DATA chunk is counted once in outstanding data.
 A DATA chunk that is classified as lost but that has not yet been
 retransmitted is not in outstanding data.</t>
@@ -390,7 +390,7 @@ correlations if they are so desired.</t>
 <dd>
 <t>A 16-bit sequence number used internally by SCTP to ensure sequenced delivery
 of the user messages within a given stream.
-One Stream Sequence Number is attached to each user message.</t>
+One Stream Sequence Number is attached to each ordered user message.</t>
 </dd>
 <dt>Tie-Tags:</dt>
 <dd>
@@ -707,8 +707,8 @@ have been incorporated in this document:</t>
 <li><t>Describe the packet size handling more precisely by introducing PMTU,
        PMDCS and AMDCS.</t></li>
 <li><t>Add the definition of control chunk.</t></li>
-<li><t>Improve the description of the handling of INIT chunks with invalid
-       mandatory parameters.</t></li>
+<li><t>Improve the description of the handling of INIT and INIT ACK chunks with
+       invalid mandatory parameters.</t></li>
 <li><t>Allow using L > 1 for Appropriate Byte Counting (ABC) during
        slow start.</t></li>
 <li><t>Explicitly describe the reinitialization of the congestion controller on
@@ -716,7 +716,7 @@ have been incorporated in this document:</t>
 <li><t>Improve the terminology to make clear that this specification does not
        describe a full mesh architecture.</t></li>
 <li><t>Improve the description of sequence number generation
-       (TSN and SSN).</t></li>
+       (Transmission Sequence Number and Stream Sequence Number).</t></li>
 <li><t>Improve the description of reneging.</t></li>
 <li><t>Don't require the change of the cumulative TSN ACK anymore for increasing
        the congestion window.
@@ -748,7 +748,7 @@ A chunk contains either control information or user data.</t>
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
 <t>INIT, INIT ACK and SHUTDOWN COMPLETE chunks MUST NOT be bundled
-into one SCTP packet.
+with any other chunk into an SCTP packet.
 All other chunks MAY be bundled to form an SCTP packet that does not exceed
 the PMTU.
 See <xref target='sec_bundling'/> for more details on chunk bundling.</t>
@@ -907,8 +907,8 @@ Chunk Flags, Chunk Length, and Chunk Value fields.
 Therefore, if the Chunk Value field is zero-length, the Length field will be
 set to 4.
 The Chunk Length field does not count any chunk padding.
-However, it does include padding of any variable-length parameter except the
-last parameter in the chunk.</t>
+However, it does include any padding of variable-length parameters other than
+the last parameter in the chunk.</t>
 <t>Note: A robust implementation is expected to accept the chunk whether or not
 the final padding has been included in the Chunk Length.</t>
 </dd>
@@ -1385,8 +1385,8 @@ Address Translation (NAT).</t>
 
 <section>
 <name>Cookie Preservative (9)</name>
-<t>The sender of the INIT chunk SHOULD use this parameter to suggest to the
-receiver of the INIT chunk for a longer life-span of the State Cookie.</t>
+<t>The sender of the INIT chunk uses this parameter to suggest to the
+receiver of the INIT chunk a longer life-span for the State Cookie.</t>
 <artwork align='center'>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -1912,7 +1912,7 @@ chunk (see <xref target='sec_heartbeat_ack_chunk'/>).
 Note also that the HEARTBEAT chunk is both for reachability checking and for
 path verification (see <xref target='sec_path_verifiation'/>).
 When a HEARTBEAT chunk is being used for path verification purposes, it MUST
-hold a random nonce of length 64-bit or longer (<xref target='RFC4086'/>
+include a random nonce of length 64-bit or longer (<xref target='RFC4086'/>
 provides some information on randomness guidelines).</t>
 </dd>
 </dl>
@@ -2933,7 +2933,7 @@ The secret keys need to have an appropriate size.
 The secret key SHOULD be changed reasonably frequently (e.g., hourly), and the
 timestamp in the State Cookie MAY be used to determine which key is used to
 verify the MAC.</t>
-<t>Since the State Cookie is not encrypted, it MUST NOT contain information
+<t>If the State Cookie is not encrypted, it MUST NOT contain information
 which is not being envisioned to be shared.</t>
 <t>An implementation SHOULD make the cookie as small as possible to
 ensure interoperability.</t>
@@ -3118,8 +3118,8 @@ respond with an INIT ACK chunk using the same parameters it sent in its
 original INIT chunk (including its Initiate Tag, unchanged), provided
 that no NEW address has been added to the forming association.
 If the INIT chunk indicates that a new address has been added to the
-association, then the entire INIT chunk MUST be discarded, and SHOULD NOT do any
-changes to the existing association.
+association, then the entire INIT chunk MUST be discarded, and the state of
+the existing association SHOULD NOT be changed.
 An ABORT chunk SHOULD be sent in response that MAY include the error
 'Restart of an association with new addresses'.
 The error SHOULD list the addresses that were added to the restarting
@@ -4441,8 +4441,9 @@ transmission.</t></li>
 the destination addresses it can send to (not each source-destination pair but
 for each destination).
 The parameters SHOULD decay if the address is not used for a long enough time
-period. <xref target='RFC5681'/> specifies this long enough time as a
-retransmission timeout.</t></li>
+period.
+<xref target='RFC5681'/> specifies this period of time as a retransmission
+timeout.</t></li>
 <li><t>For each of the destination addresses, an endpoint does slow start upon
 the first transmission to that address.</t></li>
 </ul>
@@ -6489,7 +6490,7 @@ clear this flag.</t>
 <dt>last-time:</dt>
 <dd>
 <t>The time to which this destination was last sent.
-This can be to determine if the sending of a HEARTBEAT chunk is needed.</t>
+This can used be to determine if the sending of a HEARTBEAT chunk is needed.</t>
 </dd>
 </dl>
 </section>
