@@ -217,7 +217,11 @@ available for receiving user messages.</t>
 <t>The smallest Path Maximum DATA Chunk Size (PMDCS) of all destination
 addresses.</t>
 </dd>
-<!-- FIXME MT -->
+<dt>Bundling Of Chunks:</dt>
+<dd>
+<t>An optional multiplexing operation, whereby more than one chunk can
+be carried in the same SCTP packet.</t>
+</dd>
 <dt>Bundling Of User Messages:</dt>
 <dd>
 <t>An optional multiplexing operation, whereby more than one user message can
@@ -1030,7 +1034,6 @@ parameters and has to report them according to
 <xref target='sec_parameter_format'/>, it SHOULD bundle the ERROR chunk
 containing the "Unrecognized Parameters" error cause with the chunk sent
 in response (e.g., COOKIE ECHO).
-<!-- FIXME MT -->
 If the receiver of the INIT ACK chunk cannot bundle the COOKIE ECHO chunk with
 the ERROR chunk, the ERROR chunk MAY be sent separately but not before the
 COOKIE ACK chunk has been received.</t>
@@ -1250,10 +1253,7 @@ chunk later.
 However, restrictive implementations MAY send back an ABORT chunk in response
 to the INIT chunk.</t>
 <t>The Chunk Flags field in INIT chunks is reserved, and all bits in it SHOULD
-be set to 0 by the sender and ignored by the receiver.
-<!-- FIXME MT -->
-The sequence of parameters within an INIT chunk can be processed in any
-order.</t>
+be set to 0 by the sender and ignored by the receiver.</t>
 <dl newline="true">
 <dt>Initiate Tag: 32 bits (unsigned integer)</dt>
 <dd>
@@ -1539,7 +1539,8 @@ Notification.</t>
 An INIT ACK chunk MUST NOT contain the Host Name Address parameter.
 The receiver of INIT ACK chunks containing a Host Name Address parameter
 MUST send an ABORT chunk and MAY include an "Unresolvable Address" error cause.</t>
-<!-- FIXME MT -->
+<t>The Chunk Flags field in INIT ACK chunks is reserved, and all bits in it
+SHOULD be set to 0 by the sender and ignored by the receiver.</t>
 <dl newline="true">
 <dt>Initiate Tag: 32 bits (unsigned integer)</dt>
 <dd>
@@ -3125,7 +3126,6 @@ address of the received packet containing the INIT chunk.</t></li>
 respond with an INIT ACK chunk using the same parameters it sent in its
 original INIT chunk (including its Initiate Tag, unchanged), provided
 that no NEW address has been added to the forming association.
-<!-- FIXME MT -->
 If the INIT chunk indicates that a new address has been added to the
 association, then the entire INIT chunk MUST be discarded, and the state of
 the existing association SHOULD NOT be changed.
@@ -4452,7 +4452,6 @@ the destination addresses it can send to (not each source-destination pair but
 for each destination).
 The parameters SHOULD decay if the address is not used for a long enough time
 period.
-<!-- FIXME MT -->
 <xref target='RFC5681'/> specifies this period of time as a retransmission
 timeout.</t></li>
 <li><t>For each of the destination addresses, an endpoint does slow start upon
