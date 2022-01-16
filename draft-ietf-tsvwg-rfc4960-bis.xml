@@ -1305,10 +1305,11 @@ existing association.</t>
 </dd>
 <dt>Initial TSN (I-TSN): 32 bits (unsigned integer)</dt>
 <dd>
-<!-- FIXME MT -->
-<t>Defines the initial TSN that the sender will use.
-The valid range is from 0 to 4294967295.
-This field MAY be set to the value of the Initiate Tag field.</t>
+<t>Defines the initial TSN that the sender of the INIT chunk will use.
+The valid range is from 0 to 4294967295 and the Initial TSN SHOULD be set to a
+random value in that range.
+The methods described in <xref target='RFC4086'/> can be used for the
+Initiate TSN randomization.</t>
 </dd>
 </dl>
 
@@ -1600,10 +1601,11 @@ COOKIE-WAIT, it SHOULD be discarded silently
 </dd>
 <dt>Initial TSN (I-TSN): 32 bits (unsigned integer)</dt>
 <dd>
-<!-- FIXME MT -->
 <t>Defines the initial TSN that the sender of the INIT ACK chunk will use.
-The valid range is from 0 to 4294967295.
-This field MAY be set to the value of the Initiate Tag field.</t>
+The valid range is from 0 to 4294967295 and the Initial TSN SHOULD be set to a
+random value in that range.
+The methods described in <xref target='RFC4086'/> can be used for the
+Initiate TSN randomization.</t>
 </dd>
 </dl>
 <t>Implementation Note:
@@ -1759,7 +1761,6 @@ value of the Cumulative TSN Ack.</t>
 </dd>
 <dt>Cumulative TSN Ack: 32 bits (unsigned integer)</dt>
 <dd>
-<!-- FIXME MT -->
 <t>The largest TSN, such that all TSNs smaller than or equal to it have been
 received and the next one has not been received.
 In the case where no DATA chunk has been received, this value is set to the
@@ -2055,7 +2056,6 @@ This chunk has the following format.</t>
 </dd>
 <dt>Cumulative TSN Ack: 32 bits (unsigned integer)</dt>
 <dd>
-<!-- FIXME MT -->
 <t>The largest TSN, such that all TSNs smaller than or equal to it have been
 received and the next one has not been received.</t>
 </dd>
@@ -3835,9 +3835,8 @@ SACK [TSN Ack=6,block=0] -------------> (cancel T3-rtx timer)
 ]]>
 </artwork>
 </figure>
-<!-- FIXME MT -->
 <t>If an endpoint receives a DATA chunk with no user data (i.e., the
-Length field is set to 16), it MUST send an ABORT chunk with a "No User Data"
+Length field is set to 16), it SHOULD send an ABORT chunk with a "No User Data"
 error cause.</t>
 <t>An endpoint SHOULD NOT send a DATA chunk with no user data part.
 This avoids the need to be able to return a zero-length user
@@ -6779,10 +6778,6 @@ this specification.</t>
 
 <t>SCTP services can use contact port numbers to provide service to unknown
 callers, as in TCP and UDP.
-<!-- FIXME MT -->
-IANA is requested to open the existing "Service Name and Transport
-Protocol Port Number Registry" for SCTP using the following rules, which we
-intend to mesh well with existing port-number registration procedures.
 An IESG-appointed expert reviewer supports IANA in evaluating SCTP port
 allocation requests, according to the procedure defined in
 <xref target='RFC8126'/>.
