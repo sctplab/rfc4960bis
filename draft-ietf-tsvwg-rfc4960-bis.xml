@@ -1309,7 +1309,7 @@ existing association.</t>
 The valid range is from 0 to 4294967295 and the Initial TSN SHOULD be set to a
 random value in that range.
 The methods described in <xref target='RFC4086'/> can be used for the
-Initiate TSN randomization.</t>
+Initial TSN randomization.</t>
 </dd>
 </dl>
 
@@ -1605,7 +1605,7 @@ COOKIE-WAIT, it SHOULD be discarded silently
 The valid range is from 0 to 4294967295 and the Initial TSN SHOULD be set to a
 random value in that range.
 The methods described in <xref target='RFC4086'/> can be used for the
-Initiate TSN randomization.</t>
+Initial TSN randomization.</t>
 </dd>
 </dl>
 <t>Implementation Note:
