@@ -728,6 +728,7 @@ have been incorporated in this document:</t>
        This improves the consistency with the handling in congestion
        avoidance.</t></li>
 <li><t>Improve the description of the State Cookie.</t></li>
+<li><t>Fix the API for retrieving messages in case of association failures.</t></li>
 </ul>
 </section>
 </section>
@@ -1138,9 +1139,10 @@ as well as by the peer application, to identify the type of information being
 carried in this DATA chunk.
 This field MUST be sent even in fragmented DATA chunks (to make sure it is
 available for agents in the middle of the network).
+<!-- FIXME OK? -->
 Note that this field is not touched by an SCTP implementation;
-therefore, its byte order is not necessarily big endian.
-The upper layer is responsible for any byte order conversions to this field.</t>
+The upper layer is responsible for the host to network byte order conversion of
+this field.</t>
 <t>The value 0 indicates that no application identifier is specified by the upper
 layer for this payload data.</t>
 </dd>
@@ -2925,8 +2927,11 @@ indication.</t>
 <t>When sending an INIT ACK chunk as a response to an INIT chunk, the sender
 of INIT ACK chunk creates a State Cookie and sends it in the State Cookie
 parameter of the INIT ACK chunk.
-Inside this State Cookie, the sender SHOULD include a MAC
-(see <xref target='RFC2104'/> for an example), a timestamp on when the
+<!-- FIXME OK? -->
+Inside this State Cookie, the sender MUST include a MAC
+(see <xref target='RFC2104'/> for an example) to provide integrity protection
+on the State Cookie.
+The State Cookie SHOULD also contain a timestamp on when the
 State Cookie is created, and the lifespan of the State Cookie, along with all
 the information necessary for it to establish the association including
 the port numbers and the verification tags.</t>
@@ -2984,7 +2989,8 @@ silently discarded.
 <li><t>Authenticate the State Cookie as one that it previously generated
 by comparing the computed MAC against the one carried in the State Cookie.
 If this comparison fails, the SCTP packet, including the COOKIE ECHO chunk and
-any DATA chunks, SHOULD be silently discarded,</t></li>
+<!-- FIXME OK? -->
+any DATA chunks, MUST be silently discarded,</t></li>
 <li><t>Compare the port numbers and the Verification Tag contained within the
 COOKIE ECHO chunk to the actual port numbers and the Verification Tag within
 the SCTP common header of the received packet.
@@ -6968,6 +6974,7 @@ and
 <t>And finally the people who have provided comments for this document including
 <contact fullname="Gorry Fairhurst"/>,
 <contact fullname="Martin Duke"/>,
+<contact fullname="Benjamin Kaduk"/>,
 <contact fullname="Tero Kivinen"/>,
 <contact fullname="Eliot Lear"/>,
 <contact fullname="Marcelo Ricardo Leitner"/>,
@@ -7080,7 +7087,7 @@ All we can say is, Thank You!</t>
 bit order of the machine.
 The 32-bit CRC (Cyclic Redundancy Check) is calculated as described for CRC32c
 and uses the polynomial code 0x11EDC6F41 (Castagnoli93) or
-x^32+x^28+x^27+x^26+x^25+x^23+x^22+x^20+x^19+x^18+ x^14+x^13+x^11+x^10+x^9+x^8+x^6+x^0.
+x<sup>32</sup>+x<sup>28</sup>+x<sup>27</sup>+x<sup>26</sup>+x<sup>25</sup>+x<sup>23</sup>+x<sup>22</sup>+x<sup>20</sup>+x<sup>19</sup>+x<sup>18</sup>+x<sup>14</sup>+x<sup>13</sup>+x<sup>11</sup>+x<sup>10</sup>+x<sup>9</sup>+x<sup>8</sup>+x<sup>6</sup>+x<sup>0</sup>.
 The CRC is computed using a procedure similar to
 ETHERNET CRC <xref target='ITU.V42.1994'/>, modified to reflect
 transport-level usage.</t>
@@ -7112,32 +7119,32 @@ byte values, using a consistent mapping.</t>
 <li><t>CRC input data are assigned to a byte stream, numbered from 0 to N-1.</t></li>
 <li><t>The transport-level byte stream is mapped to a polynomial value.
 An N-byte PDU with j bytes numbered 0 to N-1 is considered as
-coefficients of a polynomial M(x) of order 8N-1, with bit 0 of
-byte j being coefficient x^(8(N-j)-8), and bit 7 of byte j being
-coefficient x^(8(N-j)-1).</t></li>
+coefficients of a polynomial M(x) of order 8*N-1, with bit 0 of
+byte j being coefficient x<sup>8*(N-j)-8</sup>, and bit 7 of byte j being
+coefficient x<sup>8*(N-j)-1</sup>.</t></li>
 <li><t>The CRC remainder register is initialized with all 1s and the CRC is computed
-with an algorithm that simultaneously multiplies by x^32 and divides by the
+with an algorithm that simultaneously multiplies by x<sup>32</sup> and divides by the
 CRC polynomial.</t></li>
-<li><t>The polynomial is multiplied by x^32 and divided by G(x), the generator
+<li><t>The polynomial is multiplied by x<sup>32</sup> and divided by G(x), the generator
 polynomial, producing a remainder R(x) of degree less than or equal to 31.</t></li>
 <li><t>The coefficients of R(x) are considered a 32-bit sequence.</t></li>
 <li><t>The bit sequence is complemented.
 The result is the CRC polynomial.</t></li>
 <li><t>The CRC polynomial is mapped back into SCTP transport-level bytes.
-The coefficient of x^31 gives the value of bit 7 of SCTP byte 0,
-and the coefficient of x^24 gives the value of bit 0 of byte 0.
-The coefficient of x^7 gives bit 7 of byte 3, and the coefficient
-of x^0 gives bit 0 of byte 3.
+The coefficient of x<sup>31</sup> gives the value of bit 7 of SCTP byte 0,
+and the coefficient of x<sup>24</sup> gives the value of bit 0 of byte 0.
+The coefficient of x<sup>7</sup> gives bit 7 of byte 3, and the coefficient
+of x<sup>0</sup> gives bit 0 of byte 3.
 The resulting 4-byte transport-level sequence is the 32-bit SCTP checksum
 value.</t></li>
 </ul>
 <t>Implementation Note: Standards documents, textbooks, and vendor
 literature on CRCs often follow an alternative formulation, in which the
 register used to hold the remainder of the long-division algorithm is
-initialized to zero rather than all-1s, and instead the first 32 bits of the
+initialized to zero rather than all ones, and instead the first 32 bits of the
 message are complemented.
 The long-division algorithm used in our formulation is specified such that the
-initial multiplication by 2^32 and the long-division are combined into one
+initial multiplication by 2<sup>32</sup> and the long-division are combined into one
 simultaneous operation.
 For such algorithms, and for messages longer than 64 bits, the two
 specifications are precisely equivalent.
@@ -7342,7 +7349,7 @@ generate_crc32c(unsigned char *buffer, unsigned int length)
   unsigned int i;
   uint32_t crc32 = 0xffffffffUL;
   uint32_t result;
-  uint8_t byte0, byte1, byte2, byte3;
+  uint32_t byte0, byte1, byte2, byte3;
 
   for (i = 0; i < length; i++) {
     CRC32C(crc32, buffer[i]);
