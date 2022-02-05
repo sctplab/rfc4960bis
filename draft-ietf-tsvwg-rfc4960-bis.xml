@@ -1035,7 +1035,6 @@ parameters and has to report them according to
 <xref target='sec_parameter_format'/>, it SHOULD bundle the ERROR chunk
 containing the "Unrecognized Parameters" error cause with the chunk sent
 in response (e.g., COOKIE ECHO).
-<!-- FIXME MT -->
 If the receiver of an INIT ACK chunk cannot bundle the COOKIE ECHO chunk with
 the ERROR chunk, the ERROR chunk MAY be sent separately but not before the
 COOKIE ACK chunk has been received.</t>
@@ -1139,7 +1138,6 @@ as well as by the peer application, to identify the type of information being
 carried in this DATA chunk.
 This field MUST be sent even in fragmented DATA chunks (to make sure it is
 available for agents in the middle of the network).
-<!-- FIXME OK? -->
 Note that this field is not touched by an SCTP implementation;
 The upper layer is responsible for the host to network byte order conversion of
 this field.</t>
@@ -2927,7 +2925,6 @@ indication.</t>
 <t>When sending an INIT ACK chunk as a response to an INIT chunk, the sender
 of INIT ACK chunk creates a State Cookie and sends it in the State Cookie
 parameter of the INIT ACK chunk.
-<!-- FIXME OK? -->
 Inside this State Cookie, the sender MUST include a MAC
 (see <xref target='RFC2104'/> for an example) to provide integrity protection
 on the State Cookie.
@@ -2989,7 +2986,6 @@ silently discarded.
 <li><t>Authenticate the State Cookie as one that it previously generated
 by comparing the computed MAC against the one carried in the State Cookie.
 If this comparison fails, the SCTP packet, including the COOKIE ECHO chunk and
-<!-- FIXME OK? -->
 any DATA chunks, MUST be silently discarded,</t></li>
 <li><t>Compare the port numbers and the Verification Tag contained within the
 COOKIE ECHO chunk to the actual port numbers and the Verification Tag within
@@ -5489,7 +5485,9 @@ this flag is present.</t></dd>
 <dt>payload protocol-id:</dt>
 <dd><t>a 32-bit unsigned integer that is to be passed to the peer indicating the type
 of payload protocol data being transmitted.
-This value is passed as opaque data by SCTP.</t></dd>
+Note that the upper layer is responsible for the host to network byte order
+conversion of this field, which is passed by SCTP as 4 bytes of opaque
+data.</t></dd>
 <dt>sack-immediately flag:</dt>
 <dd><t>set the I bit on the last DATA chunk used for the user message to be
 transmitted.</t></dd>
@@ -5581,7 +5579,9 @@ received for this stream sequence number.</t></dd>
 <dt>payload protocol-id:</dt>
 <dd><t>a 32-bit unsigned integer that is received from the peer indicating the type
 of payload protocol of the received data.
-This value is passed as opaque data by SCTP.</t></dd>
+Note that the upper layer is responsible for the host to network byte order
+conversion of this field, which is passed by SCTP as 4 bytes of opaque
+data.</t></dd>
 </dl>
 </dd>
 </dl>
@@ -6261,7 +6261,7 @@ response chunk and MUST discard all other responses.
 Note that this rule does not apply to a SACK chunk, since a SACK chunk is,
 in itself, a response to DATA chunks and a SACK chunk does not require a
 response of more DATA chunks.</t>
-<t>An SCTP implementation SHOULD abort the association if it receives a SACK
+<t>An SCTP implementation MUST abort the association if it receives a SACK
 chunk acknowledging a TSN that has not been sent.</t>
 <t>An SCTP implementation that receives an INIT chunk that would require a large
 packet in response, due to the inclusion of multiple "Unrecognized Parameter"
