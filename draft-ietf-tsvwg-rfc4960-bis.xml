@@ -7,14 +7,14 @@
      submissionType="IETF"
      consensus="true"
      category="std"
-     docName="draft-ietf-tsvwg-rfc4960-bis-19"
+     docName="draft-ietf-tsvwg-rfc4960-bis-19-updated"
      obsoletes="4460,4960,6096,7053,8540"
      version="3"
      tocDepth="4">
 
 <front>
 <title>Stream Control Transmission Protocol</title>
-<seriesInfo name="Internet-Draft" value="draft-ietf-tsvwg-rfc4960-bis-19"/>
+<seriesInfo name="Internet-Draft" value="draft-ietf-tsvwg-rfc4960-bis-19-updated"/>
 
 <!-- *************** RANDALL STEWART *************** -->
 <author initials="R. R." surname="Stewart" fullname="Randall R. Stewart">
@@ -6594,6 +6594,12 @@ this document for the following DATA chunk flags:</t>
 <li><t>B bit</t></li>
 <li><t>U bit</t></li>
 </ul>
+<t>Replace the reference to <xref target='RFC7053'/> by a reference to
+this document for the following DATA chunk flag:</t>
+<ul>
+<li><t>I bit</t></li>
+</ul>
+
 <t>Replace each reference to <xref target='RFC4960'/> by a reference to
 this document for the following ABORT chunk flags:</t>
 <ul>
@@ -6606,7 +6612,7 @@ this document for the following SHUTDOWN COMPLETE chunk flags:</t>
 </ul>
 </li>
 <li><t>In the Error Cause Codes Registry replace in the Reference section
-the reference to <xref target='RFC6096'/> by a reference to this document.</t>
+the reference to <xref target='RFC4960'/> by a reference to this document.</t>
 <t>Replace each reference to <xref target='RFC4960'/> by a reference to
 this document for the following cause codes:</t>
 <ul>
@@ -6630,7 +6636,7 @@ this document for the following cause codes:</t>
 </ul>
 </li>
 <li><t>In the SCTP Payload Protocol Identifiers Registry replace in the
-Reference section the reference to <xref target='RFC6096'/> by a reference
+Reference section the reference to <xref target='RFC4960'/> by a reference
 to this document.</t>
 <t>Replace each reference to <xref target='RFC4960'/> by a reference to
 this document for the following SCTP payload protocol identifiers:</t>
