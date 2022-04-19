@@ -798,10 +798,7 @@ The value of 255 is reserved for future use as an extension field.</t>
 <table>
 <name>Chunk Types</name>
 <thead>
-<tr>
-<th>ID Value</th>
-<th>Chunk Type</th>
-</tr>
+<tr><th>ID Value</th>   <th>Chunk Type</th></tr>
 </thead>
 <tbody>
 <tr><td>0         </td> <td>Payload Data (DATA)                                      </td></tr>
@@ -1127,7 +1124,7 @@ user message, as summarized in the following table:</t>
 <table anchor='table_fragment_description_flags'>
 <name>Fragment Description Flags</name>
 <thead>
-<tr><td align='center'>B</td><td align='center'>E</td><td align='center'>Description</td></tr>
+<tr><th align='center'>B</th><th align='center'>E</th><th align='center'>Description</th></tr>
 </thead>
 <tbody>
 <tr><td align='center'>1</td><td align='center'>0</td><td align='center'>First piece of a fragmented user message</td></tr>
@@ -1175,7 +1172,7 @@ INIT chunk.</t>
 <table>
 <name>Fixed-Length Parameters of INIT Chunks</name>
 <thead>
-<tr><td>Fixed-Length Parameter</td>           <td>Status</td></tr>
+<tr><th>Fixed-Length Parameter</th>           <th>Status</th></tr>
 </thead>
 <tbody>
 <tr><td>Initiate Tag</td>                     <td>Mandatory</td></tr>
@@ -1188,7 +1185,7 @@ INIT chunk.</t>
 <table>
 <name>Variable-Length Parameters of INIT Chunks</name>
 <thead>
-<tr><td>Variable-Length Parameter</td>        <td>Status</td>  <td>Type Value</td></tr>
+<tr><th>Variable-Length Parameter</th>        <th>Status</th>  <th>Type Value</th></tr>
 </thead>
 <tbody>
 <tr><td>IPv4 Address (Note 1)</td>            <td>Optional</td>  <td>5</td></tr>
@@ -1466,7 +1463,7 @@ The following parameters are specified for the INIT ACK chunk:</t>
 <table>
 <name>Fixed-Length Parameters of INIT ACK Chunks</name>
 <thead>
-<tr><td>Fixed-Length Parameter</td>           <td>Status</td></tr>
+<tr><th>Fixed-Length Parameter</th>           <th>Status</th></tr>
 </thead>
 <tbody>
 <tr><td>Initiate Tag</td>                     <td>Mandatory</td></tr>
@@ -1481,7 +1478,7 @@ Parameter. </t>
 <table>
 <name>Variable-Length Parameters of INIT ACK Chunks</name>
 <thead>
-<tr><td>Variable-Length Parameter</td>        <td>Status</td>  <td>Type Value</td></tr>
+<tr><th>Variable-Length Parameter</th>        <th>Status</th>    <th>Type Value</th></tr>
 </thead>
 <tbody>
 <tr><td>State Cookie</td>                     <td>Mandatory</td> <td>7</td></tr>
@@ -1832,7 +1829,7 @@ in <xref target='sec_parameter_format'/>, that is:</t>
 <table>
 <name>Variable-Length Parameters of HEARTBEAT Chunks</name>
 <thead>
-<tr><td>Variable Parameters</td> <td>Status</td>    <td>Type Value</td></tr>
+<tr><th>Variable Parameters</th> <th>Status</th>    <th>Type Value</th></tr>
 </thead>
 <tbody>
 <tr><td>Heartbeat Info</td>      <td>Mandatory</td> <td>1</td></tr>
@@ -1897,7 +1894,7 @@ Heartbeat Acknowledgement is responding.</t>
 <table>
 <name>Variable-Length Parameters of HEARTBEAT ACK Chunks</name>
 <thead>
-<tr><td>Variable Parameters</td><td>Status</td>   <td>Type Value</td></tr>
+<tr><th>Variable Parameters</th><th>Status</th>   <th>Type Value</th></tr>
 </thead>
 <tbody>
 <tr><td>Heartbeat Info</td>     <td>Mandatory</td><td>1</td></tr>
@@ -2059,7 +2056,7 @@ format described in <xref target='sec_parameter_format'/>, that is:</t>
 <table>
 <name>Cause Code</name>
 <thead>
-<tr><td>Value</td><td>Cause Code</td></tr>
+<tr><th>Value</th><th>Cause Code</th></tr>
 </thead>
 <tbody>
 <tr><td> 1</td>   <td>Invalid Stream Identifier</td></tr>
@@ -3127,7 +3124,7 @@ correct action to be taken.</t></li>
 <table anchor='table_handling_of_cookie_echo'>
 <name>Handling of a COOKIE ECHO Chunk When a TCB Exists</name>
 <thead>
-<tr><td align='center'>Local Tag</td><td align='center'>Peer's Tag</td><td align='center'>Local-Tie-Tag</td><td align='center'>Peer's-Tie-Tag</td><td align='center'>Action</td></tr>
+<tr><th align='center'>Local Tag</th><th align='center'>Peer's Tag</th><th align='center'>Local-Tie-Tag</th><th align='center'>Peer's-Tie-Tag</th><th align='center'>Action</th></tr>
 </thead>
 <tbody>
 <tr><td align='center'>X</td><td align='center'>X</td><td align='center'>M</td><td align='center'>M</td><td align='center'>(A)</td></tr>
