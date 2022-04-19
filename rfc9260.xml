@@ -4214,7 +4214,7 @@ behave in the same way an implementation that does not support fragmentation,
 i.e., it  rejects calls that would result in sending SCTP packets that exceed
 the current PMTU.</t>
 <t>Implementation Note: In this error case, the SEND primitive discussed
-in <xref target='sec_api'/> would need to return an error to the
+in <xref target='sec_send'/> would need to return an error to the
 upper layer.</t>
 
 <t>If its peer is multi-homed, the endpoint <bcp14>SHOULD</bcp14> choose a DATA chunk size
