@@ -2646,13 +2646,17 @@ Or, if the received State Cookie is expired (see
 <xref target='sec_state_coockie_authentication'/>), the receiver <bcp14>MUST</bcp14> send back
 an ERROR chunk.
 In either case, the receiver stays in the CLOSED state.</t></li>
-<li><t>If the T1-init timer expires, the endpoint <bcp14>MUST</bcp14> retransmit the INIT chunk
-and restart the T1-init timer without changing state.
+<!-- [MT] I clarified the following sentence -->
+<li><t>If the T1-init timer expires, the endpoint <bcp14>MUST</bcp14>
+retransmit the INIT chunk and restart the T1-init timer.
+The endpoint stays in the COOKIE-WAIT state.
 This <bcp14>MUST</bcp14> be repeated up to 'Max.Init.Retransmits' times.
 After that, the endpoint <bcp14>MUST</bcp14> abort the initialization process and report the
 error to the SCTP user.</t></li>
-<li><t>If the T1-cookie timer expires, the endpoint <bcp14>MUST</bcp14> retransmit COOKIE ECHO
-chunk and restart the T1-cookie timer without changing state.
+<!-- [MT] I clarified the following sentence -->
+<li><t>If the T1-cookie timer expires, the endpoint <bcp14>MUST</bcp14>
+retransmit COOKIE ECHO chunk and restart the T1-cookie timer.
+The endpoint stays in the COOKIE-ECHOED state.
 This <bcp14>MUST</bcp14> be repeated up to 'Max.Init.Retransmits' times.
 After that, the endpoint <bcp14>MUST</bcp14> abort the initialization process and report the
 error to the SCTP user.</t></li>
