@@ -67,6 +67,7 @@
 
 <!-- [rfced] Please insert any keywords (beyond those that appear in
 the title) for use on https://www.rfc-editor.org/search. -->
+<!-- [MT] No additional keywords required. -->
 
 <keyword>example</keyword>
 
@@ -324,6 +325,9 @@ unordered delivery service.</t>
 
 <!-- [rfced] Please let us know if any of the notes in this document should be marked as <aside>.  <aside> is described as being "for content that is semantically less important or tangential to the content that surrounds it" (see https://authors.ietf.org/rfcxml-vocabulary#aside).
 -->
+<!-- [MT] The tangential or less important property does not really apply
+to the text we used in Notes or Implementation Notes. So I think we should
+not use <aside></aside> in this document. -->
 
 <t>Note: The relationship between stream numbers in opposite directions
 is strictly a matter of how the applications use them. It is the
@@ -351,7 +355,7 @@ One TSN is attached to each chunk containing user data to permit the
 receiving SCTP endpoint to acknowledge its receipt and detect duplicate
 deliveries.</dd>
 <dt>Transport Address:</dt>
-<dd>A transport address is traditionally defined by a network-layer address,
+<dd>A transport address is typically defined by a network-layer address,
 a transport-layer protocol, and a transport-layer port number.
 In the case of SCTP running over IP, a transport address is defined by
 the combination of an IP address and an SCTP port number (where SCTP is the
@@ -722,14 +726,14 @@ byte order, unless otherwise stated.</t>
 <dt>Source Port Number: 16 bits (unsigned integer)</dt>
 <dd>This is the SCTP sender's port number.
 It can be used by the receiver in combination with the source IP address,
-the SCTP destination port, and possibly the destination IP address to
+the SCTP Destination Port Number, and possibly the destination IP address to
 identify the association to which this packet belongs.
-The source port number 0 <bcp14>MUST NOT</bcp14> be used.</dd>
+The Source Port Number 0 <bcp14>MUST NOT</bcp14> be used.</dd>
 <dt>Destination Port Number: 16 bits (unsigned integer)</dt>
 <dd>This is the SCTP port number to which this packet is destined.
 The receiving host will use this port number to de-multiplex the
 SCTP packet to the correct receiving endpoint/application.
-The destination port number 0 <bcp14>MUST NOT</bcp14> be used.</dd>
+The Destination Port Number 0 <bcp14>MUST NOT</bcp14> be used.</dd>
 <dt>Verification Tag: 32 bits (unsigned integer)</dt>
 <dd>
 <t>The receiver of an SCTP packet uses the Verification Tag to validate
@@ -741,7 +745,7 @@ initialization, with the following exceptions:</t>
 <li>A packet containing an INIT chunk <bcp14>MUST</bcp14> have a zero Verification Tag.</li>
 <li>A packet containing a SHUTDOWN COMPLETE chunk with the T bit set <bcp14>MUST</bcp14> have
 the Verification Tag copied from the packet with the SHUTDOWN ACK chunk.</li>
-<li>A packet containing an ABORT chunk <bcp14>MAY</bcp14> have the verification tag copied
+<li>A packet containing an ABORT chunk <bcp14>MAY</bcp14> have the Verification Tag copied
 from the packet that caused the ABORT chunk to be sent.
 For details, see Sections <xref target='sec_handle_out_of_the_blue_packets' format='counter'/> and
 <xref target='sec_verification_tag' format='counter'/>.</li>
@@ -772,6 +776,7 @@ Perhaps:
    Type field, a Chunk Flags field, a Chunk Length field, and a
    Chunk Value field.
 -->
+<!-- [MT] I like the your suggestion, let us take it. -->
 
 <t>The figure below illustrates the field format for the chunks to be
 transmitted in the SCTP packet.
@@ -825,6 +830,20 @@ From table 1:
 | 192 to 254 | available
 
 Note that we have changed "available" to "Unassigned" to match what appears in the IANA registry.  Please let us know any concerns. 
+-->
+<!-- [MT]
+* Regarding your first point:
+  This document (which is a bis document) deals only with assignments done in this document.
+  Maybe updating the sentence right before the table make this clear:
+
+  OLD:
+  The values of Chunk Types are defined as follows:
+
+  NEW:
+  The values of Chunk Types defined in this document are as follows:
+
+* Regarding your second point:
+  Thanks for making it consistent
 -->
 
 <tr><td>15 to 62  </td> <td>Unassigned                                                </td></tr>
@@ -925,8 +944,15 @@ Original:
       Values other than those defined in specific SCTP chunk
       descriptions are reserved for use by IETF.
 -->
+<!-- [MT] Good catch! I would suggest to add to the Chunk Parameter Types table
+a line:
+ID Value      Chunk Parameter Type                         Reference
+65535         Reserved for IETF-defined Chunk Extensions   RFC-ietf-tsvwg-rfc4960-bis-19
 
-
+This is similar to the case how we handle the largest chunks type.
+I this is OK for you and IANA, we need to add a sentence to the IANA section
+that this line was added. I think this was just overlooked in the past.
+-->
 
 <t>The value of 65535 is reserved for IETF-defined extensions.
 Values other than those defined in specific SCTP chunk descriptions are
@@ -999,7 +1025,21 @@ and <bcp14>MUST NOT</bcp14> be reused with a different meaning in any other chun
 
 Note that this occurs in various places throughout.  For example, Table 8 and Section 3.3.1.2 refer to "Unrecognized Parameter".  Please review and let us know if any updates are needed. 
 -->
+<!-- [MT]
+As described in https://datatracker.ietf.org/doc/html/rfc4460#section-2.32
+only one parameter is reported in an unrecognized parameters parameter.
+This was changed from RFC 2960 to RFC 4960. The name in the document was
+changed, but not the name in the IANA registry. So, if possible, we should
+change the name in the IANA registry for the chunk parameter.
 
+Please note that there is a similar "Unrecognized Parameters" error cause,
+which can include multiple TLVs, so we should keep the plural there.
+Therefore, the cited paragraph needs one change:
+OLD
+   resources), an "Unrecognized Parameter" error cause would not be
+NEW
+   resources), an "Unrecognized Parameters" error cause would not be
+-->
 
 <t>If the receiver of an INIT chunk detects unrecognized parameters and
 has to report them according to <xref target='sec_parameter_format'/>,
@@ -1270,7 +1310,7 @@ the Initiate Tag as the Verification Tag, and <bcp14>MUST NOT</bcp14> change the
 existing association.</t>
 </dd>
 <dt>Initial TSN (I-TSN): 32 bits (unsigned integer)</dt>
-<dd>Defines the initial TSN that the sender of the INIT chunk will use.
+<dd>Defines the TSN that the sender of the INIT chunk will use initially.
 The valid range is from 0 to 4294967295 and the Initial TSN <bcp14>SHOULD</bcp14> be set to a
 random value in that range.
 The methods described in <xref target="RFC4086"/> can be used for the
@@ -1515,7 +1555,7 @@ the Initiate Tag value.</t>
 <t>If an endpoint in the COOKIE-WAIT state receives an INIT ACK chunk with the
 Initiate Tag set to 0, it <bcp14>MUST</bcp14> destroy the TCB and <bcp14>SHOULD</bcp14> send an ABORT chunk
 with the T bit set.
-If such an INIT-ACK chunk is received in any state other than CLOSED or
+If such an INIT ACK chunk is received in any state other than CLOSED or
 COOKIE-WAIT, it <bcp14>SHOULD</bcp14> be discarded silently
 (see <xref target='sec_unexpected_init_ack'/>).</t>
 </dd>
@@ -1540,7 +1580,7 @@ The value of 0 <bcp14>MUST NOT</bcp14> be used, and the value <bcp14>MUST NOT</b
 MIS value sent in the INIT chunk.</t>
 <t>If an endpoint in the COOKIE-WAIT state receives an INIT ACK chunk with the
 OS value set to 0, it <bcp14>MUST</bcp14> destroy the TCB and <bcp14>SHOULD</bcp14> send an ABORT chunk.
-If such an INIT-ACK chunk is received in any state other than CLOSED or
+If such an INIT ACK chunk is received in any state other than CLOSED or
 COOKIE-WAIT, it <bcp14>SHOULD</bcp14> be discarded silently
 (see <xref target='sec_unexpected_init_ack'/>).</t>
 </dd>
@@ -1555,12 +1595,12 @@ endpoints will use the min(requested, offered).
 See <xref target='sec_handle_stream_parameters'/> for details.</t>
 <t>If an endpoint in the COOKIE-WAIT state receives an INIT ACK chunk with the
 MIS value set to 0, it <bcp14>MUST</bcp14> destroy the TCB and <bcp14>SHOULD</bcp14> send an ABORT chunk.
-If such an INIT-ACK chunk is received in any state other than CLOSED or
+If such an INIT ACK chunk is received in any state other than CLOSED or
 COOKIE-WAIT, it <bcp14>SHOULD</bcp14> be discarded silently
 (see <xref target='sec_unexpected_init_ack'/>).</t>
 </dd>
 <dt>Initial TSN (I-TSN): 32 bits (unsigned integer)</dt>
-<dd>Defines the initial TSN that the sender of the INIT ACK chunk will use.
+<dd>Defines the TSN that the sender of the INIT ACK chunk will use initially.
 The valid range is from 0 to 4294967295 and the Initial TSN <bcp14>SHOULD</bcp14> be set to a
 random value in that range.
 The methods described in <xref target="RFC4086"/> can be used for the
@@ -1580,7 +1620,7 @@ The receiver of the INIT ACK chunk <bcp14>MAY</bcp14> bundle an ERROR chunk with
 COOKIE ECHO chunk.
 However, restrictive implementations <bcp14>MAY</bcp14> send back an ABORT chunk in
 response to the INIT ACK chunk.</t>
-<t>In combination with the Source Port carried in the SCTP common header,
+<t>In combination with the Source Port Number carried in the SCTP common header,
 each IP Address parameter in the INIT ACK chunk indicates to the receiver of
 the INIT ACK chunk a valid transport address supported by the sender of the
 INIT ACK chunk for the life time of the association being initiated.</t>
@@ -1909,7 +1949,7 @@ Heartbeat Acknowledgement is responding.</t>
 
 <t>The ABORT chunk is sent to the peer of an association to close the
 association.
-The ABORT chunk <bcp14>MAY</bcp14> contain Cause Parameters to inform the receiver about the
+The ABORT chunk <bcp14>MAY</bcp14> contain error causes to inform the receiver about the
 reason of the abort.
 DATA chunks <bcp14>MUST NOT</bcp14> be bundled with ABORT chunks.
 Control chunks (except for INIT, INIT ACK, and SHUTDOWN COMPLETE) <bcp14>MAY</bcp14> be
@@ -2341,6 +2381,7 @@ Section 3.1.0 of RFC 4960 and this document:
 Error Cause Codes registry <https://www.iana.org/assignments/sctp-parameters>:
    12   User Initiated Abort
 -->
+<!-- [MT] Getting this consistent is a very good point. Please go ahead! -->
 
 <section anchor='sec_user_initiated_abort_cause'>
 <name>User-Initiated Abort (12)</name>
@@ -2689,12 +2730,12 @@ A COOKIE ACK chunk <bcp14>MAY</bcp14> be bundled with any pending DATA chunks
 (and/or SACK chunks), but the COOKIE ACK chunk <bcp14>MUST</bcp14> be the first chunk in
 the packet.</t>
 <t>Implementation Note: An implementation can choose to send the
-Communication Up notification to the SCTP user upon reception of a
+COMMUNICATION UP notification to the SCTP user upon reception of a
 valid COOKIE ECHO chunk.</t></li>
 <li><t>Upon reception of the COOKIE ACK chunk, endpoint "A" moves from the
 COOKIE-ECHOED state to the ESTABLISHED state, stopping the T1-cookie timer.
 It can also notify its ULP about the successful establishment of the
-association with a Communication Up notification
+association with a COMMUNICATION UP notification
 (see <xref target='sec_api'/>).</t></li>
 </ol>
 <t>An INIT or INIT ACK chunk <bcp14>MUST NOT</bcp14> be bundled with any other chunk.
@@ -2712,8 +2753,7 @@ not to establish the new association due to missing mandatory parameters in the
 received INIT or INIT ACK chunk, invalid parameter values, or lack of local
 resources, it <bcp14>SHOULD</bcp14> respond with an ABORT chunk.
 It <bcp14>SHOULD</bcp14> also specify the cause of abort, such as the type of the missing
-mandatory parameters, etc., by including the error cause parameters with the
-ABORT chunk.
+mandatory parameters, etc., by including an error cause in the ABORT chunk.
 The Verification Tag field in the common header of the outbound SCTP packet
 containing the ABORT chunk <bcp14>MUST</bcp14> be set to the Initiate Tag value of the
 received INIT or INIT ACK chunk this ABORT chunk is responding to.</t>
@@ -2759,7 +2799,7 @@ of its peer.</t>
 <li><t>If there are no address parameters present in the received INIT or
 INIT ACK chunk, the endpoint <bcp14>MUST</bcp14> take the source IP address from
 which the chunk arrives and record it, in combination with the
-SCTP source port number, as the only destination transport address
+SCTP Source Port Number, as the only destination transport address
 for this peer.</t></li>
 <li><t>If there is a Host Name Address parameter present in the received INIT or
 INIT ACK chunk, the endpoint <bcp14>MUST</bcp14> immediately send an ABORT chunk and <bcp14>MAY</bcp14>
@@ -2770,7 +2810,7 @@ packet was received.</t></li>
 INIT ACK chunk, the receiver <bcp14>MUST</bcp14> derive and record all the transport addresses
 from the received chunk AND the source IP address that sent the INIT or
 INIT ACK chunk.
-The transport addresses are derived by the combination of SCTP source port
+The transport addresses are derived by the combination of SCTP Source Port Number
 (from the common header) and the IP Address parameter(s) carried in the INIT
 or INIT ACK chunk and the source IP address of the IP datagram.
 The receiver <bcp14>SHOULD</bcp14> use only these transport addresses as destination
@@ -2824,7 +2864,7 @@ on the State Cookie.
 The State Cookie <bcp14>SHOULD</bcp14> also contain a timestamp on when the
 State Cookie is created and the lifespan of the State Cookie, along with all
 the information necessary for it to establish the association, including
-the port numbers and the verification tags.</t>
+the port numbers and the Verification Tags.</t>
 <t>The method used to generate the MAC is strictly a private matter for the
 receiver of the INIT chunk.
 The use of a MAC is mandatory to prevent denial-of-service attacks.
@@ -3019,12 +3059,12 @@ address of the received packet containing the INIT chunk.</t></li>
 <t>Upon receipt of an INIT chunk in the COOKIE-ECHOED state, an endpoint <bcp14>MUST</bcp14>
 respond with an INIT ACK chunk using the same parameters it sent in its
 original INIT chunk (including its Initiate Tag, unchanged), provided
-that no NEW address has been added to the forming association.
+that no new address has been added to the forming association.
 If the INIT chunk indicates that a new address has been added to the
 association, then the entire INIT chunk <bcp14>MUST</bcp14> be discarded, and the state of
 the existing association <bcp14>SHOULD NOT</bcp14> be changed.
-An ABORT chunk <bcp14>SHOULD</bcp14> be sent in a response that <bcp14>MAY</bcp14> include the error
-'Restart of an association with new addresses'.
+An ABORT chunk <bcp14>SHOULD</bcp14> be sent in a response that <bcp14>MAY</bcp14> include the
+"Restart of an Association with New Addresses" error cause.
 The error <bcp14>SHOULD</bcp14> list the addresses that were added to the restarting
 association.</t>
 <t>When responding in either state (COOKIE-WAIT or COOKIE-ECHOED) with
@@ -3053,8 +3093,8 @@ adds new addresses to the association.
 If new addresses are added to the association, the endpoint <bcp14>MUST</bcp14> respond with
 an ABORT chunk, copying the 'Initiate Tag' of the unexpected INIT chunk into the
 'Verification Tag' of the outbound packet carrying the ABORT chunk.
-In the ABORT chunk, the error cause <bcp14>MAY</bcp14> be set to 'restart of an
-association with new addresses'.
+In the ABORT chunk, the error cause <bcp14>MAY</bcp14> be set to "Restart of an
+Association with New Addresses".
 The error <bcp14>SHOULD</bcp14> list the addresses that were added to the restarting
 association.
 If no new addresses are added, when responding to the INIT chunk in the outbound
@@ -3153,8 +3193,8 @@ COOKIE ECHO chunk with the following exceptions:</t>
 <ul>
 <li><t>Any SCTP DATA chunks <bcp14>MAY</bcp14> be retained (this is an implementation-specific
 option).</t></li>
-<li><t>A notification of RESTART <bcp14>SHOULD</bcp14> be sent to the ULP instead of a
-"COMMUNICATION LOST" notification.</t></li>
+<li><t>A RESTART notification <bcp14>SHOULD</bcp14> be sent to the ULP instead of a
+COMMUNICATION LOST notification.</t></li>
 </ul>
 <t>All the congestion control parameters (e.g., cwnd, ssthresh)
 related to this peer <bcp14>MUST</bcp14> be reset to their initial values
@@ -3228,7 +3268,7 @@ COOKIE ECHO [Veri=Tag_Z',
 (Cancel T1-init timer, <------/
  Enter ESTABLISHED state)
 {app sends 1st user data; strm 0}
-DATA [TSN=initial TSN_A
+DATA [TSN=Initial TSN_A
     Strm=0,Seq=0 & user data]--\
 (Start T3-rtx timer)            \
                                  \->
@@ -3256,6 +3296,16 @@ Original (and throughout):
 
    Receipt of an ERROR chunk with a "Stale Cookie" error cause indicates
    one of a number of possible events:
+-->
+<!-- [MT] I agree, it makes sense to change the "Stale Cookie Error" error
+cause to "Stale Cookie" Error cause.
+That would require
+- IANA to change the name
+- Change the section title of 3.3.10.3
+- Change the entry in Table 11
+- Change the name in Section 15
+
+Using "Handle Stale Cookie Error" as the title of Section 5.2.6 is fine.
 -->
 
 <t>Receipt of an ERROR chunk with a "Stale Cookie" error cause indicates
@@ -3298,8 +3348,7 @@ State Cookie life times making the endpoint more subject to a replay attack.</t>
 
 <t>Initiate Tag values <bcp14>SHOULD</bcp14> be selected from the range of 1 to 2<sup>32</sup> - 1.
 It is very important that the Initiate Tag value be randomized to
-help protect against "man in the middle" and "sequence number"
-attacks.
+help protect against off-path attacks.
 The methods described in <xref target="RFC4086"/> can be used for the
 Initiate Tag randomization.
 Careful selection of Initiate Tags is also necessary to prevent old duplicate
@@ -3519,10 +3568,16 @@ In addition, review each artwork element. Specifically,
 should any artwork element be tagged as sourcecode or another
 element?
 -->
+<!-- [MT] I have set the "type" attribute for each sourcecode element. While
+doing that, I also made the pseudocode more consitent by never terminating a line
+with a semicolon.
 
-<sourcecode type="">
+I also reviewed all artwork elements. None of them should be tagged as sourcecode.
+-->
+
+<sourcecode type="pseudocode">
 if ((flightsize + Max.Burst * PMDCS) &lt; cwnd)
-    cwnd = flightsize + Max.Burst * PMDCS;
+    cwnd = flightsize + Max.Burst * PMDCS
 </sourcecode>
 <t>Or, it <bcp14>MAY</bcp14> be applied by strictly limiting the number of packets emitted by
 the output routine.
@@ -3829,21 +3884,21 @@ RTTVAR (round-trip time variation).</t>
 destination transport address, set RTO to the protocol parameter
 'RTO.Initial'.</t></li>
 <li><t>When the first RTT measurement R is made, perform:</t>
-<sourcecode type=""><![CDATA[
-SRTT = R;
-RTTVAR = R/2;
-RTO = SRTT + 4 * RTTVAR;
+<sourcecode type="pseudocode"><![CDATA[
+SRTT = R
+RTTVAR = R/2
+RTO = SRTT + 4 * RTTVAR
 ]]></sourcecode></li>
 <li><t>When a new RTT measurement R' is made, perform:</t>
-<sourcecode type=""><![CDATA[
-RTTVAR = (1 - RTO.Beta) * RTTVAR + RTO.Beta * |SRTT - R'|;
-SRTT = (1 - RTO.Alpha) * SRTT + RTO.Alpha * R';
+<sourcecode type="pseudocode"><![CDATA[
+RTTVAR = (1 - RTO.Beta) * RTTVAR + RTO.Beta * |SRTT - R'|
+SRTT = (1 - RTO.Alpha) * SRTT + RTO.Alpha * R'
 ]]></sourcecode>
 <t>Note: The value of SRTT used in the update to RTTVAR is its
 value before updating SRTT itself using the second assignment.</t>
 <t>After the computation, update: </t>
-<sourcecode type=""><![CDATA[
-RTO = SRTT + 4 * RTTVAR;
+<sourcecode type="pseudocode"><![CDATA[
+RTO = SRTT + 4 * RTTVAR
 ]]></sourcecode></li>
 <li><t>When data is in flight and when allowed by rule C5 below, a new
 RTT measurement <bcp14>MUST</bcp14> be made each round trip.
@@ -3869,7 +3924,7 @@ rounded up to 'RTO.Min' seconds.
 The reason for this rule is that RTOs that do not have a high minimum value are
 susceptible to unnecessary timeouts <xref target='ALLMAN99'/>.</t></li>
 <li><t>A maximum value <bcp14>MAY</bcp14> be placed on RTO, provided it is at least
-'RTO.max' seconds.</t></li>
+'RTO.Max' seconds.</t></li>
 </ol>
 <t>There is no requirement for the clock granularity G used for computing
 RTT measurements and the different state variables, other than:</t>
@@ -3942,7 +3997,7 @@ with rules defined in <xref target='sec_congestion_control_sub'/> and set
 cwnd = PMDCS.</t></li>
 <li><t>For the destination address for which the timer expires, set
 RTO = RTO * 2 ("back off the timer").
-The maximum value discussed in rule C7 above ('RTO.max') <bcp14>MAY</bcp14> be used to provide
+The maximum value discussed in rule C7 above ('RTO.Max') <bcp14>MAY</bcp14> be used to provide
 an upper bound to this doubling operation.</t></li>
 <li><t>Determine how many of the earliest (i.e., lowest TSN) outstanding
 DATA chunks for the address for which the T3-rtx has expired will fit into a
@@ -4259,7 +4314,8 @@ Current:
        in the series to 01, and the B/E bits of all other DATA chunks
        in the series to 00.
 -->
-       
+<!-- [MT] This is fine. Thanks for improving the consistency of the document! -->
+
 <li><t>The transmitter <bcp14>MUST</bcp14> also set the B/E bits of the first DATA chunk in the
 series to 10, the B/E bits of the last DATA chunk in the series to 01,
 and the B/E bits of all other DATA chunks in the series to 00.</t></li>
@@ -4520,7 +4576,7 @@ receiver, partial_bytes_acked is initialized to 0.</t></li>
 <t>Upon detection of packet losses from SACK chunks
 (see <xref target='sec_fast_retransmit_on_gap_reports'/>), an endpoint <bcp14>SHOULD</bcp14>
 do the following:</t>
-<sourcecode type=""><![CDATA[
+<sourcecode type="pseudocode"><![CDATA[
 ssthresh = max(cwnd / 2, 4 * PMDCS)
 cwnd = ssthresh
 partial_bytes_acked = 0
@@ -4529,7 +4585,7 @@ partial_bytes_acked = 0
 
 <t>When the T3-rtx timer expires on an address, SCTP <bcp14>SHOULD</bcp14> perform slow start
 by:</t>
-<sourcecode type=""><![CDATA[
+<sourcecode type="pseudocode"><![CDATA[
 ssthresh = max(cwnd / 2, 4 * PMDCS)
 cwnd = PMDCS
 partial_bytes_acked = 0
@@ -4918,7 +4974,7 @@ packet with the destination endpoint's tag value if it is known.</li>
 <xref target='sec_handle_out_of_the_blue_packets'/>.</li>
 <li>The receiver of an ABORT chunk <bcp14>MUST</bcp14> accept the packet if the
 Verification Tag field of the packet matches its own tag and the T bit is not
-set OR if it is set to its peer's tag and the T bit is set in the Chunk Flags.
+set OR if it is set to its Peer's Tag and the T bit is set in the Chunk Flags.
 Otherwise, the receiver <bcp14>MUST</bcp14> silently discard the packet and take no further
 action.</li>
 </ul>
@@ -4933,7 +4989,7 @@ Only where no TCB exists <bcp14>SHOULD</bcp14> the sender use the Verification T
 SHUTDOWN ACK chunk and <bcp14>MUST</bcp14> set the T bit.</li>
 <li>The receiver of a SHUTDOWN COMPLETE chunk accepts the packet if the
 Verification Tag field of the packet matches its own tag and the T bit is not
-set OR if it is set to its peer's tag and the T bit is set in the Chunk Flags.
+set OR if it is set to its Peer's Tag and the T bit is set in the Chunk Flags.
 Otherwise, the receiver <bcp14>MUST</bcp14> silently discard the packet and take no further
 action.
 An endpoint <bcp14>MUST</bcp14> ignore the SHUTDOWN COMPLETE chunk if it is not in the
@@ -5173,7 +5229,10 @@ Perhaps:
    since an implementation will send an ABORT chunk, not a
    port-unreachable message.
 -->   
-
+<!-- [MT] RFC 792, RFC 1122, and RFC 4443 use port unreachable, not
+port-unreachable. But I'm neither a native speaker not do I think it makes
+a technical change. So I leave it up to you. Maybe you write it with a
+hyphen in more recent RFCs. -->
 
 Port-unreachable messages are not processed, since an implementation will send
 an ABORT chunk, not a port unreachable. The stricter handling of the
@@ -5209,7 +5268,7 @@ Individual implementations define their own exact format and provide
 combinations or subsets of the basic functions in single calls.</t>
 <section>
 <name>Initialize</name>
-<sourcecode type=""><![CDATA[
+<sourcecode type="pseudocode"><![CDATA[
 INITIALIZE ([local port],[local eligible address list])
 -> local SCTP instance name
 ]]></sourcecode>
@@ -5243,7 +5302,7 @@ eligible address list.</t>
 
 <section anchor='sec_associate'>
 <name>Associate</name>
-<sourcecode type=""><![CDATA[
+<sourcecode type="pseudocode"><![CDATA[
 ASSOCIATE(local SCTP instance name,
 initial destination transport addr list, outbound stream count)
 -> association id [,destination transport addr list]
@@ -5296,7 +5355,7 @@ peer endpoint.</dd>
 
 <section anchor="sec_shutdown">
 <name>Shutdown</name>
-<sourcecode type=""><![CDATA[
+<sourcecode type="pseudocode"><![CDATA[
 SHUTDOWN(association id) -> result
 ]]></sourcecode>
 <t>Gracefully closes an association.
@@ -5321,7 +5380,7 @@ is returned.</t>
 
 <section>
 <name>Abort</name>
-<sourcecode type=""><![CDATA[
+<sourcecode type="pseudocode"><![CDATA[
 ABORT(association id [, Upper Layer Abort Reason]) -> result
 ]]></sourcecode>
 <t>Ungracefully closes an association.
@@ -5350,7 +5409,7 @@ is returned.</t>
 
 <section anchor='sec_send'>
 <name>Send</name>
-<sourcecode type=""><![CDATA[
+<sourcecode type="pseudocode"><![CDATA[
 SEND(association id, buffer address, byte count [,context]
 [,stream id] [,life time] [,destination transport address]
 [,unordered flag] [,no-bundle flag] [,payload protocol-id]
@@ -5373,9 +5432,8 @@ SEND(association id, buffer address, byte count [,context]
 <dd>
 <dl newline="false">
 <dt>context:</dt>
-<dd>optional information provided that will be carried in the sending
-failure notification to the ULP if the transportation of this user message
-fails.</dd>
+<dd>optional information provided that will be carried in the SEND FAILURE
+notification to the ULP if the transportation of this user message fails.</dd>
 <dt>stream id:</dt>
 <dd>indicates which stream to send the data on.
 If not specified, stream 0 will be used.</dd>
@@ -5423,7 +5481,7 @@ transmitted.</dd>
 
 <section>
 <name>Set Primary</name>
-<sourcecode type=""><![CDATA[
+<sourcecode type="pseudocode"><![CDATA[
 SETPRIMARY(association id, destination transport address,
 [source transport address]) -> result
 ]]></sourcecode>
@@ -5431,8 +5489,8 @@ SETPRIMARY(association id, destination transport address,
 the primary path for sending packets.</t>
 <t>The result of attempting this operation is returned.
 If the specified destination transport address is not present in the
-"destination transport address list" returned earlier in an associate
-command or communication up notification, an error is returned.</t>
+"destination transport address list" returned earlier in an ASSOCIATE
+primitive or COMMUNICATION UP notification, an error is returned.</t>
 <dl newline="true">
 <dt>Mandatory attributes:</dt>
 <dd>
@@ -5459,7 +5517,7 @@ placed in all outgoing IP datagrams.</dd>
 
 <section>
 <name>Receive</name>
-<sourcecode type=""><![CDATA[
+<sourcecode type="pseudocode"><![CDATA[
 RECEIVE(association id, buffer address, buffer size [,stream id])
 -> byte count [,transport address] [,stream id]
 [,stream sequence number] [,partial flag] [,payload protocol-id]
@@ -5514,7 +5572,7 @@ data.</dd>
 
 <section>
 <name>Status</name>
-<sourcecode type=""><![CDATA[
+<sourcecode type="pseudocode"><![CDATA[
 STATUS(association id) -> status data
 ]]></sourcecode>
 <t>This primitive returns a data block containing the following information:</t>
@@ -5546,7 +5604,7 @@ STATUS(association id) -> status data
 
 <section>
 <name>Change Heartbeat</name>
-<sourcecode type=""><![CDATA[
+<sourcecode type="pseudocode"><![CDATA[
 CHANGE HEARTBEAT(association id, destination transport address,
 new state [,interval]) -> result
 ]]></sourcecode>
@@ -5583,7 +5641,7 @@ This value, if present, affects all destinations.</dd>
 
 <section>
 <name>Request Heartbeat</name>
-<sourcecode type=""><![CDATA[
+<sourcecode type="pseudocode"><![CDATA[
 REQUESTHEARTBEAT(association id, destination transport address)
 -> result
 ]]></sourcecode>
@@ -5608,7 +5666,7 @@ chunk to the destination address is successful.</t>
 
 <section>
 <name>Get SRTT Report</name>
-<sourcecode type=""><![CDATA[
+<sourcecode type="pseudocode"><![CDATA[
 GETSRTTREPORT(association id, destination transport address)
 -> srtt result
 ]]></sourcecode>
@@ -5634,7 +5692,7 @@ be reported.</dd>
 
 <section>
 <name>Set Failure Threshold</name>
-<sourcecode type=""><![CDATA[
+<sourcecode type="pseudocode"><![CDATA[
 SETFAILURETHRESHOLD(association id, destination transport address,
 failure threshold) -> result
 ]]></sourcecode>
@@ -5664,7 +5722,7 @@ threshold is to be set.</dd>
 
 <section anchor='sec_set_protocol_parameters'>
 <name>Set Protocol Parameters</name>
-<sourcecode type=""><![CDATA[
+<sourcecode type="pseudocode"><![CDATA[
 SETPROTOCOLPARAMETERS(association id,
 [destination transport address,] protocol parameter list)
 -> result
@@ -5694,7 +5752,7 @@ or other parameters like the DSCP) that the SCTP user wishes to customize.</dd>
 
 <section>
 <name>Receive Unsent Message</name>
-<sourcecode type=""><![CDATA[
+<sourcecode type="pseudocode"><![CDATA[
 RECEIVE_UNSENT(data retrieval id, buffer address, buffer size
 [,stream id] [, stream sequence number] [,partial flag]
 [,payload protocol-id])
@@ -5706,7 +5764,7 @@ into the buffer specified by ULP.</t>
 <dd>
 <dl newline="false">
 <dt>data retrieval id:</dt>
-<dd>the identification passed to the ULP in the failure notification.</dd>
+<dd>the identification passed to the ULP in the SEND FAILURE notification.</dd>
 <dt>buffer address:</dt>
 <dd>the memory location indicated by the ULP to store the received message.</dd>
 <dt>buffer size:</dt>
@@ -5739,7 +5797,7 @@ the type of payload protocol of the received data.</dd>
 
 <section>
 <name>Receive Unacknowledged Message</name>
-<sourcecode type=""><![CDATA[
+<sourcecode type="pseudocode"><![CDATA[
 RECEIVE_UNACKED(data retrieval id, buffer address, buffer size,
 [,stream id] [,stream sequence number] [,partial flag]
 [,payload protocol-id])
@@ -5751,7 +5809,7 @@ acknowledged by the peer into the buffer specified by ULP.</t>
 <dd>
 <dl newline="false">
 <dt>data retrieval id:</dt>
-<dd>the identification passed to the ULP in the failure notification.</dd>
+<dd>the identification passed to the ULP in the SEND FAILURE notification.</dd>
 <dt>buffer address:</dt>
 <dd>the memory location indicated by the ULP to store the received message.</dd>
 <dt>buffer size:</dt>
@@ -5784,7 +5842,7 @@ payload protocol of the received data.</dd>
 
 <section>
 <name>Destroy SCTP Instance</name>
-<sourcecode type=""><![CDATA[
+<sourcecode type="pseudocode"><![CDATA[
 DESTROY(local SCTP instance name)
 ]]></sourcecode>
 <dl newline="true">
@@ -6274,7 +6332,7 @@ time a DATA chunk is assigned a TSN (normally, just prior to transmit or during
 fragmentation).</dd>
 <dt>Last Rcvd TSN:</dt>
 <dd>This is the last TSN received in sequence.
-This value is set initially by taking the peer's initial TSN, received in the
+This value is set initially by taking the peer's Initial TSN, received in the
 INIT or INIT ACK chunk, and subtracting one from it.</dd>
 <dt>Mapping Array:</dt>
 <dd>An array of bits or bytes indicating which out-of-order TSNs have been
@@ -6437,6 +6495,9 @@ The IANA entry (https://www.iana.org/assignments/sctp-parameters):
 
 Please let us know if the IANA registry is correct or if any updates are needed. 
 -->
+<!-- [MT] The IANA registry is correct, the text in this document also.
+This registration should have been done by RFC 2960, but it was missed.
+So we fixed it now and document that fact. Does this explain things? -->
 <t>IANA has added a reference to this document for the following chunk parameter type:</t>
 <ul>
 <li><t>Reserved for ECN Capable (0x8000)</t></li>
@@ -6458,6 +6519,7 @@ this document for the following DATA chunk flags:</t>
 
       -  I bit
 -->
+<!-- [MT] This change is fine -->
 <t>IANA has also replaced the reference to <xref target="RFC7053"/> with a reference to
 this document for the following DATA chunk flag:</t>
 <ul>
@@ -6582,6 +6644,7 @@ The procedure for registering particular chunk flags is described in
      15.5.  Payload Protocol Identifiers
      15.6.  Port Numbers Registry
 -->
+<!-- [MT] Good point. Go ahead and make the change. -->
 <name>IETF Chunk Flags Registration</name>
 
 <t>The assignment of new chunk flags is done through an RFC Required action,
@@ -6635,6 +6698,7 @@ OR
    Additional cause codes can be allocated
    through a Specification Required action as defined in [RFC8126].
 -->
+<!-- [MT] I prefer your second suggestion. Please make the change. -->
 
 <t>Additional cause codes can be allocated in the range 11 to 65535
 through a Specification Required action, as defined in <xref target="RFC8126"/>.
@@ -6652,7 +6716,7 @@ accompany this cause code.</t></li>
 format shown in <xref target='sec_error_chunk'/>, that is:</t>
 <ul>
 <li><t>first 2 bytes contain the cause code value</t></li>
-<li><t>last 2 bytes contain the length of the cause parameter.</t></li>
+<li><t>last 2 bytes contain the length of the error cause.</t></li>
 </ul>
 </section>
 
@@ -6781,6 +6845,7 @@ Please review and let us know how you would like to update this referece.
               <http://www.geocities.com/SiliconValley/Pines/8659/
               crc.htm>.
 -->	      
+<!-- [MT] Please use the link you found. -->
 
 <reference anchor="WILLIAMS93"
            target='http://www.geocities.com/SiliconValley/Pines/8659/crc.htm'>
@@ -6909,7 +6974,7 @@ general C code improvements.
 (Note that, if the byte endian-ness of the target architecture is known to be
 little endian, the final bit-reversal and byte-reversal steps can be folded
 into a single operation.)</t>
-<sourcecode type="" ><![CDATA[
+<sourcecode type="c" ><![CDATA[
 <CODE BEGINS>
 /****************************************************************/
 /* Note: The definitions for Ross Williams's table generator    */
@@ -7281,6 +7346,21 @@ Original:
    for his work on the max-burst, but managed to wiggle out due to a
    technicality.
 -->   
+<!-- [MT] This text (and the paragraph after it referring to Lyndon and Phil)
+is referring to RFC 4460, not this document. I just copied over the text from
+RFC 4960 (which got it from RFC 4460), which has the same problem.
+
+What about using
+OLD
+<t>A special thanks to <contact fullname="Mark Allman"/>, who should actually
+be a coauthor for his work on the max-burst but managed to wiggle out due to a
+technicality.</t>
+
+NEW
+<t>A special thanks to <contact fullname="Mark Allman"/>, who actually should
+have been be a coauthor of <xref target="RFC4460"/> for his work on the
+max-burst but managed to wiggle out due to a technicality.</t>
+-->
 
 <t>A special thanks to <contact fullname="Mark Allman"/>, who should actually
 be a coauthor for his work on the max-burst but managed to wiggle out due to a
@@ -7352,6 +7432,37 @@ User-Initiated Abort vs. User Initiated Abort
 INIT ACK chunk vs. INIT-ACK chunk
 Initial TSN vs. initial TSN
 -->
+<!-- [MT] Thanks for catching these. Here are my responses:
+* Verification Tag vs. verification tag
+  We should use Verification Tag. I fixed that.
+* Peer's Tag vs. peer's tag
+  We should use Peer's Tag. I fixed that.
+* Source Port vs. source port
+  Source Port Number vs. source port number
+  It should always be Source Port Number (not source port, Source Port,
+  or source port number). I fixed it. I also improved consistency for
+  Destination Port Number.
+* cause parameter vs. Cause Parameter
+  Changed to error cause, which is more precise. I fixed it.
+* new address vs. NEW address
+  It should be new address. I fixed it.
+* COMMUNICATION UP vs. Communication Up vs. communication up
+  It should always be COMMUNICATION UP notification. I fixed this. While
+  doing this, I also improved the consistency of the text when referring to
+  other primitives, replaced a "command" with "primitive" and also changed
+  some primitive names to all CAPS.
+* Restart of an Association with New Addresses vs. Restart of an association with a new address vs. restart of an association with a new address
+  We should use "Restart of an Association with New Addresses" and also double
+  quotes instead of single quotes. I fixed that.
+* RTO.Max vs. RTO.max
+  It should always be RTO.Max. I fixed it.
+* User-Initiated Abort vs. User Initiated Abort
+  As indicated above, I'm in favor for using User-Initiated Abort everywhere.
+* INIT ACK chunk vs. INIT-ACK chunk
+  It should always be INIT ACK chunk. I fixed it.
+* Initial TSN vs. initial TSN
+  Now using Initial TSN everywhere. Two sentences were reworded.
+-->
 <!-- [rfced] Please review the "Inclusive Language" portion of the online 
 Style Guide <https://www.rfc-editor.org/styleguide/part2/#inclusive_language> 
 and let us know if any changes are needed.  For example, please consider whether "man in the middle" should be updated.
@@ -7364,4 +7475,18 @@ indicates that this term is potentially biased, it is also ambiguous because it 
    A transport address is traditionally defined by a network-layer address,
    a transport-layer protocol, and a transport-layer port number.
  -->
+<!-- [MT]
+* Regarding your first point:
+  I replaced
+  OLD
+  It is very important that the Initiate Tag value be randomized to
+  help protect against "man in the middle" and "sequence number"
+  attacks.
+  with
+  NEW
+  It is very important that the Initiate Tag value be randomized to
+  help protect against off-path attacks.
+
+* Regarding your second point: We can use typically. I fixed that.
+-->
 </rfc>
