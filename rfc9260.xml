@@ -64,13 +64,6 @@
 </author>
 
 <date month="April" year="2022"/>
-
-<!-- [rfced] Please insert any keywords (beyond those that appear in
-the title) for use on https://www.rfc-editor.org/search. -->
-<!-- [MT] No additional keywords required. -->
-
-<keyword>example</keyword>
-
 <abstract>
 <t>This document describes the Stream Control Transmission Protocol (SCTP) and obsoletes RFC 4960.  It incorporates the specification of the chunk flags registry from RFC 6096 and the
 specification of the I bit of DATA chunks from RFC 7053.
@@ -322,12 +315,6 @@ transport address. Ssthresh is in number of bytes.</dd>
 another associated SCTP endpoint, within which all user messages
 are delivered in sequence, except for those submitted to the
 unordered delivery service.</t>
-
-<!-- [rfced] Please let us know if any of the notes in this document should be marked as <aside>.  <aside> is described as being "for content that is semantically less important or tangential to the content that surrounds it" (see https://authors.ietf.org/rfcxml-vocabulary#aside).
--->
-<!-- [MT] The tangential or less important property does not really apply
-to the text we used in Notes or Implementation Notes. So I think we should
-not use <aside></aside> in this document. -->
 
 <t>Note: The relationship between stream numbers in opposite directions
 is strictly a matter of how the applications use them. It is the
@@ -763,24 +750,9 @@ calculating the checksum.</dd>
 <section anchor='sec_chunk_field_descriptions'>
 <name>Chunk Field Descriptions</name>
 
-<!--[rfced] May we update "chunk-specific Flag field" to "Chunk Flags
-field" and "Value field" to "Chunk Value field"?
-
-Original:
-  Each chunk is formatted with a Chunk
-   Type field, a chunk-specific Flag field, a Chunk Length field, and a
-   Value field.
-
-Perhaps:
-   Each chunk is formatted with a Chunk
-   Type field, a Chunk Flags field, a Chunk Length field, and a
-   Chunk Value field.
--->
-<!-- [MT] I like the your suggestion, let us take it. -->
-
 <t>The figure below illustrates the field format for the chunks to be
 transmitted in the SCTP packet.
-Each chunk is formatted with a Chunk Type field, a chunk-specific Flag field,
+Each chunk is formatted with a Chunk Type field, a Chunk Flags field,
 a Chunk Length field, and a Chunk Value field.</t>
 <artwork align='center'>
  0                   1                   2                   3
@@ -799,7 +771,7 @@ a Chunk Length field, and a Chunk Value field.</t>
 <t>This field identifies the type of information contained in the Chunk Value
 field. It takes a value from 0 to 254.
 The value of 255 is reserved for future use as an extension field.</t>
-<t>The values of Chunk Types are defined as follows:</t>
+<t>The values of Chunk Types defined in this document are as follows:</t>
 <table>
 <name>Chunk Types</name>
 <thead>
@@ -821,30 +793,6 @@ The value of 255 is reserved for future use as an extension field.</t>
 <tr><td>12        </td> <td>Reserved for Explicit Congestion Notification Echo (ECNE)</td></tr>
 <tr><td>13        </td> <td>Reserved for Congestion Window Reduced (CWR)             </td></tr>
 <tr><td>14        </td> <td>Shutdown Complete (SHUTDOWN COMPLETE)                    </td></tr>
-<!-- [rfced] Chunk Types 15, 64, 128, 130, 132, 192-194 have been assigned by other documents.  They are noted as being available in this table.  Should this be updated some how? 
-
-From table 1:
-| 15 to 62   | available 
-| 64 to 126  | available 
-| 128 to 190 | available
-| 192 to 254 | available
-
-Note that we have changed "available" to "Unassigned" to match what appears in the IANA registry.  Please let us know any concerns. 
--->
-<!-- [MT]
-* Regarding your first point:
-  This document (which is a bis document) deals only with assignments done in this document.
-  Maybe updating the sentence right before the table make this clear:
-
-  OLD:
-  The values of Chunk Types are defined as follows:
-
-  NEW:
-  The values of Chunk Types defined in this document are as follows:
-
-* Regarding your second point:
-  Thanks for making it consistent
--->
 
 <tr><td>15 to 62  </td> <td>Unassigned                                                </td></tr>
 <tr><td>63        </td> <td>Reserved for IETF-defined Chunk Extensions               </td></tr>
@@ -937,22 +885,6 @@ defined in a Type-Length-Value format, as shown below.</t>
 <dd>
 <t>The Type field is a 16-bit identifier of the type of parameter.
 It takes a value of 0 to 65534.</t>
-<!-- [rfced] Is value 65535 in the Chunk Parameter Types supposed to be marked as Reserved?  We don't see this value listed in the IANA registry. 
-
-Original:
-      The value of 65535 is reserved for IETF-defined extensions.
-      Values other than those defined in specific SCTP chunk
-      descriptions are reserved for use by IETF.
--->
-<!-- [MT] Good catch! I would suggest to add to the Chunk Parameter Types table
-a line:
-ID Value      Chunk Parameter Type                         Reference
-65535         Reserved for IETF-defined Chunk Extensions   RFC-ietf-tsvwg-rfc4960-bis-19
-
-This is similar to the case how we handle the largest chunks type.
-I this is OK for you and IANA, we need to add a sentence to the IANA section
-that this line was added. I think this was just overlooked in the past.
--->
 
 <t>The value of 65535 is reserved for IETF-defined extensions.
 Values other than those defined in specific SCTP chunk descriptions are
@@ -1012,41 +944,13 @@ and <bcp14>MUST NOT</bcp14> be reused with a different meaning in any other chun
 
 <section anchor='sec_reporting_of_unrecognized_parameters'>
 <name>Reporting of Unrecognized Parameters</name>
-<!-- [rfced] Should "Unrecognized Parameter" (2x) be "Unrecognized Parameters" (plural) to match what appears in the IANA registry?  Please review and let us know if any updates are needed. 
-
-   If the receiver of an INIT chunk detects unrecognized parameters and
-   has to report them according to Section 3.2.1, it MUST put the
-   "Unrecognized Parameter" parameter(s) in the INIT ACK chunk sent in
-   response to the INIT chunk.  Note that if the receiver of the INIT
-   chunk is not going to establish an association (e.g., due to lack of
-   resources), an "Unrecognized Parameter" error cause would not be
-   included with any ABORT chunk being sent to the sender of the INIT
-   chunk.
-
-Note that this occurs in various places throughout.  For example, Table 8 and Section 3.3.1.2 refer to "Unrecognized Parameter".  Please review and let us know if any updates are needed. 
--->
-<!-- [MT]
-As described in https://datatracker.ietf.org/doc/html/rfc4460#section-2.32
-only one parameter is reported in an unrecognized parameters parameter.
-This was changed from RFC 2960 to RFC 4960. The name in the document was
-changed, but not the name in the IANA registry. So, if possible, we should
-change the name in the IANA registry for the chunk parameter.
-
-Please note that there is a similar "Unrecognized Parameters" error cause,
-which can include multiple TLVs, so we should keep the plural there.
-Therefore, the cited paragraph needs one change:
-OLD
-   resources), an "Unrecognized Parameter" error cause would not be
-NEW
-   resources), an "Unrecognized Parameters" error cause would not be
--->
 
 <t>If the receiver of an INIT chunk detects unrecognized parameters and
 has to report them according to <xref target='sec_parameter_format'/>,
 it <bcp14>MUST</bcp14> put the "Unrecognized Parameter" parameter(s) in the INIT ACK chunk
 sent in response to the INIT chunk.
 Note that, if the receiver of the INIT chunk is not going to establish an
-association (e.g., due to lack of resources), an "Unrecognized Parameter"
+association (e.g., due to lack of resources), an "Unrecognized Parameters"
 error cause would not be included with any ABORT chunk being sent to the sender
 of the INIT chunk.</t>
 <t>If the receiver of any other chunk (e.g., INIT ACK) detects unrecognized
@@ -2101,7 +2005,7 @@ format described in <xref target='sec_parameter_format'/>, that is:</t>
 <tbody>
 <tr><td> 1</td>   <td>Invalid Stream Identifier</td></tr>
 <tr><td> 2</td>   <td>Missing Mandatory Parameter</td></tr>
-<tr><td> 3</td>   <td>Stale Cookie Error</td></tr>
+<tr><td> 3</td>   <td>"Stale Cookie" Error</td></tr>
 <tr><td> 4</td>   <td>Out of Resource</td></tr>
 <tr><td> 5</td>   <td>Unresolvable Address</td></tr>
 <tr><td> 6</td>   <td>Unrecognized Chunk Type</td></tr>
@@ -2110,7 +2014,7 @@ format described in <xref target='sec_parameter_format'/>, that is:</t>
 <tr><td> 9</td>   <td>No User Data</td></tr>
 <tr><td>10</td>   <td>Cookie Received While Shutting Down</td></tr>
 <tr><td>11</td>   <td>Restart of an Association with New Addresses</td></tr>
-<tr><td>12</td>   <td>User Initiated Abort</td></tr>
+<tr><td>12</td>   <td>User-Initiated Abort</td></tr>
 <tr><td>13</td>   <td>Protocol Violation</td></tr>
 </tbody>
 </table>
@@ -2176,7 +2080,7 @@ Information field.</dd>
 </section>
 
 <section anchor='sec_stale_cookie_error_cause'>
-<name>Stale Cookie Error (3)</name>
+<name>"Stale Cookie" Error (3)</name>
 
 <t>Indicates the receipt of a valid State Cookie that has expired.</t>
 <artwork align='center'>
@@ -2366,23 +2270,6 @@ INIT chunk
 in the INIT chunk that was new, including the Parameter Type and the
 Parameter Length.</t>
 </section>
-
-<!-- [rfced] We note that "User-Initiated Abort" appears almost consistently with a hyphen.  May we update Table 11 and Section 15 and ask IANA to update their registry to include the hyphen? 
-
-Throughout the text: 
-   User-Initiated Abort (12)
-
-Table 11 and Section 15:
-   User Initiated Abort
-
-Section 3.1.0 of RFC 4960 and this document: 
-   12              User Initiated Abort
-
-Error Cause Codes registry <https://www.iana.org/assignments/sctp-parameters>:
-   12   User Initiated Abort
--->
-<!-- [MT] Getting this consistent is a very good point. Please go ahead! -->
-
 <section anchor='sec_user_initiated_abort_cause'>
 <name>User-Initiated Abort (12)</name>
 
@@ -2646,14 +2533,14 @@ Or, if the received State Cookie is expired (see
 <xref target='sec_state_coockie_authentication'/>), the receiver <bcp14>MUST</bcp14> send back
 an ERROR chunk.
 In either case, the receiver stays in the CLOSED state.</t></li>
-<!-- [MT] I clarified the following sentence -->
+
 <li><t>If the T1-init timer expires, the endpoint <bcp14>MUST</bcp14>
 retransmit the INIT chunk and restart the T1-init timer.
 The endpoint stays in the COOKIE-WAIT state.
 This <bcp14>MUST</bcp14> be repeated up to 'Max.Init.Retransmits' times.
 After that, the endpoint <bcp14>MUST</bcp14> abort the initialization process and report the
 error to the SCTP user.</t></li>
-<!-- [MT] I clarified the following sentence -->
+
 <li><t>If the T1-cookie timer expires, the endpoint <bcp14>MUST</bcp14>
 retransmit COOKIE ECHO chunk and restart the T1-cookie timer.
 The endpoint stays in the COOKIE-ECHOED state.
@@ -3293,25 +3180,6 @@ discard a received COOKIE ACK chunk.</t>
 <section anchor='sec_handle_stale_cookie_error'>
 <name>Handle Stale Cookie Error</name>
 
-<!-- [rfced] We wonder whether the "Stale Cookie Error" cause code should be "Stale Cookie" in the IANA registry?  We note that the text refers to "Stale Cookie Error" in some places and "Stale Cookie" error in others.  In addition, Stale Cookie is the only cause code that includes "Error" in the name.  Please review. 
-
-Original (and throughout):
-5.2.6.  Handle Stale Cookie Error
-
-   Receipt of an ERROR chunk with a "Stale Cookie" error cause indicates
-   one of a number of possible events:
--->
-<!-- [MT] I agree, it makes sense to change the "Stale Cookie Error" error
-cause to "Stale Cookie" Error cause.
-That would require
-- IANA to change the name
-- Change the section title of 3.3.10.3
-- Change the entry in Table 11
-- Change the name in Section 15
-
-Using "Handle Stale Cookie Error" as the title of Section 5.2.6 is fine.
--->
-
 <t>Receipt of an ERROR chunk with a "Stale Cookie" error cause indicates
 one of a number of possible events:</t>
 
@@ -3563,21 +3431,6 @@ for retransmission (limited by the current cwnd).</t>
 <li><t>When the time comes for the sender to transmit new DATA chunks, the
 protocol parameter 'Max.Burst' <bcp14>SHOULD</bcp14> be used to limit the number of packets sent.
 The limit <bcp14>MAY</bcp14> be applied by adjusting cwnd temporarily, as follows:</t>
-
-<!-- [rfced] Please consider whether the "type" attribute should be set for any of the sourcecode elements in the XML file.  For example, some seem like they could be marked as pseudocode.  If the current list of preferred values for "type" (https://www.rfc-editor.org/materials/sourcecode-types.txt) 
-does not contain an applicable type, then feel free to suggest an addition. 
-Note that it is also acceptable to not set the "type" attribute. 
-
-In addition, review each artwork element. Specifically,
-should any artwork element be tagged as sourcecode or another
-element?
--->
-<!-- [MT] I have set the "type" attribute for each sourcecode element. While
-doing that, I also made the pseudocode more consitent by never terminating a line
-with a semicolon.
-
-I also reviewed all artwork elements. None of them should be tagged as sourcecode.
--->
 
 <sourcecode type="pseudocode">
 if ((flightsize + Max.Burst * PMDCS) &lt; cwnd)
@@ -4302,23 +4155,6 @@ DATA chunks.
 If the user indicates that the user message is to be delivered using unordered
 delivery, then the U flag of each DATA chunk of the user message <bcp14>MUST</bcp14> be set
 to 1.</t></li>
-
-<!--[rfced] Please note that we have removed the single quotes around
-the values set to parallel usage in the rest of document.
-
-Original:
-   3)  The transmitter MUST also set the B/E bits of the first DATA
-       chunk in the series to '10', the B/E bits of the last DATA chunk
-       in the series to '01', and the B/E bits of all other DATA chunks
-       in the series to '00'.
-
-Current:
-   3)  The transmitter MUST also set the B/E bits of the first DATA
-       chunk in the series to 10, the B/E bits of the last DATA chunk
-       in the series to 01, and the B/E bits of all other DATA chunks
-       in the series to 00.
--->
-<!-- [MT] This is fine. Thanks for improving the consistency of the document! -->
 
 <li><t>The transmitter <bcp14>MUST</bcp14> also set the B/E bits of the first DATA chunk in the
 series to 10, the B/E bits of the last DATA chunk in the series to 01,
@@ -5221,25 +5057,8 @@ requirements for processing of port-unreachable messages and the requirements
 that an implementation <bcp14>MUST</bcp14> abort associations in response to a
 "protocol unreachable" message.
 
-<!--[rfced] May we update "port unreachable" to be "port-unreachable message"?
-
-Original:
-   Port-unreachable messages are not processed,
-   since an implementation will send an ABORT chunk, not a port
-   unreachable.
-
-Perhaps:
-   Port-unreachable messages are not processed,
-   since an implementation will send an ABORT chunk, not a
-   port-unreachable message.
--->   
-<!-- [MT] RFC 792, RFC 1122, and RFC 4443 use port unreachable, not
-port-unreachable. But I'm neither a native speaker not do I think it makes
-a technical change. So I leave it up to you. Maybe you write it with a
-hyphen in more recent RFCs. -->
-
 Port-unreachable messages are not processed, since an implementation will send
-an ABORT chunk, not a port unreachable. The stricter handling of the
+an ABORT chunk, not a port-unreachable message. The stricter handling of the
 "protocol unreachable" message is due to security concerns for hosts that do
 not support SCTP.</t>
 </section>
@@ -6486,26 +6305,11 @@ this document for the following chunk parameter types:</t>
 <li><t>Supported Address Types</t></li>
 </ul>
 
-<!-- [rfced] Is another document to be referenced in addition to this RFC?  We ask because this section asked for a reference to be added, as opposed to replaced.  
-
-Original:
-      Add a reference to this document for the following chunk parameter
-      type:
-
-      -  Reserved for ECN Capable (0x8000)
-
-The IANA entry (https://www.iana.org/assignments/sctp-parameters):
-32768 	Reserved for ECN Capable (0x8000) 	[RFC-ietf-tsvwg-rfc4960-bis-19]
-
-Please let us know if the IANA registry is correct or if any updates are needed. 
--->
-<!-- [MT] The IANA registry is correct, the text in this document also.
-This registration should have been done by RFC 2960, but it was missed.
-So we fixed it now and document that fact. Does this explain things? -->
 <t>IANA has added a reference to this document for the following chunk parameter type:</t>
 <ul>
 <li><t>Reserved for ECN Capable (0x8000)</t></li>
 </ul>
+<t>Also, IANA has added the value 65535 to be reserved for IETF-defined extensions.</t>
 </li>
 <li><t>In the "Chunk Flags" registry, IANA replaced
 the registry reference to <xref target="RFC6096"/> with a reference to this document.</t>
@@ -6516,14 +6320,7 @@ this document for the following DATA chunk flags:</t>
 <li><t>B bit</t></li>
 <li><t>U bit</t></li>
 </ul>
-<!-- [rfced] Note that this text was added to explain the reference change for I bit.  Please let us know if any corrections are needed. 
 
-      IANA has also replaced the reference to [RFC7053] with a reference
-      to this document for the following DATA chunk flag:
-
-      -  I bit
--->
-<!-- [MT] This change is fine -->
 <t>IANA has also replaced the reference to <xref target="RFC7053"/> with a reference to
 this document for the following DATA chunk flag:</t>
 <ul>
@@ -6548,7 +6345,7 @@ this document for the following cause codes:</t>
 <ul>
 <li><t>Invalid Stream Identifier</t></li>
 <li><t>Missing Mandatory Parameter</t></li>
-<li><t>Stale Cookie Error</t></li>
+<li><t>"Stale Cookie" Error</t></li>
 <li><t>Out of Resource</t></li>
 <li><t>Unresolvable Address</t></li>
 <li><t>Unrecognized Chunk Type</t></li>
@@ -6561,7 +6358,7 @@ this document for the following cause codes:</t>
 <t>IANA has also replaced each reference to <xref target="RFC4460"/> with a reference to
 this document for the following cause codes:</t>
 <ul>
-<li><t>User Initiated Abort</t></li>
+<li><t>User-Initiated Abort</t></li>
 <li><t>Protocol Violation</t></li>
 </ul>
 </li>
@@ -6638,18 +6435,8 @@ The procedure for registering particular chunk flags is described in
 </section>
 
 <section anchor='sec_ietf_chunk_flags_registration'>
-<!-- [rfced] Should the title of Section 15.2 be "IETF-Defined Chunk Flags Registration" to match the surrounding section titles? 
 
-   15. IANA Considerations
-     15.1.  IETF-Defined Chunk Extension
-     15.2.  IETF Chunk Flags Registration
-     15.3.  IETF-Defined Chunk Parameter Extension
-     15.4.  IETF-Defined Additional Error Causes
-     15.5.  Payload Protocol Identifiers
-     15.6.  Port Numbers Registry
--->
-<!-- [MT] Good point. Go ahead and make the change. -->
-<name>IETF Chunk Flags Registration</name>
+<name>IETF-Defined Chunk Flags Registration</name>
 
 <t>The assignment of new chunk flags is done through an RFC Required action,
 as defined in <xref target="RFC8126"/>.
@@ -6688,24 +6475,7 @@ parameter type can be found within the same chunk.</t></li>
 <section anchor='sec_ietf_defined_additional_error_causes'>
 <name>IETF-Defined Additional Error Causes</name>
 
-<!-- [rfced] Because the registration policy for Error Cause Codes is Specification Required, we suggest the following update:
-
-Original:
-   Additional cause codes can be allocated in the range 11 to 65535
-   through a Specification Required action as defined in [RFC8126].
-
-Suggested:
-   The registration procedure for error cause codes is Specification Required as 
-   defined in [RFC8126].
-
-OR
-   Additional cause codes can be allocated
-   through a Specification Required action as defined in [RFC8126].
--->
-<!-- [MT] I prefer your second suggestion. Please make the change. -->
-
-<t>Additional cause codes can be allocated in the range 11 to 65535
-through a Specification Required action, as defined in <xref target="RFC8126"/>.
+<t>Additional cause codes can be allocated through a Specification Required action as defined in <xref target="RFC8126"/>.
 Provided documentation <bcp14>MUST</bcp14> include the following information:</t>
 <ol type='%c)'>
 <li><t>Name of the error condition.</t></li>
@@ -6837,22 +6607,8 @@ of these protocol parameters (see <xref target='sec_api'/>).</t>
 <refcontent>SIGCOM 99</refcontent>
 </reference>
 
-<!--[rfced] The link for the [WILLIAMS93] reference redirects to yahoo.com.
-We found this link, which seems to be the correct document:
-https://archive.org/stream/PainlessCRC/crc_v3.txt
-
-Please review and let us know how you would like to update this referece.
-
-   [WILLIAMS93]
-              Williams, R., "A PAINLESS GUIDE TO CRC ERROR DETECTION
-              ALGORITHMS", SIGCOM 99, August 1993,
-              <http://www.geocities.com/SiliconValley/Pines/8659/
-              crc.htm>.
--->	      
-<!-- [MT] Please use the link you found. -->
-
 <reference anchor="WILLIAMS93"
-           target='http://www.geocities.com/SiliconValley/Pines/8659/crc.htm'>
+           target='https://archive.org/stream/PainlessCRC/crc_v3.txt'>
 <front>
 <title>A PAINLESS GUIDE TO CRC ERROR DETECTION ALGORITHMS</title>
 <author initials="R." surname="Williams" fullname="R. Williams"><organization/></author>
@@ -7341,33 +7097,8 @@ as shown in its acknowledgements:
 and
 <contact fullname="Ronnie Sellar"/>.</t>
 
-<!--[rfced] We note that the sentence below seems to be copied from
-RFC 4460. Is the comment about Mark Allman being a coauthor of this document
-accurate?
-
-Original:
-   A special thanks to Mark Allman, who should actually be a co-author
-   for his work on the max-burst, but managed to wiggle out due to a
-   technicality.
--->   
-<!-- [MT] This text (and the paragraph after it referring to Lyndon and Phil)
-is referring to RFC 4460, not this document. I just copied over the text from
-RFC 4960 (which got it from RFC 4460), which has the same problem.
-
-What about using
-OLD
-<t>A special thanks to <contact fullname="Mark Allman"/>, who should actually
-be a coauthor for his work on the max-burst but managed to wiggle out due to a
-technicality.</t>
-
-NEW
 <t>A special thanks to <contact fullname="Mark Allman"/>, who actually should
-have been be a coauthor of <xref target="RFC4460"/> for his work on the
-max-burst but managed to wiggle out due to a technicality.</t>
--->
-
-<t>A special thanks to <contact fullname="Mark Allman"/>, who should actually
-be a coauthor for his work on the max-burst but managed to wiggle out due to a
+have been a coauthor of <xref target="RFC4460"/> for his work on the max-burst but managed to wiggle out due to a
 technicality.</t>
 <t>Also, we would like to acknowledge <contact fullname="Lyndon Ong"/> and
 <contact fullname="Phil Conrad"/> for their valuable input and many
@@ -7419,78 +7150,4 @@ All we can say is, Thank You!</t>
 </section>
 </back>
 
-<!--[rfced] Throughout the document, the following terminology appears
-to be used inconsistently. Please review these occurrences and let us
-know if/how they be made consistent.
-
-Verification Tag vs. verification tag
-Peer's Tag vs. peer's tag
-Source Port vs. source port
-Source Port Number vs. source port number
-cause parameter vs. Cause Parameter
-new address vs. NEW address
-COMMUNICATION UP vs. Communication Up vs. communication up
-Restart of an Association with New Addresses vs. Restart of an association with a new address vs. restart of an association with a new address
-RTO.Max vs. RTO.max
-User-Initiated Abort vs. User Initiated Abort
-INIT ACK chunk vs. INIT-ACK chunk
-Initial TSN vs. initial TSN
--->
-<!-- [MT] Thanks for catching these. Here are my responses:
-* Verification Tag vs. verification tag
-  We should use Verification Tag. I fixed that.
-* Peer's Tag vs. peer's tag
-  We should use Peer's Tag. I fixed that.
-* Source Port vs. source port
-  Source Port Number vs. source port number
-  It should always be Source Port Number (not source port, Source Port,
-  or source port number). I fixed it. I also improved consistency for
-  Destination Port Number.
-* cause parameter vs. Cause Parameter
-  Changed to error cause, which is more precise. I fixed it.
-* new address vs. NEW address
-  It should be new address. I fixed it.
-* COMMUNICATION UP vs. Communication Up vs. communication up
-  It should always be COMMUNICATION UP notification. I fixed this. While
-  doing this, I also improved the consistency of the text when referring to
-  other primitives, replaced a "command" with "primitive" and also changed
-  some primitive names to all CAPS.
-* Restart of an Association with New Addresses vs. Restart of an association with a new address vs. restart of an association with a new address
-  We should use "Restart of an Association with New Addresses" and also double
-  quotes instead of single quotes. I fixed that.
-* RTO.Max vs. RTO.max
-  It should always be RTO.Max. I fixed it.
-* User-Initiated Abort vs. User Initiated Abort
-  As indicated above, I'm in favor for using User-Initiated Abort everywhere.
-* INIT ACK chunk vs. INIT-ACK chunk
-  It should always be INIT ACK chunk. I fixed it.
-* Initial TSN vs. initial TSN
-  Now using Initial TSN everywhere. Two sentences were reworded.
--->
-<!-- [rfced] Please review the "Inclusive Language" portion of the online 
-Style Guide <https://www.rfc-editor.org/styleguide/part2/#inclusive_language> 
-and let us know if any changes are needed.  For example, please consider whether "man in the middle" should be updated.
-
-In addition, please consider whether "traditionally" should be updated for
-clarity.  While the NIST website
-<https://www.nist.gov/nist-research-library/nist-technical-series-publications-author-instructions#table1>
-indicates that this term is potentially biased, it is also ambiguous because it is subjective.  Perhaps "typically" would work here: 
-
-   A transport address is traditionally defined by a network-layer address,
-   a transport-layer protocol, and a transport-layer port number.
- -->
-<!-- [MT]
-* Regarding your first point:
-  I replaced
-  OLD
-  It is very important that the Initiate Tag value be randomized to
-  help protect against "man in the middle" and "sequence number"
-  attacks.
-  with
-  NEW
-  It is very important that the Initiate Tag value be randomized to
-  help protect against off-path attacks.
-
-* Regarding your second point: We can use typically. I fixed that.
--->
 </rfc>
