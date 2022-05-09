@@ -2005,7 +2005,7 @@ format described in <xref target='sec_parameter_format'/>, that is:</t>
 <tbody>
 <tr><td> 1</td>   <td>Invalid Stream Identifier</td></tr>
 <tr><td> 2</td>   <td>Missing Mandatory Parameter</td></tr>
-<tr><td> 3</td>   <td>"Stale Cookie" Error</td></tr>
+<tr><td> 3</td>   <td>Stale Cookie</td></tr>
 <tr><td> 4</td>   <td>Out of Resource</td></tr>
 <tr><td> 5</td>   <td>Unresolvable Address</td></tr>
 <tr><td> 6</td>   <td>Unrecognized Chunk Type</td></tr>
@@ -2080,7 +2080,7 @@ Information field.</dd>
 </section>
 
 <section anchor='sec_stale_cookie_error_cause'>
-<name>"Stale Cookie" Error (3)</name>
+<name>Stale Cookie (3)</name>
 
 <t>Indicates the receipt of a valid State Cookie that has expired.</t>
 <artwork align='center'>
@@ -5055,11 +5055,11 @@ ICMP messages when reporting a network status change.</t></li>
 <t>These procedures differ from <xref target="RFC1122"/> and from its
 requirements for processing of port-unreachable messages and the requirements
 that an implementation <bcp14>MUST</bcp14> abort associations in response to a
-"protocol unreachable" message.
+protocol unreachable message.
 
 Port-unreachable messages are not processed, since an implementation will send
 an ABORT chunk, not a port-unreachable message. The stricter handling of the
-"protocol unreachable" message is due to security concerns for hosts that do
+protocol unreachable message is due to security concerns for hosts that do
 not support SCTP.</t>
 </section>
 
@@ -6292,6 +6292,9 @@ this document for the following chunk types:</t>
 </li>
 <li><t>In the "Chunk Parameter Types" registry, IANA has replaced
 the registry reference to <xref target="RFC4960"/> with a reference to this document.</t>
+<!-- [MT] Added the next sentence, change to be performed by IANA. -->
+<t>IANA has changed the name of the "Unrecognized Parameters" parameter to
+"Unrecognized Parameter" parameter in the "Chunk Parameter Types" registry.</t>
 <t>In addition, each reference to <xref target="RFC4960"/> has been replaced with a reference to
 this document for the following chunk parameter types:</t>
 <ul>
@@ -6340,12 +6343,16 @@ this document for the following SHUTDOWN COMPLETE chunk flag:</t>
 </li>
 <li><t>In the "Error Cause Codes" registry, IANA has replaced
 the registry reference to <xref target="RFC4960"/> with a reference to this document.</t>
+<!-- [MT] Added the next sentence, change to be performed by IANA. -->
+<t>IANA has changed the name of the "User Initiated Abort" error cause to
+"User-Initiated Abort" error cause and the "Stale Cookie Error" error cause
+to "Stale Cookie" error cause in the "Error Cause Codes" registry.</t>
 <t>In addition, each reference to <xref target="RFC4960"/> has been replaced with a reference to
 this document for the following cause codes:</t>
 <ul>
 <li><t>Invalid Stream Identifier</t></li>
 <li><t>Missing Mandatory Parameter</t></li>
-<li><t>"Stale Cookie" Error</t></li>
+<li><t>Stale Cookie</t></li>
 <li><t>Out of Resource</t></li>
 <li><t>Unresolvable Address</t></li>
 <li><t>Unrecognized Chunk Type</t></li>
