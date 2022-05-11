@@ -6292,9 +6292,8 @@ this document for the following chunk types:</t>
 </li>
 <li><t>In the "Chunk Parameter Types" registry, IANA has replaced
 the registry reference to <xref target="RFC4960"/> with a reference to this document.</t>
-<!-- [MT] Added the next sentence, change to be performed by IANA. -->
-<t>IANA has changed the name of the "Unrecognized Parameters" parameter to
-"Unrecognized Parameter" parameter in the "Chunk Parameter Types" registry.</t>
+<t>IANA has changed the name of the "Unrecognized Parameters" chunk parameter type to
+"Unrecognized Parameter" in the "Chunk Parameter Types" registry.</t>
 <t>In addition, each reference to <xref target="RFC4960"/> has been replaced with a reference to
 this document for the following chunk parameter types:</t>
 <ul>
@@ -6302,7 +6301,7 @@ this document for the following chunk parameter types:</t>
 <li><t>IPv4 Address</t></li>
 <li><t>IPv6 Address</t></li>
 <li><t>State Cookie</t></li>
-<li><t>Unrecognized Parameters</t></li>
+<li><t>Unrecognized Parameter</t></li>
 <li><t>Cookie Preservative</t></li>
 <li><t>Host Name Address</t></li>
 <li><t>Supported Address Types</t></li>
@@ -6343,10 +6342,9 @@ this document for the following SHUTDOWN COMPLETE chunk flag:</t>
 </li>
 <li><t>In the "Error Cause Codes" registry, IANA has replaced
 the registry reference to <xref target="RFC4960"/> with a reference to this document.</t>
-<!-- [MT] Added the next sentence, change to be performed by IANA. -->
 <t>IANA has changed the name of the "User Initiated Abort" error cause to
-"User-Initiated Abort" error cause and the "Stale Cookie Error" error cause
-to "Stale Cookie" error cause in the "Error Cause Codes" registry.</t>
+"User-Initiated Abort" and the name of the "Stale Cookie Error" error cause
+to "Stale Cookie" in the "Error Cause Codes" registry.</t>
 <t>In addition, each reference to <xref target="RFC4960"/> has been replaced with a reference to
 this document for the following cause codes:</t>
 <ul>
