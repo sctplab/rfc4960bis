@@ -15,4 +15,4 @@ nroff -ms -Tascii draft-ietf-tsvwg-rfc4960-bis.nroff | ./fix.sh > draft-ietf-tsv
 ```
 after compiling `pg.c`.
 
-You can access the current unsubmitted version rendered as [html](https://xml2rfc.tools.ietf.org/cgi-bin/xml2rfc.cgi?input=&url=https%3A%2F%2Fraw.githubusercontent.com%2Fsctplab%2Frfc4960bis%2Fmaster%2Fdraft-ietf-tsvwg-rfc4960-bis.xml&modeAsFormat=html%2Fascii&type=towindow&Submit=Submit) or [txt](https://xml2rfc.tools.ietf.org/cgi-bin/xml2rfc.cgi?input=&url=https%3A%2F%2Fraw.githubusercontent.com%2Fsctplab%2Frfc4960bis%2Fmaster%2Fdraft-ietf-tsvwg-rfc4960-bis.xml&modeAsFormat=txt%2Fascii&type=towindow&Submit=Submit).
+The document has been published as [RFC 9260](https://www.rfc-editor.org/rfc/rfc9260.html).
